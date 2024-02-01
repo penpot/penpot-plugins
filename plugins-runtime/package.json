@@ -1,0 +1,7 @@
+{
+  "name": "plugins-runtime",
+  "version": "0.0.1",
+  "dependencies": {},
+  "module": "./index.mjs",
+  "typings": "./index.d.ts"
+}
