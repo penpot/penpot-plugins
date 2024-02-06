@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run plugins-runtime:serve-static",
+    "start": "npx nx run plugins-runtime:serve-static --port 4200",
+    "start:example": "npx nx run example-plugin:serve-static --port 4201",
     "build": "npx nx build plugins-runtime --emptyOutDir=true",
     "lint": "nx run-many --all --target=lint --parallel",
     "lint:affected": "npx nx affected --target=lint",
@@ -42,7 +43,8 @@
     "packages/*"
   ],
   "dependencies": {
-    "tslib": "^2.3.0"
+    "ses": "^1.1.0",
+    "tslib": "^2.3.0",
+    "zod": "^3.22.4"
   }
 }
-
