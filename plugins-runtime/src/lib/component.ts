@@ -1,5 +1,5 @@
 export class PenpotRuntimeElement extends HTMLElement {
-  connectedCallback() {}
+  // connectedCallback() {}
 }
 
 customElements.define('plugins-runtime', PenpotRuntimeElement);
