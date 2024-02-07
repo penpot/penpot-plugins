@@ -1,3 +1,10 @@
+@import url("styles.css");
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 ul {
     list-style: none;
     margin: 0;
@@ -5,13 +12,14 @@ ul {
 }
 
 .color-section {
+    background: var(--app-black);
+    color: var(--app-white);
     display: flex;
     flex-wrap: wrap;
+    gap: 80px;
     list-style: none;
-    padding-left: 0;
+    padding: 10px 30px;
     width: 100%;
-    gap: 20px;
-    justify-content: space-between;
 }
 
 .color {
@@ -23,6 +31,8 @@ ul {
 
 .color-preview {
     block-size: 35px;
+    border: 1px solid #8F9DA3;
+    border-radius: 4px;
     display: block;
     inline-size: 35px;
     margin-inline-start: 10px;

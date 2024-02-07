@@ -1,16 +1,48 @@
 button {
     border: 0;
+    font-weight: 500;
+    font-size: 12px;
     border-radius: 8px;
+    line-height: 1.2;
     padding: 8.5px 24px 8.5px 24px;
     text-transform: uppercase;
+
+    &:hover:not(:disabled) {
+        cursor: pointer;
+    }
 }
 
 [data-theme="dark"] {
     [data-appearance="primary"]:is(button) {
         background-color: var(--da-primary);
+
+        &:hover {
+            background-color: var(--da-tertiary);
+        }
+
+        &:focus {
+            border: 2px solid var(--da-primary);
+        }
+
+        &:disabled {
+            background-color: transparent;
+            border: 1px solid var(--db-quaternary);
+            color: var(--df-secondary);
+        }
     
         &[data-variant="destructive"] {
             background-color: var(--error-500);
+
+            &:focus {
+                background-color: var(--app-red);
+                border: 2px solid var(--error-950);
+            }
+
+            &:disabled {
+                background-color: transparent;
+                border: 1px solid var(--error-950);
+                color: var(--df-secondary);
+            }
         }
     }
 

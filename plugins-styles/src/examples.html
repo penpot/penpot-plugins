@@ -1,113 +1,256 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="lib/styles.css">
-  <link rel="stylesheet" href="examples.css">
-</head>
-<body>
+  <head>
+    <link rel="stylesheet" href="lib/styles.css">
+    <link rel="stylesheet" href="examples.css">
+  </head>
+  <body>
+    <h1 class="display">Plugins styles</h1>
+    <main>
 
-<h1>Examples</h1>
+      <h3 class="title-large">Colors</h3>
+      <ul class="color-section">
+        <li>
+          <h4 class="title-medium">Background</h4>
+          <h5 class="title-small">Dark</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--db-primary</code>
+              <span class="color-preview" style="background-color: var(--db-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--db-secondary</code>
+              <span class="color-preview" style="background-color: var(--db-secondary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--db-tertiary</code>
+              <span class="color-preview" style="background-color: var(--db-tertiary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--db-quaternary</code>
+              <span class="color-preview" style="background-color: var(--db-quaternary);"></span></button>
+            </li>
+          </ul>
+          <h5 class="title-small">Light</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--lb-primary</code>
+              <span class="color-preview" style="background-color: var(--lb-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--lb-secondary</code>
+              <span class="color-preview" style="background-color: var(--lb-secondary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--lb-tertiary</code>
+              <span class="color-preview" style="background-color: var(--lb-tertiary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--lb-quaternary</code>
+              <span class="color-preview" style="background-color: var(--lb-quaternary);"></span></button>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4 class="title-medium">Foreground</h4>
+          <h5 class="title-small">Dark</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--df-primary</code>
+              <span class="color-preview" style="background-color: var(--df-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--df-secondary</code>
+              <span class="color-preview" style="background-color: var(--df-secondary);"></span></button>
+            </li>
+          </ul>
+          <h5 class="title-small">Light</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--lf-primary</code>
+              <span class="color-preview" style="background-color: var(--lf-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--lf-secondary</code>
+              <span class="color-preview" style="background-color: var(--lf-secondary);"></span></button>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4 class="title-medium">Accent</h4>
+          <h5 class="title-small">Dark</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--da-primary</code>
+              <span class="color-preview" style="background-color: var(--da-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--da-primary-muted</code>
+              <span class="color-preview" style="background-color: var(--da-primary-muted);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--da-secondary</code>
+              <span class="color-preview" style="background-color: var(--da-secondary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--da-tertiary</code>
+              <span class="color-preview" style="background-color: var(--da-tertiary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--da-quaternary</code>
+              <span class="color-preview" style="background-color: var(--da-quaternary);"></span></button>
+            </li>
+          </ul>
+          <h5 class="title-small">Light</h5>
+          <ul>
+            <li class="color">
+              <code class="color-label">--la-primary</code>
+              <span class="color-preview" style="background-color: var(--la-primary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--la-primary-muted</code>
+              <span class="color-preview" style="background-color: var(--la-primary-muted);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--la-seconlary</code>
+              <span class="color-preview" style="background-color: var(--la-seconlary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--la-tertiary</code>
+              <span class="color-preview" style="background-color: var(--la-tertiary);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--la-quaternary</code>
+              <span class="color-preview" style="background-color: var(--la-quaternary);"></span></button>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4 class="title-medium">Status color</h4>
+          <ul>
+            <li class="color">
+              <code class="color-label">--success-50</code>
+              <span class="color-preview" style="background-color: var(--success-50);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--success-500</code>
+              <span class="color-preview" style="background-color: var(--success-500);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--success-950</code>
+              <span class="color-preview" style="background-color: var(--success-950);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--warning-50</code>
+              <span class="color-preview" style="background-color: var(--warning-50);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--warning-500</code>
+              <span class="color-preview" style="background-color: var(--warning-500);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--warning-950</code>
+              <span class="color-preview" style="background-color: var(--warning-950);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--error-50</code>
+              <span class="color-preview" style="background-color: var(--error-50);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--error-500</code>
+              <span class="color-preview" style="background-color: var(--error-500);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--error-950</code>
+              <span class="color-preview" style="background-color: var(--error-950);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--info-50</code>
+              <span class="color-preview" style="background-color: var(--info-50);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--info-500</code>
+              <span class="color-preview" style="background-color: var(--info-500);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--info-950</code>
+              <span class="color-preview" style="background-color: var(--info-950);"></span></button>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4 class="title-medium">App color</h4>
+          <ul>
+            <li class="color">
+              <code class="color-label">--app-white</code>
+              <span class="color-preview" style="background-color: var(--app-white);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-black</code>
+              <span class="color-preview" style="background-color: var(--app-black);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-pink</code>
+              <span class="color-preview" style="background-color: var(--app-pink);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-blue</code>
+              <span class="color-preview" style="background-color: var(--app-blue);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-gold</code>
+              <span class="color-preview" style="background-color: var(--app-gold);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-indigo</code>
+              <span class="color-preview" style="background-color: var(--app-indigo);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-red</code>
+              <span class="color-preview" style="background-color: var(--app-red);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-yellow</code>
+              <span class="color-preview" style="background-color: var(--app-yellow);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-purple</code>
+              <span class="color-preview" style="background-color: var(--app-purple);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-lemon</code>
+              <span class="color-preview" style="background-color: var(--app-lemon);"></span></button>
+            </li>
+            <li class="color">
+              <code class="color-label">--app-orange</code>
+              <span class="color-preview" style="background-color: var(--app-orange);"></span></button>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
-<h3>Colors</h3>
-<ul class="color-section">
-  <li>
-    <ul>
-      <li class="color">
-        <code class="color-label">--db-primary</code>
-        <span class="color-preview" style="background-color: var(--db-primary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--db-secondary</code>
-        <span class="color-preview" style="background-color: var(--db-secondary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--db-tertiary</code>
-        <span class="color-preview" style="background-color: var(--db-tertiary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--db-quaternary</code>
-        <span class="color-preview" style="background-color: var(--db-quaternary);"></span></button>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <ul>
-      <li class="color">
-        <code class="color-label">--lb-primary</code>
-        <span class="color-preview" style="background-color: var(--lb-primary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--lb-secondary</code>
-        <span class="color-preview" style="background-color: var(--lb-secondary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--lb-tertiary</code>
-        <span class="color-preview" style="background-color: var(--lb-tertiary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--lb-quaternary</code>
-        <span class="color-preview" style="background-color: var(--lb-quaternary);"></span></button>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <ul>
-      <li class="color">
-        <code class="color-label">--df-primary</code>
-        <span class="color-preview" style="background-color: var(--df-primary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--df-secondary</code>
-        <span class="color-preview" style="background-color: var(--df-secondary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--lf-primary</code>
-        <span class="color-preview" style="background-color: var(--lf-primary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--lf-secondary</code>
-        <span class="color-preview" style="background-color: var(--lf-secondary);"></span></button>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <ul>
-      <li class="color">
-        <code class="color-label">--da-primary</code>
-        <span class="color-preview" style="background-color: var(--da-primary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--da-primary-muted</code>
-        <span class="color-preview" style="background-color: var(--da-primary-muted);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--da-secondary</code>
-        <span class="color-preview" style="background-color: var(--da-secondary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--da-tertiary</code>
-        <span class="color-preview" style="background-color: var(--da-tertiary);"></span></button>
-      </li>
-      <li class="color">
-        <code class="color-label">--da-quaternary</code>
-        <span class="color-preview" style="background-color: var(--da-quaternary);"></span></button>
-      </li>
-    </ul>
-  </li>
-</ul>
+      <h3 class="title-large">Fonts</h3>
 
-<h3>Fonts</h3>
+      <h3 class="title-large">Buttons</h3>
+      <ul data-theme="dark">
+        <li><button type="button" data-appearance="primary">Primary dark</button></li>
+        <li><button type="button" data-appearance="primary" disabled>Disabled</button></li>
+      </ul>
 
-<h3>Buttons</h3>
-<div data-theme="dark">
-  <button data-appearance="primary">Button</button>
-  <button data-appearance="primary" data-variant="destructive">Button</button>
-</div>
+      <ul data-theme="dark">
+        <li><button type="button" data-appearance="primary" data-variant="destructive">Primary dark destructive</button></li>
+        <li><button type="button" data-appearance="primary" data-variant="destructive" disabled>Primary dark destructive</button></li>
+      </ul>
 
-<div data-theme="light">
-  <button data-appearance="primary">Button</button>
-  <button data-appearance="primary" data-variant="destructive">Button</button>
-</div>
+      <ul data-theme="light">
+        <li><button type="button" data-appearance="primary">Primary Light</button></li>
+        <li><button type="button" data-appearance="primary" disabled>Primary Light</button></li>
+      </ul>
 
-</body>
+      <ul data-theme="light">
+        <li><button type="button" data-appearance="primary" data-variant="destructive">Primary light destructive</button></li>
+        <li><button type="button" data-appearance="primary" data-variant="destructive" disabled>Primary light destructive</button></li>
+      </ul>
+    </main>
+  </body>
 </html>

@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400+500&display=swap');
+
+:root {
+    /* Font weight */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+}
+
+html, body {
+    font-family: 'Work Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.display {
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.title-small {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.title-medium {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.title-large {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.body-small {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.body-medium {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.body-large {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+}
