@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "plugins-runtime": ["plugins-runtime/src/index.ts"]
+      "plugins-runtime": ["plugins-runtime/src/index.ts"],
+      "plugins-styles": ["plugins-styles/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

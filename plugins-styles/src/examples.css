@@ -1,0 +1,29 @@
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.color-section {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.color {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-block-end: 10px;
+}
+
+.color-preview {
+    block-size: 35px;
+    display: block;
+    inline-size: 35px;
+    margin-inline-start: 10px;
+}
