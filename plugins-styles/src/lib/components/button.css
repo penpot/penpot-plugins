@@ -1,5 +1,5 @@
 button {
-    border: 0;
+    border: 1px solid transparent;
     font-weight: 500;
     font-size: 12px;
     border-radius: 8px;
@@ -10,18 +10,22 @@ button {
     &:hover:not(:disabled) {
         cursor: pointer;
     }
+
+    &:focus-visible {
+        outline: none;
+    }
 }
 
 [data-theme="dark"] {
     [data-appearance="primary"]:is(button) {
         background-color: var(--da-primary);
 
-        &:hover {
+        &:hover:not(:disabled) {
             background-color: var(--da-tertiary);
         }
 
-        &:focus {
-            border: 2px solid var(--da-primary);
+        &:focus, &:focus-visible {
+            border:1px solid var(--da-tertiary);
         }
 
         &:disabled {
@@ -33,9 +37,13 @@ button {
         &[data-variant="destructive"] {
             background-color: var(--error-500);
 
-            &:focus {
+            &:hover:not(:disabled) {
+                background-color: var(--error-500);
+            }
+
+            &:focus, &:focus-visible {
                 background-color: var(--app-red);
-                border: 2px solid var(--error-950);
+                border: 1px solid var(--error-950);
             }
 
             &:disabled {
@@ -48,19 +56,70 @@ button {
 
     [data-appearance="secondary"]:is(button) {
         background-color: var(--db-tertiary);
+        color: var(--df-secondary);
+
+        &:hover:not(:disabled) {
+            background-color: var(--db-quaternary);
+            color: var(--da-primary);
+        }
+
+        &:focus, &:focus-visible {
+            border: 1px solid var(--da-primary);
+        }
+
+        &:disabled {
+            background-color: transparent;
+            border: 1px solid var(--db-quaternary);
+        }
     }
 }
 
 [data-theme="light"] {
     [data-appearance="primary"]:is(button) {
         background-color: var(--la-primary);
+        color: var(--lb-primary);
+
+        &:disabled {
+            background-color: transparent;
+            border: 1px solid var(--lb-quaternary);
+            color: var(--lf-secondary);
+        }
     
         &[data-variant="destructive"] {
             background-color: var(--error-500);
+
+            &:disabled {
+                background-color: transparent;
+                border: 1px solid var(--error-200);
+                color: var(--lf-secondary);
+            }
+        }
+
+        &:hover:not(:disabled) {
+            background-color: var(--la-tertiary);
+        }
+
+        &:focus, &:focus-visible {
+            border: 1px solid var(--la-tertiary);
         }
     }
 
     [data-appearance="secondary"]:is(button) {
         background-color: var(--lb-tertiary);
+        color: var(--lf-secondary);
+
+        &:hover:not(:disabled) {
+            background-color: var(--lb-quaternary);
+            color: var(--la-primary);
+        }
+
+        &:focus, &:focus-visible {
+            background-color: var(--lb-tertiary);
+            border: 1px solid var(--la-primary);
+        }
+
+        &:disabled {
+            border: 1px solid var(--lb-quaternary);
+        }
     }
 }

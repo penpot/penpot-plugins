@@ -3,7 +3,10 @@
 :root {
     /* Font weight */
     --font-weight-regular: 400;
-    --font-weight-medium: 500;
+    --font-weight-bold: 500;
+    --font-line-height-s: 1.2;
+    --font-line-height-m: 1.4;
+    --font-line-height-l: 1.2;
 }
 
 html, body {
@@ -13,43 +16,76 @@ html, body {
 }
 
 .display {
-    font-weight: 400;
+    font-weight: var(--font-weight-regular);
     font-size: 36px;
     line-height: 1.2;
 }
 
-.title-small {
-    font-weight: 400;
+.title-s {
+    font-weight: var(--font-weight-regular);
     font-size: 14px;
     line-height: 1.2;
 }
 
-.title-medium {
-    font-weight: 400;
+.title-m {
+    font-weight: var(--font-weight-regular);
     font-size: 20px;
     line-height: 1.2;
 }
 
-.title-large {
-    font-weight: 400;
+.title-l {
+    font-weight: var(--font-weight-regular);
     font-size: 24px;
     line-height: 1.1;
 }
 
-.body-small {
-    font-weight: 400;
+.headline-s {
+    font-weight: var(--font-weight-bold);
+    font-size: 12px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.headline-m {
+    font-weight: var(--font-weight-regular);
+    font-size: 16px;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.headline-l {
+    font-weight: var(--font-weight-regular);
+    font-size: 18px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.body-s {
+    font-weight: var(--font-weight-regular);
     font-size: 12px;
     line-height: 1.4;
 }
 
-.body-medium {
-    font-weight: 400;
+.body-m {
+    font-weight: var(--font-weight-regular);
     font-size: 14px;
     line-height: 1.5;
 }
 
-.body-large {
-    font-weight: 400;
+.body-l {
+    font-weight: var(--font-weight-regular);
     font-size: 16px;
+    line-height: 1.5;
+}
+
+.caption {
+    font-weight: var(--font-weight-regular);
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.code-font {
+    font-weight: var(--font-weight-regular);
+    font-size: 12px;
     line-height: 1.5;
 }

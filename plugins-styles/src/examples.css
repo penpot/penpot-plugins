@@ -1,8 +1,15 @@
-@import url("styles.css");
+@import url("lib/styles.css");
 
 html, body {
-    margin: 0;
+    background: var(--app-black);
+    color: var(--app-white);
+    margin: 0 var(--spacing-20);
     padding: 0;
+}
+
+section {
+    border-bottom: 1px solid var(--app-white);
+    padding-block: var(--spacing-32);
 }
 
 ul {
@@ -11,14 +18,40 @@ ul {
     padding: 0;
 }
 
+.code {
+    background-color: var(--app-white);
+    border-radius: var(--spacing-4);
+    color: var(--app-black);
+    display: block;
+    padding: var(--spacing-20);
+}
+
+.theme-group {
+    border-radius: var(--spacing-20);
+    margin-block-end: var(--spacing-20);
+    padding: var(--spacing-32);
+
+    &[data-theme="dark"] {
+        background-color: var(--db-primary);
+        border: 1px solid var(--db-quaternary);
+    }
+
+    &[data-theme="light"] {
+        background-color: var(--lb-primary);
+        border: 1px solid var(--lb-quaternary);
+    }
+}
+
+.component-section {
+    margin-block-end: var(--spacing-40);
+ }
+
+ /* COLOR */
 .color-section {
-    background: var(--app-black);
-    color: var(--app-white);
     display: flex;
     flex-wrap: wrap;
-    gap: 80px;
+    gap: calc(var(--spacing-40) * 2);
     list-style: none;
-    padding: 10px 30px;
     width: 100%;
 }
 
@@ -26,14 +59,39 @@ ul {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-block-end: 10px;
+    margin-block-end: var(--spacing-16);
 }
 
 .color-preview {
-    block-size: 35px;
+    block-size: var(--spacing-36);
     border: 1px solid #8F9DA3;
-    border-radius: 4px;
+    border-radius: var(--spacing-4);
     display: block;
-    inline-size: 35px;
-    margin-inline-start: 10px;
+    inline-size: var(--spacing-36);
+    margin-inline-start: var(--spacing-16);
+}
+
+/* SPACING */
+.spacing-group {
+    display: grid;
+    margin-block-end: var(--spacing-16);
+    grid-template-columns: calc(var(--spacing-4) * 30) 1fr;
+}
+
+.spacing-label {
+    margin-inline-end: var(--spacing-24);
+}
+
+.spacing-preview {
+    background-color: var(--error-500);
+}
+
+ /* BUTTONS */
+.button-list {
+    display: flex;
+    gap: var(--spacing-20);
+
+    &:not(:last-child) {
+        margin-block-end: var(--spacing-20);
+    }
 }
