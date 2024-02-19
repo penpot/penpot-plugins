@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "plugins-runtime": ["libs/plugins-runtime/src/index.ts"],
-      "plugins-styles": ["plugins-styles/src/index.ts"]
+      "plugins-styles": ["libs/plugins-styles/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
