@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { OpenUIOptions } from '../models/open-ui-options.model';
 import openUIApi from './openUI.api';
 import z from 'zod';
@@ -8,11 +6,13 @@ type Callback<T> = (message: T) => void;
 
 const validEvents = ['pagechange', 'filechange'] as const;
 
-let uiMessagesCallbacks: Callback<any>[] = [];
+let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let pageState = {} as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let fileState = {} as any;
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
