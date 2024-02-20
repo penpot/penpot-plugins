@@ -87,7 +87,7 @@ export class PluginModalElement extends HTMLElement {
         }
 
         h1 {
-          color: blue;
+          color: #000;
           font-family: Arial, sans-serif;
         }
 

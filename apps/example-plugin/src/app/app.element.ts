@@ -1,3 +1,4 @@
+import 'plugins-styles/lib/styles.css';
 import './app.element.css';
 
 export class AppElement extends HTMLElement {
@@ -24,17 +25,17 @@ export class AppElement extends HTMLElement {
     });
 
     this.innerHTML = `
-    <div class="wrapper">
+    <div class="wrapper" data-theme="light">
       <h1>Test area</h1>
 
       <p>Current project name: <span id="project-name">Unknown</span></p>
 
       <p>
-        <button type="button" class="act-ping-pong">Ping Pong message</button>
+        <button type="button" data-appearance="primary" class="act-ping-pong">Ping Pong message</button>
       </p>
 
       <p>
-        <button type="button" class="act-close-plugin">Close plugin</button>
+        <button type="button" data-appearance="primary" data-variant="destructive" class="act-close-plugin">Close plugin</button>
       </p>
     </div>
       `;
