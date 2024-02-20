@@ -5,7 +5,6 @@ Create a manifes.json in /public
 ```json
 {
   "name": "Example plugin",
-  "url": "http://localhost:4201",
   "code": "http://localhost:4201/plugin.js"
 }
 ```
