@@ -26,6 +26,7 @@ penpot.ui.onMessage((message) => {
       type: 'init',
       content: {
         name: penpot.getPageState().name,
+        selection: penpot.getSelection(),
       },
     });
   }
@@ -33,4 +34,8 @@ penpot.ui.onMessage((message) => {
 
 penpot.on('pagechange', (page) => {
   penpot.ui.sendMessage({ type: 'page', content: page.name });
+});
+
+penpot.on('selectionchange', (id) => {
+  penpot.ui.sendMessage({ type: 'selection', content: id });
 });
