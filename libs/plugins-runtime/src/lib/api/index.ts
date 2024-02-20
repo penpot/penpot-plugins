@@ -4,7 +4,7 @@ import z from 'zod';
 
 type Callback<T> = (message: T) => void;
 
-const validEvents = ['pagechange', 'filechange'] as const;
+const validEvents = ['pagechange', 'filechange', 'selectionchange'] as const;
 
 let uiMessagesCallbacks: Callback<unknown>[] = [];
 
@@ -14,6 +14,8 @@ let modal: HTMLElement | null = null;
 let pageState = {} as any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let fileState = {} as any;
+
+let selection: null | string = null;
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -38,6 +40,16 @@ export function setFileState(file: unknown) {
   fileState = file;
 
   triggerEvent('filechange', file);
+}
+
+export function setSelection(selectionId: string) {
+  if (selectionId === selection) {
+    return;
+  }
+
+  selection = selectionId;
+
+  triggerEvent('selectionchange', selectionId);
 }
 
 export function createApi() {
@@ -107,6 +119,9 @@ export function createApi() {
     },
     getPageState: () => {
       return pageState;
+    },
+    getSelection: () => {
+      return selection;
     },
   };
 

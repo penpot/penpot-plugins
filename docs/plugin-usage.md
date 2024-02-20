@@ -7,6 +7,19 @@ penpot.ui.open('Plugin name', 'http://localhost:4201', {
 });
 ```
 
+Get state:
+
+```ts
+// file file state
+penpot.ui.getFileState();
+
+// file page state
+penpot.ui.getFileState();
+
+// selection id
+penpot.ui.getSelection();
+```
+
 ### Messages
 
 Receive message from iframe:
@@ -39,7 +52,7 @@ window.addEventListener('message', function (event) {
 
 ### Events
 
-Current events `pagechange` and `filechange`.
+Current events `pagechange`, `filechange` and `selectionchange`.
 
 ```ts
 const event = (page) => {

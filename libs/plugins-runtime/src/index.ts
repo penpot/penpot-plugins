@@ -2,7 +2,7 @@ import 'ses';
 import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
-import { setFileState, setPageState } from './lib/api';
+import { setFileState, setPageState, setSelection } from './lib/api';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
@@ -30,5 +30,12 @@ export function initialize(api: any) {
     console.log('File Changed:', file);
 
     setFileState(file);
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  api.addListener('plugin-selection', 'selection', (selection: any) => {
+    console.log('Selection Changed:', selection);
+
+    setSelection(selection.linked_map.head?.uuid);
   });
 }
