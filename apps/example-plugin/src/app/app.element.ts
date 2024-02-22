@@ -40,9 +40,15 @@ export class AppElement extends HTMLElement {
 
       <p>Current project name: <span id="project-name">Unknown</span></p>
       <p>Selection id: <span id="selection-id">Unknown</span></p>
+      <div class="profile"></div>
 
       <p>
         <button type="button" data-appearance="primary" class="act-ping-pong">Ping Pong message</button>
+      </p>
+
+      <p>
+        <button type="button" data-appearance="primary" class="get-profile">API get profile</button>
+        <span class="help">Need the .env file and run "start:rpc-api"</span>
       </p>
 
       <p>
@@ -61,6 +67,22 @@ export class AppElement extends HTMLElement {
 
     closeAction?.addEventListener('click', () => {
       parent.postMessage({ content: 'close' }, '*');
+    });
+
+    const getProfileAction = this.querySelector<HTMLElement>('.get-profile');
+
+    getProfileAction?.addEventListener('click', () => {
+      fetch('http://localhost:3000/get-profile')
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const profile = document.querySelector('.profile');
+
+          if (profile) {
+            profile.innerHTML = '<p>' + JSON.stringify(data) + '</p>';
+          }
+        });
     });
 
     parent.postMessage({ content: 'ready' }, '*');

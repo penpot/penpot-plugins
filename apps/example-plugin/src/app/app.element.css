@@ -53,10 +53,17 @@ svg {
 }
 
 p {
-  margin-bottom: var(--spacing-12);
+  margin-block-end: var(--spacing-12);
 }
 
 h1 {
   font-size: 20px;
-  margin-bottom: var(--spacing-12);
+  margin-block-end: var(--spacing-12);
+}
+
+.help {
+  color: #6b7280;
+  display: block;
+  font-size: 11px;
+  padding-inline-start: var(--spacing-12);
 }
