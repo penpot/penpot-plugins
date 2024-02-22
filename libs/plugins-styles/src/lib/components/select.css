@@ -1,0 +1,53 @@
+.select {
+    appearance: none;
+    background-color: var(--db-tertiary);
+    background-position: right 7px center;
+    background-image: url('../icons/arrow-bottom.svg');
+    background-repeat: no-repeat;
+    block-size: calc(var(--spacing-8) * 6);
+    border: 1px solid;
+    border-color: var(--db-tertiary);
+    border-radius: var(--spacing-8);
+    box-sizing: border-box;
+    color: var(--df-primary);
+    cursor: pointer;
+    inline-size: 100%;
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--font-line-height-m);
+    outline: none;
+    padding-block: var(--spacing-12);
+    padding-inline: var(--spacing-8);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: var(--db-quaternary);
+        border-color: var(--db-quaternary);
+    }
+      
+    &:focus {
+        background-color: var(--db-tertiary);
+        border-color: var(--da-primary);
+    }
+      
+    &:disabled {
+        background-color: var(--db-primary);
+        border-color: var(--db-quaternary);
+        cursor: not-allowed;
+    }
+}
+
+.select-label-hidden {
+    block-size: 1px;
+    border: 0;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+}

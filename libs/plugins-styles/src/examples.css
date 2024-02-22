@@ -4,18 +4,11 @@ html, body {
     background: var(--app-black);
     color: var(--app-white);
     margin: 0 var(--spacing-20);
-    padding: 0;
 }
 
 section {
     border-bottom: 1px solid var(--app-white);
     padding-block: var(--spacing-32);
-}
-
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 .code {
@@ -32,12 +25,10 @@ ul {
     padding: var(--spacing-32);
 
     &[data-theme="dark"] {
-        background-color: var(--db-primary);
         border: 1px solid var(--db-quaternary);
     }
 
     &[data-theme="light"] {
-        background-color: var(--lb-primary);
         border: 1px solid var(--lb-quaternary);
     }
 }
@@ -86,12 +77,19 @@ ul {
     background-color: var(--error-500);
 }
 
- /* BUTTONS */
-.button-list {
+ /* INPUT / BUTTONS */
+ .inputs-list,
+ .button-list {
     display: flex;
     gap: var(--spacing-20);
 
     &:not(:last-child) {
         margin-block-end: var(--spacing-20);
     }
+}
+
+/* ICON */
+.icons-section {
+    display: flex;
+    gap: var(--spacing-8);
 }

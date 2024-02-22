@@ -309,14 +309,175 @@
 
       <section aria-label="icons">
         <h2 class="title-large">Icons</h2>
-        <div class="component-section">
+        <div class="icons-section" style="margin-block-end: var(--spacing-20);">
           <span class="icon icon-arrow-bottom"></span>
           <span class="icon icon-arrow-top"></span>
           <span class="icon icon-arrow-right"></span>
           <span class="icon icon-arrow-left"></span>
-          <span class="icon icon-actions-close"></span>
-          <span class="icon icon-actions-close-l"></span>
-          <span class="icon icon-actions-delete"></span>
+          <span class="icon icon-close"></span>
+          <span class="icon icon-close-l"></span>
+          <span class="icon icon-delete"></span>
+          <span class="icon icon-add"></span>
+          <span class="icon icon-remove"></span>
+          <span class="icon icon-search"></span>
+          <span class="icon icon-copy"></span>
+          <span class="icon icon-more"></span>
+          <span class="icon icon-loading"></span>
+          <span class="icon icon-help"></span>
+          <span class="icon icon-info"></span>
+          <span class="icon icon-show"></span>
+          <span class="icon icon-hide"></span>
+          <span class="icon icon-lock"></span>
+          <span class="icon icon-unlock"></span>
+          <span class="icon icon-download"></span>
+        </div>
+        <code class="code code-font">
+          &lt;span class="icon icon-arrow-bottom"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-arrow-top"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-arrow-right"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-arrow-left"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-close"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-close-l"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-delete"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-add"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-remove"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-search"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-copy"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-more"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-loading"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-help"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-info"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-show"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-hide"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-lock"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-unlock"&gt;&lt;/span&gt; <br>
+          &lt;span class="icon icon-download"&gt;&lt;/span&gt;
+        </code>
+      </section>
+
+      <section aria-label="select">
+        <h2 class="title-large">Select</h2>
+        <div class="component-section">
+          <div class="theme-group" data-theme="dark">
+            <div class="form-group">
+              <label class="select-label-hidden" for="select-1">Which is your favorite animal?</label>
+              <select class="select" id="select-1">
+                <option value="">Select an animal</option>
+                <option value="1">Quokka</option>
+                <option value="2">Rabbit</option>
+                <option value="3">Goat</option>
+                <option value="4">Capybara</option>
+              </select>
+            </div>
+          </div>
+          <code class="code code-font">
+            &lt;div class="form-group"&gt; <br>
+            &nbsp;&lt;label class="select-label-hidden" for="select-1"&gt;Which is your favorite animal?&lt;/label&gt; <br>
+            &nbsp;&lt;select class="select" id="select-1"&gt; <br>
+            &nbsp;&nbsp;&lt;option value="1"&gt;Quokka&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="2"&gt;Rabbit&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="3"&gt;Goat&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="4"&gt;Capybara&lt;/option&gt; <br>
+            &nbsp;&lt;/select&gt; <br>
+            &lt;/div&gt;
+          </code>
+        </div>
+
+        <div class="component-section">
+          <div class="theme-group" data-theme="dark">
+            <div class="form-group">
+              <label class="select-label-hidden" for="select-2">Which is your favorite animal?</label>
+              <select class="select" id="select-2" disabled>
+                <option value="1">Quokka</option>
+                <option value="2">Rabbit</option>
+                <option value="3">Goat</option>
+                <option value="4">Capybara</option>
+              </select>
+            </div>
+          </div>
+          <code class="code code-font">
+            &lt;div class="form-group"&gt; <br>
+            &nbsp;&lt;label class="select-label-hidden" for="select-2"&gt;Which is your favorite animal?&lt;/label&gt; <br>
+            &nbsp;&lt;select class="select" id="select-2" disabled&gt; <br>
+            &nbsp;&nbsp;&lt;option value="1"&gt;Quokka&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="2"&gt;Rabbit&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="3"&gt;Goat&lt;/option&gt; <br>
+            &nbsp;&nbsp;&lt;option value="4"&gt;Capybara&lt;/option&gt; <br>
+            &nbsp;&lt;/select&gt; <br>
+            &lt;/div&gt;
+          </code>
+        </div>
+      </section>
+
+      <section aria-label="input">
+        <h2 class="title-large">Input</h2>
+        <div class="component-section">
+          <div class="theme-group" data-theme="dark">
+            <div class="inputs-list">
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-1">This is the label</label>
+                <input class="input" type="text" placeholder="Input dark theme" id="input-1"/>
+              </div>
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-2">This is the label</label>
+                <input class="input success" type="text" placeholder="Input dark theme success" id="input-2"/>
+              </div>
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-3">This is the label</label>
+                <input class="input error" type="text" placeholder="Input dark theme error" id="input-3"/>
+              </div>
+            </div>
+          </div>
+          <code class="code code-font">
+            &lt;div class="theme-group" data-theme="dark"&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-1"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input" type="text" placeholder="Input dark theme" id="input-1"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-2"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input success" type="text" placeholder="Input dark theme success" id="input-2"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-3"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input error" type="text" placeholder="Input dark theme error" id="input-3"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &lt;/div&gt;
+          </code>
+        </div>
+        <div class="component-section">
+          <div class="theme-group" data-theme="light">
+            <div class="inputs-list">
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-4">This is the label</label>
+                <input class="input" type="text" placeholder="Input light theme" id="input-4"/>
+              </div>
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-5">This is the label</label>
+                <input class="input success" type="text" placeholder="Input light theme success" id="input-5"/>
+              </div>
+              <div class="form-group">
+                <label class="input-label-hidden" for="input-6">This is the label</label>
+                <input class="input error" type="text" placeholder="Input light theme error" id="input-6"/>
+              </div>
+            </div>
+          </div>
+          <code class="code code-font">
+            &lt;div class="theme-group" data-theme="light"&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-4"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input" type="text" placeholder="Input light theme" id="input-4"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-5"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input success" type="text" placeholder="Input light theme success" id="input-5"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &nbsp;&lt;div class="form-group"&gt; <br>
+            &nbsp;&nbsp;&lt;label class="input-label-hidden" for="input-6"&gt;This is the label&lt;/label&gt; <br>
+            &nbsp;&nbsp;&lt;input class="input error" type="text" placeholder="Input light theme error" id="input-6"/&gt; <br>
+            &nbsp;&lt;/div&gt; <br>
+            &lt;/div&gt;
+          </code>
         </div>
       </section>
 

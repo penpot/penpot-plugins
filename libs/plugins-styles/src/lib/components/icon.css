@@ -14,26 +14,78 @@
     background-image: url('../icons/arrow-bottom.svg');
   }
   
-  .icon-arrow-left {
-    background-image: url('../icons/arrow-left.svg');
-  }
-  
-  .icon-arrow-right {
-    background-image: url('../icons/arrow-right.svg');
-  }
-  
-  .icon-arrow-top {
-    background-image: url('../icons/arrow-top.svg');
-  }
+.icon-arrow-left {
+  background-image: url('../icons/arrow-left.svg');
+}
 
-  .icon-actions-close {
-    background-image: url('../icons/actions-close.svg');
-  }
-  
-  .icon-actions-close-l {
-    background-image: url('../icons/actions-close-l.svg');
-  }
-  
-  .icon-actions-delete {
-    background-image: url('../icons/actions-delete.svg');
-  }
+.icon-arrow-right {
+  background-image: url('../icons/arrow-right.svg');
+}
+
+.icon-arrow-top {
+  background-image: url('../icons/arrow-top.svg');
+}
+
+.icon-close {
+  background-image: url('../icons/actions-close.svg');
+}
+
+.icon-close-l {
+  background-image: url('../icons/actions-close-l.svg');
+}
+
+.icon-delete {
+  background-image: url('../icons/actions-delete.svg');
+}
+
+.icon-add {
+  background-image: url('../icons/actions-add.svg');
+}
+
+.icon-remove {
+  background-image: url('../icons/actions-remove.svg');
+}
+
+.icon-search {
+  background-image: url('../icons/actions-search.svg');
+}
+
+.icon-copy {
+  background-image: url('../icons/actions-copy.svg');
+}
+
+.icon-more {
+  background-image: url('../icons/actions-more.svg');
+}
+
+.icon-loading {
+  background-image: url('../icons/actions-loading.svg');
+}
+
+.icon-help {
+  background-image: url('../icons/actions-help.svg');
+}
+
+.icon-info {
+  background-image: url('../icons/actions-info.svg');
+}
+
+.icon-show {
+  background-image: url('../icons/actions-show.svg');
+}
+
+.icon-hide {
+  background-image: url('../icons/actions-hide.svg');
+}
+
+.icon-lock {
+  background-image: url('../icons/actions-lock.svg');
+}
+
+.icon-unlock {
+  background-image: url('../icons/actions-unlock.svg');
+}
+
+.icon-download {
+  background-image: url('../icons/app-download.svg');
+}

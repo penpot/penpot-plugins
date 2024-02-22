@@ -6,7 +6,10 @@
     --font-weight-bold: 500;
     --font-line-height-s: 1.2;
     --font-line-height-m: 1.4;
-    --font-line-height-l: 1.2;
+    --font-line-height-l: 1.5;
+    --font-size-s: 12px;
+    --font-size-m: 14px;
+    --font-size-l: 16px;
 }
 
 html, body {
@@ -18,19 +21,19 @@ html, body {
 .display {
     font-weight: var(--font-weight-regular);
     font-size: 36px;
-    line-height: 1.2;
+    line-height: var(--font-line-height-s);
 }
 
 .title-s {
     font-weight: var(--font-weight-regular);
-    font-size: 14px;
-    line-height: 1.2;
+    font-size: var(--font-size-m);
+    line-height: var(--font-line-height-s);
 }
 
 .title-m {
     font-weight: var(--font-weight-regular);
     font-size: 20px;
-    line-height: 1.2;
+    line-height: var(--font-line-height-s);
 }
 
 .title-l {
@@ -41,51 +44,51 @@ html, body {
 
 .headline-s {
     font-weight: var(--font-weight-bold);
-    font-size: 12px;
-    line-height: 1.2;
+    font-size: var(--font-size-s);
+    line-height: var(--font-line-height-s);
     text-transform: uppercase;
 }
 
 .headline-m {
     font-weight: var(--font-weight-regular);
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: var(--font-size-l);
+    line-height: var(--font-line-height-m);
     text-transform: uppercase;
 }
 
 .headline-l {
     font-weight: var(--font-weight-regular);
     font-size: 18px;
-    line-height: 1.2;
+    line-height: var(--font-line-height-s);
     text-transform: uppercase;
 }
 
 .body-s {
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: var(--font-size-s);
+    line-height: var(--font-line-height-m);
 }
 
 .body-m {
     font-weight: var(--font-weight-regular);
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: var(--font-size-m);
+    line-height: var(--font-line-height-l);
 }
 
 .body-l {
     font-weight: var(--font-weight-regular);
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: var(--font-size-l);
+    line-height: var(--font-line-height-l);
 }
 
 .caption {
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 1.2;
+    font-size: var(--font-size-s);
+    line-height: var(--font-line-height-s);
 }
 
 .code-font {
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: var(--font-size-s);
+    line-height: var(--font-line-height-l);
 }
