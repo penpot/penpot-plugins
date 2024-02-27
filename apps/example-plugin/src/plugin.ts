@@ -1,13 +1,3 @@
-/* eslint-disable */
-
-export declare global {
-  declare namespace globalThis {
-    export const penpot = {
-      ui: {},
-    };
-  }
-}
-
 penpot.log('Hello from plugin');
 
 penpot.ui.open('Plugin name', 'http://localhost:4201', {
@@ -15,7 +5,7 @@ penpot.ui.open('Plugin name', 'http://localhost:4201', {
   height: 600,
 });
 
-penpot.ui.onMessage((message) => {
+penpot.ui.onMessage<{ content: string }>((message) => {
   if (message.content === 'ping') {
     penpot.log('ping received');
     penpot.ui.sendMessage({ type: 'pingpong', content: 'pong' });
