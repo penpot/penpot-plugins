@@ -12,3 +12,5 @@ Try to use `zod` to validate the input an output, for example:
     });
 }
 ```
+
+Update `/libs/plugins-runtime/src/lib/api/index.d.ts`.

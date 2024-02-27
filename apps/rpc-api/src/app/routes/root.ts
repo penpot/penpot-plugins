@@ -6,8 +6,6 @@ export default async function (fastify: FastifyInstance) {
   const apiUrl = process.env.API_URL;
 
   fastify.get('/get-profile', function () {
-    console.log('sdfdsf');
-
     return fetch(`${apiUrl}/get-profile`, {
       method: 'GET',
       headers: {

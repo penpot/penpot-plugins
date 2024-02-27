@@ -62,7 +62,7 @@ export function createApi() {
     modal = null;
   };
 
-  const penpot = {
+  const penpot: Penpot = {
     ui: {
       open: (name: string, url: string, options: OpenUIOptions) => {
         modal = openUIApi(name, url, options);
@@ -78,12 +78,11 @@ export function createApi() {
 
         modal?.dispatchEvent(event);
       },
-      onMessage: z
-        .function()
-        .args(z.function())
-        .implement((callback) => {
-          uiMessagesCallbacks.push(callback);
-        }),
+      onMessage: <T>(callback: (message: T) => void) => {
+        z.function().parse(callback);
+
+        uiMessagesCallbacks.push(callback as Callback<unknown>);
+      },
     },
     log: console.log,
     setTimeout: z
@@ -123,7 +122,7 @@ export function createApi() {
     getSelection: () => {
       return selection;
     },
-  };
+  } as const;
 
   return penpot;
 }

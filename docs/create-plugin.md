@@ -9,7 +9,7 @@ Create a manifes.json in /public
 }
 ```
 
-Add to the example vite.config.ts
+Add to the example `vite.config.ts`
 
 ```json
 build: {
@@ -23,6 +23,12 @@ build: {
     },
   },
 }
+```
+
+Add to `tsconfig.app.json`
+
+```json
+  "include": ["src/**/*.ts", "../../libs/plugins-runtime/src/lib/index.d.ts"]
 ```
 
 Run static server `npx nx run example-plugin:serve-static --port 4201`
