@@ -4,7 +4,7 @@ button {
     font-size: 12px;
     border-radius: 8px;
     line-height: 1.2;
-    padding: 8.5px 24px 8.5px 24px;
+    padding: 8px 24px 8px 24px;
     text-transform: uppercase;
 
     &:hover:not(:disabled) {
@@ -19,13 +19,22 @@ button {
 [data-theme="dark"] {
     [data-appearance="primary"]:is(button) {
         background-color: var(--da-primary);
+        border: 1px solid var(--da-primary);
+        outline: 2px solid transparent;
 
         &:hover:not(:disabled) {
             background-color: var(--da-tertiary);
+            border: 1px solid var(--da-tertiary);
         }
 
-        &:focus, &:focus-visible {
-            border:1px solid var(--da-tertiary);
+        &:focus:not(:disabled), &:focus-visible:not(:disabled) {
+            border: 1px solid var(--db-primary);
+            outline: 2px solid var(--da-primary);
+        }
+
+        &:active:not(:disabled) {
+            border: 1px solid var(--da-primary);
+            outline: 2px solid var(--da-tertiary);
         }
 
         &:disabled {
@@ -36,14 +45,23 @@ button {
     
         &[data-variant="destructive"] {
             background-color: var(--error-500);
+            border: 1px solid var(--error-500);
+            outline: 2px solid transparent;
 
             &:hover:not(:disabled) {
-                background-color: var(--error-500);
+                background-color: var(--error-700);
+                border: 1px solid var(--error-700);
             }
 
-            &:focus, &:focus-visible {
+            &:focus:not(:disabled), &:focus-visible:not(:disabled) {
+                border: 1px solid var(--db-primary);
+                outline: 2px solid var(--error-500);
+            }
+
+            &:active:not(:disabled) {
                 background-color: var(--app-red);
-                border: 1px solid var(--error-950);
+                border: 1px solid var(--app-red);
+                outline: 2px solid var(--error-700);
             }
 
             &:disabled {
@@ -63,8 +81,13 @@ button {
             color: var(--da-primary);
         }
 
-        &:focus, &:focus-visible {
+        &:focus:not(:disabled), &:focus-visible:not(:disabled) {
             border: 1px solid var(--da-primary);
+        }
+
+        &:active:not(:disabled) {
+            color: var(--da-primary);
+            outline: 2px solid var(--db-quaternary);
         }
 
         &:disabled {
@@ -79,6 +102,20 @@ button {
         background-color: var(--la-primary);
         color: var(--lb-primary);
 
+        &:hover:not(:disabled) {
+            background-color: var(--la-tertiary);
+        }
+
+        &:focus:not(:disabled), &:focus-visible:not(:disabled) {
+            border: 1px solid var(--lb-primary);
+            outline: 2px solid var(--la-primary);
+        }
+
+        &:active:not(:disabled) {
+            border: 1px solid var(--la-primary);
+            outline: 2px solid var(--la-tertiary);
+        }
+
         &:disabled {
             background-color: transparent;
             border: 1px solid var(--lb-quaternary);
@@ -86,21 +123,34 @@ button {
         }
     
         &[data-variant="destructive"] {
-            background-color: var(--error-500);
+            background-color: transparent;
+            border: 1px solid var(--error-200);
+            color: var(--lf-secondary);
+
+            &:hover:not(:disabled) {
+                background-color: var(--error-500);
+                color: var(--lb-secondary);
+                border: 1px solid var(--lb-primary);
+                outline: 2px solid var(--error-500);
+            }
+
+            &:focus:not(:disabled), &:focus-visible:not(:disabled) {
+                background-color: var(--error-700);
+                border: 1px solid var(--error-700);
+                color: var(--lb-secondary);
+                outline: 2px solid var(--error-700);
+            }
+
+            &:active:not(:disabled) {
+                background-color: var(--app-red);
+                color: var(--lb-primary);
+                outline: 2px solid var(--error-700);
+            }
 
             &:disabled {
-                background-color: transparent;
-                border: 1px solid var(--error-200);
-                color: var(--lf-secondary);
+                background-color: var(--error-500);
+                color: var(--lb-secondary);
             }
-        }
-
-        &:hover:not(:disabled) {
-            background-color: var(--la-tertiary);
-        }
-
-        &:focus, &:focus-visible {
-            border: 1px solid var(--la-tertiary);
         }
     }
 
@@ -113,12 +163,20 @@ button {
             color: var(--la-primary);
         }
 
-        &:focus, &:focus-visible {
+        &:focus:not(:disabled), &:focus-visible:not(:disabled) {
             background-color: var(--lb-tertiary);
             border: 1px solid var(--la-primary);
+            color: var(--lf-secondary);
+        }
+
+        &:active:not(:disabled) {
+            background-color: var(--lb-tertiary);
+            color: var(--la-primary);
+            outline: 2px solid var(--lb-quaternary);
         }
 
         &:disabled {
+            background-color: transparent;
             border: 1px solid var(--lb-quaternary);
         }
     }

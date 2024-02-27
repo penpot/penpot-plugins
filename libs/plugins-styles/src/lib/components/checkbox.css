@@ -19,12 +19,12 @@
         transition: 120ms all ease-in-out;
 
         &::after {
-            block-size: 6px;
+            block-size: 8px;
             border-style: solid;
             border-width: 0;
             content: "";
             display: flex;
-            inline-size: 3px;
+            inline-size: 5px;
             margin-block-start: 2px;
             margin-inline-start: 5px;
             -webkit-transform: rotate(45deg);

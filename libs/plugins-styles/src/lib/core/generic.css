@@ -1,6 +1,28 @@
 html, body {
+    font-family: 'Work Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     margin: 0;
     padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+pre {
+  margin: 0;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
 }
 
 ul {
@@ -11,8 +33,10 @@ ul {
 
 [data-theme="dark"] {
     background-color: var(--db-primary);
+    color: var(--lb-primary);
 }
 
 [data-theme="light"] {
     background-color: var(--lb-primary);
+    color: var(--db-primary);
 }
