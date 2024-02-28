@@ -1,8 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+interface Page {
+  name: string;
+  id: string;
+}
+
+interface File {
+  name: string;
+  id: string;
+  revn: number;
+}
+
 interface EventsMap {
-  pagechange: { name: string };
-  filechange: any;
+  pagechange: Page;
+  filechange: File;
   selectionchange: string;
 }
 
@@ -16,16 +27,19 @@ interface Penpot {
     sendMessage: (message: unknown) => void;
     onMessage: <T>(callback: (message: T) => void) => void;
   };
-  log: (message: string) => void;
+  log: (...data: any[]) => void;
   setTimeout: (callback: () => void, time: number) => void;
   closePlugin: () => void;
   on: <T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-  off: (type: string, callback: () => void) => void;
-  getFileState: () => any;
-  getPageState: () => any;
+  off: <T extends keyof EventsMap>(
+    type: T,
+    callback: (event: EventsMap[T]) => void
+  ) => void;
+  getFileState: () => File;
+  getPageState: () => Page;
   getSelection: () => any;
 }
 

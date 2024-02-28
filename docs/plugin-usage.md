@@ -14,7 +14,7 @@ Get state:
 penpot.ui.getFileState();
 
 // file page state
-penpot.ui.getFileState();
+penpot.ui.getPageState();
 
 // selection id
 penpot.ui.getSelection();

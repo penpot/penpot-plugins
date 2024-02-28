@@ -25,18 +25,21 @@ window.addEventListener('message', (event) => {
   }
 });
 
-export function triggerEvent<T>(type: string, message: T) {
+export function triggerEvent(
+  type: keyof EventsMap,
+  message: EventsMap[keyof EventsMap]
+) {
   const listeners = eventListeners.get(type) || [];
   listeners.forEach((listener) => listener(message));
 }
 
-export function setPageState(page: unknown) {
+export function setPageState(page: Page) {
   pageState = page;
 
   triggerEvent('pagechange', page);
 }
 
-export function setFileState(file: unknown) {
+export function setFileState(file: File) {
   fileState = file;
 
   triggerEvent('filechange', file);
@@ -92,25 +95,31 @@ export function createApi() {
         setTimeout(callback, time);
       }),
     closePlugin,
-    on: (type: string, fn: Callback<unknown>) => {
+    on<T extends keyof EventsMap>(
+      type: T,
+      callback: (event: EventsMap[T]) => void
+    ): void {
       // z.function alter fn, so can't use it here
       z.enum(validEvents).parse(type);
-      z.function().parse(fn);
+      z.function().parse(callback);
 
       const listeners = eventListeners.get(type) || [];
 
-      listeners.push(fn);
+      listeners.push(callback as Callback<unknown>);
       eventListeners.set(type, listeners);
     },
-    off: (type: string, fn: () => void) => {
+    off<T extends keyof EventsMap>(
+      type: T,
+      callback: (event: EventsMap[T]) => void
+    ): void {
       z.enum(validEvents).parse(type);
-      z.function().parse(fn);
+      z.function().parse(callback);
 
       const listeners = eventListeners.get(type) || [];
 
       eventListeners.set(
         type,
-        listeners.filter((listener) => listener !== fn)
+        listeners.filter((listener) => listener !== callback)
       );
     },
     getFileState: () => {

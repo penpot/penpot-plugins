@@ -3,9 +3,16 @@ import './app.element.css';
 
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
+  #selection = '';
+  #pageId = '';
+  #fileId = '';
+  #revn = 0;
 
-  refreshPageName(name: string) {
+  refreshPage(pageId: string, name: string) {
+    console.log('refreshPage', pageId, name);
+
     const projectName = document.getElementById('project-name');
+    this.#pageId = pageId;
 
     if (projectName) {
       projectName.innerText = name;
@@ -13,10 +20,12 @@ export class AppElement extends HTMLElement {
   }
 
   refreshSelectionId(selection: string) {
+    this.#selection = selection;
+
     const selectionId = document.getElementById('selection-id');
 
     if (selectionId) {
-      selectionId.innerText = selection;
+      selectionId.innerText = this.#selection;
     }
   }
 
@@ -24,12 +33,17 @@ export class AppElement extends HTMLElement {
     window.addEventListener('message', (event) => {
       if (event.data.type === 'pingpong') {
         console.log('iframe', event.data.content);
+      } else if (event.data.type === 'file') {
+        this.#fileId = event.data.content.id;
+        this.#revn = event.data.content.revn;
       } else if (event.data.type === 'page') {
-        this.refreshPageName(event.data.content);
+        this.refreshPage(event.data.content.id, event.data.content.name);
       } else if (event.data.type === 'selection') {
         this.refreshSelectionId(event.data.content);
       } else if (event.data.type === 'init') {
-        this.refreshPageName(event.data.content.name);
+        this.#fileId = event.data.content.fileId;
+        this.#revn = event.data.content.revn;
+        this.refreshPage(event.data.content.pageId, event.data.content.name);
         this.refreshSelectionId(event.data.content.selection);
       }
     });
@@ -48,6 +62,11 @@ export class AppElement extends HTMLElement {
 
       <p>
         <button type="button" data-appearance="primary" class="get-profile">API get profile</button>
+        <span class="help">Need the .env file and run "start:rpc-api"</span>
+      </p>
+
+      <p>
+        <button type="button" data-appearance="primary" class="remove-obj">Remove obj</button>
         <span class="help">Need the .env file and run "start:rpc-api"</span>
       </p>
 
@@ -82,6 +101,29 @@ export class AppElement extends HTMLElement {
           if (profile) {
             profile.innerHTML = '<p>' + JSON.stringify(data) + '</p>';
           }
+        });
+    });
+
+    const removeAction = this.querySelector<HTMLElement>('.remove-obj');
+
+    removeAction?.addEventListener('click', () => {
+      fetch('http://localhost:3000/delete-object', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          fileId: this.#fileId,
+          revn: this.#revn,
+          pageId: this.#pageId,
+          objectId: this.#selection,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
         });
     });
 
