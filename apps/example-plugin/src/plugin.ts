@@ -12,10 +12,16 @@ penpot.ui.onMessage<{ content: string }>((message) => {
   } else if (message.content === 'close') {
     penpot.closePlugin();
   } else if (message.content === 'ready') {
+    const pageState = penpot.getPageState();
+    const fileState = penpot.getFileState();
+
     penpot.ui.sendMessage({
       type: 'init',
       content: {
-        name: penpot.getPageState().name,
+        name: pageState.name,
+        pageId: pageState.id,
+        fileId: fileState.id,
+        revn: fileState.revn,
         selection: penpot.getSelection(),
       },
     });
@@ -23,7 +29,24 @@ penpot.ui.onMessage<{ content: string }>((message) => {
 });
 
 penpot.on('pagechange', (page) => {
-  penpot.ui.sendMessage({ type: 'page', content: page.name });
+  penpot.ui.sendMessage({
+    type: 'page',
+    content: {
+      name: page.name,
+      id: page.id,
+    },
+  });
+});
+
+penpot.on('filechange', (file) => {
+  penpot.ui.sendMessage({
+    type: 'file',
+    content: {
+      name: file.name,
+      id: file.id,
+      revn: file.revn,
+    },
+  });
 });
 
 penpot.on('selectionchange', (id) => {
