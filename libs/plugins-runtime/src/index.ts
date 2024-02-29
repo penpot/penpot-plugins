@@ -3,6 +3,7 @@ import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection } from './lib/api';
+import { parseFile } from './lib/utils';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
@@ -27,6 +28,8 @@ export function initialize(api: any) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api.addListener('plugin-file', 'file', (file: any) => {
+    // console.log('File Changed (parsed):', parseFile(file));
+
     console.log('File Changed:', file);
 
     setFileState(file);
