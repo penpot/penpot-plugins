@@ -6,30 +6,6 @@ export function isObject(obj: unknown): boolean {
 }
 
 /**
- * Checks if an object have only one property, and if that
- * property is the one passed as argument.
- *
- * examples checking property 'hello':
- *
- * { hello: 'world' } => true,
- *
- * { hello: 'world', foo: 'bar' } => false
- */
-export function isSingleObjectWithProperty(
-  object: unknown,
-  property: string
-): boolean {
-  if (isObject(object)) {
-    return (
-      Object.keys(object as Record<string, unknown>).length === 1 &&
-      !!(object as Record<string, unknown>)[property]
-    );
-  }
-
-  return false;
-}
-
-/**
  * Converts a string to camelCase from kebab-case and snake_case
  */
 export function toCamelCase(str: string): string {

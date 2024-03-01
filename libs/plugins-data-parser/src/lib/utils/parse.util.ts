@@ -1,9 +1,11 @@
-import {
-  isObject,
-  isSingleObjectWithProperty,
-  toCamelCase,
-} from './object.util';
+import { ParsedFile } from '../models/parsed-file.model';
+import { isObject, toCamelCase } from './object.util';
 import { flattenNestedArrays, parseObjArr } from './parse-arr.util';
+import {
+  isSingleObjectWithProperties,
+  isSingleObjectWithProperty,
+  parseSingleProperties,
+} from './parse-properties.util';
 
 /**
  * Recursively cleans an object from unnecesary properties
@@ -42,6 +44,8 @@ export function cleanObject(
 
 /**
  * Recursively checks for "arr" properties and parses them
+ *
+ * It also checks for useless one-property objects like uuid or root
  */
 export function parseObject(obj: unknown): unknown {
   // If it's an array, parse each element
@@ -55,6 +59,16 @@ export function parseObject(obj: unknown): unknown {
   // If it's an object with only property 'arr', parse it
   if (isSingleObjectWithProperty(obj, 'arr')) {
     const parsed = parseObjArr(obj as Record<string, unknown>);
+    return parseObject(parsed);
+  }
+
+  // If it's an object with only properties singleProperties, parse them
+  const singleProperties = ['root', 'uuid', 'name', 'guides'];
+  if (isSingleObjectWithProperties(obj, singleProperties)) {
+    const parsed = parseSingleProperties(
+      obj as Record<string, unknown>,
+      singleProperties
+    );
     return parseObject(parsed);
   }
 
@@ -75,6 +89,6 @@ export function parseObject(obj: unknown): unknown {
 /**
  * Parse a file object into a more typescript friendly object
  */
-export function parseFile(file: unknown): unknown {
-  return parseObject(cleanObject(file));
+export function parseFile(file: unknown): ParsedFile {
+  return parseObject(cleanObject(file)) as ParsedFile;
 }

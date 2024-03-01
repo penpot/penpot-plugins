@@ -1,8 +1,5 @@
-import {
-  isObject,
-  isSingleObjectWithProperty,
-  toCamelCase,
-} from './object.util';
+import { isObject, toCamelCase } from './object.util';
+import { isSingleObjectWithProperty } from './parse-properties.util';
 
 interface Name {
   name: string;
@@ -143,13 +140,18 @@ export function parseObjArr(obj: unknown): unknown {
 
 /**
  * Checks if an array is a nested array of objects
+ *
+ * It also checks and filter empty nested arrays
  */
 function isNestedArray(arr: unknown[]): boolean {
-  if (
-    Array.isArray(arr) &&
-    arr.every((a) => Array.isArray(a) && a.every((b) => isObject(b)))
-  ) {
-    return true;
+  if (Array.isArray(arr) && arr.every((a) => Array.isArray(a))) {
+    // Filter empty nested arrays
+    const filtered = arr.filter((a) => (a as unknown[]).length > 0);
+
+    // Check if every nested array is an array of objects
+    return filtered.every(
+      (a) => Array.isArray(a) && a.every((b) => isObject(b))
+    );
   }
 
   return false;
