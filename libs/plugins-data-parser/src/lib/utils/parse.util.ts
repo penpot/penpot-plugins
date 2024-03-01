@@ -1,4 +1,4 @@
-import { ParsedFile } from '../models/parsed-file.model';
+import { ParsedData } from '../models/parsed.model';
 import { isObject, toCamelCase } from './object.util';
 import { flattenNestedArrays, parseObjArr } from './parse-arr.util';
 import {
@@ -87,8 +87,8 @@ export function parseObject(obj: unknown): unknown {
 }
 
 /**
- * Parse a file object into a more typescript friendly object
+ * Parse object into a more typescript friendly object
  */
-export function parseFile(file: unknown): ParsedFile {
-  return parseObject(cleanObject(file)) as ParsedFile;
+export function parse(file: unknown): ParsedData {
+  return parseObject(cleanObject(file)) as ParsedData;
 }

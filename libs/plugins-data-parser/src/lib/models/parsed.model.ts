@@ -1,18 +1,21 @@
-export interface ParsedFile {
+export interface ParsedData {
   id: string;
   name: string;
-  data: FileData;
+  data: Data;
 }
 
-export interface FileData {
+export interface Data {
   id: string;
   version: number;
-  colors: IdData<Color>[];
-  typographies: IdData<Typhography>[];
-  pages: RootTail<unknown, string[]>; // Tail is an array of uuid (string)
+  colors?: IdData<Color>[];
+  typographies?: IdData<Typhography>[];
+  pages?: RootTail<unknown, string[]>; // Tail is an array of uuid (string)
   pagesIndex?: IdData<PageIndex>[];
-  components: IdData<Components>[];
+  components?: IdData<Components>[];
   media?: IdData<Media>[];
+  options?: IdData<Option>[];
+  objects?: IdData<ObjectI>[];
+  name?: string;
 }
 
 export interface Color {

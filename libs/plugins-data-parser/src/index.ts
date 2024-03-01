@@ -1,1 +1,2 @@
-export * from './lib/plugins-data-parser';
+export { parse } from './lib/utils';
+export * from './lib/models';

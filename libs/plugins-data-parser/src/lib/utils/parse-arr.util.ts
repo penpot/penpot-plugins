@@ -1,17 +1,6 @@
+import { Arr, Name, Uuid } from '../models';
 import { isObject, toCamelCase } from './object.util';
 import { isSingleObjectWithProperty } from './parse-properties.util';
-
-interface Name {
-  name: string;
-}
-
-interface Uuid {
-  uuid: string;
-}
-
-interface Arr {
-  arr: unknown[];
-}
 
 /**
  * Checks if "arr" property can be turned into an object
