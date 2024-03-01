@@ -39,6 +39,6 @@ export function initialize(api: any) {
   api.addListener('plugin-selection', 'selection', (selection: any) => {
     console.log('Selection Changed:', selection);
 
-    setSelection(selection.linked_map.head?.uuid);
+    setSelection(selection?.linked_map?.head?.uuid);
   });
 }
