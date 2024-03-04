@@ -46,6 +46,15 @@ export class PluginModalElement extends HTMLElement {
 
     const iframe = document.createElement('iframe');
     iframe.src = iframeSrc;
+    iframe.allow = '';
+    iframe.sandbox.add(
+      'allow-scripts',
+      'allow-forms',
+      'allow-modals',
+      'allow-popups',
+      'allow-popups-to-escape-sandbox',
+      'allow-storage-access-by-user-activation'
+    );
 
     this.addEventListener('message', (e: Event) => {
       if (!iframe.contentWindow) {
