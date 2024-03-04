@@ -152,6 +152,7 @@ export function createApi(manifest: Manifest) {
 
       return selection;
     },
+    fetch,
   } as const;
 
   return penpot;

@@ -63,3 +63,11 @@ penpot.on('pagechange', event);
 
 penpot.off('pagechange', event);
 ```
+
+### Requests
+
+Same as the browser fetch API.
+
+```ts
+penpot.fetch('http://example.com/movies.json');
+```

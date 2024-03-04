@@ -40,7 +40,8 @@ interface Penpot {
   ) => void;
   getFileState: () => File;
   getPageState: () => Page;
-  getSelection: () => any;
+  getSelection: () => string | null;
+  fetch: typeof fetch;
 }
 
 declare namespace globalThis {
