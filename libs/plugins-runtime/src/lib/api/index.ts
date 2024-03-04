@@ -1,3 +1,4 @@
+import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
 import openUIApi from './openUI.api';
 import z from 'zod';
@@ -55,7 +56,7 @@ export function setSelection(selectionId: string) {
   triggerEvent('selectionchange', selectionId);
 }
 
-export function createApi() {
+export function createApi(manifest: Manifest) {
   const closePlugin = () => {
     if (modal) {
       modal.remove();
@@ -63,6 +64,12 @@ export function createApi() {
 
     uiMessagesCallbacks = [];
     modal = null;
+  };
+
+  const checkPermission = (permission: Permissions) => {
+    if (!manifest.permissions.includes(permission)) {
+      throw new Error(`Permission ${permission} is not granted`);
+    }
   };
 
   const penpot: Penpot = {
@@ -103,6 +110,14 @@ export function createApi() {
       z.enum(validEvents).parse(type);
       z.function().parse(callback);
 
+      if (type === 'pagechange') {
+        checkPermission('page:read');
+      }
+
+      if (type === 'filechange') {
+        checkPermission('file:read');
+      }
+
       const listeners = eventListeners.get(type) || [];
 
       listeners.push(callback as Callback<unknown>);
@@ -123,12 +138,18 @@ export function createApi() {
       );
     },
     getFileState: () => {
+      checkPermission('file:read');
+
       return fileState;
     },
     getPageState: () => {
+      checkPermission('page:read');
+
       return pageState;
     },
     getSelection: () => {
+      checkPermission('selection:read');
+
       return selection;
     },
   } as const;

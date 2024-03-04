@@ -6,7 +6,7 @@ let isLockedDown = false;
 let lastApi: ReturnType<typeof createApi> | undefined;
 
 export const ɵloadPlugin = async function (config: PluginConfig) {
-  const { code } = await parseManifest(config);
+  const { code, manifest } = await parseManifest(config);
 
   try {
     if (!isLockedDown) {
@@ -18,7 +18,7 @@ export const ɵloadPlugin = async function (config: PluginConfig) {
       lastApi.closePlugin();
     }
 
-    lastApi = createApi();
+    lastApi = createApi(manifest);
 
     const c = new Compartment({
       penpot: harden(lastApi),
