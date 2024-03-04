@@ -94,7 +94,7 @@ function arrToArray(arr: unknown[]): unknown[] {
           ? arrToArray((next as Arr).arr)
           : [...(next as Arr).arr];
 
-        return [...result, { id: (value as Uuid).uuid, data: parsedArr }];
+        return [...result, { ...parsedArr }];
       }
     }
     return [...result];

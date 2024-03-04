@@ -7,14 +7,14 @@ export interface ParsedData {
 export interface Data {
   id: string;
   version: number;
-  colors?: IdData<Color>[];
-  typographies?: IdData<Typhography>[];
+  colors?: Color[];
+  typographies?: Typhography[];
   pages?: RootTail<unknown, string[]>; // Tail is an array of uuid (string)
-  pagesIndex?: IdData<PageIndex>[];
-  components?: IdData<Components>[];
-  media?: IdData<Media>[];
-  options?: IdData<Option>[];
-  objects?: IdData<ObjectI>[];
+  pagesIndex?: PageIndex[];
+  components?: Components[];
+  media?: Media[];
+  options?: Option[];
+  objects?: ObjectI[];
   name?: string;
 }
 
@@ -44,9 +44,9 @@ export interface Typhography {
 }
 
 export interface PageIndex {
-  options: IdData<Option>[];
+  options: Option[];
   name: string;
-  objects: IdData<ObjectI>[];
+  objects: ObjectI[];
 }
 
 export interface Option {
@@ -61,7 +61,7 @@ export interface Components {
   id: string;
   name: string;
   path: string;
-  objects: IdData<ObjectI>[];
+  objects: ObjectI[];
 }
 
 export interface ObjectI {
@@ -122,9 +122,4 @@ export interface Media {
 export interface RootTail<R, T> {
   root: R;
   tail: T;
-}
-
-export interface IdData<T> {
-  id: string;
-  data: T;
 }

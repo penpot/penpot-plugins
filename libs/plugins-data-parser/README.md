@@ -18,7 +18,7 @@ import { parse, ParsedFile } from 'plugins-parser';
 [...]
 
 const parsedFile: ParsedFile = parse(file);
-console.log(parsedFile.data.colors?.[0]?.data?.color);
+console.log(parsedFile.data.colors?.[0]?.color);
 
 [...]
 ```
