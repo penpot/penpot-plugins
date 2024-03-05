@@ -11,9 +11,7 @@ import {
  * Recursively cleans an object from unnecesary properties
  * and converts snake_case and kebab-case to camelCase
  */
-export function cleanObject(
-  obj: unknown
-): Record<string, unknown> | Record<string, unknown>[] {
+export function cleanObject(obj: unknown): unknown {
   if (Array.isArray(obj)) {
     return obj
       .filter((p) => p !== null)
@@ -25,7 +23,7 @@ export function cleanObject(
     return Object.keys(obj as Record<string, unknown>)
       .filter(
         (key) =>
-          !/^(\$|cljs\$|__hash|_hash|bitmap|meta|ns|fqn|cnt|shift|edit|has_nil_QMARK_|nil_val)/g.test(
+          !/^(\$|cljs\$|__hash|_hash|bitmap|meta|extmap|ns|fqn|cnt|shift|edit|has_nil_QMARK_|nil_val)/g.test(
             key
           )
       )

@@ -1,2 +1,2 @@
-export { parse } from './lib/utils';
+export { parse, getSelectedUuids } from './lib/utils';
 export * from './lib/models';
