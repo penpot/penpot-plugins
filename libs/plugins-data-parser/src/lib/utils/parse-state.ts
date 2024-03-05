@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { toCamelCase } from './object.util';
+import { toCamelCase } from '.';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UknowCljs = any;

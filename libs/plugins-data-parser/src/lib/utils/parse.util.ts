@@ -1,11 +1,52 @@
-import { ParsedData } from '../models/parsed.model';
-import { isObject, toCamelCase } from './object.util';
-import { flattenNestedArrays, parseObjArr } from './parse-arr.util';
 import {
+  isObject,
+  toCamelCase,
+  parseArrProperty,
+  isRootTail,
   isSingleObjectWithProperties,
   isSingleObjectWithProperty,
-  parseSingleProperties,
-} from './parse-properties.util';
+} from '.';
+import { Arr } from './models/util.model';
+
+export function parseSingleProperties(
+  obj: unknown,
+  properties: string[]
+): unknown {
+  let result = obj;
+
+  properties.forEach((property) => {
+    if (isSingleObjectWithProperty(obj, property)) {
+      result = (obj as Record<string, unknown>)[property];
+    }
+  });
+
+  return result;
+}
+
+export function parseRootTail(obj: unknown): unknown {
+  if (isObject(obj) && isRootTail(obj)) {
+    const { root, tail } = obj as Record<string, unknown>;
+
+    const hasRoot = Array.isArray(root) && root?.length > 0;
+    const hasTail = Array.isArray(tail) && tail?.length > 0;
+
+    if (hasRoot && hasTail) {
+      return obj;
+    }
+
+    if (hasTail) {
+      return tail;
+    }
+
+    if (hasRoot) {
+      return root;
+    }
+
+    return [];
+  }
+
+  return obj;
+}
 
 /**
  * Recursively cleans an object from unnecesary properties
@@ -23,45 +64,29 @@ export function cleanObject(obj: unknown): unknown {
     return Object.keys(obj as Record<string, unknown>)
       .filter(
         (key) =>
-          !/^(\$|cljs\$|__hash|_hash|bitmap|meta|extmap|ns|fqn|cnt|shift|edit|has_nil_QMARK_|nil_val)/g.test(
+          !/^(cljs\$|\$hash|ts|ry|\$meta|__hash|_hash|bitmap|meta|ns|fqn|cnt|shift|edit|has_nil_QMARK_|nil_val)/g.test(
             key
           )
       )
-      .reduce(
-        (result, key) => ({
+      .reduce((result, key) => {
+        const value = (obj as Record<string, unknown>)[key];
+        if (['extmap', '$extmap'].includes(key) && value === null) {
+          return { ...result };
+        }
+
+        return {
           ...result,
           [toCamelCase(key)]: cleanObject(
             (obj as Record<string, unknown>)[key]
           ),
-        }),
-        {}
-      );
+        };
+      }, {});
   }
   return obj as Record<string, unknown>;
 }
 
-/**
- * Recursively checks for "arr" properties and parses them
- *
- * It also checks for useless one-property objects like uuid or root
- */
 export function parseObject(obj: unknown): unknown {
-  // If it's an array, parse each element
-  if (Array.isArray(obj)) {
-    const parsedArray = obj.map((v: Record<string, unknown>) => parseObject(v));
-
-    // Flatten nested arrays if necessary
-    return flattenNestedArrays(parsedArray);
-  }
-
-  // If it's an object with only property 'arr', parse it
-  if (isSingleObjectWithProperty(obj, 'arr')) {
-    const parsed = parseObjArr(obj as Record<string, unknown>);
-    return parseObject(parsed);
-  }
-
-  // If it's an object with only properties singleProperties, parse them
-  const singleProperties = ['root', 'uuid', 'name', 'guides'];
+  const singleProperties = ['root', 'name', 'uuid', 'guides'];
   if (isSingleObjectWithProperties(obj, singleProperties)) {
     const parsed = parseSingleProperties(
       obj as Record<string, unknown>,
@@ -70,23 +95,30 @@ export function parseObject(obj: unknown): unknown {
     return parseObject(parsed);
   }
 
+  if (isSingleObjectWithProperty(obj, 'arr')) {
+    const parsed = parseArrProperty((obj as Arr).arr);
+    return parseObject(parsed);
+  }
+
+  if (isRootTail(obj)) {
+    const parsed = parseRootTail(obj);
+    return parseObject(parsed);
+  }
+
+  // If it's an array, parse each element
+  if (Array.isArray(obj)) {
+    return obj.map((v: Record<string, unknown>) => parseObject(v));
+  }
+
   // If it's an object, parse each property
   if (isObject(obj)) {
-    return Object.keys(obj as Record<string, unknown>).reduce(
-      (result, key) => ({
+    return Object.keys(obj as Record<string, unknown>).reduce((result, key) => {
+      return {
         ...result,
         [key]: parseObject((obj as Record<string, unknown>)[key]),
-      }),
-      {}
-    );
+      };
+    }, {});
   }
 
   return obj;
-}
-
-/**
- * Parse object into a more typescript friendly object
- */
-export function parse(file: unknown): ParsedData {
-  return parseObject(cleanObject(file)) as ParsedData;
 }
