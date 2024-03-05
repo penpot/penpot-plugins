@@ -38,8 +38,8 @@ interface Penpot {
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-  getFileState: () => File;
-  getPageState: () => Page;
+  getFileState: () => File | null;
+  getPageState: () => Page | null;
   getSelection: () => string | null;
   fetch: typeof fetch;
 }

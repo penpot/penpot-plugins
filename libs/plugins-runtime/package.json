@@ -1,7 +1,11 @@
 {
   "name": "plugins-runtime",
   "version": "0.0.1",
+  "devDependencies": {
+    "happy-dom": "^13.6.2"
+  },
   "dependencies": {
+    "vitest": "1.2.2",
     "ses": "^1.1.0",
     "zod": "^3.22.4"
   },

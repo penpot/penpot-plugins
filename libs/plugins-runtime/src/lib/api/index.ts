@@ -7,15 +7,12 @@ type Callback<T> = (message: T) => void;
 
 const validEvents = ['pagechange', 'filechange', 'selectionchange'] as const;
 
-let uiMessagesCallbacks: Callback<unknown>[] = [];
+export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let pageState = {} as any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let fileState = {} as any;
-
+let pageState: Page | null = null;
+let fileState: File | null = null;
 let selection: null | string = null;
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
@@ -58,6 +55,8 @@ export function setSelection(selectionId: string) {
 
 export function createApi(manifest: Manifest) {
   const closePlugin = () => {
+    modal?.removeEventListener('close', closePlugin);
+
     if (modal) {
       modal.remove();
     }
@@ -112,10 +111,10 @@ export function createApi(manifest: Manifest) {
 
       if (type === 'pagechange') {
         checkPermission('page:read');
-      }
-
-      if (type === 'filechange') {
+      } else if (type === 'filechange') {
         checkPermission('file:read');
+      } else if (type === 'selectionchange') {
+        checkPermission('selection:read');
       }
 
       const listeners = eventListeners.get(type) || [];
