@@ -6,13 +6,48 @@ export function isObject(obj: unknown): boolean {
 }
 
 /**
- * Converts a string to camelCase from kebab-case and snake_case
+ * Check if param is an object with a single property
  */
-export function toCamelCase(str: string): string {
-  // Clean string from leading underscores and hyphens
-  const clean = str.replace(/^(_|-)_?/, '');
+export function isSingleObjectWithProperty(
+  object: unknown,
+  property: string
+): boolean {
+  if (isObject(object)) {
+    return (
+      Object.keys(object as Record<string, unknown>).length === 1 &&
+      !!(object as Record<string, unknown>)[property]
+    );
+  }
 
-  // Replace all underscores and hyphens followed by a character
-  // with that character in uppercase
-  return clean.replace(/(_|-)./g, (x) => x[1].toUpperCase());
+  return false;
+}
+
+/**
+ * Check if param is an object with a single property from a list
+ */
+export function isSingleObjectWithProperties(
+  object: unknown,
+  properties: string[]
+): boolean {
+  if (isObject(object)) {
+    const keys = Object.keys(object as Record<string, unknown>);
+
+    if (keys.length === 1) {
+      return properties.includes(keys[0]);
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Check if param is a root-tail object
+ */
+export function isRootTail(obj: unknown): boolean {
+  if (isObject(obj)) {
+    const keys = Object.keys(obj as Record<string, unknown>);
+    return keys.length === 2 && keys.includes('root') && keys.includes('tail');
+  }
+
+  return false;
 }

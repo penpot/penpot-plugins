@@ -1,59 +1,105 @@
 # Parser
 
-This library exports `parse()` and `getSelectedUuids()` funtions and some models like `ParsedFile`, `ParsedPage` or `UnparsedSelection`.
+This library exports `cleanObject()` and `getSelectedUuids()` funtions and the model `Selection`.
 
-The `parse()` function cleans up and transforms a penpot object into a more typescript friendly object. It returns a `ParsedData` object that can be casted as `ParsedFile` or `ParsedPage`. Note that `ParsedData` is the parent interface and includes all `ParsedFile` and `ParsedPage` properties.
+The `cleanObject()` function cleans up objects from useless properties and transforms the remaining ones to camelCase. It returns `unknown`.
 
-Most of the properties are optional and may or may not be present in your result, you should access them with care.
+The `getSelectedUuids()` functions, given an `Selection` object, returns the selected Uuids as an array of string.
 
-The `getSelectedUuids()` functions, given an `UnparsedSelection` object, returns the selected Uuids as an array of string.
+## Helpers
 
-## Use
+### File Helper
 
-Import the parse function and the desired models from plugins data parser.
+#### File Helper functions
 
-Examples:
+- `setData()`
 
-- `parse()`
+You can either pass the data in the constructor or use the `setData()` function.
+
+example:
 
 ```ts
-import { parse, ParsedFile } from 'plugins-parser';
-
-[...]
-
-const parsedFile: ParsedFile = parse(file);
-
-const color = parsedFile.data.colors?.[0];
-
-/** color:
- *  {
- *    "path": "Background",
- *    "color": "#1c1b1f",
- *    "fileId": "f13ed095-e13f-808c-8002-2830d45911f7",
- *    "name": "On Background",
- *    "opacity": 1,
- *    "id": "136eece0-40ab-8002-8002-296771ace070"
- *  }
- */
-
+const fileHelper = new FileHelper();
+fileHelper.setData(data);
 ```
 
-- `getSelectedUuids()`
+or
 
 ```ts
-import { getSelectedUuids, UnparsedSelection } from 'plugins-parser';
+const fileHelper = new FileHelper(data);
+```
 
-[...]
+- `getCleanData()`
 
-const selection: UnparsedSelection = { [...] };
+Gets the cleaned up data. It deletes useless properties and and transforms the remaining ones to camelCase.
 
-const ids: string[] = getSelectedUuids(selection); =>
+example:
 
-/** ids:
- *  [
- *    "4fa12080-0d58-80a3-8002-3a2344356e7c",
- *    "d9a61226-8431-8080-8002-5aea35acc724"
- *  ]
- */
+```ts
+const clean = fileHelper.getCleanData();
+```
 
+### Page Helper
+
+#### Page Helper functions
+
+- `setData()`
+
+You can either pass the data in the constructor or use the `setData()` function.
+
+example:
+
+```ts
+const pageHelper = new PageHelper();
+pageHelper.setData(data);
+```
+
+or
+
+```ts
+const pageHelper = new PageHelper(data);
+```
+
+- `getCleanData()`
+
+Gets the cleaned up data. It deletes useless properties and and transforms the remaining ones to camelCase.
+
+example:
+
+```ts
+const clean = pageHelper.getCleanData();
+```
+
+- `getObjectsArray()`
+
+Returns the objects array, which can contain heavily nested arrays with objects data.
+
+example:
+
+```ts
+const objects = pageHelper.getObjectsArray();
+```
+
+- `getObjectById(id: string)`
+
+Returns an object by given uuid. The object is cleaned up and formatted as a `PObject`.
+
+```ts
+const obj: PObject = pageHelper.getObjectById(
+  '3aba0744-11fe-4c41-80fb-1b42aa7ef3e5'
+);
+```
+
+### Selection Helper
+
+#### Selection Helper functions
+
+- `static getUuids(selection: Selection)`
+
+Returns the selected items in an array.
+
+example:
+
+```ts
+const ids = SelectionHelper.getUuids(selection);
 ```

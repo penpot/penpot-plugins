@@ -1,4 +1,4 @@
-export interface UnparsedSelection extends CljValues {
+export interface Selection extends CljValues {
   linked_map: SelLinkedMap;
 }
 
