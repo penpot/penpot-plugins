@@ -18,6 +18,10 @@ html, body {
     font-style: normal;
 }
 
+code {
+    font-family: 'Work Sans', sans-serif;
+}
+
 .display {
     font-weight: var(--font-weight-regular);
     font-size: 36px;
@@ -87,7 +91,7 @@ html, body {
     line-height: var(--font-line-height-s);
 }
 
-.code-font {
+code, .code-font {
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-s);
     line-height: var(--font-line-height-l);

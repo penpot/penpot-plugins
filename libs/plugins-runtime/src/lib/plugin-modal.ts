@@ -76,15 +76,26 @@ export class PluginModalElement extends HTMLElement {
           display: flex;
           flex-direction: column;
           position: fixed;
-          inset-block-end: 10px;
+          inset-block-start: 10px;
           inset-inline-start: 10px;
           z-index: 1000;
-          background: white;
           padding: 20px;
-          border-radius: 5px;
+          border-radius: 20px;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
           inline-size: ${width}px;
           block-size: ${height}px;
+        }
+
+        :host([data-theme="dark"]) {
+          background: #2e3434;
+          border: 1px solid #2e3434;
+          color: #ffffff;
+        }
+
+        :host([data-theme="light"]) {
+          background: #ffffff;
+          border: 1px solid #eef0f2;
+          color: #18181a;
         }
 
         .header {
@@ -99,7 +110,6 @@ export class PluginModalElement extends HTMLElement {
         }
 
         h1 {
-          color: #000;
           font-family: Arial, sans-serif;
           margin: 0;
           margin-block-end: 10px;

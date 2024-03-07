@@ -2,6 +2,7 @@ Open UI:
 
 ```ts
 penpot.ui.open('Plugin name', 'http://localhost:4201', {
+  theme: 'light',
   width: 500,
   height: 600,
 });

@@ -11,9 +11,12 @@ export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
 
-let pageState: Page | null = null;
-let fileState: File | null = null;
-let selection: null | string = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pageState = {} as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let fileState = {} as any;
+
+let selection: null | string[] = null;
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -43,8 +46,8 @@ export function setFileState(file: File) {
   triggerEvent('filechange', file);
 }
 
-export function setSelection(selectionId: string) {
-  if (selectionId === selection) {
+export function setSelection(selectionId: string[]) {
+  if (JSON.stringify(selectionId) === JSON.stringify(selection)) {
     return;
   }
 
