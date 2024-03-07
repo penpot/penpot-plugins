@@ -4,5 +4,5 @@
   "sourceRoot": "plugins-runtime/src",
   "projectType": "library",
   "targets": {},
-  "tags": []
+  "tags": ["type:feature"]
 }

@@ -16,5 +16,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": ["type:ui"]
 }
