@@ -5,6 +5,7 @@
     "happy-dom": "^13.6.2"
   },
   "dependencies": {
+    "plugins-data-parser": "^0.0.1",
     "vitest": "1.2.2",
     "ses": "^1.1.0",
     "zod": "^3.22.4"

@@ -3,6 +3,7 @@ import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection } from './lib/api';
+import { getSelectedUuids } from 'plugins-parser';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
@@ -32,8 +33,9 @@ export function initialize(api: any) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api.addListener('plugin-selection', 'selection', (selection: any) => {
-    console.log('Selection Changed:', selection);
+    const selectionData = getSelectedUuids(selection);
+    console.log('Selection Changed:', selectionData);
 
-    setSelection(selection?.linked_map?.head?.uuid);
+    setSelection(selectionData);
   });
 }

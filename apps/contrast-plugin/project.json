@@ -1,0 +1,8 @@
+{
+  "name": "contrast-plugin",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/contrast-plugin/src",
+  "tags": ["type:plugin"],
+  "targets": {}
+}

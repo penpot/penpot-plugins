@@ -14,7 +14,7 @@ interface File {
 interface EventsMap {
   pagechange: Page;
   filechange: File;
-  selectionchange: string;
+  selectionchange: string[];
 }
 
 interface Penpot {
