@@ -4,6 +4,7 @@ import {
   setFileState,
   setPageState,
   setSelection,
+  setTheme,
   triggerEvent,
   uiMessagesCallbacks,
 } from './index.js';
@@ -16,6 +17,7 @@ vi.mock('./openUI.api', () => {
       dispatchEvent: vi.fn(),
       removeEventListener: vi.fn(),
       remove: vi.fn(),
+      setAttribute: vi.fn(),
     })),
   };
 });
@@ -50,7 +52,7 @@ describe('Plugin api', () => {
 
       const modalMock = openUIApiMock.mock.results[0].value;
 
-      expect(openUIApiMock).toHaveBeenCalledWith(name, url, options);
+      expect(openUIApiMock).toHaveBeenCalledWith(name, url, 'dark', options);
       expect(modalMock.addEventListener).toHaveBeenCalledWith(
         'close',
         expect.any(Function),
@@ -133,6 +135,36 @@ describe('Plugin api', () => {
     });
   });
 
+  it('selectionchange', () => {
+    const callback = vi.fn();
+
+    api.on('selectionchange', callback);
+
+    triggerEvent('selectionchange', 'test');
+
+    api.off('selectionchange', callback);
+
+    triggerEvent('selectionchange', 'test');
+
+    expect(callback).toHaveBeenCalledWith('test');
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it('themechange', () => {
+    const callback = vi.fn();
+
+    api.on('themechange', callback);
+
+    triggerEvent('themechange', 'light');
+
+    api.off('themechange', callback);
+
+    triggerEvent('themechange', 'light');
+
+    expect(callback).toHaveBeenCalledWith('light');
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
   describe.concurrent('permissions', () => {
     const api = createApi({
       name: 'test',
@@ -199,13 +231,30 @@ describe('Plugin api', () => {
   });
 
   it('get selection', () => {
-    const selection = '123';
+    const selection = ['123'];
 
     setSelection(selection);
 
     const currentSelection = api.getSelection();
 
     expect(currentSelection).toEqual(selection);
+  });
+
+  it('set theme refresh modal theme', () => {
+    const name = 'test';
+    const url = 'http://fake.com';
+    const options = { width: 100, height: 100 };
+    const openUIApiMock = vi.mocked(openUIApi);
+
+    api.ui.open(name, url, options);
+
+    setTheme('light');
+
+    const modalMock = openUIApiMock.mock.results[0].value;
+
+    expect(modalMock.setAttribute).toHaveBeenCalledWith('data-theme', 'light');
+    expect(modalMock.setAttribute).toHaveBeenCalledTimes(1);
+    expect(api.getTheme()).toBe('light');
   });
 
   it('close puglin', () => {

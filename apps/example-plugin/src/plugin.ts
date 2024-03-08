@@ -1,7 +1,6 @@
 penpot.log('Hello from plugin');
 
 penpot.ui.open('Plugin name', 'http://localhost:4201', {
-  theme: 'light',
   width: 500,
   height: 600,
 });
@@ -27,6 +26,7 @@ penpot.ui.onMessage<{ content: string }>((message) => {
         pageId: pageState.id,
         fileId: fileState.id,
         revn: fileState.revn,
+        theme: penpot.getTheme(),
         selection: penpot.getSelection(),
       },
     });
@@ -56,4 +56,8 @@ penpot.on('filechange', (file) => {
 
 penpot.on('selectionchange', (id) => {
   penpot.ui.sendMessage({ type: 'selection', content: id });
+});
+
+penpot.on('themechange', (theme) => {
+  penpot.ui.sendMessage({ type: 'theme', content: theme });
 });

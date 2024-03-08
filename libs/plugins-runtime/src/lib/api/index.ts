@@ -1,3 +1,4 @@
+import { setModalTheme } from '../create-modal';
 import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
 import openUIApi from './openUI.api';
@@ -5,18 +6,21 @@ import z from 'zod';
 
 type Callback<T> = (message: T) => void;
 
-const validEvents = ['pagechange', 'filechange', 'selectionchange'] as const;
+const validEvents = [
+  'pagechange',
+  'filechange',
+  'selectionchange',
+  'themechange',
+] as const;
 
 export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let pageState = {} as any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let fileState = {} as any;
-
-let selection: null | string[] = null;
+let pageState: Page | null = null;
+let fileState: File | null = null;
+let selection: string[] = [];
+let themeState: Theme = 'dark';
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -56,6 +60,20 @@ export function setSelection(selectionId: string[]) {
   triggerEvent('selectionchange', selectionId);
 }
 
+export function setTheme(theme: Theme) {
+  if (themeState === theme) {
+    return;
+  }
+
+  themeState = theme;
+
+  if (modal) {
+    setModalTheme(modal, themeState);
+  }
+
+  triggerEvent('themechange', theme);
+}
+
 export function createApi(manifest: Manifest) {
   const closePlugin = () => {
     modal?.removeEventListener('close', closePlugin);
@@ -77,7 +95,7 @@ export function createApi(manifest: Manifest) {
   const penpot: Penpot = {
     ui: {
       open: (name: string, url: string, options: OpenUIOptions) => {
-        modal = openUIApi(name, url, options);
+        modal = openUIApi(name, url, themeState, options);
 
         modal.addEventListener('close', closePlugin, {
           once: true,
@@ -154,8 +172,11 @@ export function createApi(manifest: Manifest) {
 
       return selection;
     },
+    getTheme: () => {
+      return themeState;
+    },
     fetch,
-  } as const;
+  };
 
   return penpot;
 }
