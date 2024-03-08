@@ -15,7 +15,10 @@ interface EventsMap {
   pagechange: Page;
   filechange: File;
   selectionchange: string[];
+  themechange: Theme;
 }
+
+type Theme = 'light' | 'dark';
 
 interface Penpot {
   ui: {
@@ -40,7 +43,8 @@ interface Penpot {
   ) => void;
   getFileState: () => File | null;
   getPageState: () => Page | null;
-  getSelection: () => string | null;
+  getSelection: () => string[];
+  getTheme: () => Theme;
   fetch: typeof fetch;
 }
 

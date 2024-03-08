@@ -19,6 +19,9 @@ penpot.ui.getPageState();
 
 // selection id
 penpot.ui.getSelection();
+
+// current theme (dark/light)
+penpot.ui.getTheme();
 ```
 
 ### Messages
@@ -53,7 +56,7 @@ window.addEventListener('message', function (event) {
 
 ### Events
 
-Current events `pagechange`, `filechange` and `selectionchange`.
+Current events `pagechange`, `filechange`,`selectionchange` and `themechange`.
 
 ```ts
 const event = (page) => {

@@ -1,5 +1,11 @@
 .wrapper {
-  color: var(--app-white);
+  &[data-theme='dark'] {
+    color: var(--app-white);
+  }
+
+  &[data-theme='light'] {
+    color: var(--app-black);
+  }
 }
 
 .color {

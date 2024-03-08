@@ -1,5 +1,4 @@
 penpot.ui.open('Contrast plugin', 'http://localhost:4201', {
-  theme: 'dark',
   width: 450,
   height: 625,
 });
@@ -16,6 +15,7 @@ penpot.ui.onMessage<{ content: string }>((message) => {
         pageId: pageState.id,
         fileId: fileState.id,
         revn: fileState.revn,
+        theme: penpot.getTheme(),
         selection: penpot.getSelection(),
       },
     });
@@ -24,4 +24,8 @@ penpot.ui.onMessage<{ content: string }>((message) => {
 
 penpot.on('selectionchange', (id) => {
   penpot.ui.sendMessage({ type: 'selection', content: id });
+});
+
+penpot.on('themechange', (theme) => {
+  penpot.ui.sendMessage({ type: 'theme', content: theme });
 });

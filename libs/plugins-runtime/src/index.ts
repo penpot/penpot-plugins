@@ -2,7 +2,7 @@ import 'ses';
 import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
-import { setFileState, setPageState, setSelection } from './lib/api';
+import { setFileState, setPageState, setSelection, setTheme } from './lib/api';
 import { getSelectedUuids } from 'plugins-parser';
 
 repairIntrinsics({
@@ -37,5 +37,13 @@ export function initialize(api: any) {
     console.log('Selection Changed:', selectionData);
 
     setSelection(selectionData);
+  });
+
+  api.addListener('plugin-theme', 'theme', (theme: 'light' | 'default') => {
+    console.log('Theme change:', theme);
+
+    const newTheme: Theme = theme === 'default' ? 'dark' : theme;
+
+    setTheme(newTheme);
   });
 }

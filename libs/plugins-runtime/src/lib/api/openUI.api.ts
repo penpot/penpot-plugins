@@ -4,7 +4,7 @@ import { createModal } from '../create-modal';
 
 export default z
   .function()
-  .args(z.string(), z.string(), openUISchema)
-  .implement((title, url, options) => {
-    return createModal(title, url, options);
+  .args(z.string(), z.string(), z.enum(['dark', 'light']), openUISchema)
+  .implement((title, url, theme, options) => {
+    return createModal(title, url, theme, options);
   });

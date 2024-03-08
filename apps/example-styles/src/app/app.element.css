@@ -1,5 +1,5 @@
-
-html, body {
+html,
+body {
   background: var(--app-black);
   color: var(--app-white);
   margin: 0 var(--spacing-20);
@@ -23,12 +23,12 @@ section {
   margin-block-end: var(--spacing-20);
   padding: var(--spacing-32);
 
-  &[data-theme="dark"] {
-      border: 1px solid var(--db-quaternary);
+  &[data-theme='dark'] {
+    border: 1px solid var(--db-quaternary);
   }
 
-  &[data-theme="light"] {
-      border: 1px solid var(--lb-quaternary);
+  &[data-theme='light'] {
+    border: 1px solid var(--lb-quaternary);
   }
 }
 
@@ -58,7 +58,7 @@ section {
 
 .color-preview {
   block-size: var(--spacing-36);
-  border: 1px solid #8F9DA3;
+  border: 1px solid #8f9da3;
   border-radius: var(--spacing-4);
   display: block;
   inline-size: var(--spacing-36);
@@ -87,7 +87,7 @@ section {
   gap: var(--spacing-20);
 
   &:not(:last-child) {
-      margin-block-end: var(--spacing-20);
+    margin-block-end: var(--spacing-20);
   }
 }
 

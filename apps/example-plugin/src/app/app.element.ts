@@ -45,11 +45,14 @@ export class AppElement extends HTMLElement {
         this.#revn = event.data.content.revn;
         this.refreshPage(event.data.content.pageId, event.data.content.name);
         this.refreshSelectionId(event.data.content.selection);
+        this.setAttribute('data-theme', event.data.content.theme);
+      } else if (event.data.type === 'theme') {
+        this.setAttribute('data-theme', event.data.content);
       }
     });
 
     this.innerHTML = `
-    <div class="wrapper" data-theme="light">
+    <div class="wrapper">
       <h1>Test area</h1>
 
       <p>Current project name: <span id="project-name">Unknown</span></p>
