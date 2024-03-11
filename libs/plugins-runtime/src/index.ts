@@ -17,21 +17,19 @@ export function initialize(api: any) {
 
   console.log(api);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable */
   api.addListener('plugin-page', 'page', (page: any) => {
     console.log('Page Changed:', page);
 
     setPageState(page);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api.addListener('plugin-file', 'file', (file: any) => {
     console.log('File Changed:', file);
 
     setFileState(file);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api.addListener('plugin-selection', 'selection', (selection: any) => {
     const selectionData = getSelectedUuids(selection);
     console.log('Selection Changed:', selectionData);

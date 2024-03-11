@@ -10,7 +10,7 @@ const server = Fastify({
 });
 
 // Register your application as a normal plugin.
-server.register(app);
+void server.register(app);
 
 // Start listening.
 server.listen({ port, host }, (err) => {

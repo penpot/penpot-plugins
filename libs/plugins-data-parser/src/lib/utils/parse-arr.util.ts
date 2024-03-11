@@ -121,7 +121,7 @@ export function parseArrProperty(
  */
 export function parseObjArr(obj: unknown): unknown {
   if (isSingleObjectWithProperty(obj, 'arr')) {
-    return parseArrProperty((obj as Arr)['arr'] as unknown[]);
+    return parseArrProperty((obj as Arr)['arr']);
   }
 
   return obj;

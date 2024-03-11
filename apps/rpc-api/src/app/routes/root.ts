@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 
 const token = process.env.ACCESS_TOKEN;
 
-export default async function (fastify: FastifyInstance) {
+export default function (fastify: FastifyInstance) {
   const apiUrl = process.env.API_URL + '/api/rpc/command';
   const fakeSessionId = v4();
 
@@ -97,7 +97,8 @@ export default async function (fastify: FastifyInstance) {
     )
       .then((data) => {
         console.log('Success:', data);
-        reply.send(data);
+
+        return reply.send(data);
       })
       .catch((error) => {
         console.error('Error:', error);

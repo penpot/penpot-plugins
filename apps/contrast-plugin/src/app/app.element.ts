@@ -1,3 +1,4 @@
+/* eslint-disable */
 import 'plugins-styles/lib/styles.css';
 import './app.element.css';
 

@@ -99,7 +99,6 @@ describe('Plugin api', () => {
   describe('events', () => {
     it('invalid event', () => {
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         api.on('invalid' as any, vi.fn());
       }).toThrow();
     });
@@ -109,11 +108,11 @@ describe('Plugin api', () => {
 
       api.on('pagechange', callback);
 
-      triggerEvent('pagechange', 'test');
+      triggerEvent('pagechange', 'test' as any);
 
       api.off('pagechange', callback);
 
-      triggerEvent('pagechange', 'test');
+      triggerEvent('pagechange', 'test' as any);
 
       expect(callback).toHaveBeenCalledWith('test');
       expect(callback).toHaveBeenCalledTimes(1);
@@ -124,11 +123,11 @@ describe('Plugin api', () => {
 
       api.on('filechange', callback);
 
-      triggerEvent('filechange', 'test');
+      triggerEvent('filechange', 'test' as any);
 
       api.off('filechange', callback);
 
-      triggerEvent('filechange', 'test');
+      triggerEvent('filechange', 'test' as any);
 
       expect(callback).toHaveBeenCalledWith('test');
       expect(callback).toHaveBeenCalledTimes(1);
@@ -140,11 +139,11 @@ describe('Plugin api', () => {
 
     api.on('selectionchange', callback);
 
-    triggerEvent('selectionchange', 'test');
+    triggerEvent('selectionchange', 'test' as any);
 
     api.off('selectionchange', callback);
 
-    triggerEvent('selectionchange', 'test');
+    triggerEvent('selectionchange', 'test' as any);
 
     expect(callback).toHaveBeenCalledWith('test');
     expect(callback).toHaveBeenCalledTimes(1);

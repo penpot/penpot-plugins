@@ -7,6 +7,6 @@ import sensible from '@fastify/sensible';
  *
  * @see https://github.com/fastify/fastify-sensible
  */
-export default fp(async function (fastify: FastifyInstance) {
-  fastify.register(sensible);
+export default fp(function (fastify: FastifyInstance) {
+  void fastify.register(sensible);
 });
