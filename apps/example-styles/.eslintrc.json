@@ -1,6 +1,10 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "vite.config.ts"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./apps/example-styles/tsconfig.app.json"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

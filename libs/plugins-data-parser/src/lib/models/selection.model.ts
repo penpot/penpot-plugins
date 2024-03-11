@@ -38,7 +38,7 @@ export interface CljValues {
 export interface UnderscoreValues {
   __meta?: null | number;
   __extmap?: null | number;
-  __hash: number | number;
+  __hash: null | number;
 }
 
 export interface NilValues {

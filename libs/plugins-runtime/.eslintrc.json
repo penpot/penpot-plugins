@@ -1,6 +1,10 @@
 {
   "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./libs/plugins-runtime/tsconfig.*?.json"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

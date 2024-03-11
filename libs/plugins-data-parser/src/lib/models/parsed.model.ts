@@ -53,8 +53,8 @@ export interface Option {
   position: number;
   frameId: string;
   id: string;
-  axis: null | unknown;
-  x: null | unknown;
+  axis: unknown;
+  x: unknown;
 }
 
 export interface Components {

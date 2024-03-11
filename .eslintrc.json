@@ -39,8 +39,63 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@nx/typescript",
+        "plugin:deprecation/recommended",
+        "prettier"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["error"],
+        "no-multiple-empty-lines": [
+          2,
+          {
+            "max": 1
+          }
+        ],
+        "quotes": [
+          "error",
+          "single",
+          {
+            "avoidEscape": true
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@nx/typescript",
+        "plugin:deprecation/recommended",
+        "prettier"
+      ],
+      "rules": {
+
+        "@typescript-eslint/no-unused-vars": ["error"],
+        "no-multiple-empty-lines": [
+          2,
+          {
+            "max": 1
+          }
+        ],
+        "quotes": [
+          "error",
+          "single",
+          {
+            "avoidEscape": true
+          }
+        ],
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@ngrx/prefix-selectors-with-select": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

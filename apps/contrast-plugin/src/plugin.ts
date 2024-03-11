@@ -8,6 +8,10 @@ penpot.ui.onMessage<{ content: string }>((message) => {
     const pageState = penpot.getPageState();
     const fileState = penpot.getFileState();
 
+    if (!pageState || !fileState) {
+      return;
+    }
+
     penpot.ui.sendMessage({
       type: 'init',
       content: {
