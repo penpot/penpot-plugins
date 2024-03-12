@@ -3,7 +3,7 @@ import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection, setTheme } from './lib/api';
-import { getSelectedUuids } from 'plugins-parser';
+import { getPartialState, getSelectedUuids } from 'plugins-parser';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
@@ -18,6 +18,10 @@ export function initialize(api: any) {
   console.log(api);
 
   /* eslint-disable */
+  (globalThis as any).getPartialState = (path: string) => {
+    return getPartialState(path, api.getState());
+  };
+
   api.addListener('plugin-page', 'page', (page: any) => {
     console.log('Page Changed:', page);
 
