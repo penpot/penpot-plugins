@@ -1,4 +1,6 @@
-Open UI:
+# Plugin usage
+
+If you want your plugin to be opened in a modal, then use open UI:
 
 ```ts
 penpot.ui.open('Plugin name', 'http://localhost:4201', {

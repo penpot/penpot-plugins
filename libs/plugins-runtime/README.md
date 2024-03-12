@@ -1,9 +1,7 @@
-# plugins-runtime
+# Plugins runtime
 
-Go to to the [this branch](https://github.com/penpot/penpot/tree/niwinz-poc-plugins) in the Penpot local code.
+The plugins-runtime is the responsible on generate the api and to load the plugin.
 
-Run the penpot runtime with `npm start`.
+Once you've run the example plugin or your own, you should see on the browser devtools the logs from this file `plugins-runtime/src/index.ts`. So every time there is a change in the page, file or selection in the penpot app, it'll show a log.
 
-Now you can go to penpot and see the `log` of this file `plugins-runtime/src/index.ts`.
-
-See [this docs about how to install plugins](../docs/create-plugin.md).
+See [this doc about how installing plugins](../docs/create-plugin.md).
