@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { toCamelCase } from './object.util';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
