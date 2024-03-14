@@ -19,11 +19,11 @@ export class AppElement extends HTMLElement {
 
   getLuminosity(color: string) {
     const rgb = this.hexToRgb(color);
-    return (
-      0.2126 * (rgb[0] / 255) +
-      0.7152 * (rgb[1] / 255) +
-      0.0722 * (rgb[2] / 255)
-    );
+    const a = rgb.map((v) => {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
   }
 
   hexToRgb(hex: string) {
