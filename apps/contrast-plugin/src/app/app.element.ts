@@ -4,6 +4,7 @@ import './app.element.css';
 
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
+  public page: any;
 
   calculateContrast(firstColor: string, secondColor: string) {
     const luminosityFirstColor = this.getLuminosity(firstColor);
@@ -138,20 +139,38 @@ export class AppElement extends HTMLElement {
     window.addEventListener('message', (event) => {
       if (event.data.type === 'selection') {
         if (event.data.content.length === 2) {
-          this.calculateContrast('#d5d1d1', '#000410');
+          const obj0 =
+            this.page.objects['#' + event.data.content[0]]?.fills?.[0]
+              ?.fillColor;
+          const obj1 =
+            this.page.objects['#' + event.data.content[1]]?.fills?.[0]
+              ?.fillColor;
+
+          if (obj0 && obj1) {
+            this.calculateContrast(obj0, obj1);
+          }
         } else {
           this.setColors(null, null);
           this.setResult('0');
           this.setA11yTags(0);
         }
       } else if (event.data.type === 'page') {
-        console.log('refrespage', event.data);
+        this.page = event.data.content;
       } else if (event.data.type === 'init') {
         this.setAttribute('data-theme', event.data.content.theme);
+        this.page = event.data.content.page;
 
         if (event.data.content.selection.length === 2) {
-          //TODO get real colors from selection
-          this.calculateContrast('#d5d1d1', '#000410');
+          const obj0 =
+            this.page.objects['#' + event.data.content.selection[0]]?.fills?.[0]
+              ?.fillColor;
+          const obj1 =
+            this.page.objects['#' + event.data.content.selection[1]]?.fills?.[0]
+              ?.fillColor;
+
+          if (obj0 && obj1) {
+            this.calculateContrast(obj0, obj1);
+          }
         }
       } else if (event.data.type === 'theme') {
         this.setAttribute('data-theme', event.data.content);

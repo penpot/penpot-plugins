@@ -121,7 +121,7 @@ function getValue(value: unknown, type: string): unknown {
     : value;
 }
 
-export function getPartialState(path: string, state: UknowCljs) {
+export function getPartialState(path: string, state: UknowCljs): UknowCljs {
   // const state = cljs.core.deref(app.main.store.state);
   const statePath = getPath(path);
   const data = cljs.core.get_in(state, statePath);
@@ -173,8 +173,6 @@ export function getPartialState(path: string, state: UknowCljs) {
             : name;
 
           addEntry(childPath, propName, repValue, isExpandable);
-
-          return;
         } else {
           const valueType = getType(entry);
           const repValue = getValue(entry, valueType);
@@ -182,8 +180,6 @@ export function getPartialState(path: string, state: UknowCljs) {
           const childPath = path + PATH_SEPARATOR + getKeyName(index);
 
           addEntry(childPath, index, repValue, isExpandable);
-
-          return;
         }
       });
     } else if (type.startsWith('js:')) {
