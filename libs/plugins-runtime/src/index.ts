@@ -25,7 +25,12 @@ export function initialize(api: any) {
   api.addListener('plugin-page', 'page', (page: any) => {
     console.log('Page Changed:', page);
 
-    setPageState(page);
+    const workspaceData = getPartialState(
+      'root/:workspace-data',
+      api.getState()
+    );
+
+    setPageState(workspaceData.pagesIndex['#' + page.id]);
   });
 
   api.addListener('plugin-file', 'file', (file: any) => {

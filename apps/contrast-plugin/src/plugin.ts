@@ -17,6 +17,7 @@ penpot.ui.onMessage<{ content: string }>((message) => {
       content: {
         name: pageState.name,
         pageId: pageState.id,
+        page: pageState,
         fileId: fileState.id,
         revn: fileState.revn,
         theme: penpot.getTheme(),
@@ -32,4 +33,8 @@ penpot.on('selectionchange', (id) => {
 
 penpot.on('themechange', (theme) => {
   penpot.ui.sendMessage({ type: 'theme', content: theme });
+});
+
+penpot.on('pagechange', (page) => {
+  penpot.ui.sendMessage({ type: 'page', content: page });
 });
