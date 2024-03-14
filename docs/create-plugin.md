@@ -1,6 +1,12 @@
-npx nx g @nx/web:application example-plugin --directory=apps/example-plugin
+# Create plugin
 
-Create a manifes.json in /public
+To create the basic scaffolding run the following command. Remember to replace `example-plugin` with your own.
+
+```
+npx nx g @nx/web:application example-plugin --directory=apps/example-plugin
+```
+
+Create a `manifes.json` in `/public`.
 
 ```json
 {
@@ -32,10 +38,18 @@ Add to `tsconfig.app.json`
   "include": ["src/**/*.ts", "../../libs/plugins-runtime/src/lib/index.d.ts"]
 ```
 
-Run static server `npx nx run example-plugin:serve-static --port 4201`
+Then, run the static server
 
-Go to penpot and load the plugin.
+```
+npx nx run example-plugin:serve-static --port 4201
+```
+
+Finally, go to penpot and load the plugin. Run the command in the console devtools from your browser.
 
 ```ts
 ɵloadPlugin({ manifest: 'http://localhost:4201/manifest.json' });
 ```
+
+### More about plugin development
+
+Check the [plugin usage](docs/plugin-usage.md) and the [create API](docs/create-api.md) documentation.
