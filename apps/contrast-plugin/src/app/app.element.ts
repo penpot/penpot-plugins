@@ -12,6 +12,7 @@ export class AppElement extends HTMLElement {
 
     const result =
       (luminosityFirstColor + 0.05) / (luminositySecondColor + 0.05);
+
     this.setColors(firstColor, secondColor);
     this.setResult(result.toFixed(2).toString());
     this.setA11yTags(result);
@@ -135,20 +136,35 @@ export class AppElement extends HTMLElement {
     }
   }
 
+  initCalculate(selection: string[]) {
+    const shapes =
+      this.page.objects['#00000000-0000-0000-0000-000000000000'].shapes;
+
+    const index1 = shapes.findIndex((shape: any) => {
+      return shape === selection[0];
+    });
+
+    const index2 = shapes.findIndex((shape: any) => {
+      return shape === selection[1];
+    });
+
+    if (index1 < index2) {
+      selection = [selection[1], selection[0]];
+    }
+
+    const obj0 = this.page.objects['#' + selection[0]]?.fills?.[0]?.fillColor;
+    const obj1 = this.page.objects['#' + selection[1]]?.fills?.[0]?.fillColor;
+
+    if (obj0 && obj1) {
+      this.calculateContrast(obj0, obj1);
+    }
+  }
+
   connectedCallback() {
     window.addEventListener('message', (event) => {
       if (event.data.type === 'selection') {
         if (event.data.content.length === 2) {
-          const obj0 =
-            this.page.objects['#' + event.data.content[0]]?.fills?.[0]
-              ?.fillColor;
-          const obj1 =
-            this.page.objects['#' + event.data.content[1]]?.fills?.[0]
-              ?.fillColor;
-
-          if (obj0 && obj1) {
-            this.calculateContrast(obj0, obj1);
-          }
+          this.initCalculate(event.data.content);
         } else {
           this.setColors(null, null);
           this.setResult('0');
@@ -161,16 +177,7 @@ export class AppElement extends HTMLElement {
         this.page = event.data.content.page;
 
         if (event.data.content.selection.length === 2) {
-          const obj0 =
-            this.page.objects['#' + event.data.content.selection[0]]?.fills?.[0]
-              ?.fillColor;
-          const obj1 =
-            this.page.objects['#' + event.data.content.selection[1]]?.fills?.[0]
-              ?.fillColor;
-
-          if (obj0 && obj1) {
-            this.calculateContrast(obj0, obj1);
-          }
+          this.initCalculate(event.data.content.selection);
         }
       } else if (event.data.type === 'theme') {
         this.setAttribute('data-theme', event.data.content);
