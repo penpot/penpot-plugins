@@ -57,9 +57,9 @@ or
 
 ```
 // for the contrast plugin
-npx nx run contrast-plugin:serve-static --port 4201
+npx nx run contrast-plugin:serve-static --port 4210
 ```
 
-Open in your browser: `http://localhost:4201/`
+Open in your browser: `http://localhost:4210/`
 
 - if you want to create a new plugin, read the following [README](docs/create-plugin.md)

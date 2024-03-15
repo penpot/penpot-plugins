@@ -1,4 +1,4 @@
-penpot.ui.open('Contrast plugin', 'http://localhost:4201', {
+penpot.ui.open('Contrast plugin', 'http://localhost:4210', {
   width: 450,
   height: 625,
 });

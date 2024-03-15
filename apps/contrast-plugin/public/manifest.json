@@ -1,6 +1,6 @@
 {
     "name": "Contrast plugin",
-    "code": "http://localhost:4201/plugin.js",
+    "code": "http://localhost:4210/plugin.js",
     "permissions": [
       "page:read",
       "file:read",

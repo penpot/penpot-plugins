@@ -3,7 +3,8 @@ import { v4 } from 'uuid';
 
 const token = process.env.ACCESS_TOKEN;
 
-export default function (fastify: FastifyInstance) {
+// eslint-disable-next-line @typescript-eslint/require-await
+async function routes(fastify: FastifyInstance) {
   const apiUrl = process.env.API_URL + '/api/rpc/command';
   const fakeSessionId = v4();
 
@@ -105,3 +106,5 @@ export default function (fastify: FastifyInstance) {
       });
   });
 }
+
+export default routes;

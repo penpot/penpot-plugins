@@ -76,7 +76,7 @@ export class PluginModalElement extends HTMLElement {
           display: flex;
           flex-direction: column;
           position: fixed;
-          inset-block-start: 10px;
+          inset-block-end: 10px;
           inset-inline-start: 10px;
           z-index: 1000;
           padding: 20px;

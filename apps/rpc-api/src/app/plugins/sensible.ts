@@ -7,6 +7,7 @@ import sensible from '@fastify/sensible';
  *
  * @see https://github.com/fastify/fastify-sensible
  */
-export default fp(function (fastify: FastifyInstance) {
+// eslint-disable-next-line @typescript-eslint/require-await
+export default fp(async function (fastify: FastifyInstance) {
   void fastify.register(sensible);
 });
