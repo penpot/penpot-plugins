@@ -41,7 +41,7 @@ Add to `tsconfig.app.json`
 Then, run the static server
 
 ```
-npx nx run example-plugin:serve-static --port 4201
+npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 ```
 
 Finally, go to penpot and load the plugin. Run the command in the console devtools from your browser.

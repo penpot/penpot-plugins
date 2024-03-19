@@ -45,7 +45,9 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-
+  preview: {
+    port: 4200,
+  },
   test: {
     globals: true,
     cache: {
