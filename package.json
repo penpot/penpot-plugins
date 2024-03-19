@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run plugins-runtime:serve-static --port 4200",
-    "start:example": "npx nx run example-plugin:serve-static --port 4201",
+    "start": "npx nx run plugins-runtime:build --watch & npx nx run plugins-runtime:preview",
+    "start:example": "npx nx run example-plugin:build --watch & npx nx run example-plugin:preview",
     "start:rpc-api": "npx nx serve rpc-api",
     "start:styles-example": "npx nx run example-styles:serve --port 4202",
     "build": "npx nx build plugins-runtime --emptyOutDir=true",

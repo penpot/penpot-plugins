@@ -46,18 +46,18 @@ At this point, you have 2 choices:
 
 ```
 // for the example plugin
-npm run start
+npm run start:example
 
 or
 
-npx nx run example-plugin:serve-static --port 4201
+npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 ```
 
 or
 
 ```
 // for the contrast plugin
-npx nx run contrast-plugin:serve-static --port 4210
+npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview
 ```
 
 Open in your browser: `http://localhost:4210/`
