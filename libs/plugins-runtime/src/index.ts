@@ -3,7 +3,7 @@ import './lib/plugin-modal';
 
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection, setTheme } from './lib/api';
-import { getPartialState, getSelectedUuids } from 'plugins-parser';
+import { getPartialState } from 'plugins-parser';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
@@ -39,12 +39,15 @@ export function initialize(api: any) {
     setFileState(file);
   });
 
-  api.addListener('plugin-selection', 'selection', (selection: any) => {
-    const selectionData = getSelectedUuids(selection);
-    console.log('Selection Changed:', selectionData);
+  api.addListener(
+    'plugin-selection',
+    'selection',
+    (selection: { uuid: string }[]) => {
+      console.log('Selection Changed:', selection);
 
-    setSelection(selectionData);
-  });
+      setSelection(selection.map(({ uuid }) => uuid));
+    }
+  );
 
   api.addListener('plugin-theme', 'theme', (theme: 'light' | 'default') => {
     console.log('Theme change:', theme);
