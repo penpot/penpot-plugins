@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npx nx run plugins-runtime:build --watch & npx nx run plugins-runtime:preview",
     "start:example": "npx nx run example-plugin:build --watch & npx nx run example-plugin:preview",
+    "start:read-plugin": "npx nx run poc-state-read-plugin:build --watch & npx nx run poc-state-read-plugin:preview",
     "start:rpc-api": "npx nx serve rpc-api",
     "start:styles-example": "npx nx run example-styles:serve --port 4202",
     "build": "npx nx build plugins-runtime --emptyOutDir=true",
