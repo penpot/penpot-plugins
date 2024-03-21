@@ -2,7 +2,7 @@ import { Manifest } from './models/manifest.model';
 import { manifestSchema } from './models/manifest.schema';
 import { PluginConfig } from './models/plugin-config.model';
 
-function loadManifest(url: string): Promise<Manifest> {
+export function loadManifest(url: string): Promise<Manifest> {
   return fetch(url)
     .then((response) => response.json())
     .then((manifest: Manifest): Manifest => {

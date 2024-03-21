@@ -1,5 +1,6 @@
 import 'ses';
 import './lib/plugin-modal';
+import { initInstaller } from './lib/installer';
 
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection, setTheme } from './lib/api';
@@ -16,6 +17,8 @@ export function initialize(api: any) {
   globalThis.ɵloadPlugin = ɵloadPlugin;
 
   console.log(api);
+
+  initInstaller();
 
   /* eslint-disable */
   (globalThis as any).getPartialState = (path: string) => {
