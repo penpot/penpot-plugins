@@ -6,7 +6,7 @@ To create the basic scaffolding run the following command. Remember to replace `
 npx nx g @nx/web:application example-plugin --directory=apps/example-plugin
 ```
 
-Create a `manifes.json` in `/public`.
+Create a `manifest.json` in `/public`.
 
 ```json
 {
