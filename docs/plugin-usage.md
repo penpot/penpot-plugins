@@ -4,7 +4,6 @@ If you want your plugin to be opened in a modal, then use open UI:
 
 ```ts
 penpot.ui.open('Plugin name', 'http://localhost:4201', {
-  theme: 'light',
   width: 500,
   height: 600,
 });
