@@ -5,11 +5,14 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "command": "node tools/scripts/build-css.mjs",
       "options": {
         "outputPath": "dist/plugins-styles"
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs plugins-styles {args.ver} {args.tag}",
+      "dependsOn": ["build"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",

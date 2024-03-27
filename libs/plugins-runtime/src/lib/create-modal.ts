@@ -1,5 +1,7 @@
 import { OpenUIOptions } from './models/open-ui-options.model';
 
+import type { Theme } from '@penpot/plugin-types';
+
 export function setModalTheme(modal: HTMLElement, theme: Theme) {
   modal.setAttribute('data-theme', theme);
 }

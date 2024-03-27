@@ -1,5 +1,5 @@
 {
-  "extends": ["../../.eslintrc.json"],
+  "extends": ["../../.eslintrc.base.json", "../../.eslintrc.json"],
   "ignorePatterns": ["!**/*", "vite.config.ts"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
