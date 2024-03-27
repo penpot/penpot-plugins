@@ -1,7 +1,5 @@
 {
-  "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -14,15 +12,27 @@
             "depConstraints": [
               {
                 "sourceTag": "type:plugin",
-                "onlyDependOnLibsWithTags": ["type:util", "type:ui", "type:feature"]
+                "onlyDependOnLibsWithTags": [
+                  "type:util",
+                  "type:ui",
+                  "type:feature"
+                ]
               },
               {
                 "sourceTag": "type:app",
-                "onlyDependOnLibsWithTags": [ "type:util", "type:ui", "type:feature"]
+                "onlyDependOnLibsWithTags": [
+                  "type:util",
+                  "type:ui",
+                  "type:feature"
+                ]
               },
               {
                 "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": ["type:feature", "type:ui", "type:util"]
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:ui",
+                  "type:util"
+                ]
               },
               {
                 "sourceTag": "type:ui",
@@ -42,7 +52,6 @@
       "extends": [
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:@nx/typescript",
         "plugin:deprecation/recommended",
         "prettier"
       ],
@@ -68,12 +77,10 @@
       "extends": [
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:@nx/typescript",
         "plugin:deprecation/recommended",
         "prettier"
       ],
       "rules": {
-
         "@typescript-eslint/no-unused-vars": ["error"],
         "no-multiple-empty-lines": [
           2,
@@ -99,8 +106,8 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     }
-  ]
+  ],
+  "extends": ["./.eslintrc.base.json"]
 }

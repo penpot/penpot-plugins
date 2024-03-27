@@ -1,26 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-interface Page {
+export interface PageState {
   name: string;
   id: string;
 }
 
-interface File {
+export interface FileState {
   name: string;
   id: string;
   revn: number;
 }
 
-interface EventsMap {
-  pagechange: Page;
-  filechange: File;
+export interface EventsMap {
+  pagechange: PageState;
+  filechange: FileState;
   selectionchange: string[];
   themechange: Theme;
 }
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
-interface Penpot {
+export interface Penpot {
   ui: {
     open: (
       name: string,
@@ -30,7 +28,7 @@ interface Penpot {
     sendMessage: (message: unknown) => void;
     onMessage: <T>(callback: (message: T) => void) => void;
   };
-  log: (...data: any[]) => void;
+  log: (...data: unknown[]) => void;
   setTimeout: (callback: () => void, time: number) => void;
   closePlugin: () => void;
   on: <T extends keyof EventsMap>(
@@ -41,13 +39,13 @@ interface Penpot {
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-  getFileState: () => File | null;
-  getPageState: () => Page | null;
+  getFileState: () => FileState | null;
+  getPageState: () => PageState | null;
   getSelection: () => string[];
   getTheme: () => Theme;
   fetch: typeof fetch;
 }
 
-declare namespace globalThis {
+declare global {
   const penpot: Penpot;
 }

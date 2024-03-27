@@ -1,8 +1,5 @@
 {
-  "name": "plugins-styles",
-  "version": "0.0.1",
-  "dependencies": {},
-  "main": "./index.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts"
+  "name": "@penpot/plugin-styles",
+  "version": "0.1.0",
+  "dependencies": {}
 }

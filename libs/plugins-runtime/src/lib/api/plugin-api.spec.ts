@@ -9,6 +9,7 @@ import {
   uiMessagesCallbacks,
 } from './index.js';
 import openUIApi from './openUI.api.js';
+import { FileState } from '@penpot/plugin-types';
 
 vi.mock('./openUI.api', () => {
   return {
@@ -220,7 +221,7 @@ describe('Plugin api', () => {
       name: 'test',
       id: '123',
       revn: 0,
-    } as File;
+    } as FileState;
 
     setFileState(exampleFile);
 

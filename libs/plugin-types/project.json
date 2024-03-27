@@ -1,0 +1,19 @@
+{
+  "name": "plugin-types",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/plugin-types",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "node tools/scripts/build-types.mjs",
+      "options": {
+        "outputPath": "dist/plugin-types"
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs plugin-types {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    }
+  },
+  "tags": ["type:ui"]
+}

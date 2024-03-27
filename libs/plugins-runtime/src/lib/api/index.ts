@@ -1,6 +1,13 @@
 import { setModalTheme } from '../create-modal';
 import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
+import type {
+  Penpot,
+  EventsMap,
+  FileState,
+  PageState,
+  Theme,
+} from '@penpot/plugin-types';
 import openUIApi from './openUI.api';
 import z from 'zod';
 
@@ -17,8 +24,8 @@ export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
 
-let pageState: Page | null = null;
-let fileState: File | null = null;
+let pageState: PageState | null = null;
+let fileState: FileState | null = null;
 let selection: string[] = [];
 let themeState: Theme = 'dark';
 
@@ -38,13 +45,13 @@ export function triggerEvent(
   listeners.forEach((listener) => listener(message));
 }
 
-export function setPageState(page: Page) {
+export function setPageState(page: PageState) {
   pageState = page;
 
   triggerEvent('pagechange', page);
 }
 
-export function setFileState(file: File) {
+export function setFileState(file: FileState) {
   fileState = file;
 
   triggerEvent('filechange', file);

@@ -1,10 +1,6 @@
 {
-  "extends": ["../../.eslintrc.base.json", "../../.eslintrc.json"],
+  "extends": ["../../.eslintrc.base.json"],
   "ignorePatterns": ["!**/*"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./apps/rpc-api/tsconfig.app.json"
-  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -17,6 +13,13 @@
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
+    },
+    {
+      "files": ["*.json"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "@nx/dependency-checks": "error"
+      }
     }
   ]
 }

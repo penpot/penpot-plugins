@@ -1,11 +1,15 @@
-# plugins-styles
+# Penpot plugin-styles
 
-This library was generated with [Nx](https://nx.dev).
+This plugin contains a CSS file to help build the UI for Penpot plugins.
 
-## Building
+### Getting started
 
-Run `nx build plugins-styles` to build the library.
+Install the package:
 
-## Running unit tests
+```bash
+npm install @penpot/plugin-styles
+```
 
-Run `nx test plugins-styles` to execute the unit tests via [Jest](https://jestjs.io).
+```css
+@import '@penpot/plugin-styles/styles.css';
+```

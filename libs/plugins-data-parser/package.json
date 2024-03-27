@@ -1,6 +1,6 @@
 {
   "name": "plugins-data-parser",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {},
   "type": "commonjs",
   "main": "./src/index.js",

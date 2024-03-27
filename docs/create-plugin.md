@@ -1,24 +1,32 @@
-# Create plugin
+# Creating a Plugin
 
-To create the basic scaffolding run the following command. Remember to replace `example-plugin` with your own.
+This guide walks you through the steps to create a plugin for our platform. You'll start by setting up the basic structure, configuring necessary files, and then running a local server to preview your plugin. Let's dive in.
 
-```
+### Step 1: Initialize the Plugin
+
+First, you need to create the scaffolding for your plugin. Use the following command, replacing `example-plugin` with the name of your plugin:
+
+```sh
 npx nx g @nx/web:application example-plugin --directory=apps/example-plugin
 ```
 
-Create a `manifest.json` in `/public`.
+### Step 2: Configure the Manifest
+
+Next, create a `manifest.json` file inside the `/public` directory. This file is crucial as it defines key properties of your plugin, including permissions and the entry point script.
 
 ```json
 {
-  "name": "Example plugin",
+  "name": "Example Plugin",
   "code": "http://localhost:4201/plugin.js",
   "permissions": ["page:read", "file:read", "selection:read"]
 }
 ```
 
-Add to the example `vite.config.ts`
+### Step 3: Update Vite Configuration
 
-```json
+Now, add the following configuration to your `vite.config.ts` to specify the entry points for the build process:
+
+```typescript
 build: {
   rollupOptions: {
     input: {
@@ -32,24 +40,39 @@ build: {
 }
 ```
 
-Add to `tsconfig.app.json`
+### Step 4: Modify TypeScript Configuration
+
+Update your `tsconfig.app.json` to include the necessary TypeScript files for your plugin:
 
 ```json
-  "include": ["src/**/*.ts", "../../libs/plugins-runtime/src/lib/index.d.ts"]
+{
+  "include": ["src/**/*.ts", "../../libs/plugin-types/index.d.ts"]
+}
 ```
 
-Then, run the static server
+### Step 5: Run a Static Server
 
-```
+To preview your plugin, start a static server by running:
+
+```sh
 npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 ```
 
-Finally, go to penpot and load the plugin. Run the command in the console devtools from your browser.
+### Step 6: Load the Plugin in Penpot
 
-```ts
+Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
+
+```typescript
 ɵloadPlugin({ manifest: 'http://localhost:4201/manifest.json' });
 ```
 
-### More about plugin development
+### Learn More About Plugin Development
 
-Check the [plugin usage](docs/plugin-usage.md) and the [create API](docs/create-api.md) documentation.
+For more detailed information on plugin development, check out our guides:
+
+- [Plugin Usage Documentation](docs/plugin-usage.md)
+- [Create API Documentation](docs/create-api.md)
+
+### Using a Starter Template
+
+If you prefer to kickstart your plugin development, consider using the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template). It's a template designed to streamline the creation process for Penpot plugins.
