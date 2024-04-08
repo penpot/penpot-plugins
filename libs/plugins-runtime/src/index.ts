@@ -5,6 +5,7 @@ import { initInstaller } from './lib/installer';
 import { ɵloadPlugin } from './lib/load-plugin';
 import { setFileState, setPageState, setSelection, setTheme } from './lib/api';
 import { getPartialState } from 'plugins-parser';
+import type { Theme } from '@penpot/plugin-types';
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
