@@ -63,3 +63,15 @@ npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview
 Open in your browser: `http://localhost:4210/`
 
 - if you want to create a new plugin, read the following [README](docs/create-plugin.md)
+
+## License
+
+```
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) KALEIDOS INC
+```
+
+Penpot is a Kaleidos’ [open source project](https://kaleidos.net/)
