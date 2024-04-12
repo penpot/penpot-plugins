@@ -4,9 +4,9 @@ import './app.element.css';
 
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
-  #selection = '';
-  #pageId = '';
-  #fileId = '';
+  #selection = [];
+  #pageId = null;
+  #fileId = null;
   #revn = 0;
 
   refreshPage(pageId: string, name: string) {
@@ -26,7 +26,6 @@ export class AppElement extends HTMLElement {
     const selectionId = document.getElementById('selection-id');
 
     if (selectionId) {
-      console.log(this.#selection);
       selectionId.innerText = [...this.#selection].join(",");
     }
   }
@@ -37,10 +36,12 @@ export class AppElement extends HTMLElement {
         this.#fileId = event.data.content.id;
         this.#revn = event.data.content.revn;
       } else if (event.data.type === 'page') {
-        this.refreshPage(event.data.content.id, event.data.content.name);
+        console.log(">>UI", event.data.content.shapes);
+        this.refreshPage(event.data.content.page.id, event.data.content.page.name);
       } else if (event.data.type === 'selection') {
         this.refreshSelectionId(event.data.content);
       } else if (event.data.type === 'init') {
+        console.log("Content", event.data.content);
         this.#fileId = event.data.content.fileId;
         this.#revn = event.data.content.revn;
         this.refreshPage(event.data.content.pageId, event.data.content.name);

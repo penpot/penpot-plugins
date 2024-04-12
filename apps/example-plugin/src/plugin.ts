@@ -12,8 +12,8 @@ penpot.ui.onMessage<{ content: string }>((message) => {
   } else if (message.content === 'close') {
     penpot.closePlugin();
   } else if (message.content === 'ready') {
-    const pageState = penpot.getPageState();
-    const fileState = penpot.getFileState();
+    const pageState = penpot.getPage();
+    const fileState = penpot.getFile();
 
     if (!pageState || !fileState) {
       return;
@@ -54,8 +54,8 @@ penpot.on('filechange', (file) => {
   });
 });
 
-penpot.on('selectionchange', (id) => {
-  penpot.ui.sendMessage({ type: 'selection', content: id });
+penpot.on('selectionchange', (selected) => {
+  penpot.ui.sendMessage({ type: 'selection', content: selected });
 });
 
 penpot.on('themechange', (theme) => {
