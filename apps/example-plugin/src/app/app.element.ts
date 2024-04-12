@@ -20,13 +20,13 @@ export class AppElement extends HTMLElement {
     }
   }
 
-  refreshSelectionId(selection: string) {
+  refreshSelectionId(selection: string[]) {
     this.#selection = selection;
 
     const selectionId = document.getElementById('selection-id');
 
     if (selectionId) {
-      selectionId.innerText = this.#selection;
+      selectionId.innerText = this.#selection[0];
     }
   }
 

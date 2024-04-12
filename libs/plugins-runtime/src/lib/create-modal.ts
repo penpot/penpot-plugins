@@ -1,15 +1,15 @@
 import { OpenUIOptions } from './models/open-ui-options.model';
 
-import type { Theme } from '@penpot/plugin-types';
+import type { PenpotTheme } from '@penpot/plugin-types';
 
-export function setModalTheme(modal: HTMLElement, theme: Theme) {
+export function setModalTheme(modal: HTMLElement, theme: PenpotTheme) {
   modal.setAttribute('data-theme', theme);
 }
 
 export function createModal(
   name: string,
   url: string,
-  theme: Theme,
+  theme: PenpotTheme,
   options: OpenUIOptions
 ) {
   const modal = document.createElement('plugin-modal');

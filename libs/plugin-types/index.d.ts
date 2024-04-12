@@ -1,22 +1,24 @@
-export interface PageState {
+export interface PenpotPage {
   name: string;
   id: string;
+
+  findShapes(): PenpotShape[];
 }
 
-export interface FileState {
+export interface PenpotFile {
   name: string;
   id: string;
   revn: number;
 }
 
 export interface EventsMap {
-  pagechange: PageState;
-  filechange: FileState;
+  pagechange: PenpotPage;
+  filechange: PenpotFile;
   selectionchange: string[];
-  themechange: Theme;
+  themechange: PenpotTheme;
 }
 
-export type Theme = 'light' | 'dark';
+export type PenpotTheme = 'light' | 'dark';
 
 export interface Penpot {
   ui: {
@@ -39,10 +41,11 @@ export interface Penpot {
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-  getFileState: () => FileState | null;
-  getPageState: () => PageState | null;
-  getSelection: () => string[];
-  getTheme: () => Theme;
+  getFile: () => PenpotFile | null;
+  getPage: () => PenpotPage | null;
+  getCurrentPage: () => PenpotPage | null;
+  getSelected: () => string[];
+  getTheme: () => PenpotTheme;
   fetch: typeof fetch;
 }
 

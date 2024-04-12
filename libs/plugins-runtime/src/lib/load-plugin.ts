@@ -5,6 +5,12 @@ import { parseManifest } from './parse-manifest';
 let isLockedDown = false;
 let lastApi: ReturnType<typeof createApi> | undefined;
 
+let pluginContext: PenpotContext | null = null;
+
+export function setContext(context: PenpotContext) {
+  pluginContext = context;
+}
+
 export const ɵloadPlugin = async function (config: PluginConfig) {
   const { code, manifest } = await parseManifest(config);
 
@@ -18,13 +24,17 @@ export const ɵloadPlugin = async function (config: PluginConfig) {
       lastApi.closePlugin();
     }
 
-    lastApi = createApi(manifest);
+    if (pluginContext) {
+      lastApi = createApi(pluginContext, manifest);
 
-    const c = new Compartment({
-      penpot: harden(lastApi),
-    });
+      const c = new Compartment({
+        penpot: harden(lastApi),
+      });
 
-    c.evaluate(code);
+      c.evaluate(code);
+    } else {
+      console.error('Cannot find Penpot Context');
+    }
   } catch (error) {
     console.error(error);
   }

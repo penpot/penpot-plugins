@@ -1,19 +1,13 @@
-import { setModalTheme } from '../create-modal';
+import type { Penpot, EventsMap } from '@penpot/plugin-types';
+
 import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
-import type {
-  Penpot,
-  EventsMap,
-  FileState,
-  PageState,
-  Theme,
-} from '@penpot/plugin-types';
 import openUIApi from './openUI.api';
 import z from 'zod';
 
 type Callback<T> = (message: T) => void;
 
-const validEvents = [
+export const validEvents = [
   'pagechange',
   'filechange',
   'selectionchange',
@@ -23,11 +17,6 @@ const validEvents = [
 export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modal: HTMLElement | null = null;
-
-let pageState: PageState | null = null;
-let fileState: FileState | null = null;
-let selection: string[] = [];
-let themeState: Theme = 'dark';
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -45,50 +34,12 @@ export function triggerEvent(
   listeners.forEach((listener) => listener(message));
 }
 
-export function setPageState(page: PageState) {
-  pageState = page;
-
-  triggerEvent('pagechange', page);
-}
-
-export function setFileState(file: FileState) {
-  fileState = file;
-
-  triggerEvent('filechange', file);
-}
-
-export function setSelection(selectionId: string[]) {
-  if (JSON.stringify(selectionId) === JSON.stringify(selection)) {
-    return;
-  }
-
-  selection = selectionId;
-
-  triggerEvent('selectionchange', selectionId);
-}
-
-export function setTheme(theme: Theme) {
-  if (themeState === theme) {
-    return;
-  }
-
-  themeState = theme;
-
-  if (modal) {
-    setModalTheme(modal, themeState);
-  }
-
-  triggerEvent('themechange', theme);
-}
-
-export function createApi(manifest: Manifest) {
+export function createApi(context: PenpotContext, manifest: Manifest) {
   const closePlugin = () => {
     modal?.removeEventListener('close', closePlugin);
-
     if (modal) {
       modal.remove();
     }
-
     uiMessagesCallbacks = [];
     modal = null;
   };
@@ -102,33 +53,40 @@ export function createApi(manifest: Manifest) {
   const penpot: Penpot = {
     ui: {
       open: (name: string, url: string, options: OpenUIOptions) => {
-        modal = openUIApi(name, url, themeState, options);
+        const theme = context.getTheme() as 'dark' | 'light';
+        modal = openUIApi(name, url, theme, options);
 
         modal.addEventListener('close', closePlugin, {
           once: true,
         });
       },
-      sendMessage: (message: unknown) => {
+
+      sendMessage(message: unknown) {
         const event = new CustomEvent('message', {
           detail: message,
         });
 
         modal?.dispatchEvent(event);
       },
+
       onMessage: <T>(callback: (message: T) => void) => {
         z.function().parse(callback);
 
         uiMessagesCallbacks.push(callback as Callback<unknown>);
       },
     },
+
     log: console.log,
+
     setTimeout: z
       .function()
       .args(z.function(), z.number())
       .implement((callback, time) => {
         setTimeout(callback, time);
       }),
+
     closePlugin,
+
     on<T extends keyof EventsMap>(
       type: T,
       callback: (event: EventsMap[T]) => void
@@ -150,6 +108,7 @@ export function createApi(manifest: Manifest) {
       listeners.push(callback as Callback<unknown>);
       eventListeners.set(type, listeners);
     },
+
     off<T extends keyof EventsMap>(
       type: T,
       callback: (event: EventsMap[T]) => void
@@ -164,24 +123,32 @@ export function createApi(manifest: Manifest) {
         listeners.filter((listener) => listener !== callback)
       );
     },
-    getFileState: () => {
+
+    // Penpot State API
+    getFile(): PenpotFile {
       checkPermission('file:read');
-
-      return fileState;
+      return context.getFile();
     },
-    getPageState: () => {
+
+    getCurrentPage(): PenpotPage {
       checkPermission('page:read');
-
-      return pageState;
+      return context.getCurrentPage();
     },
-    getSelection: () => {
+
+    getPage(): PenpotPage {
+      checkPermission('page:read');
+      return context.getPage();
+    },
+
+    getSelected(): string[] {
       checkPermission('selection:read');
+      return context.getSelected();
+    },
 
-      return selection;
+    getTheme(): PenpotTheme {
+      return context.getTheme();
     },
-    getTheme: () => {
-      return themeState;
-    },
+
     fetch,
   };
 

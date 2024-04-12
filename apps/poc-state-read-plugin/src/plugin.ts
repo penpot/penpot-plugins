@@ -7,50 +7,51 @@ penpot.ui.onMessage<{ content: string }>((message) => {
   if (message.content === 'close') {
     penpot.closePlugin();
   } else if (message.content === 'ready') {
-    const pageState = penpot.getPageState();
-    const fileState = penpot.getFileState();
+    const page = penpot.getPage();
+    const file = penpot.getFile();
 
-    if (!pageState || !fileState) {
+    if (!page || !file) {
       return;
     }
 
     penpot.ui.sendMessage({
       type: 'init',
       content: {
-        name: pageState.name,
-        pageId: pageState.id,
-        fileId: fileState.id,
-        revn: fileState.revn,
+        name: page.name,
+        pageId: page.id,
+        fileId: file.id,
+        revn: file.revn,
         theme: penpot.getTheme(),
-        selection: penpot.getSelection(),
+        selection: penpot.getSelected(),
       },
     });
   }
 });
 
-penpot.on('pagechange', (page) => {
+penpot.on('pagechange', () => {
+  const page = penpot.getPage();
+  const shapes = page.findShapes();
+
   penpot.ui.sendMessage({
     type: 'page',
-    content: {
-      name: page.name,
-      id: page.id,
-    },
+    content: { page, shapes },
   });
 });
 
-penpot.on('filechange', (file) => {
+penpot.on('filechange', () => {
+  const file = penpot.getFile();
   penpot.ui.sendMessage({
     type: 'file',
     content: {
-      name: file.name,
-      id: file.id,
-      revn: file.revn,
+      id: file.id
     },
   });
 });
 
-penpot.on('selectionchange', (selection) => {
-  penpot.ui.sendMessage({ type: 'selection', content: [...selection] });
+penpot.on('selectionchange', () => {
+  // const selected = await penpot.queryObject({id: selection[0]});
+  const selected: string[] = penpot.getSelected();
+  penpot.ui.sendMessage({ type: 'selection', content: selected });
 });
 
 penpot.on('themechange', (theme) => {
