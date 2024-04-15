@@ -1,10 +1,6 @@
 import { expect, describe, vi } from 'vitest';
 import {
   createApi,
-  setFileState,
-  setPageState,
-  setSelection,
-  setTheme,
   triggerEvent,
   uiMessagesCallbacks,
 } from './index.js';
@@ -29,7 +25,16 @@ vi.hoisted(() => {
 });
 
 describe('Plugin api', () => {
-  const api = createApi({
+  const mockContext = {
+    addListener: vi.fn(),
+    getFile: vi.fn(),
+    getPage: vi.fn(),
+    getSelected: vi.fn(),
+    getSelectedShapes: vi.fn(),
+    getTheme: vi.fn(() => 'dark'),
+  };
+
+  const api = createApi(mockContext, {
     name: 'test',
     code: '',
     permissions: ['page:read', 'file:read', 'selection:read'],
@@ -209,9 +214,9 @@ describe('Plugin api', () => {
       id: '123',
     };
 
-    setPageState(examplePage);
+    mockContext.getPage.mockImplementation(() => examplePage);
 
-    const pageState = api.getPageState();
+    const pageState = api.getPage();
 
     expect(pageState).toEqual(examplePage);
   });
@@ -223,9 +228,9 @@ describe('Plugin api', () => {
       revn: 0,
     } as FileState;
 
-    setFileState(exampleFile);
+    mockContext.getFile.mockImplementation(() => exampleFile);
 
-    const fileState = api.getFileState();
+    const fileState = api.getFile();
 
     expect(fileState).toEqual(exampleFile);
   });
@@ -233,9 +238,9 @@ describe('Plugin api', () => {
   it('get selection', () => {
     const selection = ['123'];
 
-    setSelection(selection);
+    mockContext.getSelected.mockImplementation(() => selection);
 
-    const currentSelection = api.getSelection();
+    const currentSelection = api.getSelected();
 
     expect(currentSelection).toEqual(selection);
   });
@@ -246,12 +251,11 @@ describe('Plugin api', () => {
     const options = { width: 100, height: 100 };
     const openUIApiMock = vi.mocked(openUIApi);
 
+    mockContext.getTheme.mockImplementation(() => 'light');
+
     api.ui.open(name, url, options);
 
-    setTheme('light');
-
     const modalMock = openUIApiMock.mock.results[0].value;
-
     expect(modalMock.setAttribute).toHaveBeenCalledWith('data-theme', 'light');
     expect(modalMock.setAttribute).toHaveBeenCalledTimes(1);
     expect(api.getTheme()).toBe('light');

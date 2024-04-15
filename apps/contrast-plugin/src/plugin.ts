@@ -5,36 +5,22 @@ penpot.ui.open('Contrast plugin', 'http://localhost:4210', {
 
 penpot.ui.onMessage<{ content: string }>((message) => {
   if (message.content === 'ready') {
-    const pageState = penpot.getPageState();
-    const fileState = penpot.getFileState();
-
-    if (!pageState || !fileState) {
-      return;
-    }
-
     penpot.ui.sendMessage({
       type: 'init',
       content: {
-        name: pageState.name,
-        pageId: pageState.id,
-        page: pageState,
-        fileId: fileState.id,
-        revn: fileState.revn,
         theme: penpot.getTheme(),
-        selection: penpot.getSelection(),
+        shapes: penpot.getSelectedShapes(),
       },
     });
   }
 });
 
-penpot.on('selectionchange', (id) => {
-  penpot.ui.sendMessage({ type: 'selection', content: id });
+penpot.on('selectionchange', () => {
+  const shapes = penpot.getSelectedShapes();
+  penpot.ui.sendMessage({ type: 'selection', content: { shapes } });
 });
 
-penpot.on('themechange', (theme) => {
-  penpot.ui.sendMessage({ type: 'theme', content: theme });
-});
-
-penpot.on('pagechange', (page) => {
-  penpot.ui.sendMessage({ type: 'page', content: page });
+penpot.on('themechange', () => {
+  const theme = penpot.getTheme();
+  penpot.ui.sendMessage({ type: 'theme', content: { theme } });
 });

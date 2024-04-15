@@ -29,8 +29,8 @@ penpot.ui.onMessage<{ content: string }>((message) => {
 });
 
 penpot.on('pagechange', () => {
-  const page = penpot.getPage();
-  const shapes = page.findShapes();
+  const page  = penpot.getPage();
+  const shapes = page?.findShapes();
 
   penpot.ui.sendMessage({
     type: 'page',
@@ -49,7 +49,6 @@ penpot.on('filechange', () => {
 });
 
 penpot.on('selectionchange', () => {
-  // const selected = await penpot.queryObject({id: selection[0]});
   const selected: string[] = penpot.getSelected();
   penpot.ui.sendMessage({ type: 'selection', content: selected });
 });

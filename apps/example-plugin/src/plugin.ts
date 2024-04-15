@@ -27,13 +27,14 @@ penpot.ui.onMessage<{ content: string }>((message) => {
         fileId: fileState.id,
         revn: fileState.revn,
         theme: penpot.getTheme(),
-        selection: penpot.getSelection(),
+        selection: penpot.getSelected(),
       },
     });
   }
 });
 
-penpot.on('pagechange', (page) => {
+penpot.on('pagechange', () => {
+  const page = penpot.getPage();
   penpot.ui.sendMessage({
     type: 'page',
     content: {
@@ -43,7 +44,8 @@ penpot.on('pagechange', (page) => {
   });
 });
 
-penpot.on('filechange', (file) => {
+penpot.on('filechange', () => {
+  const file = penpot.getFile();
   penpot.ui.sendMessage({
     type: 'file',
     content: {
@@ -54,10 +56,12 @@ penpot.on('filechange', (file) => {
   });
 });
 
-penpot.on('selectionchange', (selected) => {
+penpot.on('selectionchange', () => {
+  const selected = penpot.getSelected();
   penpot.ui.sendMessage({ type: 'selection', content: selected });
 });
 
-penpot.on('themechange', (theme) => {
+penpot.on('themechange', () => {
+  const theme = penpot.getTheme();
   penpot.ui.sendMessage({ type: 'theme', content: theme });
 });
