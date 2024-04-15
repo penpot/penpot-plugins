@@ -1,14 +1,24 @@
-export interface PenpotPage {
-  name: string;
+export interface PenpotFile {
   id: string;
+  name: string;
+  revn: number;
+}
 
+export interface PenpotPage {
+  id: string;
+  name: string;
   findShapes(): PenpotShape[];
 }
 
-export interface PenpotFile {
-  name: string;
+export interface PenpotFill {
+  fillColor: string;
+  fillOpacity: number;
+}
+
+export interface PenpotShape {
   id: string;
-  revn: number;
+  name: string;
+  fills: PenpotFill[]
 }
 
 export interface EventsMap {
@@ -45,6 +55,7 @@ export interface Penpot {
   getPage: () => PenpotPage | null;
   getCurrentPage: () => PenpotPage | null;
   getSelected: () => string[];
+  getSelectedShapes(): PenpotShape[];
   getTheme: () => PenpotTheme;
   fetch: typeof fetch;
 }

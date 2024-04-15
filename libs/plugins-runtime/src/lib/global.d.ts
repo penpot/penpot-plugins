@@ -8,6 +8,7 @@ export declare global {
     getCurrentPage(): PenpotPage;
     getPage(): PenpotPage;
     getSelected(): string[];
+    getSelectedShapes(): PenpotShape[];
     getTheme(): PenpotTheme;
   }
 }

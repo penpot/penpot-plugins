@@ -2,6 +2,7 @@ import type { Penpot, EventsMap } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
+import { setModalTheme } from '../create-modal';
 import openUIApi from './openUI.api';
 import z from 'zod';
 
@@ -30,6 +31,9 @@ export function triggerEvent(
   type: keyof EventsMap,
   message: EventsMap[keyof EventsMap]
 ) {
+  if (type === 'themechange' && modal) {
+    setModalTheme(modal, message);
+  }
   const listeners = eventListeners.get(type) || [];
   listeners.forEach((listener) => listener(message));
 }
@@ -53,8 +57,9 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
   const penpot: Penpot = {
     ui: {
       open: (name: string, url: string, options: OpenUIOptions) => {
-        const theme = context.getTheme() as 'dark' | 'light';
+        const theme = context.getTheme() as 'light' | 'dark';
         modal = openUIApi(name, url, theme, options);
+        setModalTheme(modal, theme);
 
         modal.addEventListener('close', closePlugin, {
           once: true,
@@ -71,7 +76,6 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
 
       onMessage: <T>(callback: (message: T) => void) => {
         z.function().parse(callback);
-
         uiMessagesCallbacks.push(callback as Callback<unknown>);
       },
     },
@@ -104,7 +108,6 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
       }
 
       const listeners = eventListeners.get(type) || [];
-
       listeners.push(callback as Callback<unknown>);
       eventListeners.set(type, listeners);
     },
@@ -143,6 +146,11 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
     getSelected(): string[] {
       checkPermission('selection:read');
       return context.getSelected();
+    },
+
+    getSelectedShapes(): PenpotShape[] {
+      checkPermission('selection:read');
+      return context.getSelectedShapes();
     },
 
     getTheme(): PenpotTheme {

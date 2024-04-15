@@ -4,7 +4,7 @@ import './app.element.css';
 
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
-  public page: any;
+  public shapes: any;
 
   calculateContrast(firstColor: string, secondColor: string) {
     const luminosityFirstColor = this.getLuminosity(firstColor);
@@ -136,24 +136,9 @@ export class AppElement extends HTMLElement {
     }
   }
 
-  initCalculate(selection: string[]) {
-    const shapes =
-      this.page.objects['#00000000-0000-0000-0000-000000000000'].shapes;
-
-    const index1 = shapes.findIndex((shape: any) => {
-      return shape === selection[0];
-    });
-
-    const index2 = shapes.findIndex((shape: any) => {
-      return shape === selection[1];
-    });
-
-    if (index1 < index2) {
-      selection = [selection[1], selection[0]];
-    }
-
-    const obj0 = this.page.objects['#' + selection[0]]?.fills?.[0]?.fillColor;
-    const obj1 = this.page.objects['#' + selection[1]]?.fills?.[0]?.fillColor;
+  initCalculate(shapes: any) {
+    const obj0 = shapes[0]?.fills?.[0]?.fillColor;
+    const obj1 = shapes[1]?.fills?.[0]?.fillColor;
 
     if (obj0 && obj1) {
       this.calculateContrast(obj0, obj1);
@@ -162,25 +147,21 @@ export class AppElement extends HTMLElement {
 
   connectedCallback() {
     window.addEventListener('message', (event) => {
-      if (event.data.type === 'selection') {
-        if (event.data.content.length === 2) {
-          this.initCalculate(event.data.content);
+      if (event.data.type === 'init') {
+        this.setAttribute('data-theme', event.data.content.theme);
+        if (event.data.content.selection.length >= 2) {
+          this.initCalculate(event.data.content.shapes);
+        }
+      } else if (event.data.type === 'selection') {
+        if (event.data.content.shapes.length >= 2) {
+          this.initCalculate(event.data.content.shapes);
         } else {
           this.setColors(null, null);
           this.setResult('0');
           this.setA11yTags(0);
         }
-      } else if (event.data.type === 'page') {
-        this.page = event.data.content;
-      } else if (event.data.type === 'init') {
-        this.setAttribute('data-theme', event.data.content.theme);
-        this.page = event.data.content.page;
-
-        if (event.data.content.selection.length === 2) {
-          this.initCalculate(event.data.content.selection);
-        }
       } else if (event.data.type === 'theme') {
-        this.setAttribute('data-theme', event.data.content);
+        this.setAttribute('data-theme', event.data.content.theme);
       }
     });
 
