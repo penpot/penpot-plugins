@@ -355,15 +355,31 @@ export interface PenpotContext {
   ): void;
 }
 
+/**
+ * These are methods and properties available on the `penpot` global object.
+ *
+ */
 export interface Penpot
   extends Omit<PenpotContext, 'addListener' | 'group' | 'ungroup'> {
   ui: {
+    /**
+     * Description of open
+     *
+     */
     open: (
       name: string,
       url: string,
       options: { width: number; height: number }
     ) => void;
+    /**
+     * Description of sendMessage
+     *
+     */
     sendMessage: (message: unknown) => void;
+    /**
+     * Description of onMessage
+     *
+     */
     onMessage: <T>(callback: (message: T) => void) => void;
   };
   utils: {
@@ -373,6 +389,10 @@ export interface Penpot
       isFrame(shape: PenpotShape): shape is PenpotFrame;
     };
   };
+  /**
+   * Description of setTimeout
+   *
+   */
   setTimeout: (callback: () => void, time: number) => void;
   closePlugin: () => void;
   on: <T extends keyof EventsMap>(

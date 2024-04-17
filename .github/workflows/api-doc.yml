@@ -1,0 +1,68 @@
+name: Sync API doc to penpot-docs repository
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - libs/plugin-types/index.d.ts
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout penpot-plugins repository
+        uses: actions/checkout@v4
+        with:
+          path: penpot-plugins
+
+      - name: Checkout penpot-docs repository
+        uses: actions/checkout@v4
+        with:
+          path: penpot-docs
+          repository: penpot/penpot-docs
+          token: ${{ secrets.PENPOT_BOT_PAT }}
+          ref: plugins
+
+      - name: Create new branch in penpot-docs
+        working-directory: penpot-docs
+        run: |
+          git checkout -b update-api-docs-${{ github.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: penpot-plugins/.nvmrc
+          cache: npm
+          cache-dependency-path: penpot-plugins/package-lock.json
+
+      - name: Install dependencies
+        working-directory: penpot-plugins
+        run: |
+          npm ci
+
+      - name: Create documentation with typedoc
+        working-directory: penpot-plugins
+        run: |
+          npm run create:api-docs
+
+      - name: Create markdown documentation
+        working-directory: penpot-plugins/.github/scripts
+        run: |
+          node create-doc-md.js
+
+      - name: Copy docs from penpot-plugins to penpot-docs
+        run: |
+          cp -r penpot-plugins/.github/scripts/api.md penpot-docs/technical-guide/plugins
+
+      - name: Commit, push and pull request
+        working-directory: penpot-docs
+        env:
+          GH_TOKEN: ${{ secrets.PENPOT_BOT_PAT }}
+        run: |
+          git config --global user.name 'penpot-bot'
+          git config --global user.email 'automations+github@penpot.app'
+          git add .
+          git commit -m ":books: Update api docs"
+          git push --set-upstream origin update-api-docs-${{ github.sha }}
+          gh pr create --base plugins --title "Update api plugins docs" --body "Update api plugins docs"
