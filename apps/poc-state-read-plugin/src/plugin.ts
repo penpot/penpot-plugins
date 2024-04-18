@@ -3,7 +3,7 @@ penpot.ui.open('Plugin name', 'http://localhost:4202', {
   height: 600,
 });
 
-penpot.ui.onMessage<{ content: string }>((message) => {
+penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
   if (message.content === 'close') {
     penpot.closePlugin();
   } else if (message.content === 'ready') {
@@ -22,9 +22,14 @@ penpot.ui.onMessage<{ content: string }>((message) => {
         fileId: file.id,
         revn: file.revn,
         theme: penpot.getTheme(),
-        selection: penpot.getSelected(),
+        selection: penpot.getSelectedShapes(),
       },
     });
+  } else if (message.content === 'change-name') {
+    const shape = penpot.getPage()?.getShapeById('' + (message.data as {id: string}).id);
+    if (shape) {
+      shape.name = (message.data as {name: string}).name;
+    }
   }
 });
 
@@ -49,8 +54,8 @@ penpot.on('filechange', () => {
 });
 
 penpot.on('selectionchange', () => {
-  const selected: string[] = penpot.getSelected();
-  penpot.ui.sendMessage({ type: 'selection', content: selected });
+  const selection = penpot.getSelectedShapes();
+  penpot.ui.sendMessage({ type: 'selection', content: { selection } });
 });
 
 penpot.on('themechange', (theme) => {

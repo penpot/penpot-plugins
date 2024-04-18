@@ -5,21 +5,28 @@ import { initInstaller } from './lib/installer';
 import { ɵloadPlugin, setContext } from './lib/load-plugin';
 import * as api from './lib/api';
 
+console.log('Loading plugin system');
+
 repairIntrinsics({
   evalTaming: 'unsafeEval',
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function initialize(context: any) {
-  globalThis.ɵloadPlugin = ɵloadPlugin;
-  initInstaller();
+globalThis.initPluginsRuntime = (context: PenpotContext) => {
+  if (context) {
+    console.log('Initialize context');
 
-  /* eslint-disable */
-  setContext(context);
+    globalThis.ɵcontext = context;
+    globalThis.ɵloadPlugin = ɵloadPlugin;
+    initInstaller();
 
-  for (const event of api.validEvents) {
-    context.addListener(event, api.triggerEvent.bind(null, event));
+    /* eslint-disable */
+    setContext(context);
+
+    for (const event of api.validEvents) {
+      context.addListener(event, api.triggerEvent.bind(null, event));
+    }
+
+    /* eslint-enable */
   }
-
-  /* eslint-enable */
 }

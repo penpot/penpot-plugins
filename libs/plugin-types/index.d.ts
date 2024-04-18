@@ -7,6 +7,7 @@ export interface PenpotFile {
 export interface PenpotPage {
   id: string;
   name: string;
+  getShapeById(id: string): PenpotShape | null;
   findShapes(): PenpotShape[];
 }
 
