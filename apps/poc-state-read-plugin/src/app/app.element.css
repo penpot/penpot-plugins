@@ -67,3 +67,13 @@ h1 {
   font-size: 11px;
   padding-inline-start: var(--spacing-12);
 }
+
+.name-wrap {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.name-wrap input {
+  flex: 1;
+}
