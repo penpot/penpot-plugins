@@ -19,7 +19,20 @@ export interface PenpotFill {
 export interface PenpotShape {
   id: string;
   name: string;
-  fills: PenpotFill[]
+  type: 'frame' | 'group' | 'bool' | 'rect' | 'path' | 'text' | 'circle' | 'svg-raw' | 'image';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  children: PenpotShape[];
+  fills: PenpotFill[];
+  strokes: PenpotStroke[];
+  resize(width: number, height: number);
+}
+
+export interface PenpotText extends PenpotShape {
+  type: 'text';
+  characters: string;
 }
 
 export interface EventsMap {
@@ -30,6 +43,23 @@ export interface EventsMap {
 }
 
 export type PenpotTheme = 'light' | 'dark';
+
+export interface PenpotContext {
+  root: PenpotShape;
+  currentPage: PenpotPage;
+  selection: PenpotShape[];
+
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  getFile(): PenpotFile | null;
+
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  getPage(): PenpotPage | null;
+  getSelected(): string[];
+  getSelectedShapes(): PenpotShape[];
+  getTheme(): PenpotTheme;
+
+  createRectangle(): PenpotShape;
+}
 
 export interface Penpot {
   ui: {
@@ -52,13 +82,21 @@ export interface Penpot {
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-  getFile: () => PenpotFile | null;
-  getPage: () => PenpotPage | null;
-  getCurrentPage: () => PenpotPage | null;
-  getSelected: () => string[];
-  getSelectedShapes(): PenpotShape[];
-  getTheme: () => PenpotTheme;
+
   fetch: typeof fetch;
+
+  // Exposes Penpot Context
+  root: PenpotShape;
+  currentPage: PenpotPage;
+  selection: PenpotShape[];
+
+  getFile(): PenpotFile | null;
+  getPage(): PenpotPage | null;
+  getSelected(): string[];
+  getSelectedShapes(): PenpotShape[];
+  getTheme(): PenpotTheme;
+
+  createRectangle(): PenpotShape;
 }
 
 declare global {

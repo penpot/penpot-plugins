@@ -77,3 +77,11 @@ h1 {
 .name-wrap input {
   flex: 1;
 }
+
+.actions-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}

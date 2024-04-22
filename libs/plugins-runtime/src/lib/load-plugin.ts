@@ -1,3 +1,5 @@
+import type { PenpotContext } from '@penpot/plugin-types';
+
 import { PluginConfig } from './models/plugin-config.model';
 import { createApi } from './api';
 import { parseManifest } from './parse-manifest';
