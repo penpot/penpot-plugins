@@ -9,6 +9,7 @@ console.log('Loading plugin system');
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
+  consoleTaming: import.meta.env.MODE === 'development' ? 'unsafe' : 'safe',
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,4 +30,4 @@ globalThis.initPluginsRuntime = (context: PenpotContext) => {
 
     /* eslint-enable */
   }
-}
+};

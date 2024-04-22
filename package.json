@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run plugins-runtime:build --watch & npx nx run plugins-runtime:preview",
+    "start": "npx nx run plugins-runtime:build --watch --mode development & npx nx run plugins-runtime:preview",
     "start:example": "npx nx run example-plugin:build --watch & npx nx run example-plugin:preview",
     "start:read-plugin": "npx nx run poc-state-read-plugin:build --watch & npx nx run poc-state-read-plugin:preview",
     "start:contrast-plugin": "npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview",
