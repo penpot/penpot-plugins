@@ -5,23 +5,22 @@ import { initInstaller } from './lib/installer';
 import { ɵloadPlugin, setContext } from './lib/load-plugin';
 import * as api from './lib/api';
 
-console.log('Loading plugin system');
+console.log('%c[PLUGINS] Loading plugin system', 'color: #008d7c');
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
   consoleTaming: import.meta.env.MODE === 'development' ? 'unsafe' : 'safe',
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 globalThis.initPluginsRuntime = (context: PenpotContext) => {
   if (context) {
-    console.log('Initialize context');
+    console.log('%c[PLUGINS] Initialize context', 'color: #008d7c');
 
+    /* eslint-disable */
     globalThis.ɵcontext = context;
     globalThis.ɵloadPlugin = ɵloadPlugin;
     initInstaller();
 
-    /* eslint-disable */
     setContext(context);
 
     for (const event of api.validEvents) {

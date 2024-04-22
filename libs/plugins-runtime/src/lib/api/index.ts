@@ -1,4 +1,4 @@
-import type { Penpot, EventsMap } from '@penpot/plugin-types';
+import type { PenpotContext, Penpot, EventsMap, PenpotPage, PenpotShape } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model';
 import { OpenUIOptions } from '../models/open-ui-options.model';
@@ -128,14 +128,25 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
     },
 
     // Penpot State API
+
+    get root(): PenpotShape {
+      checkPermission('page:read');
+      return context.root;
+    },
+
+    get currentPage(): PenpotPage {
+      checkPermission('page:read');
+      return context.currentPage;
+    },
+
+    get selection(): PenpotShape[] {
+      checkPermission('selection:read');
+      return context.selection;
+    },
+    
     getFile(): PenpotFile {
       checkPermission('file:read');
       return context.getFile();
-    },
-
-    getCurrentPage(): PenpotPage {
-      checkPermission('page:read');
-      return context.getCurrentPage();
     },
 
     getPage(): PenpotPage {
@@ -157,8 +168,14 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
       return context.getTheme();
     },
 
+    createRectangle(): PenpotShape {
+      // checkPermission('page:write');
+      return context.createRectangle();
+    },
+
     fetch,
   };
 
   return penpot;
 }
+
