@@ -11,22 +11,67 @@ export interface PenpotPage {
   findShapes(): PenpotShape[];
 }
 
+export type PenpotGradient = {
+  type: 'linear' | 'radial';
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  width: number;
+  stops: Array<{ color: string; opacity?: number; offset: number }>;
+};
+
+export type PenpotImageData = {
+  name?: string;
+  width: number;
+  height: number;
+  mtype?: string;
+  id: string;
+  keepApectRatio?: boolean;
+};
+
 export interface PenpotFill {
-  fillColor: string;
-  fillOpacity: number;
+  fillColor?: string;
+  fillOpacity?: number;
+  fillColorGradient?: PenpotGradient;
+  fillColorRefFile?: string;
+  fillColorRefId?: string;
+  fillImage?: PenpotImageData;
 }
 
-export interface PenpotShape {
+export type PenpotStrokeCap =
+  | 'round'
+  | 'square'
+  | 'line-arrow'
+  | 'triangle-arrow'
+  | 'square-marker'
+  | 'circle-marker'
+  | 'diamond-marker';
+
+export interface PenpotStroke {
+  strokeColor?: string;
+  strokeColorRefFile?: string;
+  strokeColorRefId?: string;
+  strokeOpacity?: number;
+  strokeStyle?: 'solid' | 'dotted' | 'dashed' | 'mixed' | 'none' | 'svg';
+  strokeWidth?: number;
+  strokeAlignment?: 'center' | 'inner' | 'outer';
+  strokeCapStart?: PenpotStrokeCap;
+  strokeCapEnd?: PenpotStrokeCap;
+  strokeColorGradient: PenpotGradient;
+}
+
+export interface PenpotShapeBase {
   id: string;
   name: string;
-  type: 'frame' | 'group' | 'bool' | 'rect' | 'path' | 'text' | 'circle' | 'svg-raw' | 'image';
   x: number;
   y: number;
   width: number;
   height: number;
-  children: PenpotShape[];
+
   fills: PenpotFill[];
   strokes: PenpotStroke[];
+
   resize(width: number, height: number);
 }
 
@@ -34,6 +79,71 @@ export interface PenpotText extends PenpotShape {
   type: 'text';
   characters: string;
 }
+
+export interface PenpotFrame extends PenpotShapeBase {
+  readonly type: 'frame';
+  readonly children: PenpotShape[];
+}
+
+export interface PenpotGroup extends PenpotShapeBase {
+  readonly type: 'group';
+  readonly children: PenpotShape[];
+}
+
+export interface PenpotBool extends PenpotShapeBase {
+  readonly type: 'bool';
+  readonly children: PenpotShape[];
+}
+
+export interface PenpotRectangle extends PenpotShapeBase {
+  readonly type: 'rect';
+}
+
+export interface PenpotPath extends PenpotShapeBase {
+  readonly type: 'rect';
+}
+
+export interface PenpotText extends PenpotShapeBase {
+  readonly type: 'text';
+  characters: string;
+}
+
+export interface PenpotCircle extends PenpotShapeBase {
+  type: 'circle';
+}
+
+export interface PenpotSvgRaw extends PenpotShapeBase {
+  type: 'svg-raw';
+}
+
+export interface PenpotImage extends PenpotShapeBase {
+  type: 'image';
+}
+
+export type PenpotPoint = { x: number; y: number };
+export type PenpotBounds = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export interface PenpotViewport {
+  center: PenpotPoint;
+  zoom: number;
+  readonly bounds: PenpotBounds;
+}
+
+export type PenpotShape =
+  | PenpotFrame
+  | PenpotGroup
+  | PenpotBool
+  | PenpotRectangle
+  | PenpotPath
+  | PenpotText
+  | PenpotCircle
+  | PenpotSvgRaw
+  | PenpotImage;
 
 export interface EventsMap {
   pagechange: PenpotPage;
@@ -48,20 +158,19 @@ export interface PenpotContext {
   root: PenpotShape;
   currentPage: PenpotPage;
   selection: PenpotShape[];
+  viewport: PenpotViewport;
 
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   getFile(): PenpotFile | null;
-
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   getPage(): PenpotPage | null;
   getSelected(): string[];
   getSelectedShapes(): PenpotShape[];
   getTheme(): PenpotTheme;
 
-  createRectangle(): PenpotShape;
+  createRectangle(): PenpotRectangle;
+  createFrame(): PepotFrame;
 }
 
-export interface Penpot {
+export interface Penpot extends PenpotContext {
   ui: {
     open: (
       name: string,
@@ -70,6 +179,11 @@ export interface Penpot {
     ) => void;
     sendMessage: (message: unknown) => void;
     onMessage: <T>(callback: (message: T) => void) => void;
+  };
+  utils: {
+    types: {
+      isText(shape: PenpotShape): shape is PenpotText;
+    };
   };
   log: (...data: unknown[]) => void;
   setTimeout: (callback: () => void, time: number) => void;
