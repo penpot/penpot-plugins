@@ -40,3 +40,7 @@ Thumbs.db
 
 .nx/cache
 .env
+
+.angular
+
+**/assets/plugin.js
