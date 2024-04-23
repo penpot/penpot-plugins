@@ -1,0 +1,9 @@
+{
+  "name": "POC State Read",
+  "code": "http://localhost:4202/assets/plugin.js",
+  "permissions": [
+    "page:read",
+    "file:read",
+    "selection:read"
+  ]
+}
