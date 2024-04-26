@@ -79,6 +79,8 @@ export class AppComponent {
         this.theme.set(event.data.content);
       }
     });
+
+    this.#sendMessage({ content: 'ready' });
   }
 
   close() {
