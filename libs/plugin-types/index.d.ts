@@ -173,6 +173,7 @@ export interface PenpotContext {
 
   createRectangle(): PenpotRectangle;
   createFrame(): PepotFrame;
+  createShapeFromSvg(svgString): PenpotGroup;
 }
 
 export interface Penpot extends PenpotContext {

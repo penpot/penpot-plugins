@@ -29,6 +29,7 @@ import type { PenpotShape } from '@penpot/plugin-types';
         <button type="button" (click)="resizeW()">Resize W</button>
         <button type="button" (click)="resizeH()">Resize H</button>
         <button type="button" (click)="loremIpsum()">Lorem Ipsum</button>
+        <button type="button" (click)="addIcon()">+ Icon</button>
       </div>
 
       <p>
@@ -121,13 +122,16 @@ export class AppComponent {
     this.#sendMessage({ content: 'lorem-ipsum' });
   }
 
+  addIcon() {
+    this.#sendMessage({ content: 'add-icon' });
+  }
+
   #sendMessage(message: unknown) {
     parent.postMessage(message, '*');
   }
 
   #refreshPage(pageId: string, name: string) {
     this.#pageId = pageId;
-
     this.projectName.set(name || 'Unknown');
   }
 
