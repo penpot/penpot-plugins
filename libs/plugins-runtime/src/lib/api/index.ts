@@ -6,6 +6,7 @@ import type {
   PenpotShape,
   PenpotRectangle,
   PenpotFrame,
+  PenpotGroup,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model';
@@ -193,6 +194,11 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     createRectangle(): PenpotRectangle {
       // checkPermission('page:write');
       return context.createRectangle();
+    },
+
+    createShapeFromSvg(svgString: string): PenpotGroup {
+      // checkPermission('page:write');
+      return context.createShapeFromSvg(svgString);
     },
 
     uploadMediaUrl(name: string, url: string) {
