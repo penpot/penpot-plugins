@@ -69,11 +69,23 @@ penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
     const selection = penpot.selection;
 
     for (const shape of selection) {
-      (
-        shape as PenpotText
-      ).characters = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id mauris ut felis finibus congue. Ut odio ipsum, condimentum id tellus sit amet, dapibus sagittis ligula. Pellentesque hendrerit, nulla sit amet aliquet scelerisque, orci nunc commodo tellus, quis hendrerit nisl massa non tellus.
+      if (penpot.utils.types.isText(shape)) {
+        shape.characters = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id mauris ut felis finibus congue. Ut odio ipsum, condimentum id tellus sit amet, dapibus sagittis ligula. Pellentesque hendrerit, nulla sit amet aliquet scelerisque, orci nunc commodo tellus, quis hendrerit nisl massa non tellus.
 
 Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imperdiet ante. Nunc eros magna, tincidunt non finibus in, tempor elementum nunc. Sed commodo magna in arcu aliquam efficitur.`;
+      } else if (penpot.utils.types.isRectangle(shape)) {
+        const width = Math.ceil(shape.width);
+        const height = Math.ceil(shape.height);
+        penpot
+          .uploadMediaUrl(
+            'placeholder',
+            `https://picsum.photos/${width}/${height}`
+          )
+          .then((data) => {
+            shape.fills = [{ fillOpacity: 1, fillImage: data }];
+          })
+          .catch((err) => console.error(err));
+      }
     }
   }
 });
