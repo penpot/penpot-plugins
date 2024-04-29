@@ -4,6 +4,8 @@ import type {
   EventsMap,
   PenpotPage,
   PenpotShape,
+  PenpotRectangle,
+  PenpotFrame,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model';
@@ -44,7 +46,7 @@ export function triggerEvent(
   listeners.forEach((listener) => listener(message));
 }
 
-export function createApi(context: PenpotContext, manifest: Manifest) {
+export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
   const closePlugin = () => {
     modal?.removeEventListener('close', closePlugin);
     if (modal) {
@@ -90,6 +92,12 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
       types: {
         isText(shape: PenpotShape): shape is PenpotText {
           return shape.type === 'text';
+        },
+        isRectangle(shape: PenpotShape): shape is PenpotRectangle {
+          return shape.type === 'rect';
+        },
+        isFrame(shape: PenpotShape): shape is PenpotFrame {
+          return shape.type === 'frame';
         },
       },
     },
@@ -185,6 +193,10 @@ export function createApi(context: PenpotContext, manifest: Manifest) {
     createRectangle(): PenpotRectangle {
       // checkPermission('page:write');
       return context.createRectangle();
+    },
+
+    uploadMediaUrl(name: string, url: string) {
+      return context.uploadMediaUrl(name, url);
     },
 
     fetch,

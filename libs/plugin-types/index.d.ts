@@ -166,6 +166,11 @@ export interface PenpotContext {
   getSelectedShapes(): PenpotShape[];
   getTheme(): PenpotTheme;
 
+  uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
+
+  group(first: PenpotShape, ...rest: PenpotShape): PenpotGroup;
+  ungroup(first: PenpotShape, ...rest: PenpotShape);
+
   createRectangle(): PenpotRectangle;
   createFrame(): PepotFrame;
 }
@@ -183,6 +188,8 @@ export interface Penpot extends PenpotContext {
   utils: {
     types: {
       isText(shape: PenpotShape): shape is PenpotText;
+      isRectangle(shape: PenpotShape): shape is PenpotRectangle;
+      isFrame(shape: PenpotShape): shape is PenpotFrame;
     };
   };
   log: (...data: unknown[]) => void;
@@ -198,19 +205,6 @@ export interface Penpot extends PenpotContext {
   ) => void;
 
   fetch: typeof fetch;
-
-  // Exposes Penpot Context
-  root: PenpotShape;
-  currentPage: PenpotPage;
-  selection: PenpotShape[];
-
-  getFile(): PenpotFile | null;
-  getPage(): PenpotPage | null;
-  getSelected(): string[];
-  getSelectedShapes(): PenpotShape[];
-  getTheme(): PenpotTheme;
-
-  createRectangle(): PenpotShape;
 }
 
 declare global {

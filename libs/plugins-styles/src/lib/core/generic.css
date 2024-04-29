@@ -1,9 +1,10 @@
-html, body {
-    font-family: 'Work Sans', sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    margin: 0;
-    padding: 0;
+html,
+body {
+  font-family: 'Work Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
 }
 
 body,
@@ -26,17 +27,17 @@ pre {
 }
 
 ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-[data-theme="dark"] {
-    background-color: var(--db-primary);
-    color: var(--lb-primary);
+[data-theme='dark'] {
+  background-color: var(--db-quaternary);
+  color: var(--lb-primary);
 }
 
-[data-theme="light"] {
-    background-color: var(--lb-primary);
-    color: var(--db-primary);
+[data-theme='light'] {
+  background-color: var(--lb-primary);
+  color: var(--db-primary);
 }
