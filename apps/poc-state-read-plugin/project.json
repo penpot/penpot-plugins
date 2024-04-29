@@ -1,8 +1,0 @@
-{
-  "name": "poc-state-read-plugin",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "sourceRoot": "apps/poc-state-read-plugin/src",
-  "tags": ["type:plugin"],
-  "targets": {}
-}
