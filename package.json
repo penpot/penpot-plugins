@@ -1,6 +1,7 @@
 {
   "name": "penpot-plugins",
   "version": "0.1.0",
+  "type": "module",
   "license": "MIT",
   "scripts": {
     "start": "npx nx run plugins-runtime:build --watch --mode development & npx nx run plugins-runtime:preview",
@@ -30,6 +31,7 @@
     "@angular/language-service": "~17.1.0",
     "@commitlint/cli": "^18.6.0",
     "@commitlint/config-conventional": "^18.6.0",
+    "@eslint/eslintrc": "^2.1.1",
     "@fastify/cors": "^9.0.1",
     "@nx/angular": "^18.0.2",
     "@nx/esbuild": "18.0.2",
@@ -53,6 +55,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "fs-extra": "^11.2.0",
+    "globals": "^15.1.0",
     "happy-dom": "^13.6.2",
     "husky": "^9.0.10",
     "jsdom": "~22.1.0",

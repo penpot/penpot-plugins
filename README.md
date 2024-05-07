@@ -8,15 +8,13 @@ There are 2 important folders to keep an eye on: `apps` and `libs`.
 
 In the `libs` folder you'll find:
 
-- plugins-data-parser: useful functions to parse the data we get from penpot.
-  It has its own [README](libs/plugins-data-parser/README.md).
 - plugins-runtime: here you'll find the code that initializes the plugin and sets a few listeners to know when the penpot page/file/selection changes.
   It has its own [README](libs/plugins-runtime/README.md).
 - plugins-styles: basic css library with penpot styles in case you need help for styling your plugins.
 
 In the `apps` folder you'll find some examples that use the libraries mentioned above.
 
-- example-plugin or contrast-plugin: to run this example check <a href="#create-a-plugin-from-scratch-or-run-the-examples-from-the-apps-folder">Create a plugin from scratch</a>
+- contrast-plugin: to run this example check <a href="#create-a-plugin-from-scratch-or-run-the-examples-from-the-apps-folder">Create a plugin from scratch</a>
 
 - example-styles: to run this example you should run
 
@@ -50,14 +48,14 @@ npm run start:example
 
 or
 
-npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
+npm run start:pc-plugin
 ```
 
 or
 
 ```
 // for the contrast plugin
-npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview
+npm run start:contrast-plugin
 ```
 
 Open in your browser: `http://localhost:4210/`

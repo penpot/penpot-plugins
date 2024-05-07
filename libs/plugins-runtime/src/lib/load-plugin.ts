@@ -1,8 +1,8 @@
 import type { PenpotContext } from '@penpot/plugin-types';
 
-import { PluginConfig } from './models/plugin-config.model';
-import { createApi } from './api';
-import { parseManifest } from './parse-manifest';
+import { PluginConfig } from './models/plugin-config.model.js';
+import { createApi } from './api/index.js';
+import { parseManifest } from './parse-manifest.js';
 
 let isLockedDown = false;
 let lastApi: ReturnType<typeof createApi> | undefined;

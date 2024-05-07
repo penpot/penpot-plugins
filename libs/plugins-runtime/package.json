@@ -1,15 +1,12 @@
 {
   "name": "plugins-runtime",
   "version": "0.1.0",
-  "devDependencies": {
-    "happy-dom": "^13.6.2"
-  },
   "dependencies": {
     "@penpot/plugin-types": "^0.1.0",
-    "vitest": "1.2.2",
     "ses": "^1.1.0",
     "zod": "^3.22.4"
   },
   "module": "./index.mjs",
-  "typings": "./index.d.ts"
+  "typings": "./index.d.ts",
+  "type": "module"
 }

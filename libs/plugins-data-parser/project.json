@@ -1,8 +1,0 @@
-{
-  "name": "plugins-data-parser",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/plugins-data-parser/src",
-  "projectType": "library",
-  "targets": {},
-  "tags": ["type:util"]
-}
