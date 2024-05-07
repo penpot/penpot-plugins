@@ -1,5 +1,3 @@
-import { PenpotText } from '@penpot/plugin-types';
-
 penpot.ui.open('Plugin name', 'http://localhost:4202', {
   width: 500,
   height: 600,

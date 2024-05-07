@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@penpot/plugin-types": ["libs/plugin-types/index.d.ts"],
-      "plugins-parser": ["libs/plugins-data-parser/src/index.ts"],
       "plugins-runtime": ["libs/plugins-runtime/src/index.ts"],
       "plugins-styles/*": ["libs/plugins-styles/src/*"]
     }

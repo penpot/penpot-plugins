@@ -75,11 +75,6 @@ export interface PenpotShapeBase {
   resize(width: number, height: number);
 }
 
-export interface PenpotText extends PenpotShape {
-  type: 'text';
-  characters: string;
-}
-
 export interface PenpotFrame extends PenpotShapeBase {
   readonly type: 'frame';
   readonly children: PenpotShape[];
@@ -106,6 +101,11 @@ export interface PenpotPath extends PenpotShapeBase {
 export interface PenpotText extends PenpotShapeBase {
   readonly type: 'text';
   characters: string;
+}
+
+export interface PepotFrame extends PenpotShapeBase {
+  readonly type: 'frame';
+  readonly children: PenpotShape[];
 }
 
 export interface PenpotCircle extends PenpotShapeBase {

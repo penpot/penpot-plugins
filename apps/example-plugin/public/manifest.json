@@ -1,9 +1,0 @@
-{
-  "name": "Example plugin",
-  "code": "http://localhost:4201/plugin.js",
-  "permissions": [
-    "page:read",
-    "file:read",
-    "selection:read"
-  ]
-}

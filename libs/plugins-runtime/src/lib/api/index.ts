@@ -8,12 +8,15 @@ import type {
   PenpotFrame,
   PenpotGroup,
   PenpotViewport,
+  PenpotText,
+  PenpotFile,
+  PenpotTheme,
 } from '@penpot/plugin-types';
 
-import { Manifest, Permissions } from '../models/manifest.model';
-import { OpenUIOptions } from '../models/open-ui-options.model';
-import { setModalTheme } from '../create-modal';
-import openUIApi from './openUI.api';
+import { Manifest, Permissions } from '../models/manifest.model.js';
+import { OpenUIOptions } from '../models/open-ui-options.model.js';
+import { setModalTheme } from '../create-modal.js';
+import openUIApi from './openUI.api.js';
 import z from 'zod';
 
 type Callback<T> = (message: T) => void;

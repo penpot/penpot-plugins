@@ -1,9 +1,10 @@
 import 'ses';
 import './lib/plugin-modal';
-import { initInstaller } from './lib/installer';
+import { initInstaller } from './lib/installer.js';
 
-import { ɵloadPlugin, setContext } from './lib/load-plugin';
-import * as api from './lib/api';
+import { ɵloadPlugin, setContext } from './lib/load-plugin.js';
+import * as api from './lib/api/index.js';
+import type { PenpotContext } from '@penpot/plugin-types';
 
 console.log('%c[PLUGINS] Loading plugin system', 'color: #008d7c');
 
