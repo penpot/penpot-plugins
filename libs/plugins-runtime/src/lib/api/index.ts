@@ -200,9 +200,19 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.getTheme();
     },
 
+    createFrame(): PenpotFrame {
+      // checkPermission('page:write');
+      return context.createFrame();
+    },
+
     createRectangle(): PenpotRectangle {
       // checkPermission('page:write');
       return context.createRectangle();
+    },
+
+    createText(text: string): PenpotText {
+      // checkPermission('page:write');
+      return context.createText(text);
     },
 
     createShapeFromSvg(svgString: string): PenpotGroup {
