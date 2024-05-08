@@ -64,11 +64,12 @@ Open in your browser: `http://localhost:4210/`
 
 ## Sample plugins
 
-| Plugin           | Description                                                 | PORT | Start command                 | Manifest URL                               |
-| ---------------- | ----------------------------------------------------------- | ---- | ----------------------------- | ------------------------------------------ |
-| poc-state-plugin | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:pc-plugin       | http://localhost:4301/assets/manifest.json |
-| contrast-plugin  | Sample plugin that gives you color contrast information     | 4302 | npm run start:contrast-plugin | http://localhost:4302/manifest.json        |
-| icons-plugin     | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:icons-plugin    | http://localhost:4303/assets/manifest.json |
+| Plugin             | Description                                                 | PORT | Start command                   | Manifest URL                               |
+| ------------------ | ----------------------------------------------------------- | ---- | ------------------------------- | ------------------------------------------ |
+| poc-state-plugin   | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:pc-plugin         | http://localhost:4301/assets/manifest.json |
+| contrast-plugin    | Sample plugin that gives you color contrast information     | 4302 | npm run start:contrast-plugin   | http://localhost:4302/manifest.json        |
+| icons-plugin       | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:icons-plugin      | http://localhost:4303/assets/manifest.json |
+| lorem-ipsum-plugin | Generate Lorem ipsum text                                   | 4304 | npm run start:loremipsum-plugin | http://localhost:4304/assets/manifest.json |
 
 ## Web Apps
 

@@ -460,7 +460,7 @@ export interface Penpot
     open: (
       name: string,
       url: string,
-      options: { width: number; height: number }
+      options?: { width: number; height: number }
     ) => void;
     /**
      * Description of sendMessage

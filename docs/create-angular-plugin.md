@@ -7,7 +7,7 @@ This guide walks you through the steps to create an Angular plugin.
 First, you need to create the scaffolding for your plugin. Use the following command, replacing `example-plugin` with the name of your plugin:
 
 ```sh
-npx nx g @nx/angular:app example-plugin --directory=apps/example-plugin
+npx nx g @nx/angular:app example-plugin --directory=apps/example-plugin --bundler=esbuild
 ```
 
 ### Step 2: Configure the Manifest
@@ -17,7 +17,7 @@ Next, create a `manifest.json` file inside the `/src/assets` directory. This fil
 ```json
 {
   "name": "Example plugin",
-  "code": "http://localhost:4202/assets/plugin.js",
+  "code": "http://localhost:4200/assets/plugin.js",
   "permissions": ["page:read", "file:read", "selection:read"]
 }
 ```
@@ -27,6 +27,7 @@ Next, create a `manifest.json` file inside the `/src/assets` directory. This fil
 Now, add the following configuration to your `project.json` to compile the `plugin.ts` file:
 
 ```typescript
+"tags": ["type:plugin"],
 "targets": {
   "buildPlugin": {
     "executor": "@nx/esbuild:esbuild",
@@ -87,12 +88,20 @@ Add the reference to the main tsconfig.json:
 ],
 ```
 
-### Step 5: Run the plugin
+### Strep 5: Hello world plugin code
+
+Create the file `apps/example-plugin/src/plugin.ts` with the following code:
+
+```ts
+console.log('Hello Plugin');
+```
+
+### Step 6: Run the plugin
 
 Run this command:
 
 ```sh
-npx nx run-many --targets=buildPlugin,serve --projects=poc-state-plugin --watch
+npx nx run-many --targets=buildPlugin,serve --projects=example-plugin --watch
 ```
 
 This will run two tasks: `serve`, the usual Angular server, and `buildPlugin`, which will compile the `plugin.ts` file.
