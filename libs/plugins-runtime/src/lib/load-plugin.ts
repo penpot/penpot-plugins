@@ -33,6 +33,7 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
         penpot: harden(lastApi),
         fetch: window.fetch.bind(window),
         console: harden(window.console),
+        Math: harden(Math),
       });
 
       c.evaluate(code);

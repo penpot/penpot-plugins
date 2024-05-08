@@ -71,7 +71,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
 
   const penpot: Penpot = {
     ui: {
-      open: (name: string, url: string, options: OpenUIOptions) => {
+      open: (name: string, url: string, options?: OpenUIOptions) => {
         const theme = context.getTheme() as 'light' | 'dark';
 
         modal = openUIApi(

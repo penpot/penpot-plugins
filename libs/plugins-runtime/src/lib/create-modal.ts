@@ -6,7 +6,7 @@ export function createModal(
   name: string,
   url: string,
   theme: PenpotTheme,
-  options: OpenUIOptions
+  options?: OpenUIOptions
 ) {
   const modal = document.createElement('plugin-modal') as PluginModalElement;
 
@@ -14,8 +14,8 @@ export function createModal(
 
   modal.setAttribute('title', name);
   modal.setAttribute('iframe-src', url);
-  modal.setAttribute('width', String(options.width || 285));
-  modal.setAttribute('height', String(options.height || 540));
+  modal.setAttribute('width', String(options?.width || 285));
+  modal.setAttribute('height', String(options?.height || 540));
 
   document.body.appendChild(modal);
 
