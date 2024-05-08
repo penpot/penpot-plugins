@@ -1,0 +1,16 @@
+.icon-button {
+  padding: 0.25rem;
+  color: #000;
+  background: transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus,
+  &:active {
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+}
