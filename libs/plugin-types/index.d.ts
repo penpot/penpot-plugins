@@ -61,6 +61,130 @@ export interface PenpotStroke {
   strokeColorGradient: PenpotGradient;
 }
 
+export interface PenpotColor {
+  id: string;
+  name?: string;
+  path?: string;
+  color?: string;
+  opacity?: number;
+  refId?: string;
+  refFile?: string;
+  gradient?: PenpotGradient;
+  image?: PenpotImageData;
+}
+
+export interface PenpotShadow {
+  id: string;
+  style: 'drop-shadow' | 'inner-shadow';
+  offsetX: number;
+  offsetY: number;
+  blur: number;
+  spread: number;
+  hidden: boolean;
+  color: PenpotColor;
+}
+
+export interface PenpotBlur {
+  id: string;
+  type: 'layer-blur';
+  value: number;
+  hidden: boolean;
+}
+
+export interface PenpotFrameGuideColumnParams {
+  color: { color: string; opacity: number };
+  type?: 'stretch' | 'left' | 'center' | 'right';
+  size?: number;
+  margin?: number;
+  itemLength?: number;
+  gutter?: number;
+}
+
+export interface PenpotFrameGuideSquareParams {
+  color: { color: string; opacity: number };
+  size?: number;
+}
+
+export interface PenpotFrameGuideColumn {
+  type: 'column';
+  display: boolean;
+  params: PenpotFrameGuideColumnParams;
+}
+
+export interface PenpotFrameGuideRow {
+  type: 'row';
+  display: boolean;
+  params: PenpotFrameGuideColumnParams;
+}
+
+export interface PenpotFrameGuideSquare {
+  type: 'column';
+  display: boolean;
+  params: PenpotFrameGuideSquareParams;
+}
+
+export type PenpotFrameGuide =
+  | PenpotFrameGuideColumn
+  | PenpotFrameGuideRow
+  | PenpotFrameGuideSquare;
+
+export interface PenpotExport {}
+
+export type PenpotTrackType = 'flex' | 'fixed' | 'percent' | 'auto';
+
+export interface PenpotTrack {
+  type: PenpotTrackType;
+  value: number | null;
+}
+
+export interface PenpotGridLayout {
+  dir: 'column' | 'row';
+  readonly rows: PenpotTrack[];
+  readonly columns: PenpotTrack[];
+
+  alignItems?: 'start' | 'end' | 'center' | 'stretch';
+  alignContent?:
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
+  justifyItems?: 'start' | 'end' | 'center' | 'stretch';
+  justifyContent?:
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
+
+  rowGap: number;
+  columnGap: number;
+
+  verticalPadding: number;
+  horizontalPadding: number;
+
+  topPadding: number;
+  rightPadding: number;
+  bottomPadding: number;
+  leftPadding: number;
+
+  addRow(type: PenpotTrackType, value?: number);
+  addRowAtIndex(index: number, type: PenpotTrackType, value?: number);
+  addColumn(type: PenpotTrackType, value?: number);
+  addColumnAtIndex(index: number, type: PenpotTrackType, value: number);
+  removeRow(index: number);
+  removeColumn(index: number);
+  setColumn(index: number, type: PenpotTrackType, value?: number);
+  setRow(index: number, type: PenpotTrackType, value?: number);
+
+  appendChild(child: PenpotShape, row: number, column: number);
+  remove();
+}
+
 export interface PenpotShapeBase {
   id: string;
   name: string;
@@ -69,15 +193,64 @@ export interface PenpotShapeBase {
   width: number;
   height: number;
 
+  blocked: boolean;
+  hidden: boolean;
+  proportionLock: boolean;
+  constraintsHorizontal: 'left' | 'right' | 'leftright' | 'center' | 'scale';
+  constraintsVertical: 'top' | 'bottom' | 'topbottom' | 'center' | 'scale';
+  borderRadius: number;
+  borderRadiusTopLeft: number;
+  borderRadiusTopRight: number;
+  borderRadiusBottomRight: number;
+  borderRadiusBottomLeft: number;
+
+  opacity: number;
+  blendMode:
+    | 'normal'
+    | 'darken'
+    | 'multiply'
+    | 'color-burn'
+    | 'lighten'
+    | 'screen'
+    | 'color-dodge'
+    | 'overlay'
+    | 'soft-light'
+    | 'hard-light'
+    | 'difference'
+    | 'exclusion'
+    | 'hue'
+    | 'saturation'
+    | 'color'
+    | 'luminosity';
+
+  shadows: PenpotShadow[];
+  blur: PenpotBlur;
+  exports: PenpotExport;
+
+  // Relative positions
+  frameX: number;
+  frameY: number;
+  parentX: number;
+  parentY: number;
+
+  flipX: boolean;
+  flipY: boolean;
+
   fills: PenpotFill[];
   strokes: PenpotStroke[];
 
   resize(width: number, height: number);
+  clone(): PenpotShape;
+  remove();
 }
 
 export interface PenpotFrame extends PenpotShapeBase {
   readonly type: 'frame';
   readonly children: PenpotShape[];
+  readonly grid?: PenpotGridLayout;
+  guides: PenpotFrameGuide;
+
+  addGridLayout(): PenpotGridLayout;
 }
 
 export interface PenpotGroup extends PenpotShapeBase {
@@ -101,6 +274,7 @@ export interface PenpotPath extends PenpotShapeBase {
 export interface PenpotText extends PenpotShapeBase {
   readonly type: 'text';
   characters: string;
+  growType: 'fixed' | 'auto-width' | 'auto-height';
 }
 
 export interface PepotFrame extends PenpotShapeBase {
@@ -172,8 +346,9 @@ export interface PenpotContext {
   ungroup(first: PenpotShape, ...rest: PenpotShape);
 
   createRectangle(): PenpotRectangle;
-  createFrame(): PepotFrame;
+  createFrame(): PenpotFrame;
   createShapeFromSvg(svgString): PenpotGroup;
+  createText(text: string): PenpotText;
 }
 
 export interface Penpot extends PenpotContext {
