@@ -30,6 +30,7 @@ import type { PenpotShape } from '@penpot/plugin-types';
         <button type="button" (click)="resizeH()">Resize H</button>
         <button type="button" (click)="loremIpsum()">Lorem Ipsum</button>
         <button type="button" (click)="addIcon()">+ Icon</button>
+        <button type="button" (click)="createGrid()">+ Grid</button>
       </div>
 
       <p>
@@ -124,6 +125,10 @@ export class AppComponent {
 
   addIcon() {
     this.#sendMessage({ content: 'add-icon' });
+  }
+
+  createGrid() {
+    this.#sendMessage({ content: 'create-grid' });
   }
 
   #sendMessage(message: unknown) {

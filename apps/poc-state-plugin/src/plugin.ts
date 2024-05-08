@@ -1,3 +1,5 @@
+const GRID = [5, 5];
+
 penpot.ui.open('Plugin name', 'http://localhost:4202', {
   width: 500,
   height: 600,
@@ -118,6 +120,44 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
     const center = penpot.viewport.center;
     shape.x = center.x;
     shape.y = center.y;
+  } else if (message.content === 'create-grid') {
+    const frame = penpot.createFrame();
+    frame.name = 'Frame Grid';
+
+    const viewport = penpot.viewport;
+    frame.x = viewport.center.x - 150;
+    frame.y = viewport.center.y - 200;
+    frame.resize(300, 400);
+
+    // create grid
+    const grid = frame.addGridLayout();
+    const [numRows, numCols] = GRID;
+
+    for (let i = 0; i < numRows; i++) {
+      grid.addRow('auto');
+    }
+
+    for (let i = 0; i < numCols; i++) {
+      grid.addColumn('auto');
+    }
+
+    grid.alignItems = 'center';
+    grid.justifyItems = 'start';
+    grid.justifyContent = 'space-between';
+    grid.alignContent = 'stretch';
+    grid.rowGap = 1;
+    grid.columnGap = 2;
+    grid.verticalPadding = 3;
+    grid.horizontalPadding = 4;
+
+    // create text
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numCols; col++) {
+        const text = penpot.createText(`${row + 1} - ${col + 1}`);
+        text.growType = 'auto-width';
+        grid.appendChild(text, row + 1, col + 1);
+      }
+    }
   }
 });
 
