@@ -33,11 +33,42 @@ ul {
 }
 
 [data-theme='dark'] {
-  background-color: var(--db-quaternary);
-  color: var(--lb-primary);
+  color-scheme: dark;
+
+  --background-primary: var(--db-primary);
+  --background-secondary: var(--db-secondary);
+  --background-tertiary: var(--db-tertiary);
+  --background-quaternary: var(--db-quaternary);
+
+  --foreground-primary: var(--df-primary);
+  --foreground-secondary: var(--df-secondary);
+
+  --accent-primary: var(--da-primary);
+  --accent-primary-muted: var(--da-primary-muted);
+  --accent-secondary: var(--da-secondary);
+  --accent-tertiary: var(--da-tertiary);
+  --accent-quaternary: var(--da-quaternary);
 }
 
 [data-theme='light'] {
-  background-color: var(--lb-primary);
-  color: var(--db-primary);
+  color-scheme: light;
+
+  --background-primary: var(--lb-primary);
+  --background-secondary: var(--lb-secondary);
+  --background-tertiary: var(--lb-tertiary);
+  --background-quaternary: var(--lb-quaternary);
+
+  --foreground-primary: var(--lf-primary);
+  --foreground-secondary: var(--lf-secondary);
+
+  --accent-primary: var(--la-primary);
+  --accent-primary-muted: var(--la-primary-muted);
+  --accent-secondary: var(--la-secondary);
+  --accent-tertiary: var(--la-tertiary);
+  --accent-quaternary: var(--la-quaternary);
+}
+
+[data-theme] {
+  background-color: var(--background-primary);
+  color: var(--foreground-secondary);
 }

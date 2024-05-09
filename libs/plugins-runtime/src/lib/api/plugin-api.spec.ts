@@ -1,9 +1,5 @@
 import { expect, describe, vi } from 'vitest';
-import {
-  createApi,
-  triggerEvent,
-  uiMessagesCallbacks,
-} from './index.js';
+import { createApi, triggerEvent, uiMessagesCallbacks } from './index.js';
 import openUIApi from './openUI.api.js';
 import { FileState } from '@penpot/plugin-types';
 
@@ -15,6 +11,7 @@ vi.mock('./openUI.api', () => {
       removeEventListener: vi.fn(),
       remove: vi.fn(),
       setAttribute: vi.fn(),
+      setTheme: vi.fn(),
     })),
   };
 });
@@ -256,9 +253,11 @@ describe('Plugin api', () => {
     api.ui.open(name, url, options);
 
     const modalMock = openUIApiMock.mock.results[0].value;
-    expect(modalMock.setAttribute).toHaveBeenCalledWith('data-theme', 'light');
-    expect(modalMock.setAttribute).toHaveBeenCalledTimes(1);
+    expect(modalMock.setTheme).toHaveBeenCalledWith('light');
     expect(api.getTheme()).toBe('light');
+
+    triggerEvent('themechange', 'dark' as any);
+    expect(modalMock.setTheme).toHaveBeenCalledWith('dark');
   });
 
   it('close puglin', () => {

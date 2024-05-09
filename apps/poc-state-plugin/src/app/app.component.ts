@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import type { PenpotShape } from '@penpot/plugin-types';
 
@@ -7,7 +7,7 @@ import type { PenpotShape } from '@penpot/plugin-types';
   selector: 'app-root',
   imports: [ReactiveFormsModule],
   template: `
-    <div class="wrapper" [attr.data-theme]="theme()">
+    <div class="wrapper">
       <h1>Test area!</h1>
 
       <p>
@@ -17,20 +17,48 @@ import type { PenpotShape } from '@penpot/plugin-types';
       <form [formGroup]="form" (ngSubmit)="updateName()">
         <div class="name-wrap">
           <label>Selected Shape: </label>
-          <input type="text" formControlName="name" />
+          <input class="input" type="text" formControlName="name" />
           <button type="submit">Update</button>
         </div>
       </form>
 
       <div class="actions-wrap">
-        <button type="button" (click)="createRect()">+Rect</button>
-        <button type="button" (click)="moveX()">Move X</button>
-        <button type="button" (click)="moveY()">Move Y</button>
-        <button type="button" (click)="resizeW()">Resize W</button>
-        <button type="button" (click)="resizeH()">Resize H</button>
-        <button type="button" (click)="loremIpsum()">Lorem Ipsum</button>
-        <button type="button" (click)="addIcon()">+ Icon</button>
-        <button type="button" (click)="createGrid()">+ Grid</button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="createRect()"
+        >
+          +Rect
+        </button>
+        <button type="button" data-appearance="secondary" (click)="moveX()">
+          Move X
+        </button>
+        <button type="button" data-appearance="secondary" (click)="moveY()">
+          Move Y
+        </button>
+        <button type="button" data-appearance="secondary" (click)="resizeW()">
+          Resize W
+        </button>
+        <button type="button" data-appearance="secondary" (click)="resizeH()">
+          Resize H
+        </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="loremIpsum()"
+        >
+          Lorem Ipsum
+        </button>
+        <button type="button" data-appearance="secondary" (click)="addIcon()">
+          + Icon
+        </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="createGrid()"
+        >
+          + Grid
+        </button>
       </div>
 
       <p>
@@ -83,6 +111,10 @@ export class AppComponent {
     });
 
     this.#sendMessage({ content: 'ready' });
+
+    effect(() => {
+      document.body.setAttribute('data-theme', this.theme());
+    });
   }
 
   close() {
