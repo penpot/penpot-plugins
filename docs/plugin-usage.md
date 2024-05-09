@@ -31,7 +31,7 @@ Receive message from iframe:
 
 ```ts
 penpot.ui.onMessage((message) => {
-  penpot.log('Received message:', message);
+  console.log('Received message:', message);
 });
 ```
 
@@ -61,7 +61,7 @@ Current events `pagechange`, `filechange`,`selectionchange` and `themechange`.
 
 ```ts
 const event = (page) => {
-  penpot.log(page.name);
+  console.log(page.name);
 };
 
 penpot.on('pagechange', event);

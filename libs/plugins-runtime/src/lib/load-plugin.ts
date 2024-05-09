@@ -31,6 +31,8 @@ export const ɵloadPlugin = async function (config: PluginConfig) {
 
       const c = new Compartment({
         penpot: harden(lastApi),
+        fetch: window.fetch.bind(window),
+        console: harden(window.console),
       });
 
       c.evaluate(code);
