@@ -1,6 +1,6 @@
 import z from 'zod';
-import { openUISchema } from '../models/open-ui-options.schema';
-import { createModal } from '../create-modal';
+import { openUISchema } from '../models/open-ui-options.schema.js';
+import { createModal } from '../create-modal.js';
 
 export default z
   .function()

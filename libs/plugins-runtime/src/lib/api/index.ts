@@ -15,9 +15,9 @@ import type {
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
 import { OpenUIOptions } from '../models/open-ui-options.model.js';
-import { setModalTheme } from '../create-modal.js';
 import openUIApi from './openUI.api.js';
 import z from 'zod';
+import type { PluginModalElement } from '../plugin-modal.js';
 
 type Callback<T> = (message: T) => void;
 
@@ -30,7 +30,7 @@ export const validEvents = [
 
 export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
-let modal: HTMLElement | null = null;
+let modal: PluginModalElement | null = null;
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -45,7 +45,7 @@ export function triggerEvent(
   message: EventsMap[keyof EventsMap]
 ) {
   if (type === 'themechange' && modal) {
-    setModalTheme(modal, message);
+    modal.setTheme(message);
   }
   const listeners = eventListeners.get(type) || [];
   listeners.forEach((listener) => listener(message));
@@ -72,7 +72,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       open: (name: string, url: string, options: OpenUIOptions) => {
         const theme = context.getTheme() as 'light' | 'dark';
         modal = openUIApi(name, url, theme, options);
-        setModalTheme(modal, theme);
+        modal.setTheme(theme);
 
         modal.addEventListener('close', closePlugin, {
           once: true,

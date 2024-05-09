@@ -1,10 +1,20 @@
 const closeSvg = `
 <svg width="16"  height="16"xmlns="http://www.w3.org/2000/svg" fill="none"><g class="fills"><rect rx="0" ry="0" width="16" height="16" class="frame-background"/></g><g class="frame-children"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" class="fills"/><g class="strokes"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" style="fill: none; stroke-width: 1; stroke: rgb(143, 157, 163); stroke-opacity: 1; stroke-linecap: round;" class="stroke-shape"/></g></g></svg>`;
 
+import type { PenpotTheme } from '@penpot/plugin-types';
+
 export class PluginModalElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+  }
+
+  #wrapper: HTMLElement | null = null;
+
+  setTheme(theme: PenpotTheme) {
+    if (this.#wrapper) {
+      this.#wrapper.setAttribute('data-theme', theme);
+    }
   }
 
   connectedCallback() {
@@ -20,6 +30,9 @@ export class PluginModalElement extends HTMLElement {
     if (!this.shadowRoot) {
       throw new Error('Error creating shadow root');
     }
+
+    this.#wrapper = document.createElement('div');
+    this.#wrapper.classList.add('wrapper');
 
     const header = document.createElement('div');
     header.classList.add('header');
@@ -67,52 +80,75 @@ export class PluginModalElement extends HTMLElement {
       iframe.contentWindow.postMessage((e as CustomEvent).detail, '*');
     });
 
-    this.shadowRoot.appendChild(header);
-    this.shadowRoot.appendChild(iframe);
+    this.shadowRoot.appendChild(this.#wrapper);
+
+    this.#wrapper.appendChild(header);
+    this.#wrapper.appendChild(iframe);
 
     const style = document.createElement('style');
     style.textContent = `
         :host {
+          --spacing-4: 0.25rem;
+          --spacing-8: calc(var(--spacing-4) * 2);
+          --spacing-12: calc(var(--spacing-4) * 3);
+          --spacing-16: calc(var(--spacing-4) * 4);
+          --spacing-20: calc(var(--spacing-4) * 5);
+          --spacing-24: calc(var(--spacing-4) * 6);
+          --spacing-28: calc(var(--spacing-4) * 7);
+          --spacing-32: calc(var(--spacing-4) * 8);
+          --spacing-36: calc(var(--spacing-4) * 9);
+          --spacing-40: calc(var(--spacing-4) * 10);
+
+          --font-weight-regular: 400;
+          --font-weight-bold: 500;
+          --font-line-height-s: 1.2;
+          --font-line-height-m: 1.4;
+          --font-line-height-l: 1.5;
+          --font-size-s: 12px;
+          --font-size-m: 14px;
+          --font-size-l: 16px;
+        }
+
+        [data-theme] {
+          background-color: var(--color-background-primary);
+          color: var(--color-foreground-secondary);
+        }
+
+        .wrapper {
           display: flex;
           flex-direction: column;
           position: fixed;
           inset-block-end: 10px;
           inset-inline-start: 10px;
           z-index: 1000;
-          padding: 20px;
-          border-radius: 20px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          padding: 25px;
+          border-radius: 15px;
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
           inline-size: ${width}px;
           block-size: ${height}px;
         }
 
-        :host([data-theme="dark"]) {
-          background: #2e3434;
-          border: 1px solid #2e3434;
-          color: #ffffff;
-        }
-
-        :host([data-theme="light"]) {
-          background: #ffffff;
-          border: 1px solid #eef0f2;
-          color: #18181a;
-        }
-
         .header {
+          align-items: center;
           display: flex;
           justify-content: space-between;
+          border-block-end: 2px solid var(--color-background-quaternary);
+          padding-block-end: var(--spacing-4);
+          margin-block-end: var(--spacing-20);
         }
 
         button {
           background: transparent;
           border: 0;
           cursor: pointer;
+          padding: 0;
         }
 
         h1 {
-          font-family: Arial, sans-serif;
+          font-size: var(--font-size-s);
+          font-weight: var(--font-weight-bold);
           margin: 0;
-          margin-block-end: 10px;
+          margin-inline-end: var(--spacing-4);
         }
 
         iframe {

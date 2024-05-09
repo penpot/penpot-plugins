@@ -1,10 +1,6 @@
-import { OpenUIOptions } from './models/open-ui-options.model';
-
+import type { OpenUIOptions } from './models/open-ui-options.model.js';
 import type { PenpotTheme } from '@penpot/plugin-types';
-
-export function setModalTheme(modal: HTMLElement, theme: PenpotTheme) {
-  modal.setAttribute('data-theme', theme);
-}
+import type { PluginModalElement } from './plugin-modal.js';
 
 export function createModal(
   name: string,
@@ -12,14 +8,14 @@ export function createModal(
   theme: PenpotTheme,
   options: OpenUIOptions
 ) {
-  const modal = document.createElement('plugin-modal');
+  const modal = document.createElement('plugin-modal') as PluginModalElement;
 
-  setModalTheme(modal, theme);
+  modal.setTheme(theme);
 
   modal.setAttribute('title', name);
   modal.setAttribute('iframe-src', url);
-  modal.setAttribute('width', String(options.width || 300));
-  modal.setAttribute('height', String(options.height || 400));
+  modal.setAttribute('width', String(options.width || 285));
+  modal.setAttribute('height', String(options.height || 540));
 
   document.body.appendChild(modal);
 
