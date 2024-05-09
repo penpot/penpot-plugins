@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "start": "npx nx run plugins-runtime:build --watch --mode development & npx nx run plugins-runtime:preview",
-    "start:example": "npx nx run example-plugin:build --watch & npx nx run example-plugin:preview",
     "start:pc-plugin": "npx nx run-many --targets=buildPlugin,serve --projects=poc-state-plugin --watch",
     "start:contrast-plugin": "npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview",
     "start:rpc-api": "npx nx serve rpc-api",
