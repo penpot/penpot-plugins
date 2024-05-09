@@ -368,7 +368,6 @@ export interface Penpot extends PenpotContext {
       isFrame(shape: PenpotShape): shape is PenpotFrame;
     };
   };
-  log: (...data: unknown[]) => void;
   setTimeout: (callback: () => void, time: number) => void;
   closePlugin: () => void;
   on: <T extends keyof EventsMap>(
@@ -379,8 +378,6 @@ export interface Penpot extends PenpotContext {
     type: T,
     callback: (event: EventsMap[T]) => void
   ) => void;
-
-  fetch: typeof fetch;
 }
 
 declare global {

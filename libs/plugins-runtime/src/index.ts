@@ -10,7 +10,9 @@ console.log('%c[PLUGINS] Loading plugin system', 'color: #008d7c');
 
 repairIntrinsics({
   evalTaming: 'unsafeEval',
-  consoleTaming: import.meta.env.MODE === 'development' ? 'unsafe' : 'safe',
+  stackFiltering: 'verbose',
+  errorTaming: 'unsafe',
+  consoleTaming: 'unsafe',
 });
 
 globalThis.initPluginsRuntime = (context: PenpotContext) => {

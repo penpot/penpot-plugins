@@ -107,8 +107,6 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       },
     },
 
-    log: console.log,
-
     setTimeout: z
       .function()
       .args(z.function(), z.number())
@@ -223,8 +221,6 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     uploadMediaUrl(name: string, url: string) {
       return context.uploadMediaUrl(name, url);
     },
-
-    fetch,
   };
 
   return penpot;
