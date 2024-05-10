@@ -2,6 +2,7 @@ const closeSvg = `
 <svg width="16"  height="16"xmlns="http://www.w3.org/2000/svg" fill="none"><g class="fills"><rect rx="0" ry="0" width="16" height="16" class="frame-background"/></g><g class="frame-children"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" class="fills"/><g class="strokes"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" style="fill: none; stroke-width: 1; stroke: rgb(143, 157, 163); stroke-opacity: 1; stroke-linecap: round;" class="stroke-shape"/></g></g></svg>`;
 
 import type { PenpotTheme } from '@penpot/plugin-types';
+import { dragHandler } from './drag-handler.js';
 
 export class PluginModalElement extends HTMLElement {
   constructor() {
@@ -10,11 +11,16 @@ export class PluginModalElement extends HTMLElement {
   }
 
   #wrapper: HTMLElement | null = null;
+  #dragEvents: ReturnType<typeof dragHandler> | null = null;
 
   setTheme(theme: PenpotTheme) {
     if (this.#wrapper) {
       this.#wrapper.setAttribute('data-theme', theme);
     }
+  }
+
+  disconnectedCallback() {
+    this.#dragEvents?.();
   }
 
   connectedCallback() {
@@ -33,6 +39,7 @@ export class PluginModalElement extends HTMLElement {
 
     this.#wrapper = document.createElement('div');
     this.#wrapper.classList.add('wrapper');
+    this.#dragEvents = dragHandler(this.#wrapper);
 
     const header = document.createElement('div');
     header.classList.add('header');
@@ -149,6 +156,7 @@ export class PluginModalElement extends HTMLElement {
           font-weight: var(--font-weight-bold);
           margin: 0;
           margin-inline-end: var(--spacing-4);
+          user-select: none;
         }
 
         iframe {
