@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FeatherIconNames, icons } from 'feather-icons';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
@@ -21,37 +21,42 @@ import { IconSearchComponent } from './components/icon-search/icon-search.compon
         (searchIcons)="this.searchIcons($event)"
       ></app-icon-search>
     </div>
-    @for (key of iconKeys; track key) {
+    @for (key of iconKeys(); track key) {
     <app-icon-button
-      [icon]="icons[key]"
+      [icon]="icons()[key]"
       (insertIcon)="this.insertIcon(key)"
     ></app-icon-button>
     }
   </div>`,
 })
 export class AppComponent {
-  public icons = icons;
-  public iconKeys: FeatherIconNames[] = Object.keys(
-    icons
-  ) as FeatherIconNames[];
+  public icons = signal(icons);
+  public iconKeys = signal(Object.keys(icons) as FeatherIconNames[]);
 
   public insertIcon(key: FeatherIconNames): void {
-    this.sendMessage({ content: icons[key].toSvg(), name: icons[key].name });
+    if (key && this.icons()[key] && this.icons()[key].toSvg()) {
+      this.sendMessage({
+        content: this.icons()[key].toSvg(),
+        name: this.icons()[key].name || key,
+      });
+    }
   }
 
   public searchIcons(search: string): void {
     const allKeys = Object.keys(icons) as FeatherIconNames[];
 
     if (search === '') {
-      this.iconKeys = allKeys;
+      this.iconKeys.set(allKeys);
       return;
     }
 
-    this.iconKeys = allKeys.filter(
+    const filtered = allKeys.filter(
       (key) =>
-        this.icons[key].tags.some((t) => t.match(search)) ||
-        this.icons[key].name.match(search)
+        this.icons()[key].tags.some((t) => t.match(search)) ||
+        this.icons()[key].name.match(search)
     ) as FeatherIconNames[];
+
+    this.iconKeys.set(filtered);
   }
 
   private sendMessage(message: unknown): void {
