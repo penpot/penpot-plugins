@@ -4,6 +4,10 @@ penpot.ui.open('Icons plugin', 'http://localhost:4202', {
 });
 
 penpot.ui.onMessage<{ content: string; name: string }>((message) => {
+  if (!message.content || !message.name) {
+    return;
+  }
+
   const svgIcon = message.content;
   const iconName = message.name;
   const icon = penpot.createShapeFromSvg(svgIcon);

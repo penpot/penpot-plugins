@@ -1,23 +1,20 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, output, signal } from '@angular/core';
 import { icons } from 'feather-icons';
 
 @Component({
   selector: 'app-icon-search',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   styleUrl: './icon-search.component.css',
   template: `<input
     type="search"
-    [placeholder]="'Search ' + iconsCount + ' icons'"
+    [placeholder]="'Search ' + iconsCount() + ' icons'"
     (input)="onSearchIcons($event)"
   />`,
 })
 export class IconSearchComponent {
-  @Output()
-  private searchIcons = new EventEmitter<string>();
-
-  public iconsCount = Object.keys(icons).length;
+  public searchIcons = output<string>();
+  public iconsCount = signal(Object.keys(icons).length);
 
   public onSearchIcons(event: Event): void {
     const target = event.target as HTMLInputElement;
