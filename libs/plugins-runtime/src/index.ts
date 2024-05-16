@@ -1,6 +1,5 @@
 import 'ses';
 import './lib/plugin-modal';
-import { initInstaller } from './lib/installer.js';
 
 import { ɵloadPlugin, setContext } from './lib/load-plugin.js';
 import * as api from './lib/api/index.js';
@@ -22,7 +21,6 @@ globalThis.initPluginsRuntime = (context: PenpotContext) => {
     /* eslint-disable */
     globalThis.ɵcontext = context;
     globalThis.ɵloadPlugin = ɵloadPlugin;
-    initInstaller();
 
     setContext(context);
 
