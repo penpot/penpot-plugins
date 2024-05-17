@@ -16,7 +16,7 @@ import type {
 import { Manifest, Permissions } from '../models/manifest.model.js';
 import { OpenUIOptions } from '../models/open-ui-options.model.js';
 import openUIApi from './openUI.api.js';
-import z from 'zod';
+import { z } from 'zod';
 import type { PluginModalElement } from '../plugin-modal.js';
 
 type Callback<T> = (message: T) => void;
@@ -45,7 +45,7 @@ export function triggerEvent(
   message: EventsMap[keyof EventsMap]
 ) {
   if (type === 'themechange' && modal) {
-    modal.setTheme(message);
+    modal.setTheme(message as PenpotTheme);
   }
   const listeners = eventListeners.get(type) || [];
   listeners.forEach((listener) => listener(message));
@@ -110,7 +110,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     setTimeout: z
       .function()
       .args(z.function(), z.number())
-      .implement((callback, time) => {
+      .implement((callback: Callback<unknown>, time: number) => {
         setTimeout(callback, time);
       }),
 
@@ -169,17 +169,17 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.selection;
     },
 
-    get viewport(): PenpotViewport[] {
+    get viewport(): PenpotViewport {
       checkPermission('selection:read');
       return context.viewport;
     },
 
-    getFile(): PenpotFile {
+    getFile(): PenpotFile | null {
       checkPermission('file:read');
       return context.getFile();
     },
 
-    getPage(): PenpotPage {
+    getPage(): PenpotPage | null {
       checkPermission('page:read');
       return context.getPage();
     },

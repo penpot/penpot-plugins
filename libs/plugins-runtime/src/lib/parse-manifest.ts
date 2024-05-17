@@ -1,6 +1,6 @@
-import { Manifest } from './models/manifest.model';
-import { manifestSchema } from './models/manifest.schema';
-import { PluginConfig } from './models/plugin-config.model';
+import { Manifest } from './models/manifest.model.js';
+import { manifestSchema } from './models/manifest.schema.js';
+import { PluginConfig } from './models/plugin-config.model.js';
 
 export function loadManifest(url: string): Promise<Manifest> {
   return fetch(url)
