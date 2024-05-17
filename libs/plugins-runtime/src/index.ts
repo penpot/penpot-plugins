@@ -14,12 +14,13 @@ repairIntrinsics({
   consoleTaming: 'unsafe',
 });
 
-globalThis.initPluginsRuntime = (context: PenpotContext) => {
+const globalThisAny$ = globalThis as any;
+
+globalThisAny$.initPluginsRuntime = (context: PenpotContext) => {
   if (context) {
     console.log('%c[PLUGINS] Initialize context', 'color: #008d7c');
 
-    /* eslint-disable */
-    globalThis.ɵcontext = context;
+    globalThisAny$.ɵcontext = context;
     globalThis.ɵloadPlugin = ɵloadPlugin;
 
     setContext(context);
@@ -27,7 +28,5 @@ globalThis.initPluginsRuntime = (context: PenpotContext) => {
     for (const event of api.validEvents) {
       context.addListener(event, api.triggerEvent.bind(null, event));
     }
-
-    /* eslint-enable */
   }
 };

@@ -172,17 +172,17 @@ export interface PenpotGridLayout {
   bottomPadding: number;
   leftPadding: number;
 
-  addRow(type: PenpotTrackType, value?: number);
-  addRowAtIndex(index: number, type: PenpotTrackType, value?: number);
-  addColumn(type: PenpotTrackType, value?: number);
-  addColumnAtIndex(index: number, type: PenpotTrackType, value: number);
-  removeRow(index: number);
-  removeColumn(index: number);
-  setColumn(index: number, type: PenpotTrackType, value?: number);
-  setRow(index: number, type: PenpotTrackType, value?: number);
+  addRow(type: PenpotTrackType, value?: number): void;
+  addRowAtIndex(index: number, type: PenpotTrackType, value?: number): void;
+  addColumn(type: PenpotTrackType, value?: number): void;
+  addColumnAtIndex(index: number, type: PenpotTrackType, value: number): void;
+  removeRow(index: number): void;
+  removeColumn(index: number): void;
+  setColumn(index: number, type: PenpotTrackType, value?: number): void;
+  setRow(index: number, type: PenpotTrackType, value?: number): void;
 
-  appendChild(child: PenpotShape, row: number, column: number);
-  remove();
+  appendChild(child: PenpotShape, row: number, column: number): void;
+  remove(): void;
 }
 
 export interface PenpotShapeBase {
@@ -239,9 +239,9 @@ export interface PenpotShapeBase {
   fills: PenpotFill[];
   strokes: PenpotStroke[];
 
-  resize(width: number, height: number);
+  resize(width: number, height: number): void;
   clone(): PenpotShape;
-  remove();
+  remove(): void;
 }
 
 export interface PenpotFrame extends PenpotShapeBase {
@@ -342,16 +342,21 @@ export interface PenpotContext {
 
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
 
-  group(first: PenpotShape, ...rest: PenpotShape): PenpotGroup;
-  ungroup(first: PenpotShape, ...rest: PenpotShape);
+  group(first: PenpotShape, ...rest: PenpotShape[]): PenpotGroup;
+  ungroup(first: PenpotShape, ...rest: PenpotShape[]): void;
 
   createRectangle(): PenpotRectangle;
   createFrame(): PenpotFrame;
-  createShapeFromSvg(svgString): PenpotGroup;
+  createShapeFromSvg(svgString: string): PenpotGroup;
   createText(text: string): PenpotText;
+  addListener<T extends keyof EventsMap>(
+    type: T,
+    callback: (event: EventsMap[T]) => void
+  ): void;
 }
 
-export interface Penpot extends PenpotContext {
+export interface Penpot
+  extends Omit<PenpotContext, 'addListener' | 'group' | 'ungroup'> {
   ui: {
     open: (
       name: string,

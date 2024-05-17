@@ -4,6 +4,9 @@
   "sourceRoot": "libs/plugin-types",
   "projectType": "library",
   "targets": {
+    "lint": {
+      "command": "tsc --noEmit"
+    },
     "build": {
       "command": "node tools/scripts/build-types.mjs",
       "options": {

@@ -1,7 +1,7 @@
 import { expect, describe, vi } from 'vitest';
 import { createApi, triggerEvent, uiMessagesCallbacks } from './index.js';
 import openUIApi from './openUI.api.js';
-import { FileState } from '@penpot/plugin-types';
+import type { PenpotFile } from '@penpot/plugin-types';
 
 vi.mock('./openUI.api', () => {
   return {
@@ -23,7 +23,6 @@ vi.hoisted(() => {
 
 describe('Plugin api', () => {
   const mockContext = {
-    addListener: vi.fn(),
     getFile: vi.fn(),
     getPage: vi.fn(),
     getSelected: vi.fn(),
@@ -31,7 +30,7 @@ describe('Plugin api', () => {
     getTheme: vi.fn(() => 'dark'),
   };
 
-  const api = createApi(mockContext, {
+  const api = createApi(mockContext as any, {
     name: 'test',
     code: '',
     permissions: ['page:read', 'file:read', 'selection:read'],
@@ -168,11 +167,14 @@ describe('Plugin api', () => {
   });
 
   describe.concurrent('permissions', () => {
-    const api = createApi({
-      name: 'test',
-      code: '',
-      permissions: [],
-    });
+    const api = createApi(
+      {} as any,
+      {
+        name: 'test',
+        code: '',
+        permissions: [],
+      } as any
+    );
 
     it('on', () => {
       const callback = vi.fn();
@@ -192,15 +194,15 @@ describe('Plugin api', () => {
 
     it('get states', () => {
       expect(() => {
-        api.getFileState();
+        api.getFile();
       }).toThrow();
 
       expect(() => {
-        api.getPageState();
+        api.getPage();
       }).toThrow();
 
       expect(() => {
-        api.getSelection();
+        api.getSelected();
       }).toThrow();
     });
   });
@@ -223,7 +225,7 @@ describe('Plugin api', () => {
       name: 'test',
       id: '123',
       revn: 0,
-    } as FileState;
+    } as PenpotFile;
 
     mockContext.getFile.mockImplementation(() => exampleFile);
 
