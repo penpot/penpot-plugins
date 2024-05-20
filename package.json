@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run plugins-runtime:build --watch --mode development & npx nx run plugins-runtime:preview",
+    "start": "concurrently --kill-others --names build,server \"npx nx run plugins-runtime:build --watch --mode development\" \"npx nx run plugins-runtime:preview\"",
     "start:pc-plugin": "npx nx run-many --targets=buildPlugin,serve --projects=poc-state-plugin --watch",
     "start:contrast-plugin": "npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview",
     "start:rpc-api": "npx nx serve rpc-api",
@@ -51,6 +51,7 @@
     "@typescript-eslint/parser": "^6.21.0",
     "@vitest/coverage-v8": "1.2.2",
     "@vitest/ui": "1.2.2",
+    "concurrently": "^8.2.2",
     "esbuild": "^0.19.2",
     "eslint": "~8.48.0",
     "eslint-config-prettier": "^9.0.0",
