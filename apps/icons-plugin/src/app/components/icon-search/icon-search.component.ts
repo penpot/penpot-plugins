@@ -6,11 +6,14 @@ import { icons } from 'feather-icons';
   standalone: true,
   imports: [],
   styleUrl: './icon-search.component.css',
-  template: `<input
-    type="search"
-    [placeholder]="'Search ' + iconsCount() + ' icons'"
-    (input)="onSearchIcons($event)"
-  />`,
+  template: `
+    <input
+      class="search-icon"
+      type="search"
+      placeholder="Search an icon"
+      (input)="onSearchIcons($event)"
+    />
+  `,
 })
 export class IconSearchComponent {
   public searchIcons = output<string>();
