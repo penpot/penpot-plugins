@@ -1,6 +1,6 @@
 import type { OpenUIOptions } from './models/open-ui-options.model.js';
 import type { PenpotTheme } from '@penpot/plugin-types';
-import type { PluginModalElement } from './plugin-modal.js';
+import type { PluginModalElement } from './modal/plugin-modal.js';
 
 export function createModal(
   name: string,
