@@ -1,5 +1,5 @@
 import 'ses';
-import './lib/plugin-modal';
+import './lib/modal/plugin-modal';
 
 import { ɵloadPlugin, setContext } from './lib/load-plugin.js';
 import * as api from './lib/api/index.js';

@@ -17,7 +17,7 @@ import { Manifest, Permissions } from '../models/manifest.model.js';
 import { OpenUIOptions } from '../models/open-ui-options.model.js';
 import openUIApi from './openUI.api.js';
 import { z } from 'zod';
-import type { PluginModalElement } from '../plugin-modal.js';
+import type { PluginModalElement } from '../modal/plugin-modal.js';
 
 type Callback<T> = (message: T) => void;
 
