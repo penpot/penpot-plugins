@@ -16,7 +16,8 @@
     "test": "npx nx test plugins-runtime",
     "publish": "nx run-many -t publish -p plugins-styles plugin-types --parallel=false --",
     "registry": "nx local-registry",
-    "prepare": "husky"
+    "prepare": "husky",
+    "create:api-docs": "npx typedoc --tsconfig libs/plugins-runtime/tsconfig.lib.json --options typedoc.json"
   },
   "private": true,
   "devDependencies": {
@@ -66,6 +67,7 @@
     "prettier": "^2.6.2",
     "swc-loader": "0.1.15",
     "ts-node": "10.9.1",
+    "typedoc": "^0.25.13",
     "typescript": "~5.2.2",
     "verdaccio": "^5.0.4",
     "vite": "^5.0.0",
