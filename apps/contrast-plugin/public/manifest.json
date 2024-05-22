@@ -1,9 +1,10 @@
 {
-    "name": "Contrast plugin",
-    "code": "http://localhost:4210/plugin.js",
-    "permissions": [
-      "page:read",
-      "file:read",
-      "selection:read"
-    ]
-  }
+  "name": "Contrast plugin",
+  "host": "http://localhost:4210",
+  "code": "/plugin.js",
+  "permissions": [
+    "page:read",
+    "file:read",
+    "selection:read"
+  ]
+}

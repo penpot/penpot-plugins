@@ -1,4 +1,4 @@
-penpot.ui.open('Icons plugin', 'http://localhost:4202', {
+penpot.ui.open('Icons plugin', '', {
   width: 500,
   height: 600,
 });

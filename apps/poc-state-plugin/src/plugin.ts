@@ -1,6 +1,6 @@
 const GRID = [5, 5];
 
-penpot.ui.open('Plugin name', 'http://localhost:4202', {
+penpot.ui.open('Plugin name', '', {
   width: 500,
   height: 600,
 });

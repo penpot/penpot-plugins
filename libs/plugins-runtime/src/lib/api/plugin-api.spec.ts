@@ -33,6 +33,7 @@ describe('Plugin api', () => {
   const api = createApi(mockContext as any, {
     name: 'test',
     code: '',
+    host: 'http://fake.com',
     permissions: ['page:read', 'file:read', 'selection:read'],
   });
 
@@ -46,7 +47,7 @@ describe('Plugin api', () => {
   describe('ui', () => {
     it('open', () => {
       const name = 'test';
-      const url = 'http://fake.com';
+      const url = 'http://fake.com/';
       const options = { width: 100, height: 100 };
       const openUIApiMock = vi.mocked(openUIApi);
 
@@ -64,7 +65,7 @@ describe('Plugin api', () => {
 
     it('sendMessage', () => {
       const name = 'test';
-      const url = 'http://fake.com';
+      const url = 'http://fake.com/';
       const options = { width: 100, height: 100 };
       const message = { test: 'test' };
       const openUIApiMock = vi.mocked(openUIApi);

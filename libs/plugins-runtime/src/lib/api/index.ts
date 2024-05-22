@@ -18,6 +18,7 @@ import { OpenUIOptions } from '../models/open-ui-options.model.js';
 import openUIApi from './openUI.api.js';
 import { z } from 'zod';
 import type { PluginModalElement } from '../modal/plugin-modal.js';
+import { getValidUrl } from '../parse-manifest.js';
 
 type Callback<T> = (message: T) => void;
 
@@ -71,7 +72,14 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     ui: {
       open: (name: string, url: string, options: OpenUIOptions) => {
         const theme = context.getTheme() as 'light' | 'dark';
-        modal = openUIApi(name, url, theme, options);
+
+        modal = openUIApi(
+          name,
+          getValidUrl(manifest.host, url),
+          theme,
+          options
+        );
+
         modal.setTheme(theme);
 
         modal.addEventListener('close', closePlugin, {

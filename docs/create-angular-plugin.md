@@ -102,7 +102,7 @@ This will run two tasks: `serve`, the usual Angular server, and `buildPlugin`, w
 Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
 
 ```typescript
-ɵloadPlugin({ manifest: 'http://localhost:4202/manifest.json' });
+ɵloadPluginByUrl('http://localhost:4201/assets/manifest.json');
 ```
 
 ### Learn More About Plugin Development

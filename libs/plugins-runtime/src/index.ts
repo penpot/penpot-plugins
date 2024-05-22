@@ -1,7 +1,11 @@
 import 'ses';
 import './lib/modal/plugin-modal';
 
-import { ɵloadPlugin, setContext } from './lib/load-plugin.js';
+import {
+  ɵloadPlugin,
+  setContext,
+  ɵloadPluginByUrl,
+} from './lib/load-plugin.js';
 import * as api from './lib/api/index.js';
 import type { PenpotContext } from '@penpot/plugin-types';
 
@@ -22,6 +26,7 @@ globalThisAny$.initPluginsRuntime = (context: PenpotContext) => {
 
     globalThisAny$.ɵcontext = context;
     globalThis.ɵloadPlugin = ɵloadPlugin;
+    globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
 
     setContext(context);
 
