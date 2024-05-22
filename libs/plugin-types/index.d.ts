@@ -137,11 +137,7 @@ export interface PenpotTrack {
   value: number | null;
 }
 
-export interface PenpotGridLayout {
-  dir: 'column' | 'row';
-  readonly rows: PenpotTrack[];
-  readonly columns: PenpotTrack[];
-
+export interface PenpotCommonLayout {
   alignItems?: 'start' | 'end' | 'center' | 'stretch';
   alignContent?:
     | 'start'
@@ -172,6 +168,17 @@ export interface PenpotGridLayout {
   bottomPadding: number;
   leftPadding: number;
 
+  horizontalSizing: 'fit-content' | 'fill' | 'auto';
+  verticalSizing: 'fit-content' | 'fill' | 'auto';
+
+  remove(): void;
+}
+
+export interface PenpotGridLayout extends PenpotCommonLayout {
+  dir: 'column' | 'row';
+  readonly rows: PenpotTrack[];
+  readonly columns: PenpotTrack[];
+
   addRow(type: PenpotTrackType, value?: number): void;
   addRowAtIndex(index: number, type: PenpotTrackType, value?: number): void;
   addColumn(type: PenpotTrackType, value?: number): void;
@@ -182,7 +189,13 @@ export interface PenpotGridLayout {
   setRow(index: number, type: PenpotTrackType, value?: number): void;
 
   appendChild(child: PenpotShape, row: number, column: number): void;
-  remove(): void;
+}
+
+export interface PenpotFlexLayout extends PenpotCommonLayout {
+  dir: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+  wrap?: 'wrap' | 'nowrap';
+
+  appendChild(child: PenpotShape): void;
 }
 
 export interface PenpotShapeBase {
@@ -239,6 +252,38 @@ export interface PenpotShapeBase {
   fills: PenpotFill[];
   strokes: PenpotStroke[];
 
+  readonly layoutChild?: {
+    absolute: boolean;
+    zIndex: number;
+
+    horizontalSizing: 'auto' | 'fill' | 'fix';
+    verticalSizing: 'auto' | 'fill' | 'fix';
+
+    alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
+
+    horizontalMargin: number;
+    verticalMargin: number;
+
+    topMargin: number;
+    rightMargin: number;
+    bottomMargin: number;
+    leftMargin: number;
+
+    maxWidth: number | null;
+    maxHeight: number | null;
+    minWidth: number | null;
+    minHeight: number | null;
+  };
+
+  readonly layoutCell?: {
+    row?: number;
+    rowSpan?: number;
+    column?: number;
+    columnSpan?: number;
+    areaName?: string;
+    position?: 'auto' | 'manual' | 'area';
+  };
+
   resize(width: number, height: number): void;
   clone(): PenpotShape;
   remove(): void;
@@ -246,21 +291,39 @@ export interface PenpotShapeBase {
 
 export interface PenpotFrame extends PenpotShapeBase {
   readonly type: 'frame';
-  readonly children: PenpotShape[];
   readonly grid?: PenpotGridLayout;
+  readonly flex?: PenpotFlexLayout;
   guides: PenpotFrameGuide;
 
+  horizontalSizing?: 'auto' | 'fix';
+  verticalSizing?: 'auto' | 'fix';
+
+  // Container Properties
+  readonly children: PenpotShape[];
+  appendChild(child: PenpotShape): void;
+  insertChild(index: number, child: PenpotShape): void;
+
+  // Grid layout
+  addFlexLayout(): PenpotFlexLayout;
   addGridLayout(): PenpotGridLayout;
 }
 
 export interface PenpotGroup extends PenpotShapeBase {
   readonly type: 'group';
+
+  // Container Properties
   readonly children: PenpotShape[];
+  appendChild(child: PenpotShape): void;
+  insertChild(index: number, child: PenpotShape): void;
 }
 
 export interface PenpotBool extends PenpotShapeBase {
   readonly type: 'bool';
+
+  // Container Properties
   readonly children: PenpotShape[];
+  appendChild(child: PenpotShape): void;
+  insertChild(index: number, child: PenpotShape): void;
 }
 
 export interface PenpotRectangle extends PenpotShapeBase {
@@ -328,11 +391,39 @@ export interface EventsMap {
 
 export type PenpotTheme = 'light' | 'dark';
 
+export type PenpotLibraryColor = {
+  name: string;
+  color?: string;
+  opacity?: number;
+  asFill(): PenpotFill;
+  asStroke(): PenpotStroke;
+};
+
+export type PenpotLibraryTypography = {
+  name: string;
+};
+
+export type PenpotLibraryComponent = {
+  name: string;
+};
+
+export type PenpotLibrary = {
+  colors: PenpotLibraryColor[];
+  typographies: PenpotLibraryTypography[];
+  components: PenpotLibraryComponent[];
+};
+
+export type PenpotLibraryContext = {
+  local: PenpotLibrary;
+  connected: PenpotLibrary[];
+};
+
 export interface PenpotContext {
   root: PenpotShape;
   currentPage: PenpotPage;
   selection: PenpotShape[];
   viewport: PenpotViewport;
+  library: PenpotLibraryContext;
 
   getFile(): PenpotFile | null;
   getPage(): PenpotPage | null;
