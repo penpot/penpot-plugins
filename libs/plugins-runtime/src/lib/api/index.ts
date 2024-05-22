@@ -11,6 +11,7 @@ import type {
   PenpotText,
   PenpotFile,
   PenpotTheme,
+  PenpotLibraryContext,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -170,8 +171,13 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     },
 
     get viewport(): PenpotViewport {
-      checkPermission('selection:read');
+      // checkPermission('viewport:read');
       return context.viewport;
+    },
+
+    get library(): PenpotLibraryContext {
+      // checkPermission('library:read');
+      return context.library;
     },
 
     getFile(): PenpotFile | null {

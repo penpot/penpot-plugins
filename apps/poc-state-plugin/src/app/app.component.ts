@@ -59,6 +59,13 @@ import type { PenpotShape } from '@penpot/plugin-types';
         >
           + Grid
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="createPalette()"
+        >
+          Create color palette board
+        </button>
       </div>
 
       <p>
@@ -161,6 +168,10 @@ export class AppComponent {
 
   createGrid() {
     this.#sendMessage({ content: 'create-grid' });
+  }
+
+  createPalette() {
+    this.#sendMessage({ content: 'create-colors' });
   }
 
   #sendMessage(message: unknown) {
