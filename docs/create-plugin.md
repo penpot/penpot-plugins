@@ -63,7 +63,7 @@ npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
 
 ```typescript
-ɵloadPlugin({ manifest: 'http://localhost:4201/manifest.json' });
+ɵloadPluginByUrl('http://localhost:4201/manifest.json');
 ```
 
 ### Learn More About Plugin Development

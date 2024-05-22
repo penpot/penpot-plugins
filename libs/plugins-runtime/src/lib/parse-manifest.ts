@@ -1,6 +1,9 @@
 import { Manifest } from './models/manifest.model.js';
 import { manifestSchema } from './models/manifest.schema.js';
-import { PluginConfig } from './models/plugin-config.model.js';
+
+export function getValidUrl(host: string, path: string): string {
+  return new URL(path, host).toString();
+}
 
 export function loadManifest(url: string): Promise<Manifest> {
   return fetch(url)
@@ -20,19 +23,12 @@ export function loadManifest(url: string): Promise<Manifest> {
     });
 }
 
-function loadCode(url: string): Promise<string> {
-  return fetch(url).then((response) => response.text());
-}
+export function loadManifestCode(manifest: Manifest): Promise<string> {
+  return fetch(getValidUrl(manifest.host, manifest.code)).then((response) => {
+    if (response.ok) {
+      return response.text();
+    }
 
-export async function parseManifest(config: PluginConfig): Promise<{
-  manifest: Manifest;
-  code: string;
-}> {
-  const manifest = await loadManifest(config.manifest);
-  const code = await loadCode(manifest.code);
-
-  return {
-    manifest,
-    code,
-  };
+    throw new Error('Failed to load plugin code');
+  });
 }

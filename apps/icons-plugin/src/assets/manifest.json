@@ -1,5 +1,10 @@
 {
   "name": "Icons plugin",
-  "code": "http://localhost:4202/assets/plugin.js",
-  "permissions": ["page:read", "file:read", "selection:read"]
+  "host": "http://localhost:4202",
+  "code": "/assets/plugin.js",
+  "permissions": [
+    "page:read",
+    "file:read",
+    "selection:read"
+  ]
 }

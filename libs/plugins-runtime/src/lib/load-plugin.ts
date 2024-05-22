@@ -1,8 +1,8 @@
 import type { PenpotContext } from '@penpot/plugin-types';
 
-import { PluginConfig } from './models/plugin-config.model.js';
 import { createApi } from './api/index.js';
-import { parseManifest } from './parse-manifest.js';
+import { loadManifest, loadManifestCode } from './parse-manifest.js';
+import { Manifest } from './models/manifest.model.js';
 
 let isLockedDown = false;
 let lastApi: ReturnType<typeof createApi> | undefined;
@@ -13,10 +13,10 @@ export function setContext(context: PenpotContext) {
   pluginContext = context;
 }
 
-export const ɵloadPlugin = async function (config: PluginConfig) {
-  const { code, manifest } = await parseManifest(config);
-
+export const ɵloadPlugin = async function (manifest: Manifest) {
   try {
+    const code = await loadManifestCode(manifest);
+
     if (!isLockedDown) {
       isLockedDown = true;
       hardenIntrinsics();
@@ -42,4 +42,10 @@ export const ɵloadPlugin = async function (config: PluginConfig) {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const ɵloadPluginByUrl = async function (manifestUrl: string) {
+  const manifest = await loadManifest(manifestUrl);
+
+  ɵloadPlugin(manifest);
 };
