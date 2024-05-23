@@ -34,6 +34,16 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
         fetch: window.fetch.bind(window),
         console: harden(window.console),
         Math: harden(Math),
+        setTimeout: harden(
+          (...[handler, timeout]: Parameters<typeof setTimeout>) => {
+            return setTimeout(() => {
+              handler();
+            }, timeout);
+          }
+        ),
+        clearTimeout: harden((id: Parameters<typeof clearTimeout>[0]) => {
+          clearTimeout(id);
+        }),
       });
 
       c.evaluate(code);

@@ -480,11 +480,6 @@ export interface Penpot
       isFrame(shape: PenpotShape): shape is PenpotFrame;
     };
   };
-  /**
-   * Description of setTimeout
-   *
-   */
-  setTimeout: (callback: () => void, time: number) => void;
   closePlugin: () => void;
   on: <T extends keyof EventsMap>(
     type: T,
