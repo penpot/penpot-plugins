@@ -117,13 +117,6 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       },
     },
 
-    setTimeout: z
-      .function()
-      .args(z.function(), z.number())
-      .implement((callback: Callback<unknown>, time: number) => {
-        setTimeout(callback, time);
-      }),
-
     closePlugin,
 
     on<T extends keyof EventsMap>(
