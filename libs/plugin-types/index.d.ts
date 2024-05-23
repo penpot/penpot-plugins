@@ -387,6 +387,7 @@ export interface EventsMap {
   filechange: PenpotFile;
   selectionchange: string[];
   themechange: PenpotTheme;
+  finish: string;
 }
 
 export type PenpotTheme = 'light' | 'dark';
@@ -433,8 +434,8 @@ export interface PenpotContext {
 
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
 
-  group(first: PenpotShape, ...rest: PenpotShape[]): PenpotGroup;
-  ungroup(first: PenpotShape, ...rest: PenpotShape[]): void;
+  group(shapes: PenpotShape[]): PenpotGroup;
+  ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
 
   createRectangle(): PenpotRectangle;
   createFrame(): PenpotFrame;
@@ -443,7 +444,8 @@ export interface PenpotContext {
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void
-  ): void;
+  ): symbol;
+  removeListener(listenerId: symbol): void;
 }
 
 /**
@@ -451,7 +453,7 @@ export interface PenpotContext {
  *
  */
 export interface Penpot
-  extends Omit<PenpotContext, 'addListener' | 'group' | 'ungroup'> {
+  extends Omit<PenpotContext, 'addListener' | 'removeListener'> {
   ui: {
     /**
      * Description of open
