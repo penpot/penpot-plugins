@@ -8,13 +8,13 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/contrast-plugin',
 
   server: {
-    port: 4200,
-    host: 'localhost',
+    port: 4302,
+    host: '0.0.0.0',
   },
 
   preview: {
-    port: 4210,
-    host: 'localhost',
+    port: 4302,
+    host: '0.0.0.0',
   },
 
   plugins: [nxViteTsPaths()],

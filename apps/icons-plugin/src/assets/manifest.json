@@ -1,6 +1,6 @@
 {
   "name": "Icons plugin",
-  "host": "http://localhost:4202",
+  "host": "http://localhost:4303",
   "code": "/assets/plugin.js",
   "permissions": [
     "page:read",

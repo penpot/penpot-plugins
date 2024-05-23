@@ -62,6 +62,21 @@ Open in your browser: `http://localhost:4210/`
 
 - if you want to create a new plugin, read the following [README](docs/create-plugin.md)
 
+## Sample plugins
+
+| Plugin           | Description                                                 | PORT | Start command                 | Manifest URL                               |
+| ---------------- | ----------------------------------------------------------- | ---- | ----------------------------- | ------------------------------------------ |
+| poc-state-plugin | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:pc-plugin       | http://localhost:4301/assets/manifest.json |
+| contrast-plugin  | Sample plugin that gives you color contrast information     | 4302 | npm run start:contrast-plugin | http://localhost:4302/manifest.json        |
+| icons-plugin     | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:icons-plugin    | http://localhost:4303/assets/manifest.json |
+
+## Web Apps
+
+| App             | Description                                                       | PORT | Start command                | URL                    |
+| --------------- | ----------------------------------------------------------------- | ---- | ---------------------------- | ---------------------- |
+| plugins-runtime | Runtime for the plugins subsystem                                 | 4200 | npm run start                |                        |
+| example-styles  | Showcase of some of the Penpot styles that can be used in plugins | 4201 | npm run start:styles-example | http://localhost:4201/ |
+
 ## License
 
 ```

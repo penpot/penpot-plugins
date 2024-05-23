@@ -8,13 +8,13 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/example-styles',
 
   server: {
-    port: 4200,
-    host: 'localhost',
+    port: 4201,
+    host: '0.0.0.0',
   },
 
   preview: {
-    port: 4300,
-    host: 'localhost',
+    port: 4201,
+    host: '0.0.0.0',
   },
 
   plugins: [nxViteTsPaths()],
