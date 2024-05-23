@@ -24,6 +24,7 @@ import { getValidUrl } from '../parse-manifest.js';
 type Callback<T> = (message: T) => void;
 
 export const validEvents = [
+  'finish',
   'pagechange',
   'filechange',
   'selectionchange',
@@ -230,6 +231,16 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     createShapeFromSvg(svgString: string): PenpotGroup {
       // checkPermission('page:write');
       return context.createShapeFromSvg(svgString);
+    },
+
+    group(shapes: PenpotShape[]): PenpotGroup {
+      // checkPermission('page:write');
+      return context.group(shapes);
+    },
+
+    ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void {
+      // checkPermission('page:write');
+      context.ungroup(group, ...other);
     },
 
     uploadMediaUrl(name: string, url: string) {

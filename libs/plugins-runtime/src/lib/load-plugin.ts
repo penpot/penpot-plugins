@@ -37,6 +37,11 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
       });
 
       c.evaluate(code);
+
+      const listenerId: symbol = pluginContext.addListener('finish', () => {
+        lastApi?.closePlugin();
+        pluginContext?.removeListener(listenerId);
+      });
     } else {
       console.error('Cannot find Penpot Context');
     }
