@@ -79,7 +79,7 @@
         },
         "development": {
           "buildTarget": "poc-state-plugin:build:development",
-          "port": 4202
+          "port": 4301
         }
       },
       "defaultConfiguration": "development"
