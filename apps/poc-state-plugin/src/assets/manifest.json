@@ -1,7 +1,7 @@
 {
   "name": "POC State Read",
   "description": "Sandbox plugin for plugins development",
-  "host": "http://localhost:4202",
+  "host": "http://localhost:4301",
   "code": "/assets/plugin.js",
   "icon": "/assets/icon.png",
   "permissions": [
