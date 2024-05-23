@@ -4,13 +4,18 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others --names build,server \"npx nx run plugins-runtime:build --watch --mode development\" \"npx nx run plugins-runtime:preview\"",
-    "start:pc-plugin": "npx nx run-many --targets=buildPlugin,serve --projects=poc-state-plugin --watch --host 0.0.0.0 --port 4301",
-    "start:contrast-plugin": "npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview",
-    "start:rpc-api": "npx nx serve rpc-api",
-    "start:styles-example": "npx nx run example-styles:serve --host 0.0.0.0 --port 4201",
-    "start:icons-plugin": "npx nx run-many --targets=buildPlugin,serve --projects=icons-plugin --watch --host 0.0.0.0 --port 4303",
-    "start:loremipsum-plugin": "npx nx run-many --targets=buildPlugin,serve --projects=lorem-ipsum-plugin --watch --port 4304",
+    "start": "npm run start:app:runtime",
+
+    "start:app:runtime": "concurrently --kill-others --names build,server \"npx nx run plugins-runtime:build --watch --mode development\" \"npx nx run plugins-runtime:preview\"",
+    "start:app:styles-example": "npx nx run example-styles:serve --host 0.0.0.0 --port 4201",
+
+    "start:plugin:all": "concurrently --kill-others \"npm:start:plugin:*(!all)\"",
+    "start:plugin:poc-state": "npx nx run-many --targets=buildPlugin,serve --projects=poc-state-plugin --watch --host 0.0.0.0 --port 4301",
+    "start:plugin:contrast": "npx nx run contrast-plugin:build --watch & npx nx run contrast-plugin:preview",
+    "start:plugin:icons": "npx nx run-many --targets=buildPlugin,serve --projects=icons-plugin --watch --host 0.0.0.0 --port 4303",
+    "start:plugin:loremipsum": "npx nx run-many --targets=buildPlugin,serve --projects=lorem-ipsum-plugin --watch --port 4304",
+    "start:plugin:palette": "npx nx run create-palette-plugin:build --watch & npx nx run create-palette-plugin:preview",
+
     "build": "npx nx build plugins-runtime --emptyOutDir=true",
     "lint": "nx run-many --all --target=lint --parallel",
     "lint:affected": "npx nx affected --target=lint",

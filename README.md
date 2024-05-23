@@ -64,19 +64,21 @@ Open in your browser: `http://localhost:4210/`
 
 ## Sample plugins
 
-| Plugin             | Description                                                 | PORT | Start command                   | Manifest URL                               |
-| ------------------ | ----------------------------------------------------------- | ---- | ------------------------------- | ------------------------------------------ |
-| poc-state-plugin   | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:pc-plugin         | http://localhost:4301/assets/manifest.json |
-| contrast-plugin    | Sample plugin that gives you color contrast information     | 4302 | npm run start:contrast-plugin   | http://localhost:4302/manifest.json        |
-| icons-plugin       | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:icons-plugin      | http://localhost:4303/assets/manifest.json |
-| lorem-ipsum-plugin | Generate Lorem ipsum text                                   | 4304 | npm run start:loremipsum-plugin | http://localhost:4304/assets/manifest.json |
+| Plugin                | Description                                                 | PORT | Start command                   | Manifest URL                               |
+| --------------------- | ----------------------------------------------------------- | ---- | ------------------------------- | ------------------------------------------ |
+| poc-state-plugin      | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:plugin:poc-state  | http://localhost:4301/assets/manifest.json |
+| contrast-plugin       | Sample plugin that gives you color contrast information     | 4302 | npm run start:plugin:contrast   | http://localhost:4302/manifest.json        |
+| icons-plugin          | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:plugin:icons      | http://localhost:4303/assets/manifest.json |
+| lorem-ipsum-plugin    | Generate Lorem ipsum text                                   | 4304 | npm run start:plugin:loremipsum | http://localhost:4304/assets/manifest.json |
+| create-palette-plugin | Creates a board with all the palette colors                 | 4305 | npm run start:plugin:palette    | http://localhost:4305/assets/manifest.json |
+| import-table          | --                                                          | 4306 | --                              | --                                         |
 
 ## Web Apps
 
-| App             | Description                                                       | PORT | Start command                | URL                    |
-| --------------- | ----------------------------------------------------------------- | ---- | ---------------------------- | ---------------------- |
-| plugins-runtime | Runtime for the plugins subsystem                                 | 4200 | npm run start                |                        |
-| example-styles  | Showcase of some of the Penpot styles that can be used in plugins | 4201 | npm run start:styles-example | http://localhost:4201/ |
+| App             | Description                                                       | PORT | Start command                    | URL                    |
+| --------------- | ----------------------------------------------------------------- | ---- | -------------------------------- | ---------------------- |
+| plugins-runtime | Runtime for the plugins subsystem                                 | 4200 | npm run start:app:runtime        |                        |
+| example-styles  | Showcase of some of the Penpot styles that can be used in plugins | 4201 | npm run start:app:styles-example | http://localhost:4201/ |
 
 ## License
 
