@@ -7,6 +7,7 @@
   --font-line-height-s: 1.2;
   --font-line-height-m: 1.4;
   --font-line-height-l: 1.5;
+  --font-size-xs: 10px;
   --font-size-s: 12px;
   --font-size-m: 14px;
   --font-size-l: 16px;
@@ -66,6 +67,12 @@ code {
   font-size: 18px;
   line-height: var(--font-line-height-s);
   text-transform: uppercase;
+}
+
+.body-xs {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-s);
 }
 
 .body-s {

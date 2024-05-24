@@ -1,0 +1,7 @@
+{
+  "name": "Contrast",
+  "host": "http://localhost:4302",
+  "description": "Measure contrast plugin",
+  "code": "/assets/plugin.js",
+  "permissions": ["page:read", "file:read", "selection:read"]
+}
