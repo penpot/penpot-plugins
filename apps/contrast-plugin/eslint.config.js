@@ -1,25 +1,43 @@
 import baseConfig from '../../eslint.config.js';
-import typescriptEslintParser from '@typescript-eslint/parser';
+import { compat } from '../../eslint.base.config.js';
 
 export default [
   ...baseConfig,
-  {
-    languageOptions: {
-      parser: typescriptEslintParser,
-      parserOptions: { project: './apps/contrast-plugin/tsconfig.app.json' },
-    },
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    rules: {},
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    rules: {},
-  },
-  {
-    files: ['**/*.js', '**/*.jsx'],
-    rules: {},
-  },
-  { ignores: ['vite.config.ts'] },
+  ...compat
+    .config({
+      extends: [
+        'plugin:@nx/angular',
+        'plugin:@angular-eslint/template/process-inline-templates',
+      ],
+    })
+    .map((config) => ({
+      ...config,
+      files: ['**/*.ts'],
+      rules: {
+        '@angular-eslint/directive-selector': [
+          'error',
+          {
+            type: 'attribute',
+            prefix: 'app',
+            style: 'camelCase',
+          },
+        ],
+        '@angular-eslint/component-selector': [
+          'error',
+          {
+            type: 'element',
+            prefix: 'app',
+            style: 'kebab-case',
+          },
+        ],
+      },
+    })),
+  ...compat
+    .config({ extends: ['plugin:@nx/angular-template'] })
+    .map((config) => ({
+      ...config,
+      files: ['**/*.html'],
+      rules: {},
+    })),
+  { ignores: ['**/assets/*.js'] },
 ];
