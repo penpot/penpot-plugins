@@ -32,7 +32,6 @@ section {
 
 .regular-generate {
   padding-block-end: var(--spacing-24);
-  border-block-end: 2px solid var(--background-quaternary);
 
   button {
     margin-block-start: var(--spacing-12);

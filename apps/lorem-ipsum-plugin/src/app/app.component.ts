@@ -35,7 +35,7 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
             <option value="characters">Characters</option>
           </select>
         </div>
-        <button type="submit" data-appearance="secondary">Generate</button>
+        <button type="submit" data-appearance="primary">Generate</button>
       </section>
       <section class="extra-options">
         <div class="checkbox-container">
