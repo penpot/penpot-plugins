@@ -71,7 +71,7 @@ Open in your browser: `http://localhost:4210/`
 | icons-plugin          | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:plugin:icons      | http://localhost:4303/assets/manifest.json |
 | lorem-ipsum-plugin    | Generate Lorem ipsum text                                   | 4304 | npm run start:plugin:loremipsum | http://localhost:4304/assets/manifest.json |
 | create-palette-plugin | Creates a board with all the palette colors                 | 4305 | npm run start:plugin:palette    | http://localhost:4305/assets/manifest.json |
-| import-table          | --                                                          | 4306 | --                              | --                                         |
+| table-plugin          | Create or import table                                      | 4306 | npm run start:table-plugin      | http://localhost:4306/assets/manifest.json |                             | --                                         |
 
 ## Web Apps
 
