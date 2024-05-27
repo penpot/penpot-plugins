@@ -339,6 +339,16 @@ export interface PenpotText extends PenpotShapeBase {
   readonly type: 'text';
   characters: string;
   growType: 'fixed' | 'auto-width' | 'auto-height';
+
+  fontId: string | 'mixed';
+  fontFamily: string | 'mixed';
+  fontVariantId: string | 'mixed';
+  fontSize: string | 'mixed';
+  fontWeight: string | 'mixed';
+  fontStyle: string | 'mixed';
+  lineHeight: string | 'mixed';
+  letterSpacing: string | 'mixed';
+  textTransform: string | 'mixed';
 }
 
 export interface PepotFrame extends PenpotShapeBase {
