@@ -58,11 +58,11 @@ export interface PenpotStroke {
   strokeAlignment?: 'center' | 'inner' | 'outer';
   strokeCapStart?: PenpotStrokeCap;
   strokeCapEnd?: PenpotStrokeCap;
-  strokeColorGradient: PenpotGradient;
+  strokeColorGradient?: PenpotGradient;
 }
 
 export interface PenpotColor {
-  id: string;
+  id?: string;
   name?: string;
   path?: string;
   color?: string;
@@ -74,21 +74,21 @@ export interface PenpotColor {
 }
 
 export interface PenpotShadow {
-  id: string;
-  style: 'drop-shadow' | 'inner-shadow';
-  offsetX: number;
-  offsetY: number;
-  blur: number;
-  spread: number;
-  hidden: boolean;
-  color: PenpotColor;
+  id?: string;
+  style?: 'drop-shadow' | 'inner-shadow';
+  offsetX?: number;
+  offsetY?: number;
+  blur?: number;
+  spread?: number;
+  hidden?: boolean;
+  color?: PenpotColor;
 }
 
 export interface PenpotBlur {
-  id: string;
-  type: 'layer-blur';
-  value: number;
-  hidden: boolean;
+  id?: string;
+  type?: 'layer-blur';
+  value?: number;
+  hidden?: boolean;
 }
 
 export interface PenpotFrameGuideColumnParams {
@@ -237,7 +237,7 @@ export interface PenpotShapeBase {
     | 'luminosity';
 
   shadows: PenpotShadow[];
-  blur: PenpotBlur;
+  blur?: PenpotBlur;
   exports: PenpotExport;
 
   // Relative positions
@@ -285,6 +285,7 @@ export interface PenpotShapeBase {
   };
 
   resize(width: number, height: number): void;
+
   clone(): PenpotShape;
   remove(): void;
 }
@@ -392,17 +393,35 @@ export interface EventsMap {
 
 export type PenpotTheme = 'light' | 'dark';
 
-export type PenpotLibraryColor = {
+export interface PenpotLibraryElement {
+  id: string;
+  libraryId: string;
   name: string;
+  path: string;
+}
+
+export interface PenpotLibraryColor extends PenpotLibraryElement {
   color?: string;
   opacity?: number;
+
   asFill(): PenpotFill;
   asStroke(): PenpotStroke;
-};
+}
 
-export type PenpotLibraryTypography = {
-  name: string;
-};
+export interface PenpotLibraryTypography extends PenpotLibraryElement {
+  fontId: string;
+  fontFamily: string;
+  fontVariantId: string;
+  fontSize: string;
+  fontWeight: string;
+  fontStyle: string;
+  lineHeight: string;
+  letterSpacing: string;
+  textTransform: string;
+
+  applyToText(shape: PenpotShape): void;
+  applyToTextRange(shape: PenpotShape): void;
+}
 
 export type PenpotLibraryComponent = {
   name: string;
