@@ -3,5 +3,6 @@
   "host": "http://localhost:4304",
   "description": "Lorem ipsum text generator plugin",
   "code": "/assets/plugin.js",
+  "icon": "/assets/icon.png",
   "permissions": ["page:read", "file:read", "selection:read"]
 }

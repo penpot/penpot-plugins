@@ -2,6 +2,7 @@
   "name": "Contrast plugin",
   "host": "http://localhost:4302",
   "code": "/plugin.js",
+  "icon": "/icon.png",
   "permissions": [
     "page:read",
     "file:read",
