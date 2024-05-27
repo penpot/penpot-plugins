@@ -186,6 +186,7 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
     const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
     frame.resize(width, height);
+    frame.borderRadius = 8;
 
     // create grid
     const grid = frame.addGridLayout();
@@ -207,6 +208,21 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
     grid.verticalPadding = 10;
     grid.horizontalPadding = 10;
 
+    // These properties are not mandatory, if not defined will apply the default values
+    frame.shadows = [
+      {
+        style: 'drop-shadow',
+        offsetX: 5,
+        offsetY: 5,
+        blur: 4,
+        spread: 5,
+        color: {
+          color: '#000000',
+          opacity: 0.3,
+        },
+      },
+    ];
+
     // create text
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -220,6 +236,9 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
         const board = penpot.createFrame();
         grid.appendChild(board, row + 1, col + 1);
         board.fills = [color.asFill()];
+        board.strokes = [
+          { strokeColor: '#000000', strokeOpacity: 0.3, strokeStyle: 'solid' },
+        ];
 
         if (board.layoutChild) {
           board.layoutChild.horizontalSizing = 'fill';

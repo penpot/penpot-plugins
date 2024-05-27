@@ -33,6 +33,7 @@ function createPalette() {
   const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
   frame.resize(width, height);
+  frame.borderRadius = 8;
 
   // create grid
   const grid = frame.addGridLayout();
@@ -67,6 +68,9 @@ function createPalette() {
       const board = penpot.createFrame();
       grid.appendChild(board, row + 1, col + 1);
       board.fills = [color.asFill()];
+      board.strokes = [
+        { strokeColor: '#000000', strokeOpacity: 0.3, strokeStyle: 'solid' },
+      ];
 
       if (board.layoutChild) {
         board.layoutChild.horizontalSizing = 'fill';
