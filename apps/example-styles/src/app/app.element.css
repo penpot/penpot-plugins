@@ -96,3 +96,9 @@ section {
   display: flex;
   gap: var(--spacing-8);
 }
+
+.select-section {
+  .form-group {
+    min-inline-size: 200px;
+  }
+}
