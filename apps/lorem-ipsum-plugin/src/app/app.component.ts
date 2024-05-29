@@ -93,7 +93,7 @@ export class AppComponent {
     num: new FormControl<number>(1, { nonNullable: true }),
     type: new FormControl<GenerationTypes>('paragraphs', { nonNullable: true }),
     startWith: new FormControl(true, { nonNullable: true }),
-    autoClose: new FormControl(true, { nonNullable: true }),
+    autoClose: new FormControl(false, { nonNullable: true }),
   });
 
   constructor() {
