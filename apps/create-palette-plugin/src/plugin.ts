@@ -6,13 +6,6 @@ function main() {
 }
 
 function createPalette() {
-  const frame = penpot.createFrame();
-  frame.name = 'Palette';
-
-  const viewport = penpot.viewport;
-  frame.x = viewport.center.x - 150;
-  frame.y = viewport.center.y - 200;
-
   const colors = penpot.library.local.colors.sort((a, b) =>
     a.name.toLowerCase() > b.name.toLowerCase()
       ? 1
@@ -21,16 +14,23 @@ function createPalette() {
       : 0
   );
 
+  const cols = 4;
+  const rows = Math.ceil(colors.length / cols);
+
+  const width = cols * 200 + Math.max(0, cols - 1) * 10 + 20;
+  const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
+
+  const frame = penpot.createFrame();
+  frame.name = 'Palette';
+
+  const viewport = penpot.viewport;
+  frame.x = viewport.center.x - width / 2;
+  frame.y = viewport.center.y - height / 2;
+
   if (colors.length === 0) {
     // NO colors return
     return;
   }
-
-  const cols = 3;
-  const rows = Math.ceil(colors.length / 3);
-
-  const width = cols * 150 + Math.max(0, cols - 1) * 10 + 20;
-  const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
   frame.resize(width, height);
   frame.borderRadius = 8;
@@ -39,11 +39,11 @@ function createPalette() {
   const grid = frame.addGridLayout();
 
   for (let i = 0; i < rows; i++) {
-    grid.addRow('auto');
+    grid.addRow('flex', 1);
   }
 
   for (let i = 0; i < cols; i++) {
-    grid.addColumn('auto');
+    grid.addColumn('flex', 1);
   }
 
   grid.alignItems = 'center';
@@ -54,6 +54,8 @@ function createPalette() {
   grid.columnGap = 10;
   grid.verticalPadding = 10;
   grid.horizontalPadding = 10;
+
+  grid.horizontalSizing = 'auto';
 
   // create text
   for (let row = 0; row < rows; row++) {
@@ -80,9 +82,22 @@ function createPalette() {
       const flex = board.addFlexLayout();
       flex.alignItems = 'center';
       flex.justifyContent = 'center';
+      flex.verticalPadding = 8;
+      flex.horizontalPadding = 8;
 
       const text = penpot.createText(color.name);
+      text.fontWeight = 'bold';
+      text.fontVariantId = 'bold';
       text.growType = 'auto-width';
+      text.strokes = [
+        {
+          strokeColor: '#FFFFFF',
+          strokeWidth: 1,
+          strokeAlignment: 'outer',
+          strokeOpacity: 0.5,
+          strokeStyle: 'solid',
+        },
+      ];
       board.appendChild(text);
     }
   }
