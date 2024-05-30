@@ -51,17 +51,29 @@ Now, add the following configuration to your `project.json` to compile the `plug
 }
 ```
 
-Also, update `targets.build` with the following code to allow the use of Penpot styles.
+Also, update `targets.build` with the following code to allow the use of Penpot styles and build the plugin code.
 
 ```json
-"styles": [
-  "libs/plugins-styles/src/lib/styles.css",
-  "apps/example-plugin/src/styles.css"
-],
-"optimization": {
-  "scripts": true,
-  "styles": true,
-  "fonts": false
+"options": {
+  "styles": [
+    "libs/plugins-styles/src/lib/styles.css",
+    "apps/example-plugin/src/styles.css"
+  ],
+  "optimization": {
+    "scripts": true,
+    "styles": true,
+    "fonts": false
+  }
+},
+"dependsOn": ["buildPlugin"]
+```
+
+Add the default port to the `serve.configurations.development` task:
+
+```json
+"development": {
+  // ...
+  "port": 4302,
 }
 ```
 
@@ -103,7 +115,7 @@ console.log('Hello Plugin');
 Run this command:
 
 ```sh
-npx nx run-many --targets=buildPlugin,serve --projects=example-plugin --watch
+npx nx run example-plugin:init
 ```
 
 This will run two tasks: `serve`, the usual Angular server, and `buildPlugin`, which will compile the `plugin.ts` file.
@@ -114,6 +126,12 @@ Finally, to load your plugin into Penpot, execute the following command in the b
 
 ```typescript
 ɵloadPluginByUrl('http://localhost:4201/assets/manifest.json');
+```
+
+### Step 7: Build plugin
+
+```
+npx nx run example-plugin:build
 ```
 
 ### Learn More About Plugin Development

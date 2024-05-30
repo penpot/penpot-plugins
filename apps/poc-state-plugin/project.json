@@ -79,7 +79,8 @@
         },
         "development": {
           "buildTarget": "poc-state-plugin:build:development",
-          "port": 4301
+          "port": 4301,
+          "host": "0.0.0.0"
         }
       },
       "defaultConfiguration": "development"

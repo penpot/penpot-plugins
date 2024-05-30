@@ -30,6 +30,9 @@
   },
   "plugins": [
     {
+      "plugin": "./tools/plugins/init-plugin.ts"
+    },
+    {
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",

@@ -75,7 +75,9 @@
           "buildTarget": "icons-plugin:build:production"
         },
         "development": {
-          "buildTarget": "icons-plugin:build:development"
+          "buildTarget": "icons-plugin:build:development",
+          "host": "0.0.0.0",
+          "port": 4303
         }
       },
       "defaultConfiguration": "development"
