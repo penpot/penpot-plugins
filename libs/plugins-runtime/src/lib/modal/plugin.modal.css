@@ -29,8 +29,8 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  inset-block-end: 10px;
-  inset-inline-start: 10px;
+  inset-block-start: 40px;
+  inset-inline-end: 320px;
   z-index: 1000;
   padding: 25px;
   border-radius: 15px;
