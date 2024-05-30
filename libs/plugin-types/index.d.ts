@@ -404,8 +404,8 @@ export interface EventsMap {
 export type PenpotTheme = 'light' | 'dark';
 
 export interface PenpotLibraryElement {
-  id: string;
-  libraryId: string;
+  readonly id: string;
+  readonly libraryId: string;
   name: string;
   path: string;
 }
@@ -441,6 +441,9 @@ export type PenpotLibrary = {
   colors: PenpotLibraryColor[];
   typographies: PenpotLibraryTypography[];
   components: PenpotLibraryComponent[];
+
+  // createColor(): PenpotLibraryColor;
+  // createTypography(): PenpotLibraryTypography;
 };
 
 export type PenpotLibraryContext = {
