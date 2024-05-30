@@ -1,6 +1,5 @@
 {
   "name": "Contrast",
-  "host": "http://localhost:4302",
   "description": "Measure contrast plugin",
   "code": "/assets/plugin.js",
   "icon": "/assets/icon.png",
