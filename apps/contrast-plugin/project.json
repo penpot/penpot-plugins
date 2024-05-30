@@ -52,7 +52,8 @@
           "sourceMap": true
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "production",
+      "dependsOn": ["buildPlugin"]
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
@@ -61,7 +62,9 @@
           "buildTarget": "contrast-plugin:build:production"
         },
         "development": {
-          "buildTarget": "contrast-plugin:build:development"
+          "buildTarget": "contrast-plugin:build:development",
+          "host": "0.0.0.0",
+          "port": 4302
         }
       },
       "defaultConfiguration": "development"

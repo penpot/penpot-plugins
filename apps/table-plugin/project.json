@@ -52,7 +52,8 @@
           "sourceMap": true
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "production",
+      "dependsOn": ["buildPlugin"]
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
@@ -61,7 +62,8 @@
           "buildTarget": "table-plugin:build:production"
         },
         "development": {
-          "buildTarget": "table-plugin:build:development"
+          "buildTarget": "table-plugin:build:development",
+          "port": 4306
         }
       },
       "defaultConfiguration": "development"
