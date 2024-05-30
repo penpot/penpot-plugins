@@ -17,7 +17,9 @@ Next, create a `manifest.json` file inside the `/public` directory. This file is
 ```json
 {
   "name": "Example Plugin",
-  "code": "http://localhost:4201/plugin.js",
+  "host": "http://localhost:4201",
+  "code": "/plugin.js",
+  "icon": "/icon.png",
   "permissions": ["page:read", "file:read", "selection:read"]
 }
 ```
