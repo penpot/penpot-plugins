@@ -33,7 +33,7 @@ export const validEvents = [
 
 export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
-let modal: PluginModalElement | null = null;
+let modals = new Set<PluginModalElement>([]);
 
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
@@ -47,17 +47,23 @@ export function triggerEvent(
   type: keyof EventsMap,
   message: EventsMap[keyof EventsMap]
 ) {
-  if (type === 'themechange' && modal) {
-    modal.setTheme(message as PenpotTheme);
+  if (type === 'themechange') {
+    modals.forEach((modal) => {
+      modal.setTheme(message as PenpotTheme);
+    });
   }
   const listeners = eventListeners.get(type) || [];
   listeners.forEach((listener) => listener(message));
 }
 
 export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
+  let modal: PluginModalElement | null = null;
+
   const closePlugin = () => {
-    modal?.removeEventListener('close', closePlugin);
     if (modal) {
+      modals.delete(modal);
+
+      modal.removeEventListener('close', closePlugin);
       modal.remove();
     }
     uiMessagesCallbacks = [];
@@ -87,6 +93,8 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
         modal.addEventListener('close', closePlugin, {
           once: true,
         });
+
+        modals.add(modal);
       },
 
       sendMessage(message: unknown) {
