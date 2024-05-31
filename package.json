@@ -14,6 +14,7 @@
     "start:plugin:loremipsum": "npx nx run lorem-ipsum-plugin:init",
     "start:plugin:palette": "npx nx run create-palette-plugin:build --watch & npx nx run create-palette-plugin:preview",
     "start:plugin:table": "npx nx run table-plugin:init",
+    "start:plugin:renamelayers": "npx nx run rename-layers-plugin:init",
     "build": "npx nx build plugins-runtime --emptyOutDir=true",
     "lint": "nx run-many --all --target=lint --parallel",
     "lint:affected": "npx nx affected --target=lint",

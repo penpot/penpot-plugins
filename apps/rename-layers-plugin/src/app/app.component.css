@@ -1,0 +1,15 @@
+.explanation {
+  margin-block-end: var(--spacing-8);
+}
+.form {
+  padding-block: var(--spacing-12);
+}
+
+.form-group {
+  margin-block-end: var(--spacing-8);
+}
+
+.input,
+button {
+  inline-size: 100%;
+}
