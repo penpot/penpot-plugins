@@ -1,0 +1,26 @@
+<div class="form">
+  <p class="explanation body-s">Introduce the text to replace</p>
+  <div class="form-group">
+    <label class="input-label-hidden" for="current">Search</label>
+    <input
+      [(ngModel)]="textToReplace.current"
+      class="input"
+      type="text"
+      placeholder="Search"
+      id="current"
+    />
+  </div>
+  <div class="form-group">
+    <label class="input-label-hidden" for="replace">Replace</label>
+    <input
+      [(ngModel)]="textToReplace.new"
+      class="input"
+      type="text"
+      placeholder="Replace"
+      id="replace"
+    />
+  </div>
+  <button type="button" data-appearance="primary" (click)="updateText()">
+    Replace all
+  </button>
+</div>

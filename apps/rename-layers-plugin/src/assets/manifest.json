@@ -1,0 +1,7 @@
+{
+  "name": "Rename layers plugin",
+  "host": "http://localhost:4307",
+  "description": "Change the name of one or several layers",
+  "code": "/assets/plugin.js",
+  "permissions": ["page:read", "file:read", "selection:read"]
+}
