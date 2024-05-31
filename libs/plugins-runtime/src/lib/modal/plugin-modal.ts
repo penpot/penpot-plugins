@@ -24,6 +24,20 @@ export class PluginModalElement extends HTMLElement {
     this.#dragEvents?.();
   }
 
+  calculateZIndex() {
+    const modals = document.querySelectorAll<HTMLElement>('plugin-modal');
+
+    const zIndexModals = Array.from(modals)
+      .filter((modal) => modal !== this)
+      .map((modal) => {
+        return Number(modal.style.zIndex);
+      });
+
+    const maxZIndex = Math.max(...zIndexModals, 0);
+
+    this.style.zIndex = (maxZIndex + 1).toString();
+  }
+
   connectedCallback() {
     const title = this.getAttribute('title');
     const iframeSrc = this.getAttribute('iframe-src');
@@ -43,7 +57,10 @@ export class PluginModalElement extends HTMLElement {
     this.#wrapper.style.inlineSize = `${width}px`;
     this.#wrapper.style.blockSize = `${height}px`;
 
-    this.#dragEvents = dragHandler(this.#wrapper);
+    // move modal to the top
+    this.#dragEvents = dragHandler(this.#wrapper, () => {
+      this.calculateZIndex();
+    });
 
     const header = document.createElement('div');
     header.classList.add('header');
@@ -100,6 +117,8 @@ export class PluginModalElement extends HTMLElement {
     style.textContent = modalCss;
 
     this.shadowRoot.appendChild(style);
+
+    this.calculateZIndex();
   }
 }
 

@@ -5,7 +5,8 @@ import { loadManifest, loadManifestCode } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
 
 let isLockedDown = false;
-let lastApi: ReturnType<typeof createApi> | undefined;
+let createdApis: ReturnType<typeof createApi>[] = [];
+const multiPlugin = false;
 
 let pluginContext: PenpotContext | null = null;
 
@@ -22,15 +23,18 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
       hardenIntrinsics();
     }
 
-    if (lastApi) {
-      lastApi.closePlugin();
+    if (createdApis && !multiPlugin) {
+      createdApis.forEach((pluginApi) => {
+        pluginApi.closePlugin();
+      });
     }
 
     if (pluginContext) {
-      lastApi = createApi(pluginContext, manifest);
+      const pluginApi = createApi(pluginContext, manifest);
+      createdApis.push(pluginApi);
 
       const c = new Compartment({
-        penpot: harden(lastApi),
+        penpot: harden(pluginApi),
         fetch: window.fetch.bind(window),
         console: harden(window.console),
         Math: harden(Math),
@@ -49,7 +53,10 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
       c.evaluate(code);
 
       const listenerId: symbol = pluginContext.addListener('finish', () => {
-        lastApi?.closePlugin();
+        createdApis.forEach((pluginApi) => {
+          pluginApi.closePlugin();
+        });
+
         pluginContext?.removeListener(listenerId);
       });
     } else {
