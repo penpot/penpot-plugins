@@ -2,7 +2,7 @@ import { PluginMessageEvent } from './app/model';
 
 penpot.ui.open('Plugin table', `?theme=${penpot.getTheme()}`, {
   width: 235,
-  height: 510,
+  height: 564,
 });
 
 penpot.on('themechange', (theme) => {
