@@ -35,7 +35,14 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
 
       const c = new Compartment({
         penpot: harden(pluginApi),
-        fetch: window.fetch.bind(window),
+        fetch: harden((...args: Parameters<typeof fetch>) => {
+          const requestArgs: RequestInit = {
+            ...args[1],
+            credentials: 'omit',
+          };
+
+          return fetch(args[0], requestArgs);
+        }),
         console: harden(window.console),
         Math: harden(Math),
         setTimeout: harden(
