@@ -198,6 +198,44 @@ export interface PenpotFlexLayout extends PenpotCommonLayout {
   appendChild(child: PenpotShape): void;
 }
 
+interface PenpotPathCommand {
+  command:
+    | 'M'
+    | 'move-to'
+    | 'Z'
+    | 'close-path'
+    | 'L'
+    | 'line-to'
+    | 'H'
+    | 'line-to-horizontal'
+    | 'V'
+    | 'line-to-vertical'
+    | 'C'
+    | 'curve-to'
+    | 'S'
+    | 'smooth-curve-to'
+    | 'Q'
+    | 'quadratic-bezier-curve-to'
+    | 'T'
+    | 'smooth-quadratic-bezier-curve-to'
+    | 'A'
+    | 'elliptical-arc';
+
+  params?: {
+    x?: number;
+    y?: number;
+    c1x: number;
+    c1y: number;
+    c2x: number;
+    c2y: number;
+    rx?: number;
+    ry?: number;
+    xAxisRotation?: number;
+    largeArcFlag?: boolean;
+    sweepFlag?: boolean;
+  };
+}
+
 export interface PenpotShapeBase {
   id: string;
   name: string;
@@ -316,10 +354,22 @@ export interface PenpotGroup extends PenpotShapeBase {
   readonly children: PenpotShape[];
   appendChild(child: PenpotShape): void;
   insertChild(index: number, child: PenpotShape): void;
+  makeMask(): void;
+  removeMask(): void;
 }
+
+export type PenpotBoolType =
+  | 'union'
+  | 'difference'
+  | 'exclude'
+  | 'intersection';
 
 export interface PenpotBool extends PenpotShapeBase {
   readonly type: 'bool';
+
+  // From path
+  toD(): string;
+  content: Array<PenpotPathCommand>;
 
   // Container Properties
   readonly children: PenpotShape[];
@@ -332,7 +382,10 @@ export interface PenpotRectangle extends PenpotShapeBase {
 }
 
 export interface PenpotPath extends PenpotShapeBase {
-  readonly type: 'rect';
+  readonly type: 'path';
+
+  toD(): string;
+  content: Array<PenpotPathCommand>;
 }
 
 export interface PenpotText extends PenpotShapeBase {
@@ -356,7 +409,7 @@ export interface PepotFrame extends PenpotShapeBase {
   readonly children: PenpotShape[];
 }
 
-export interface PenpotCircle extends PenpotShapeBase {
+export interface PenpotEllipse extends PenpotShapeBase {
   type: 'circle';
 }
 
@@ -389,7 +442,7 @@ export type PenpotShape =
   | PenpotRectangle
   | PenpotPath
   | PenpotText
-  | PenpotCircle
+  | PenpotEllipse
   | PenpotSvgRaw
   | PenpotImage;
 
@@ -474,8 +527,12 @@ export interface PenpotContext {
 
   createRectangle(): PenpotRectangle;
   createFrame(): PenpotFrame;
+  createEllipse(): PenpotEllipse;
+  createPath(): PenpotPath;
+  createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool;
   createShapeFromSvg(svgString: string): PenpotGroup;
   createText(text: string): PenpotText;
+
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void
