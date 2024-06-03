@@ -413,6 +413,8 @@ export interface PenpotLibraryElement {
 export interface PenpotLibraryColor extends PenpotLibraryElement {
   color?: string;
   opacity?: number;
+  gradient?: PenpotGradient;
+  image?: PenpotImageData;
 
   asFill(): PenpotFill;
   asStroke(): PenpotStroke;
@@ -433,17 +435,18 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   applyToTextRange(shape: PenpotShape): void;
 }
 
-export type PenpotLibraryComponent = {
-  name: string;
-};
+export interface PenpotLibraryComponent extends PenpotLibraryElement {
+  instance(): PenpotShape;
+}
 
 export type PenpotLibrary = {
   colors: PenpotLibraryColor[];
   typographies: PenpotLibraryTypography[];
   components: PenpotLibraryComponent[];
 
-  // createColor(): PenpotLibraryColor;
-  // createTypography(): PenpotLibraryTypography;
+  createColor(): PenpotLibraryColor;
+  createTypography(): PenpotLibraryTypography;
+  createComponent(shapes: PenpotShape[]): PenpotLibraryComponent;
 };
 
 export type PenpotLibraryContext = {
