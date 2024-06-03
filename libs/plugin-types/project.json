@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "command": "tsc --noEmit"
+      "command": "tsc -p {projectRoot} --noEmit"
     },
     "build": {
       "command": "node tools/scripts/build-types.mjs",
