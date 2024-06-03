@@ -26,11 +26,12 @@
 }
 
 .wrapper {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: fixed;
-  inset-block-start: 40px;
-  inset-inline-end: 320px;
+  inset-block-start: var(--modal-block-start);
+  inset-inline-end: var(--modal-inline-end);
   z-index: 1000;
   padding: 25px;
   border-radius: 15px;

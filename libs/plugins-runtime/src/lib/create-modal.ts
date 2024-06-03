@@ -12,10 +12,32 @@ export function createModal(
 
   modal.setTheme(theme);
 
+  const defaultWidth = 335;
+  const defaultHeight = 590;
+
+  const initialPosition = {
+    blockStart: 40,
+    inlineEnd: 320,
+  };
+
+  modal.style.setProperty(
+    '--modal-block-start',
+    `${initialPosition.blockStart}px`
+  );
+  modal.style.setProperty(
+    '--modal-inline-end',
+    `${initialPosition.inlineEnd}px`
+  );
+
+  const maxWidth = window.innerWidth - initialPosition.inlineEnd;
+  const maxHeight = window.innerHeight - initialPosition.blockStart;
+  const width = Math.min(options?.width || defaultWidth, maxWidth);
+  const height = Math.min(options?.height || defaultHeight, maxHeight);
+
   modal.setAttribute('title', name);
   modal.setAttribute('iframe-src', url);
-  modal.setAttribute('width', String(options?.width || 285));
-  modal.setAttribute('height', String(options?.height || 540));
+  modal.setAttribute('width', String(width));
+  modal.setAttribute('height', String(height));
 
   document.body.appendChild(modal);
 
