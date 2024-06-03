@@ -12,6 +12,10 @@ import type {
   PenpotFile,
   PenpotTheme,
   PenpotLibraryContext,
+  PenpotEllipse,
+  PenpotPath,
+  PenpotBoolType,
+  PenpotBool,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -224,9 +228,24 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.createRectangle();
     },
 
+    createEllipse(): PenpotEllipse {
+      // checkPermission('page:write');
+      return context.createEllipse();
+    },
+
     createText(text: string): PenpotText {
       // checkPermission('page:write');
       return context.createText(text);
+    },
+
+    createPath(): PenpotPath {
+      // checkPermission('page:write');
+      return context.createPath();
+    },
+
+    createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool {
+      // checkPermission('page:write');
+      return context.createPath(boolType, shapes);
     },
 
     createShapeFromSvg(svgString: string): PenpotGroup {
