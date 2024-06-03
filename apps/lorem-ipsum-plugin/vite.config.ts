@@ -5,6 +5,7 @@ export default defineConfig({
   root: __dirname,
   cacheDir: '../node_modules/.vite/lorem-ipsum-plugin',
   test: {
+    watch: false,
     globals: true,
     cache: {
       dir: '../node_modules/.vitest',

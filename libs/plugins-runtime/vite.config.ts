@@ -56,6 +56,7 @@ export default defineConfig({
     port: 4200,
   },
   test: {
+    watch: false,
     globals: true,
     cache: {
       dir: '../node_modules/.vitest',
