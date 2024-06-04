@@ -245,7 +245,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
 
     createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool {
       // checkPermission('page:write');
-      return context.createPath(boolType, shapes);
+      return context.createBoolean(boolType, shapes);
     },
 
     createShapeFromSvg(svgString: string): PenpotGroup {
