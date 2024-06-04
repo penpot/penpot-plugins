@@ -507,12 +507,28 @@ export type PenpotLibraryContext = {
   connected: PenpotLibrary[];
 };
 
+export interface PenpotUser {
+  readonly id: string;
+  readonly name?: string;
+  readonly avatarUrl?: string;
+  readonly color: string;
+  readonly sessionId?: string;
+}
+
+export interface PenpotActiveUser extends PenpotUser {
+  readonly position?: { x: number; y: number };
+  readonly zoom?: number;
+}
+
 export interface PenpotContext {
-  root: PenpotShape;
-  currentPage: PenpotPage;
+  readonly root: PenpotShape;
+  readonly currentPage: PenpotPage;
+  readonly viewport: PenpotViewport;
+  readonly library: PenpotLibraryContext;
+  readonly currentUser: PenpotUser;
+  readonly activeUsers: PenpotActiveUser;
+
   selection: PenpotShape[];
-  viewport: PenpotViewport;
-  library: PenpotLibraryContext;
 
   getFile(): PenpotFile | null;
   getPage(): PenpotPage | null;

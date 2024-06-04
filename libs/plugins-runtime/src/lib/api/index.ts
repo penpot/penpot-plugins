@@ -16,6 +16,8 @@ import type {
   PenpotPath,
   PenpotBoolType,
   PenpotBool,
+  PenpotUser,
+  PenpotActiveUser,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -192,6 +194,16 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     get library(): PenpotLibraryContext {
       // checkPermission('library:read');
       return context.library;
+    },
+
+    get currentUser(): PenpotUser {
+      // checkPermission('user:read');
+      return context.currentUser;
+    },
+
+    get activeUsers(): PenpotActiveUser {
+      // checkPermission('activeUsers:read');
+      return context.activeUsers;
     },
 
     getFile(): PenpotFile | null {
