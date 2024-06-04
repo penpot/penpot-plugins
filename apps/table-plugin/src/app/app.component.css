@@ -40,7 +40,7 @@
 }
 
 hr {
-  border-block-end: 2px solid var(--db-quaternary);
+  border-block-end: 2px solid var(--background-quaternary);
   margin-block: var(--spacing-24);
 }
 
@@ -94,9 +94,9 @@ hr {
 }
 
 .tag {
-  border: 1px solid var(--da-primary);
+  border: 1px solid var(--accent-primary);
   border-radius: var(--spacing-4);
-  color: var(--da-primary);
+  color: var(--accent-primary);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-bold);
   line-height: var(--font-line-height-s);
@@ -119,5 +119,37 @@ hr {
   & .message {
     color: var(--lb-primary);
     margin-inline-start: var(--spacing-8);
+  }
+}
+
+:host[data-theme='light'] {
+  & .input-container {
+    background-color: var(--la-primary);
+    color: var(--lb-primary);
+  }
+
+  & .table-grid {
+    background-color: var(--lb-quaternary);
+  }
+
+  & .square {
+    border: 1px solid var(--df-secondary);
+
+    &.active {
+      background-color: var(--la-tertiary);
+    }
+
+    &:hover {
+      background-color: var(--la-primary);
+    }
+  }
+
+  & .error {
+    background-color: var(--error-200);
+    border: 1px solid var(--error-500);
+
+    & .message {
+      color: var(--db-primary);
+    }
   }
 }
