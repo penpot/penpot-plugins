@@ -1,6 +1,6 @@
 import { PluginMessageEvent } from './app/model';
 
-penpot.ui.open('Plugin table', `?theme=${penpot.getTheme()}`, {
+penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
   width: 235,
   height: 564,
 });
@@ -29,6 +29,8 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
     frame.y = viewport.center.y - 200;
     frame.resize(numCols * 160, numRows * 50);
     frame.borderRadius = 8;
+    frame.horizontalSizing = 'fix';
+    frame.verticalSizing = 'auto';
 
     // create grid
     const grid = frame.addGridLayout();
@@ -65,7 +67,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
 
         if (board.layoutChild) {
           board.layoutChild.horizontalSizing = 'fill';
-          board.layoutChild.verticalSizing = 'fill';
+          board.layoutChild.verticalSizing = 'auto';
         }
 
         if (message.content.options.alternateRows && !(row % 2)) {
@@ -105,13 +107,17 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
         }
 
         if (text) {
-          text.growType = 'auto-width';
+          text.growType = 'auto-height';
           text.fontFamily = 'Work Sans';
           text.fontId = 'gfont-work-sans';
           text.fontVariantId = row === 0 ? '500' : 'regular';
           text.fontSize = '12';
           text.fontWeight = row === 0 ? '500' : '400';
           board.appendChild(text);
+          if (text.layoutChild) {
+            text.layoutChild.horizontalSizing = 'fill';
+            text.layoutChild.verticalSizing = 'fix';
+          }
         }
       }
     }
