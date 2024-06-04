@@ -1,5 +1,5 @@
 p {
-  color: var(--df-secondary);
+  color: var(--foreground-secondary);
   margin-block-end: var(--spacing-16);
 }
 
