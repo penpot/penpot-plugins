@@ -95,4 +95,19 @@ describe('createModal', () => {
       String(expectedHeight)
     );
   });
+
+  it('should apply minimum dimensions to the modal', () => {
+    const theme: PenpotTheme = 'light';
+    const options: OpenUIOptions = { width: 100, height: 100 };
+
+    const modal = createModal(
+      'Test Modal',
+      'https://example.com',
+      theme,
+      options
+    );
+
+    expect(modal.setAttribute).toHaveBeenCalledWith('width', '200');
+    expect(modal.setAttribute).toHaveBeenCalledWith('height', '200');
+  });
 });
