@@ -466,6 +466,7 @@
       <span class="icon icon-arrow-top"></span>
       <span class="icon icon-arrow-right"></span>
       <span class="icon icon-arrow-left"></span>
+      <span class="icon icon-arrow-right-full"></span>
       <span class="icon icon-close"></span>
       <span class="icon icon-close-l"></span>
       <span class="icon icon-delete"></span>
@@ -488,6 +489,7 @@
       <span class="icon icon-arrow-top"></span>
       <span class="icon icon-arrow-right"></span>
       <span class="icon icon-arrow-left"></span>
+      <span class="icon icon-arrow-right-full"></span>
       <span class="icon icon-close"></span>
       <span class="icon icon-close-l"></span>
       <span class="icon icon-delete"></span>
