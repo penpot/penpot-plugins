@@ -16,6 +16,7 @@
     "start:plugin:table": "npx nx run table-plugin:init",
     "start:plugin:renamelayers": "npx nx run rename-layers-plugin:init",
     "build": "npx nx build plugins-runtime --emptyOutDir=true",
+    "build:plugins": "npx nx run-many -t build --parallel -p tag:type:plugin --exclude=poc-state-plugin",
     "lint": "nx run-many --all --target=lint --parallel",
     "lint:affected": "npx nx affected --target=lint",
     "test": "nx run-many -t test --parallel -p plugins-runtime lorem-ipsum-plugin",
