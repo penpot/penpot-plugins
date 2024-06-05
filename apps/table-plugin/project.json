@@ -17,7 +17,8 @@
         "tsConfig": "apps/table-plugin/tsconfig.app.json",
         "assets": [
           "apps/table-plugin/src/favicon.ico",
-          "apps/table-plugin/src/assets"
+          "apps/table-plugin/src/assets",
+          "apps/table-plugin/src/_headers"
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",

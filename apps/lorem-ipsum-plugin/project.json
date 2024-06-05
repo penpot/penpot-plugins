@@ -17,7 +17,8 @@
         "tsConfig": "apps/lorem-ipsum-plugin/tsconfig.app.json",
         "assets": [
           "apps/lorem-ipsum-plugin/src/favicon.ico",
-          "apps/lorem-ipsum-plugin/src/assets"
+          "apps/lorem-ipsum-plugin/src/assets",
+          "apps/lorem-ipsum-plugin/src/_headers"
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",
@@ -77,18 +78,14 @@
     },
     "buildPlugin": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "minify": true,
         "outputPath": "apps/lorem-ipsum-plugin/src/assets/",
         "main": "apps/lorem-ipsum-plugin/src/plugin.ts",
         "tsConfig": "apps/lorem-ipsum-plugin/tsconfig.plugin.json",
         "generatePackageJson": false,
-        "format": [
-          "esm"
-        ],
+        "format": ["esm"],
         "deleteOutputPath": false
       }
     }

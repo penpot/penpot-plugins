@@ -17,7 +17,8 @@
         "tsConfig": "apps/contrast-plugin/tsconfig.app.json",
         "assets": [
           "apps/contrast-plugin/src/favicon.ico",
-          "apps/contrast-plugin/src/assets"
+          "apps/contrast-plugin/src/assets",
+          "apps/contrast-plugin/src/_headers"
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",
@@ -77,20 +78,16 @@
     },
     "buildPlugin": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "minify": true,
         "outputPath": "apps/contrast-plugin/src/assets/",
         "main": "apps/contrast-plugin/src/plugin.ts",
         "tsConfig": "apps/contrast-plugin/tsconfig.plugin.json",
         "generatePackageJson": false,
-        "format": [
-          "esm"
-        ],
+        "format": ["esm"],
         "deleteOutputPath": false
       }
-    },
+    }
   }
 }

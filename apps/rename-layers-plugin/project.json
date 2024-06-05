@@ -17,7 +17,8 @@
         "tsConfig": "apps/rename-layers-plugin/tsconfig.app.json",
         "assets": [
           "apps/rename-layers-plugin/src/favicon.ico",
-          "apps/rename-layers-plugin/src/assets"
+          "apps/rename-layers-plugin/src/assets",
+          "apps/rename-layers-plugin/src/_headers"
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",

@@ -30,7 +30,8 @@
         "tsConfig": "apps/icons-plugin/tsconfig.app.json",
         "assets": [
           "apps/icons-plugin/src/favicon.ico",
-          "apps/icons-plugin/src/assets"
+          "apps/icons-plugin/src/assets",
+          "apps/icons-plugin/src/_headers"
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",
