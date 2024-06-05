@@ -1,8 +1,8 @@
 import { PluginMessageEvent } from './app/model';
 
 penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
-  width: 235,
-  height: 564,
+  width: 260,
+  height: 610,
 });
 
 penpot.on('themechange', (theme) => {
