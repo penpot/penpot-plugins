@@ -11,6 +11,8 @@ export function createModal(
   const modal = document.createElement('plugin-modal') as PluginModalElement;
 
   modal.setTheme(theme);
+  const minPluginWidth = 200;
+  const minPluginHeight = 200;
 
   const defaultWidth = 335;
   const defaultHeight = 590;
@@ -31,8 +33,11 @@ export function createModal(
 
   const maxWidth = window.innerWidth - initialPosition.inlineEnd;
   const maxHeight = window.innerHeight - initialPosition.blockStart;
-  const width = Math.min(options?.width || defaultWidth, maxWidth);
-  const height = Math.min(options?.height || defaultHeight, maxHeight);
+  let width = Math.min(options?.width || defaultWidth, maxWidth);
+  let height = Math.min(options?.height || defaultHeight, maxHeight);
+
+  width = Math.max(width, minPluginWidth);
+  height = Math.max(height, minPluginHeight);
 
   modal.setAttribute('title', name);
   modal.setAttribute('iframe-src', url);
