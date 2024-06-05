@@ -1,7 +1,20 @@
+import { PenpotShape } from '@penpot/plugin-types';
+
+export interface ReadyPluginEvent {
+  type: 'ready';
+}
 export interface InitPluginEvent {
   type: 'init';
   content: {
     theme: string;
+    selection: PenpotShape[];
+  };
+}
+
+export interface SelectionPluginEvent {
+  type: 'selection';
+  content: {
+    selection: PenpotShape[];
   };
 }
 export interface ThemePluginEvent {
@@ -14,12 +27,31 @@ export interface ReplaceTextPluginEvent {
   content: ReplaceText;
 }
 
+export interface AddTextPluginEvent {
+  type: 'add-text';
+  content: AddText[];
+}
+
+export interface PreviewReplaceTextPluginEvent {
+  type: 'preview-replace-text';
+  content: ReplaceText;
+}
+
 export type PluginMessageEvent =
+  | ReadyPluginEvent
   | InitPluginEvent
+  | SelectionPluginEvent
   | ThemePluginEvent
-  | ReplaceTextPluginEvent;
+  | ReplaceTextPluginEvent
+  | AddTextPluginEvent
+  | PreviewReplaceTextPluginEvent;
 
 export interface ReplaceText {
+  search: string;
+  replace: string;
+}
+
+export interface AddText {
   current: string;
   new: string;
 }

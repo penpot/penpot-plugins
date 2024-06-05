@@ -1,19 +1,19 @@
 .icon {
-    display: flex;
-    align-items: center;
-    block-size: var(--spacing-16);
-    cursor: default;
-    font-family: var(--body-font);
-    font-size: var(--font-size-medium);
-    inline-size: var(--spacing-16);
-    justify-content: center;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  block-size: var(--spacing-16);
+  cursor: default;
+  font-family: var(--body-font);
+  font-size: var(--font-size-medium);
+  inline-size: var(--spacing-16);
+  justify-content: center;
+  user-select: none;
 }
 
 .icon-arrow-bottom {
-    background-image: url('../icons/arrow-bottom.svg');
-  }
-  
+  background-image: url('../icons/arrow-bottom.svg');
+}
+
 .icon-arrow-left {
   background-image: url('../icons/arrow-left.svg');
 }
@@ -24,6 +24,10 @@
 
 .icon-arrow-top {
   background-image: url('../icons/arrow-top.svg');
+}
+
+.icon-arrow-right-full {
+  background-image: url('../icons/arrow-right-full.svg');
 }
 
 .icon-close {
