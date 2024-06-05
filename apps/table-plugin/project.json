@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/table-plugin/src",
-  "tags": [],
+  "tags": ["type:plugin"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
