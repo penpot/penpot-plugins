@@ -2,7 +2,7 @@ import { PluginMessageEvent } from './app/model';
 
 penpot.ui.open('Plugin rename layers', `?theme=${penpot.getTheme()}`, {
   width: 235,
-  height: 200,
+  height: 245,
 });
 
 penpot.on('themechange', (theme) => {
