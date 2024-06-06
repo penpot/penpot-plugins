@@ -30,7 +30,7 @@
   },
   "plugins": [
     {
-      "plugin": "./tools/plugins/init-plugin.ts"
+      "plugin": "./tools/plugins/plugin-tasks.ts"
     },
     {
       "plugin": "@nx/vite/plugin",

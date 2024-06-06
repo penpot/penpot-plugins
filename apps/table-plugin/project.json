@@ -73,19 +73,6 @@
       "options": {
         "buildTarget": "table-plugin:build"
       }
-    },
-    "buildPlugin": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "minify": true,
-        "outputPath": "apps/table-plugin/src/assets/",
-        "main": "apps/table-plugin/src/plugin.ts",
-        "tsConfig": "apps/table-plugin/tsconfig.plugin.json",
-        "generatePackageJson": false,
-        "format": ["esm"],
-        "deleteOutputPath": false
-      }
     }
   }
 }
