@@ -1,8 +1,20 @@
 /**
+ * TODO PenpotPluginData
+ */
+export interface PenpotPluginData {
+  getPluginData(key: string): string;
+  setPluginData(key: string, value: string): void;
+  getPluginDataKeys(): string[];
+  getSharedPluginData(namespace: string, key: string): string;
+  setSharedPluginData(namespace: string, key: string, value: string): void;
+  getSharedPluginDataKeys(namespace: string): string[];
+}
+
+/**
  * PenpotFile represents a file in the Penpot application.
  * It includes properties for the file's identifier, name, and revision number.
  */
-export interface PenpotFile {
+export interface PenpotFile extends PenpotPluginData {
   id: string;
   name: string;
   revn: number;
@@ -12,7 +24,7 @@ export interface PenpotFile {
  * PenpotPage represents a page in the Penpot application.
  * It includes properties for the page's identifier and name, as well as methods for managing shapes on the page.
  */
-export interface PenpotPage {
+export interface PenpotPage extends PenpotPluginData {
   /**
    * The `id` property is a unique identifier for the page.
    */
@@ -465,7 +477,7 @@ interface PenpotPathCommand {
 /**
  * TODO PenpotShapeBase
  */
-export interface PenpotShapeBase {
+export interface PenpotShapeBase extends PenpotPluginData {
   id: string;
   name: string;
   x: number;
@@ -636,6 +648,23 @@ export interface PenpotPath extends PenpotShapeBase {
 }
 
 /**
+ * TODO PenpotTextRange
+ */
+export interface PenpotTextRange {
+  shape: PenpotText;
+
+  fontId: string | 'mixed';
+  fontFamily: string | 'mixed';
+  fontVariantId: string | 'mixed';
+  fontSize: string | 'mixed';
+  fontWeight: string | 'mixed';
+  fontStyle: string | 'mixed';
+  lineHeight: string | 'mixed';
+  letterSpacing: string | 'mixed';
+  textTransform: string | 'mixed';
+}
+
+/**
  * PenpotText represents a text element in the Penpot application, extending the base shape interface.
  * It includes various properties to define the text content and its styling attributes.
  */
@@ -653,6 +682,8 @@ export interface PenpotText extends PenpotShapeBase {
   lineHeight: string | 'mixed';
   letterSpacing: string | 'mixed';
   textTransform: string | 'mixed';
+
+  getRange(start: number, end: number): PenpotTextRange;
 }
 
 /**
@@ -760,7 +791,7 @@ export type PenpotTheme = 'light' | 'dark';
 /**
  * TODO PenpotLibraryElement
  */
-export interface PenpotLibraryElement {
+export interface PenpotLibraryElement extends PenpotPluginData {
   readonly id: string;
   readonly libraryId: string;
   name: string;
@@ -831,7 +862,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
    * applyToTextRange code
    * ```
    */
-  applyToTextRange(shape: PenpotShape): void;
+  applyToTextRange(range: PenpotTextRange): void;
 }
 
 /**
@@ -852,7 +883,8 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
 /**
  * TODO PenpotLibrary
  */
-export type PenpotLibrary = {
+
+export interface PenpotLibrary extends PenpotPluginData {
   colors: PenpotLibraryColor[];
   typographies: PenpotLibraryTypography[];
   components: PenpotLibraryComponent[];
@@ -884,7 +916,7 @@ export type PenpotLibrary = {
    * ```
    */
   createComponent(shapes: PenpotShape[]): PenpotLibraryComponent;
-};
+}
 
 /**
  * TODO PenpotLibraryContext

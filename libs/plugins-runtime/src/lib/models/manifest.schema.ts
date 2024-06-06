@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const manifestSchema = z.object({
+  pluginId: z.string(),
   name: z.string(),
   host: z.string().url(),
   code: z.string(),
