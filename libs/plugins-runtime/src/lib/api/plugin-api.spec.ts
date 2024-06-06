@@ -31,6 +31,7 @@ describe('Plugin api', () => {
   };
 
   const api = createApi(mockContext as any, {
+    pluginId: 'test',
     name: 'test',
     code: '',
     host: 'http://fake.com',

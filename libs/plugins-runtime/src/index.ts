@@ -3,10 +3,10 @@ import './lib/modal/plugin-modal';
 
 import {
   ɵloadPlugin,
-  setContext,
+  setContextBuilder,
   ɵloadPluginByUrl,
 } from './lib/load-plugin.js';
-import * as api from './lib/api/index.js';
+
 import type { PenpotContext } from '@penpot/plugin-types';
 
 console.log('%c[PLUGINS] Loading plugin system', 'color: #008d7c');
@@ -20,18 +20,12 @@ repairIntrinsics({
 
 const globalThisAny$ = globalThis as any;
 
-globalThisAny$.initPluginsRuntime = (context: PenpotContext) => {
-  if (context) {
-    console.log('%c[PLUGINS] Initialize context', 'color: #008d7c');
-
-    globalThisAny$.ɵcontext = context;
-    globalThis.ɵloadPlugin = ɵloadPlugin;
-    globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
-
-    setContext(context);
-
-    for (const event of api.validEvents) {
-      context.addListener(event, api.triggerEvent.bind(null, event));
-    }
-  }
+globalThisAny$.initPluginsRuntime = (
+  contextBuilder: (id: string) => PenpotContext
+) => {
+  console.log('%c[PLUGINS] Initialize runtime', 'color: #008d7c');
+  setContextBuilder(contextBuilder);
+  globalThisAny$.ɵcontext = contextBuilder('TEST');
+  globalThis.ɵloadPlugin = ɵloadPlugin;
+  globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
 };
