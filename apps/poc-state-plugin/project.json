@@ -6,23 +6,6 @@
   "sourceRoot": "apps/poc-state-plugin/src",
   "tags": ["type:plugin"],
   "targets": {
-    "buildPlugin": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "minify": true,
-        "outputPath": "apps/poc-state-plugin/src/assets/",
-        "main": "apps/poc-state-plugin/src/plugin.ts",
-        "tsConfig": "apps/poc-state-plugin/tsconfig.plugin.json",
-        "generatePackageJson": false,
-        "format": [
-          "esm"
-        ],
-        "deleteOutputPath": false
-      }
-    },
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],

@@ -74,23 +74,6 @@
       "options": {
         "buildTarget": "contrast-plugin:build"
       }
-    },
-    "buildPlugin": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "minify": true,
-        "outputPath": "apps/contrast-plugin/src/assets/",
-        "main": "apps/contrast-plugin/src/plugin.ts",
-        "tsConfig": "apps/contrast-plugin/tsconfig.plugin.json",
-        "generatePackageJson": false,
-        "format": [
-          "esm"
-        ],
-        "deleteOutputPath": false
-      }
-    },
+    }
   }
 }

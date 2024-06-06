@@ -67,7 +67,7 @@ Open in your browser: `http://localhost:4210/`
 | Plugin                | Description                                                 | PORT | Start command                     | Manifest URL                               |
 | --------------------- | ----------------------------------------------------------- | ---- | --------------------------------- | ------------------------------------------ |
 | poc-state-plugin      | Sandbox plugin to test new plugins api functionality        | 4301 | npm run start:plugin:poc-state    | http://localhost:4301/assets/manifest.json |
-| contrast-plugin       | Sample plugin that gives you color contrast information     | 4302 | npm run start:plugin:contrast     | http://localhost:4302/manifest.json        |
+| contrast-plugin       | Sample plugin that gives you color contrast information     | 4302 | npm run start:plugin:contrast     | http://localhost:4302/assets/manifest.json |
 | icons-plugin          | Tool to add icons from [Feather](https://feathericons.com/) | 4303 | npm run start:plugin:icons        | http://localhost:4303/assets/manifest.json |
 | lorem-ipsum-plugin    | Generate Lorem ipsum text                                   | 4304 | npm run start:plugin:loremipsum   | http://localhost:4304/assets/manifest.json |
 | create-palette-plugin | Creates a board with all the palette colors                 | 4305 | npm run start:plugin:palette      | http://localhost:4305/assets/manifest.json |

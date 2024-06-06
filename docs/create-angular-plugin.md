@@ -26,29 +26,10 @@ Next, create a `manifest.json` file inside the `/src/assets` directory. This fil
 
 ### Step 3: Update Project Configuration
 
-Now, add the following configuration to your `project.json` to compile the `plugin.ts` file:
+Now, add the plugin tag.
 
 ```typescript
 "tags": ["type:plugin"],
-"targets": {
-  "buildPlugin": {
-    "executor": "@nx/esbuild:esbuild",
-    "outputs": [
-      "{options.outputPath}"
-    ],
-    "options": {
-      "minify": true,
-      "outputPath": "apps/example-plugin/src/assets/",
-      "main": "apps/example-plugin/src/plugin.ts",
-      "tsConfig": "apps/example-plugin/tsconfig.plugin.json",
-      "generatePackageJson": false,
-      "format": [
-        "esm"
-      ],
-      "deleteOutputPath": false
-    }
-  },
-}
 ```
 
 Also, update `targets.build` with the following code to allow the use of Penpot styles and build the plugin code.
