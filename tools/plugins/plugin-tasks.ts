@@ -1,6 +1,5 @@
 import { CreateNodes, readJsonFile, logger } from '@nx/devkit';
 import { dirname } from 'path';
-import * as fs from 'fs';
 
 export const createNodes: CreateNodes = [
   '**/project.json',
