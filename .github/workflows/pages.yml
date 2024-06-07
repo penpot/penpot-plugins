@@ -10,6 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
+    name: Deploy github pages
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +31,7 @@ jobs:
       - name: Build the project
         run: npm run build:styles-example
 
-    - name: Deploy
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
