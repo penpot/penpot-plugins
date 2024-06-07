@@ -16,6 +16,11 @@ penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
       return;
     }
 
+    const selection = penpot.selection;
+    const data: string | null =
+      selection.length === 1 ? selection[0].getPluginData('counter') : null;
+    const counter = data ? parseInt(data, 10) : 0;
+
     penpot.ui.sendMessage({
       type: 'init',
       content: {
@@ -24,7 +29,8 @@ penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
         fileId: file.id,
         revn: file.revn,
         theme: penpot.getTheme(),
-        selection: penpot.getSelectedShapes(),
+        selection,
+        counter,
       },
     });
   } else if (message.content === 'change-name') {
@@ -254,6 +260,15 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
         board.appendChild(text);
       }
     }
+  } else if (message.content === 'increase-counter') {
+    const selection = penpot.selection;
+    const data: string | null =
+      selection.length === 1 ? selection[0].getPluginData('counter') : null;
+    let counter = data ? parseInt(data, 10) : 0;
+    counter++;
+
+    selection[0].setPluginData('counter', '' + counter);
+    penpot.ui.sendMessage({ type: 'update-counter', content: { counter } });
   }
 });
 
@@ -284,7 +299,10 @@ penpot.on('filechange', () => {
 
 penpot.on('selectionchange', () => {
   const selection = penpot.getSelectedShapes();
-  penpot.ui.sendMessage({ type: 'selection', content: { selection } });
+  const data: string | null =
+    selection.length === 1 ? selection[0].getPluginData('counter') : null;
+  const counter = data ? parseInt(data, 10) : 0;
+  penpot.ui.sendMessage({ type: 'selection', content: { selection, counter } });
 });
 
 penpot.on('themechange', (theme) => {

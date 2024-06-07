@@ -13,6 +13,9 @@ import type { PenpotShape } from '@penpot/plugin-types';
       <p>
         Current project name: <span>{{ projectName() }}</span>
       </p>
+      <p>
+        Counter: <span>{{ counter() }}</span>
+      </p>
 
       <form [formGroup]="form" (ngSubmit)="updateName()">
         <div class="name-wrap">
@@ -66,6 +69,13 @@ import type { PenpotShape } from '@penpot/plugin-types';
         >
           Create color palette board
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="increaseCounter()"
+        >
+          +COUNTER
+        </button>
       </div>
 
       <p>
@@ -88,11 +98,13 @@ export class AppComponent {
   #fileId = null;
   #revn = 0;
   #selection = signal<PenpotShape[]>([]);
+
   form = new FormGroup({
     name: new FormControl(''),
   });
   theme = signal('');
   projectName = signal('Unknown');
+  counter = signal(0);
 
   constructor() {
     window.addEventListener('message', (event) => {
@@ -106,14 +118,18 @@ export class AppComponent {
         );
       } else if (event.data.type === 'selection') {
         this.#refreshSelection(event.data.content.selection);
+        this.counter.set(event.data.content.counter);
       } else if (event.data.type === 'init') {
         this.#fileId = event.data.content.fileId;
         this.#revn = event.data.content.revn;
         this.#refreshPage(event.data.content.pageId, event.data.content.name);
         this.#refreshSelection(event.data.content.selection);
         this.theme.set(event.data.content.theme);
+        this.counter.set(event.data.content.counter);
       } else if (event.data.type === 'theme') {
         this.theme.set(event.data.content);
+      } else if (event.data.type === 'update-counter') {
+        this.counter.set(event.data.content.counter);
       }
     });
 
@@ -172,6 +188,10 @@ export class AppComponent {
 
   createPalette() {
     this.#sendMessage({ content: 'create-colors' });
+  }
+
+  increaseCounter() {
+    this.#sendMessage({ content: 'increase-counter' });
   }
 
   #sendMessage(message: unknown) {
