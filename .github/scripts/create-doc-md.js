@@ -1,7 +1,13 @@
 import * as fs from 'fs';
-import typedocJson from '../../docs/api/api-doc.json' assert { type: 'json' };
+import typedocJson from '../../docs/api/api-doc.json' with { type: 'json' };
 
 const singleTab = '  ';
+const tabsNumber = {
+  0: '',
+  1: singleTab,
+  2: singleTab + singleTab,
+  3: singleTab + singleTab + singleTab,
+};
 
 function generateMarkdownFromTypedoc(data) {
   let markdown = `---
@@ -43,7 +49,7 @@ function generateMarkdownForItem(item) {
   markdown += `### ${item.name}\n\n`;
 
   if (item.comment && item.comment.summary) {
-    markdown += getComments(item.comment.summary);
+    markdown += getComments(item.comment.summary, 0);
   }
 
   if (item?.children) {
@@ -62,6 +68,10 @@ function generateMarkdownForItem(item) {
           } else if (itemGroup.type.types) {
             markdown += getMarkdownCodeBlock(getNameWithType(itemGroup), 2);
           }
+
+          if (itemGroup.comment && itemGroup.comment.summary) {
+            markdown += getComments(itemGroup.comment.summary, 2);
+          }
         } else if (
           itemGroup.type?.type === 'reference' ||
           itemGroup.type?.type === 'intrinsic' ||
@@ -69,19 +79,28 @@ function generateMarkdownForItem(item) {
           itemGroup.type?.type === 'array'
         ) {
           markdown += `* **${itemGroup.name}**\n\n`;
+          markdown += getMarkdownCodeBlock(getNameWithType(itemGroup), 2);
 
           if (itemGroup.comment && itemGroup.comment.summary) {
             markdown +=
-              singleTab + singleTab + getComments(itemGroup.comment.summary);
+              getComments(itemGroup.comment.summary, 2);
           }
 
-          markdown += getMarkdownCodeBlock(getNameWithType(itemGroup), 2);
+          if (itemGroup.comment && itemGroup.comment.blockTags) {
+            markdown += singleTab + singleTab + `**Example:**\n\n`;
+            markdown += getBlockTag(itemGroup.comment.blockTags, 2);
+          }
         } else if (itemGroup.type?.type === 'reflection') {
           if (itemGroup.type?.declaration?.children) {
             markdown += `* **${itemGroup.name}**\n\n`;
 
             if (itemGroup.comment && itemGroup.comment.summary) {
-              markdown += getComments(itemGroup.comment.summary);
+              markdown += getComments(itemGroup.comment.summary, 2);
+            }
+
+            if (itemGroup.comment && itemGroup.comment.blockTags) {
+              markdown += singleTab + singleTab + `**Example:**\n\n`;
+              markdown += getBlockTag(itemGroup.comment.blockTags, 2);
             }
 
             itemGroup.type.declaration.groups.forEach((itemSubGroup) => {
@@ -92,16 +111,6 @@ function generateMarkdownForItem(item) {
                 );
                 markdown +=
                   singleTab + `* **${itemSubGroupChildren.name}**\n\n`;
-
-                if (
-                  itemSubGroupChildren.comment &&
-                  itemSubGroupChildren.comment.summary
-                ) {
-                  markdown +=
-                    singleTab +
-                    singleTab +
-                    getComments(itemSubGroupChildren.comment.summary);
-                }
 
                 if (
                   itemSubGroupChildren.type.declaration &&
@@ -115,12 +124,30 @@ function generateMarkdownForItem(item) {
                     2
                   );
 
+                  if (
+                    itemSubGroupChildren.comment &&
+                    itemSubGroupChildren.comment.summary
+                  ) {
+                    markdown +=
+                      getComments(itemSubGroupChildren.comment.summary, 2);
+                  }
+  
+                  if (itemSubGroupChildren.comment && itemSubGroupChildren.comment.blockTags) {
+                    markdown += singleTab + singleTab + `**Example:**\n\n`;
+                    markdown += getBlockTag(itemSubGroupChildren.comment.blockTags, 2);
+                  }
+
                   // Properties with a method as type
                   markdown += singleTab + singleTab + `**Parameters:**\n\n`;
+                  if (itemSubGroupChildren.type.declaration.signatures[0] && itemSubGroupChildren.type.declaration.signatures[0].parameters && itemSubGroupChildren.type.declaration.signatures[0].parameters.some(param => param.comment)) {
+                    itemSubGroupChildren.type.declaration.signatures[0].parameters.forEach(param => {
+                      markdown += getParamsComments(param.name, param.comment.summary, 2);
+                    });
+                  }
                   markdown += getMarkdownCodeBlock(
                     getParameters(
                       itemSubGroupChildren.type.declaration.signatures,
-                      2
+                      0
                     ),
                     2
                   );
@@ -137,11 +164,6 @@ function generateMarkdownForItem(item) {
             });
           } else {
             markdown += `* **${itemGroup.name}**\n\n`;
-
-            if (itemGroup.comment && itemGroup.comment.summary) {
-              markdown += singleTab + getComments(itemGroup.comment.summary);
-            }
-
             markdown += getMarkdownCodeBlock(
               getSignatureParams(
                 itemGroup.name,
@@ -150,9 +172,23 @@ function generateMarkdownForItem(item) {
               1
             );
 
+            if (itemGroup.comment && itemGroup.comment.summary) {
+              markdown += getComments(itemGroup.comment.summary, 1);
+            }
+
+            if (itemGroup.comment && itemGroup.comment.blockTags) {
+              markdown += singleTab + singleTab + `**Example:**\n\n`;
+              markdown += getBlockTag(itemGroup.comment.blockTags, 2);
+            }
+
             // Properties with a method as type
             if (itemGroup.type?.declaration?.signatures[0].parameters) {
               markdown += singleTab + `**Parameters:**\n\n`;
+              if (itemGroup.type?.declaration?.signatures[0] && itemGroup.type?.declaration?.signatures[0].parameters && itemGroup.type?.declaration?.signatures[0].parameters.some(param => param.comment)) {
+                itemGroup.type?.declaration?.signatures[0].parameters.forEach(param => {
+                  markdown += getParamsComments(param.name, param.comment.summary, 2);
+                });
+              }
               markdown += getMarkdownCodeBlock(
                 getParameters(itemGroup.type?.declaration?.signatures, 0),
                 1
@@ -168,22 +204,32 @@ function generateMarkdownForItem(item) {
           }
         } else if (itemGroup.signatures) {
           markdown += `* **${itemGroup.name}**\n\n`;
+          markdown += getMarkdownCodeBlock(
+            getNameWithType(itemGroup.signatures[0]),
+            1
+          );
 
           if (
             itemGroup.signatures[0].comment &&
             itemGroup.signatures[0].comment.summary
           ) {
             markdown +=
-              singleTab + getComments(itemGroup.signatures[0].comment.summary);
+              singleTab + getComments(itemGroup.signatures[0].comment.summary, 0);
           }
-          markdown += getMarkdownCodeBlock(
-            getNameWithType(itemGroup.signatures[0]),
-            1
-          );
+
+          if (itemGroup.signatures[0].comment && itemGroup.signatures[0].comment.blockTags) {
+            markdown += singleTab + singleTab + `**Example:**\n\n`;
+            markdown += getBlockTag(itemGroup.signatures[0].comment.blockTags, 2);
+          }
 
           // Methods
           if (itemGroup.signatures[0].parameters) {
             markdown += singleTab + `**Parameters:**\n\n`;
+            if (itemGroup.signatures[0] && itemGroup.signatures[0].parameters && itemGroup.signatures[0].parameters.some(param => param.comment)) {
+              itemGroup.signatures[0].parameters.forEach(param => {
+                markdown += getParamsComments(param.name, param.comment.summary, 2);
+              });
+            }
             markdown += getMarkdownCodeBlock(
               getParameters(itemGroup.signatures, 0),
               1
@@ -261,11 +307,6 @@ function getType(data) {
 }
 
 function getParameters(signatures, tabs) {
-  const tabsNumber = {
-    0: '',
-    1: singleTab,
-    2: singleTab + singleTab,
-  };
   let paramsParts = '';
   signatures.forEach((signature) => {
     if (signature.parameters) {
@@ -300,9 +341,24 @@ function getParameters(signatures, tabs) {
   return paramsParts;
 }
 
-function getComments(comentSummary) {
+function getBlockTag(commentBlockTag, tabs) {
+  const block = commentBlockTag.map((block) => {
+    return block.content.map(content => content.text).join(' \n');
+  }).join(' ');
+  const formatContent = block.split('\n')
+  .map((item) => tabsNumber[tabs] + item)
+  .join('\n');
+  return `${formatContent}\n\n`;
+}
+
+function getComments(comentSummary, tabs) {
   const comment = comentSummary.map((summary) => summary.text).join(' ');
-  return `${comment}\n\n`;
+  return `${tabsNumber[tabs]}${comment}\n\n`;
+}
+
+function getParamsComments(paramName, comentSummary, tabs) {
+  const comment = comentSummary.map((summary) => summary.text).join(' ');
+  return `${tabsNumber[tabs]}\`${paramName}\` ${comment}\n\n`;
 }
 
 function getSignatureParams(paramName, signature) {
@@ -320,12 +376,6 @@ function getSignatureParams(paramName, signature) {
 }
 
 function getMarkdownCodeBlock(content, tabs) {
-  const tabsNumber = {
-    0: '',
-    1: singleTab,
-    2: singleTab + singleTab,
-    3: singleTab + singleTab + singleTab,
-  };
   const formatContent = content
     .split('\n')
     .map((item) => tabsNumber[tabs] + item)
