@@ -21,3 +21,4 @@ esbuild.build({
 
 copy(`${source}/package.json`, `${dist}/package.json`).catch(handleErr);
 copy(`${source}/README.md`, `${dist}/README.md`).catch(handleErr);
+copy(`LICENSE`, `${dist}/LICENSE`).catch(handleErr);
