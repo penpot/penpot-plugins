@@ -5,17 +5,19 @@ body {
   margin: 0 var(--spacing-20);
 }
 
+app-root {
+  display: block;
+  padding-block: var(--spacing-16);
+}
+
 section {
   border-bottom: 1px solid var(--app-white);
   padding-block: var(--spacing-32);
-}
 
-.code {
-  background-color: var(--app-white);
-  border-radius: var(--spacing-4);
-  color: var(--app-black);
-  display: block;
-  padding: var(--spacing-20);
+  &:last-child {
+    padding-block-end: 0;
+    border-bottom: 0;
+  }
 }
 
 .theme-group {
@@ -34,6 +36,10 @@ section {
 
 .component-section {
   margin-block-end: var(--spacing-40);
+
+  &:last-child {
+    margin-block-end: 0;
+  }
 }
 
 .title-margin {
