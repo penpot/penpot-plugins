@@ -10,6 +10,14 @@ Install the package:
 npm install @penpot/plugin-styles
 ```
 
+Import the CSS file into your project:
+
 ```css
 @import '@penpot/plugin-styles/styles.css';
 ```
+
+### Usage
+
+For detailed examples and to see how to use the styles and components, visit the documentation at:
+
+[Penpot Plugin Styles Documentation](https://penpot.github.io/penpot-plugins/)
