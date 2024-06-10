@@ -1,12 +1,54 @@
 /**
- * TODO PenpotPluginData
+ * Provides methods for managing plugin-specific data associated with a Penpot shape.
  */
 export interface PenpotPluginData {
+  /**
+   * Retrieves the plugin-specific data associated with the given key.
+   *
+   * @param key The key for which to retrieve the data.
+   * Returns the data associated with the key as a string.
+   */
   getPluginData(key: string): string;
+
+  /**
+   * Sets the plugin-specific data for the given key.
+   *
+   * @param key The key for which to set the data.
+   * @param value The data to set for the key.
+   */
   setPluginData(key: string, value: string): void;
+
+  /**
+   * Retrieves all the keys for the plugin-specific data.
+   *
+   * Returns an array of strings representing all the keys.
+   */
   getPluginDataKeys(): string[];
+
+  /**
+   * Retrieves the shared plugin-specific data for the given namespace and key.
+   *
+   * @param namespace The namespace for the shared data.
+   * @param key The key for which to retrieve the data.
+   * Returns the shared data associated with the key as a string.
+   */
   getSharedPluginData(namespace: string, key: string): string;
+
+  /**
+   * Sets the shared plugin-specific data for the given namespace and key.
+   *
+   * @param namespace The namespace for the shared data.
+   * @param key The key for which to set the data.
+   * @param value The data to set for the key.
+   */
   setSharedPluginData(namespace: string, key: string, value: string): void;
+
+  /**
+   * Retrieves all the keys for the shared plugin-specific data in the given namespace.
+   *
+   * @param namespace The namespace for the shared data.
+   * Returns an array of strings representing all the keys in the namespace.
+   */
   getSharedPluginDataKeys(namespace: string): string[];
 }
 
@@ -45,46 +87,110 @@ export interface PenpotPage extends PenpotPluginData {
 }
 
 /**
- * TODO PenpotGradient
+ * Represents a gradient configuration in Penpot.
+ * A gradient can be either linear or radial and includes properties to define its shape, position, and color stops.
  */
 export type PenpotGradient = {
+  /**
+   * Specifies the type of gradient.
+   * - 'linear': A gradient that transitions colors along a straight line.
+   * - 'radial': A gradient that transitions colors radiating outward from a central point.
+   */
   type: 'linear' | 'radial';
+  /**
+   * The X-coordinate of the starting point of the gradient.
+   */
   startX: number;
+  /**
+   * The Y-coordinate of the starting point of the gradient.
+   */
   startY: number;
+  /**
+   * The X-coordinate of the ending point of the gradient.
+   */
   endX: number;
+  /**
+   * The Y-coordinate of the ending point of the gradient.
+   */
   endY: number;
+  /**
+   * The width of the gradient. For radial gradients, this could be interpreted as the radius.
+   */
   width: number;
+  /**
+   * An array of color stops that define the gradient.
+   */
   stops: Array<{ color: string; opacity?: number; offset: number }>;
 };
 
 /**
- * TODO PenpotImageData
+ * Represents image data in Penpot.
+ * This includes properties for defining the image's dimensions, metadata, and aspect ratio handling.
  */
 export type PenpotImageData = {
+  /**
+   * The optional name of the image.
+   */
   name?: string;
+  /**
+   * The width of the image.
+   */
   width: number;
+  /**
+   * The height of the image.
+   */
   height: number;
+  /**
+   * The optional media type of the image (e.g., 'image/png', 'image/jpeg').
+   */
   mtype?: string;
+  /**
+   * The unique identifier for the image.
+   */
   id: string;
+  /**
+   * Whether to keep the aspect ratio of the image when resizing.
+   * Defaults to false if omitted.
+   */
   keepApectRatio?: boolean;
 };
 
 /**
- * TODO PenpotFill
+ * Represents fill properties in Penpot.
+ * This interface includes properties for defining solid color fills, gradient fills, and image fills.
  */
 export interface PenpotFill {
+  /**
+   * The optional solid fill color, represented as a string (e.g., '#FF5733').
+   */
   fillColor?: string;
+  /**
+   * The optional opacity level of the solid fill color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
+   */
   fillOpacity?: number;
+  /**
+   * The optional gradient fill defined by a PenpotGradient object.
+   */
   fillColorGradient?: PenpotGradient;
+  /**
+   * The optional reference to an external file for the fill color.
+   */
   fillColorRefFile?: string;
+  /**
+   * The optional reference ID within the external file for the fill color.
+   */
   fillColorRefId?: string;
+  /**
+   * The optional image fill defined by a PenpotImageData object.
+   */
   fillImage?: PenpotImageData;
 }
 
 /**
- * TODO PenpotStrokeCap
+ * Represents the cap style of a stroke in Penpot.
+ * This type defines various styles for the ends of a stroke.
  */
-
 export type PenpotStrokeCap =
   | 'round'
   | 'square'
@@ -95,109 +201,275 @@ export type PenpotStrokeCap =
   | 'diamond-marker';
 
 /**
- * TODO PenpotStroke
+ * Represents stroke properties in Penpot.
+ * This interface includes properties for defining the color, style, width, alignment, and caps of a stroke.
  */
 export interface PenpotStroke {
+  /**
+   * The optional color of the stroke, represented as a string (e.g., '#FF5733').
+   */
   strokeColor?: string;
+  /**
+   * The optional reference to an external file for the stroke color.
+   */
   strokeColorRefFile?: string;
+  /**
+   * The optional reference ID within the external file for the stroke color.
+   */
   strokeColorRefId?: string;
+  /**
+   * The optional opacity level of the stroke color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
+   */
   strokeOpacity?: number;
+  /**
+   * The optional style of the stroke.
+   */
   strokeStyle?: 'solid' | 'dotted' | 'dashed' | 'mixed' | 'none' | 'svg';
+  /**
+   * The optional width of the stroke.
+   */
   strokeWidth?: number;
+  /**
+   * The optional alignment of the stroke relative to the shape's boundary.
+   */
   strokeAlignment?: 'center' | 'inner' | 'outer';
+  /**
+   * The optional cap style for the start of the stroke.
+   */
   strokeCapStart?: PenpotStrokeCap;
+  /**
+   * The optional cap style for the end of the stroke.
+   */
   strokeCapEnd?: PenpotStrokeCap;
+  /**
+   * The optional gradient stroke defined by a PenpotGradient object.
+   */
   strokeColorGradient?: PenpotGradient;
 }
 
 /**
- * TODO PenpotColor
+ * Represents color properties in Penpot.
+ * This interface includes properties for defining solid colors, gradients, and image fills, along with metadata.
  */
 export interface PenpotColor {
+  /**
+   * The optional unique identifier for the color.
+   */
   id?: string;
+  /**
+   * The optional name of the color.
+   */
   name?: string;
+  /**
+   * The optional path or category to which this color belongs.
+   */
   path?: string;
+  /**
+   * The optional solid color, represented as a string (e.g., '#FF5733').
+   */
   color?: string;
+  /**
+   * The optional opacity level of the color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
+   */
   opacity?: number;
+  /**
+   * The optional reference ID for an external color definition.
+   */
   refId?: string;
+  /**
+   * The optional reference to an external file for the color definition.
+   */
   refFile?: string;
+  /**
+   * The optional gradient fill defined by a PenpotGradient object.
+   */
   gradient?: PenpotGradient;
+  /**
+   * The optional image fill defined by a PenpotImageData object.
+   */
   image?: PenpotImageData;
 }
 
 /**
- * TODO PenpotShadow
+ * Represents shadow properties in Penpot.
+ * This interface includes properties for defining drop shadows and inner shadows, along with their visual attributes.
  */
 export interface PenpotShadow {
+  /**
+   * The optional unique identifier for the shadow.
+   */
   id?: string;
+  /**
+   * The optional style of the shadow.
+   * - 'drop-shadow': A shadow cast outside the element.
+   * - 'inner-shadow': A shadow cast inside the element.
+   */
   style?: 'drop-shadow' | 'inner-shadow';
+  /**
+   * The optional X-axis offset of the shadow.
+   */
   offsetX?: number;
+  /**
+   * The optional Y-axis offset of the shadow.
+   */
   offsetY?: number;
+  /**
+   * The optional blur radius of the shadow.
+   */
   blur?: number;
+  /**
+   * The optional spread radius of the shadow.
+   */
   spread?: number;
+  /**
+   * Specifies whether the shadow is hidden.
+   * Defaults to false if omitted.
+   */
   hidden?: boolean;
+  /**
+   * The optional color of the shadow, defined by a PenpotColor object.
+   */
   color?: PenpotColor;
 }
 
 /**
- * TODO PenpotBlur
+ * Represents blur properties in Penpot.
+ * This interface includes properties for defining the type and intensity of a blur effect, along with its visibility.
  */
 export interface PenpotBlur {
+  /**
+   * The optional unique identifier for the blur effect.
+   */
   id?: string;
+  /**
+   * The optional type of the blur effect.
+   * Currently, only 'layer-blur' is supported.
+   */
   type?: 'layer-blur';
+  /**
+   * The optional intensity value of the blur effect.
+   */
   value?: number;
+  /**
+   * Specifies whether the blur effect is hidden.
+   * Defaults to false if omitted.
+   */
   hidden?: boolean;
 }
 
 /**
- * TODO PenpotFrameGuideColumnParams
+ * Represents parameters for frame guide columns in Penpot.
+ * This interface includes properties for defining the appearance and layout of column guides within a frame.
  */
 export interface PenpotFrameGuideColumnParams {
+  /**
+   * The color configuration for the column guides.
+   */
   color: { color: string; opacity: number };
+  /**
+   * The optional alignment type of the column guides.
+   * - 'stretch': Columns stretch to fit the available space.
+   * - 'left': Columns align to the left.
+   * - 'center': Columns align to the center.
+   * - 'right': Columns align to the right.
+   */
   type?: 'stretch' | 'left' | 'center' | 'right';
+  /**
+   * The optional size of each column.
+   */
   size?: number;
+  /**
+   * The optional margin between the columns and the frame edges.
+   */
   margin?: number;
+  /**
+   * The optional length of each item within the columns.
+   */
   itemLength?: number;
+  /**
+   * The optional gutter width between columns.
+   */
   gutter?: number;
 }
 
 /**
- * TODO PenpotFrameGuideSquareParams
+ * Represents parameters for frame guide squares in Penpot.
+ * This interface includes properties for defining the appearance and size of square guides within a frame.
  */
 export interface PenpotFrameGuideSquareParams {
+  /**
+   * The color configuration for the square guides.
+   */
   color: { color: string; opacity: number };
+  /**
+   * The optional size of each square guide.
+   */
   size?: number;
 }
 
 /**
- * TODO PenpotFrameGuideColumn
+ * Represents a frame guide for columns in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of column guides within a frame.
  */
 export interface PenpotFrameGuideColumn {
+  /**
+   * The type of the guide, which is always 'column' for column guides.
+   */
   type: 'column';
+  /**
+   * Specifies whether the column guide is displayed.
+   */
   display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the column guides.
+   */
   params: PenpotFrameGuideColumnParams;
 }
 
 /**
- * TODO PenpotFrameGuideRow
+ * Represents a frame guide for rows in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of row guides within a frame.
  */
 export interface PenpotFrameGuideRow {
+  /**
+   * The type of the guide, which is always 'row' for row guides.
+   */
   type: 'row';
+  /**
+   * Specifies whether the row guide is displayed.
+   */
   display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the row guides.
+   * Note: This reuses the same parameter structure as column guides.
+   */
   params: PenpotFrameGuideColumnParams;
 }
 
 /**
- * TODO PenpotFrameGuideSquare
+ * Represents a frame guide for squares in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of square guides within a frame.
  */
 export interface PenpotFrameGuideSquare {
+  /**
+   * The type of the guide, which is always 'column' for square guides.
+   */
   type: 'column';
+  /**
+   * Specifies whether the square guide is displayed.
+   */
   display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the square guides.
+   */
   params: PenpotFrameGuideSquareParams;
 }
 
 /**
- * TODO PenpotFrameGuide
+ * Represents a frame guide in Penpot.
+ * This type can be one of several specific frame guide types: column, row, or square.
  */
 export type PenpotFrameGuide =
   | PenpotFrameGuideColumn
@@ -205,20 +477,35 @@ export type PenpotFrameGuide =
   | PenpotFrameGuideSquare;
 
 /**
- * TODO PenpotExport
+ * Represents export settings in Penpot.
+ * This interface includes properties for defining export configurations.
  */
 export interface PenpotExport {}
 
 /**
- * TODO PenpotTrackType
+ * Represents the type of track in Penpot.
+ * This type defines various track types that can be used in layout configurations.
  */
 export type PenpotTrackType = 'flex' | 'fixed' | 'percent' | 'auto';
 
 /**
- * TODO PenpotTrack
+ * Represents a track configuration in Penpot.
+ * This interface includes properties for defining the type and value of a track used in layout configurations.
  */
 export interface PenpotTrack {
+  /**
+   * The type of the track.
+   * This can be one of the following values:
+   * - 'flex': A flexible track type.
+   * - 'fixed': A fixed track type.
+   * - 'percent': A track type defined by a percentage.
+   * - 'auto': An automatic track type.
+   */
   type: PenpotTrackType;
+  /**
+   * The value of the track.
+   * This can be a number representing the size of the track, or null if not applicable.
+   */
   value: number | null;
 }
 
@@ -424,19 +711,51 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
 }
 
 /**
- * TODO PenpotFlexLayout
+ * Represents a flexible layout configuration in Penpot.
+ * This interface extends `PenpotCommonLayout` and includes properties for defining the direction,
+ * wrapping behavior, and child management of a flex layout.
  */
 export interface PenpotFlexLayout extends PenpotCommonLayout {
+  /**
+   * The direction of the flex layout.
+   * - 'row': Main axis is horizontal, from left to right.
+   * - 'row-reverse': Main axis is horizontal, from right to left.
+   * - 'column': Main axis is vertical, from top to bottom.
+   * - 'column-reverse': Main axis is vertical, from bottom to top.
+   */
   dir: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+  /**
+   * The optional wrapping behavior of the flex layout.
+   * - 'wrap': Child elements will wrap onto multiple lines.
+   * - 'nowrap': Child elements will not wrap.
+   */
   wrap?: 'wrap' | 'nowrap';
-
+  /**
+   * Appends a child element to the flex layout.
+   * @param child The child element to be appended, of type `PenpotShape`.
+   */
   appendChild(child: PenpotShape): void;
 }
 
 /**
- * TODO PenpotPathCommand
+ * Represents a path command in Penpot.
+ * This interface includes a property for defining the type of command.
  */
 interface PenpotPathCommand {
+  /**
+   * The type of path command.
+   * Possible values include:
+   * - 'M' or 'move-to': Move to a new point.
+   * - 'Z' or 'close-path': Close the current path.
+   * - 'L' or 'line-to': Draw a straight line to a new point.
+   * - 'H' or 'line-to-horizontal': Draw a horizontal line to a new point.
+   * - 'V' or 'line-to-vertical': Draw a vertical line to a new point.
+   * - 'C' or 'curve-to': Draw a cubic Bezier curve to a new point.
+   * - 'S' or 'smooth-curve-to': Draw a smooth cubic Bezier curve to a new point.
+   * - 'Q' or 'quadratic-bezier-curve-to': Draw a quadratic Bezier curve to a new point.
+   * - 'T' or 'smooth-quadratic-bezier-curve-to': Draw a smooth quadratic Bezier curve to a new point.
+   * - 'A' or 'elliptical-arc': Draw an elliptical arc to a new point.
+   */
   command:
     | 'M'
     | 'move-to'
@@ -459,44 +778,160 @@ interface PenpotPathCommand {
     | 'A'
     | 'elliptical-arc';
 
+  /**
+   * Optional parameters associated with the path command.
+   */
   params?: {
+    /**
+     * The x-coordinate of the point (or endpoint).
+     */
     x?: number;
+
+    /**
+     * The y-coordinate of the point (or endpoint).
+     */
     y?: number;
+
+    /**
+     * The x-coordinate of the first control point for curves.
+     */
     c1x: number;
+
+    /**
+     * The y-coordinate of the first control point for curves.
+     */
     c1y: number;
+
+    /**
+     * The x-coordinate of the second control point for curves.
+     */
     c2x: number;
+
+    /**
+     * The y-coordinate of the second control point for curves.
+     */
     c2y: number;
+
+    /**
+     * The radius of the ellipse's x-axis.
+     */
     rx?: number;
+
+    /**
+     * The radius of the ellipse's y-axis.
+     */
     ry?: number;
+
+    /**
+     * The rotation angle of the ellipse's x-axis.
+     */
     xAxisRotation?: number;
+
+    /**
+     * A flag indicating whether to use the larger arc.
+     */
     largeArcFlag?: boolean;
+
+    /**
+     * A flag indicating the direction of the arc.
+     */
     sweepFlag?: boolean;
   };
 }
 
 /**
- * TODO PenpotShapeBase
+ * Represents the base properties and methods of a shape in Penpot.
+ * This interface provides common properties and methods shared by all shapes.
  */
 export interface PenpotShapeBase extends PenpotPluginData {
+  /**
+   * The unique identifier of the shape.
+   */
   id: string;
+
+  /**
+   * The name of the shape.
+   */
   name: string;
+
+  /**
+   * The x-coordinate of the shape's position.
+   */
   x: number;
+
+  /**
+   * The y-coordinate of the shape's position.
+   */
   y: number;
+
+  /**
+   * The width of the shape.
+   */
   width: number;
+
+  /**
+   * The height of the shape.
+   */
   height: number;
 
+  /**
+   * Indicates whether the shape is blocked.
+   */
   blocked: boolean;
+
+  /**
+   * Indicates whether the shape is hidden.
+   */
   hidden: boolean;
+
+  /**
+   * Indicates whether the shape has proportion lock enabled.
+   */
   proportionLock: boolean;
+
+  /**
+   * The horizontal constraints applied to the shape.
+   */
   constraintsHorizontal: 'left' | 'right' | 'leftright' | 'center' | 'scale';
+
+  /**
+   * The vertical constraints applied to the shape.
+   */
   constraintsVertical: 'top' | 'bottom' | 'topbottom' | 'center' | 'scale';
+
+  /**
+   * The border radius of the shape.
+   */
   borderRadius: number;
+
+  /**
+   * The border radius of the top-left corner of the shape.
+   */
   borderRadiusTopLeft: number;
+
+  /**
+   * The border radius of the top-right corner of the shape.
+   */
   borderRadiusTopRight: number;
+
+  /**
+   * The border radius of the bottom-right corner of the shape.
+   */
   borderRadiusBottomRight: number;
+
+  /**
+   * The border radius of the bottom-left corner of the shape.
+   */
   borderRadiusBottomLeft: number;
 
+  /**
+   * The opacity of the shape.
+   */
   opacity: number;
+
+  /**
+   * The blend mode applied to the shape.
+   */
   blendMode:
     | 'normal'
     | 'darken'
@@ -515,22 +950,64 @@ export interface PenpotShapeBase extends PenpotPluginData {
     | 'color'
     | 'luminosity';
 
+  /**
+   * The shadows applied to the shape.
+   */
   shadows: PenpotShadow[];
+
+  /**
+   * The blur effect applied to the shape.
+   */
   blur?: PenpotBlur;
+
+  /**
+   * The export settings of the shape.
+   */
   exports: PenpotExport;
 
-  // Relative positions
+  /**
+   * The x-coordinate of the shape relative to its frame.
+   */
   frameX: number;
+
+  /**
+   * The y-coordinate of the shape relative to its frame.
+   */
   frameY: number;
+
+  /**
+   * The x-coordinate of the shape relative to its parent.
+   */
   parentX: number;
+
+  /**
+   * The y-coordinate of the shape relative to its parent.
+   */
   parentY: number;
 
+  /**
+   * Indicates whether the shape is flipped horizontally.
+   */
   flipX: boolean;
+
+  /**
+   * Indicates whether the shape is flipped vertically.
+   */
   flipY: boolean;
 
+  /**
+   * The fills applied to the shape.
+   */
   fills: PenpotFill[];
+
+  /**
+   * The strokes applied to the shape.
+   */
   strokes: PenpotStroke[];
 
+  /**
+   * Layout properties for children of the shape.
+   */
   readonly layoutChild?: {
     absolute: boolean;
     zIndex: number;
@@ -554,6 +1031,9 @@ export interface PenpotShapeBase extends PenpotPluginData {
     minHeight: number | null;
   };
 
+  /**
+   * Layout properties for cells in a grid layout.
+   */
   readonly layoutCell?: {
     row?: number;
     rowSpan?: number;
@@ -563,50 +1043,126 @@ export interface PenpotShapeBase extends PenpotPluginData {
     position?: 'auto' | 'manual' | 'area';
   };
 
+  /**
+   * Resizes the shape to the specified width and height.
+   * @param width The new width of the shape.
+   * @param height The new height of the shape.
+   */
   resize(width: number, height: number): void;
 
+  /**
+   * Creates a clone of the shape.
+   * Returns a new instance of the shape with identical properties.
+   */
   clone(): PenpotShape;
+  /**
+   * Removes the shape from its parent.
+   */
   remove(): void;
 }
 
 /**
- * TODO PenpotFrame
+ * Represents a frame in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties and methods specific to frames.
  */
 export interface PenpotFrame extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'frame' for frames.
+   */
   readonly type: 'frame';
+  /**
+   * The grid layout configuration of the frame, if applicable.
+   */
   readonly grid?: PenpotGridLayout;
+
+  /**
+   * The flex layout configuration of the frame, if applicable.
+   */
   readonly flex?: PenpotFlexLayout;
+
+  /**
+   * The guides associated with the frame.
+   */
   guides: PenpotFrameGuide;
 
+  /**
+   * The horizontal sizing behavior of the frame.
+   */
   horizontalSizing?: 'auto' | 'fix';
+  /**
+   * The vertical sizing behavior of the frame.
+   */
   verticalSizing?: 'auto' | 'fix';
 
   // Container Properties
+  /**
+   * The children shapes contained within the frame.
+   */
   readonly children: PenpotShape[];
+  /**
+   * Appends a child shape to the frame.
+   * @param child The child shape to append.
+   */
   appendChild(child: PenpotShape): void;
+  /**
+   * Inserts a child shape at the specified index within the frame.
+   * @param index The index at which to insert the child shape.
+   * @param child The child shape to insert.
+   */
   insertChild(index: number, child: PenpotShape): void;
 
   // Grid layout
+  /**
+   * Adds a flex layout configuration to the frame.
+   * Returns the flex layout configuration added to the frame.
+   */
   addFlexLayout(): PenpotFlexLayout;
+  /**
+   * Adds a grid layout configuration to the frame.
+   * Returns the grid layout configuration added to the frame.
+   */
   addGridLayout(): PenpotGridLayout;
 }
 
 /**
- * TODO PenpotGroup
+ * Represents a group of shapes in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties and methods specific to groups.
  */
 export interface PenpotGroup extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'group' for groups.
+   */
   readonly type: 'group';
 
   // Container Properties
+  /**
+   * The children shapes contained within the group.
+   */
   readonly children: PenpotShape[];
+  /**
+   * Appends a child shape to the group.
+   * @param child The child shape to append.
+   */
   appendChild(child: PenpotShape): void;
+  /**
+   * Inserts a child shape at the specified index within the group.
+   * @param index The index at which to insert the child shape.
+   * @param child The child shape to insert.
+   */
   insertChild(index: number, child: PenpotShape): void;
+  /**
+   * Converts the group into a mask.
+   */
   makeMask(): void;
+  /**
+   * Removes the mask from the group.
+   */
   removeMask(): void;
 }
 
 /**
- * TODO PenpotBoolType
+ * Represents the boolean operation types available in Penpot.
+ * These types define how shapes can be combined or modified using boolean operations.
  */
 export type PenpotBoolType =
   | 'union'
@@ -615,52 +1171,127 @@ export type PenpotBoolType =
   | 'intersection';
 
 /**
- * TODO PenpotBool
+ * Represents a boolean operation shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties and methods specific to boolean operations.
  */
 export interface PenpotBool extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'bool' for boolean operation shapes.
+   */
   readonly type: 'bool';
 
-  // From path
+  /**
+   * Converts the boolean shape to its path data representation.
+   * Returns the path data (d attribute) as a string.
+   */
   toD(): string;
+  /**
+   * The content of the boolean shape, defined as an array of path commands.
+   */
   content: Array<PenpotPathCommand>;
 
   // Container Properties
+  /**
+   * The children shapes contained within the boolean shape.
+   */
   readonly children: PenpotShape[];
+  /**
+   * Appends a child shape to the boolean shape.
+   * @param child The child shape to append.
+   */
   appendChild(child: PenpotShape): void;
+  /**
+   * Inserts a child shape at the specified index within the boolean shape.
+   * @param index The index at which to insert the child shape.
+   * @param child The child shape to insert.
+   */
   insertChild(index: number, child: PenpotShape): void;
 }
 
 /**
- * TODO PenpotRectangle
+ * Represents a rectangle shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties specific to rectangles.
  */
 export interface PenpotRectangle extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'rect' for rectangle shapes.
+   */
   readonly type: 'rect';
 }
 
 /**
- * TODO PenpotPath
+ * Represents a path shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties and methods specific to paths.
  */
 export interface PenpotPath extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'path' for path shapes.
+   */
   readonly type: 'path';
-
+  /**
+   * Converts the path shape to its path data representation.
+   * Returns the path data (d attribute) as a string.
+   */
   toD(): string;
+  /**
+   * The content of the path shape, defined as an array of path commands.
+   */
   content: Array<PenpotPathCommand>;
 }
 
 /**
- * TODO PenpotTextRange
+ * Represents a range of text within a PenpotText shape.
+ * This interface provides properties for styling and formatting text ranges.
  */
 export interface PenpotTextRange {
+  /**
+   * The PenpotText shape to which this text range belongs.
+   */
   shape: PenpotText;
 
+  /**
+   * The font ID of the text range. It can be a specific font ID or 'mixed' if multiple fonts are used.
+   */
   fontId: string | 'mixed';
+
+  /**
+   * The font family of the text range. It can be a specific font family or 'mixed' if multiple font families are used.
+   */
   fontFamily: string | 'mixed';
+
+  /**
+   * The font variant ID of the text range. It can be a specific font variant ID or 'mixed' if multiple font variants are used.
+   */
   fontVariantId: string | 'mixed';
+
+  /**
+   * The font size of the text range. It can be a specific font size or 'mixed' if multiple font sizes are used.
+   */
   fontSize: string | 'mixed';
+
+  /**
+   * The font weight of the text range. It can be a specific font weight or 'mixed' if multiple font weights are used.
+   */
   fontWeight: string | 'mixed';
+
+  /**
+   * The font style of the text range. It can be a specific font style or 'mixed' if multiple font styles are used.
+   */
   fontStyle: string | 'mixed';
+
+  /**
+   * The line height of the text range. It can be a specific line height or 'mixed' if multiple line heights are used.
+   */
   lineHeight: string | 'mixed';
+
+  /**
+   * The letter spacing of the text range. It can be a specific letter spacing or 'mixed' if multiple letter spacings are used.
+   */
   letterSpacing: string | 'mixed';
+
+  /**
+   * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
+   */
   textTransform: string | 'mixed';
 }
 
@@ -669,47 +1300,106 @@ export interface PenpotTextRange {
  * It includes various properties to define the text content and its styling attributes.
  */
 export interface PenpotText extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'text' for text shapes.
+   */
   readonly type: 'text';
+  /**
+   * The characters contained within the text shape.
+   */
   characters: string;
+  /**
+   * The grow type of the text shape, defining how the text box adjusts its size.
+   * Possible values are:
+   * - 'fixed': Fixed size.
+   * - 'auto-width': Adjusts width automatically.
+   * - 'auto-height': Adjusts height automatically.
+   */
   growType: 'fixed' | 'auto-width' | 'auto-height';
 
+  /**
+   * The font ID used in the text shape, or 'mixed' if multiple fonts are used.
+   */
   fontId: string | 'mixed';
+
+  /**
+   * The font family used in the text shape, or 'mixed' if multiple font families are used.
+   */
   fontFamily: string | 'mixed';
+
+  /**
+   * The font variant ID used in the text shape, or 'mixed' if multiple font variants are used.
+   */
   fontVariantId: string | 'mixed';
+
+  /**
+   * The font size used in the text shape, or 'mixed' if multiple font sizes are used.
+   */
   fontSize: string | 'mixed';
+
+  /**
+   * The font weight used in the text shape, or 'mixed' if multiple font weights are used.
+   */
   fontWeight: string | 'mixed';
+
+  /**
+   * The font style used in the text shape, or 'mixed' if multiple font styles are used.
+   */
   fontStyle: string | 'mixed';
+
+  /**
+   * The line height used in the text shape, or 'mixed' if multiple line heights are used.
+   */
   lineHeight: string | 'mixed';
+
+  /**
+   * The letter spacing used in the text shape, or 'mixed' if multiple letter spacings are used.
+   */
   letterSpacing: string | 'mixed';
+
+  /**
+   * The text transform applied to the text shape, or 'mixed' if multiple text transforms are used.
+   */
   textTransform: string | 'mixed';
 
   getRange(start: number, end: number): PenpotTextRange;
 }
 
 /**
- * TODO PepotFrame
+ * Represents a frame shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties specific to frames.
  */
 export interface PepotFrame extends PenpotShapeBase {
+  /**
+   * The type of the shape, which is always 'frame' for frame shapes.
+   */
   readonly type: 'frame';
+
+  /**
+   * The children shapes contained within the frame.
+   */
   readonly children: PenpotShape[];
 }
 
 /**
- * TODO PenpotEllipse
+ * Represents an ellipse shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties specific to ellipses.
  */
 export interface PenpotEllipse extends PenpotShapeBase {
   type: 'circle';
 }
 
 /**
- * TODO PenpotSvgRaw
+ * Represents an SVG raw shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties specific to raw SVG shapes.
  */
 export interface PenpotSvgRaw extends PenpotShapeBase {
   type: 'svg-raw';
 }
 
 /**
- * TODO PenpotImage
+ * Represents an image shape in Penpot.
+ * This interface extends `PenpotShapeBase` and includes properties specific to image shapes.
  */
 export interface PenpotImage extends PenpotShapeBase {
   type: 'image';
@@ -757,7 +1447,8 @@ export type PenpotShape =
   | PenpotImage;
 
 /**
- * TODO EventsMap
+ * Represents a mapping of events to their corresponding types in Penpot.
+ * This interface provides information about various events that can be triggered in the application.
  */
 export interface EventsMap {
   /**
@@ -784,356 +1475,437 @@ export interface EventsMap {
 }
 
 /**
- * TODO PenpotTheme
+ * This type specifies the possible themes: 'light' or 'dark'.
  */
 export type PenpotTheme = 'light' | 'dark';
 
 /**
- * TODO PenpotLibraryElement
+ * Represents an element in a Penpot library.
+ * This interface provides information about a specific element in a library.
  */
 export interface PenpotLibraryElement extends PenpotPluginData {
+  /**
+   * The unique identifier of the library element.
+   */
   readonly id: string;
+
+  /**
+   * The unique identifier of the library to which the element belongs.
+   */
   readonly libraryId: string;
+
+  /**
+   * The name of the library element.
+   */
   name: string;
+
+  /**
+   * The path of the library element.
+   */
   path: string;
 }
 
 /**
- * TODO PenpotLibraryColor
+ * Represents a color element from a library in Penpot.
+ * This interface extends `PenpotLibraryElement` and includes properties specific to color elements.
  */
 export interface PenpotLibraryColor extends PenpotLibraryElement {
+  /**
+   * The color value of the library color.
+   */
   color?: string;
+
+  /**
+   * The opacity value of the library color.
+   */
   opacity?: number;
+
+  /**
+   * The gradient value of the library color, if it's a gradient.
+   */
   gradient?: PenpotGradient;
+
+  /**
+   * The image data of the library color, if it's an image fill.
+   */
   image?: PenpotImageData;
 
   /**
-   * TODO asFill
-   *
+   * Converts the library color into a fill object.
+   * Returns a `PenpotFill` object representing the color as a fill.
    * @example
    * ```js
-   * asFill code
+   * const fill = libraryColor.asFill();
    * ```
    */
   asFill(): PenpotFill;
   /**
-   * TODO asStroke
-   *
+   * Converts the library color into a stroke object.
+   * Returns a `PenpotStroke` object representing the color as a stroke.
    * @example
    * ```js
-   * asStroke code
+   * const stroke = libraryColor.asStroke();
    * ```
    */
   asStroke(): PenpotStroke;
 }
 
 /**
- * TODO PenpotLibraryTypography
+ * Represents a typography element from a library in Penpot.
+ * This interface extends `PenpotLibraryElement` and includes properties specific to typography elements.
  */
 export interface PenpotLibraryTypography extends PenpotLibraryElement {
+  /**
+   * The unique identifier of the font used in the typography element.
+   */
   fontId: string;
+
+  /**
+   * The font family of the typography element.
+   */
   fontFamily: string;
+
+  /**
+   * The unique identifier of the font variant used in the typography element.
+   */
   fontVariantId: string;
+
+  /**
+   * The font size of the typography element.
+   */
   fontSize: string;
+
+  /**
+   * The font weight of the typography element.
+   */
   fontWeight: string;
+
+  /**
+   * The font style of the typography element.
+   */
   fontStyle: string;
+
+  /**
+   * The line height of the typography element.
+   */
   lineHeight: string;
+
+  /**
+   * The letter spacing of the typography element.
+   */
   letterSpacing: string;
+
+  /**
+   * The text transform applied to the typography element.
+   */
   textTransform: string;
 
   /**
-   * TODO applyToText
-   *
-   * @param shape TODO
-   *
+   * Applies the typography styles to a text shape.
+   * @param shape The text shape to apply the typography styles to.
    * @example
    * ```js
-   * applyToText code
+   * typographyElement.applyToText(textShape);
    * ```
    */
   applyToText(shape: PenpotShape): void;
   /**
-   * TODO applyToTextRange
-   *
-   * @param shape TODO
-   *
+   * Applies the typography styles to a range of text within a text shape.
+   * @param shape The text shape containing the text range to apply the typography styles to.
    * @example
    * ```js
-   * applyToTextRange code
+   * typographyElement.applyToTextRange(textShape);
    * ```
    */
   applyToTextRange(range: PenpotTextRange): void;
 }
 
 /**
- * TODO PenpotLibraryComponent
+ * Represents a component element from a library in Penpot.
+ * This interface extends `PenpotLibraryElement` and includes properties specific to component elements.
  */
 export interface PenpotLibraryComponent extends PenpotLibraryElement {
   /**
-   * TODO instance
-   *
+   * Creates an instance of the component.
+   * Returns a `PenpotShape` object representing the instance of the component.
    * @example
    * ```js
-   * instance code
+   * const componentInstance = libraryComponent.instance();
    * ```
    */
   instance(): PenpotShape;
 }
 
 /**
- * TODO PenpotLibrary
+ * Represents a library in Penpot, containing colors, typographies, and components.
+ * This type provides methods to create new color, typography, and component elements within the library.
  */
-
 export interface PenpotLibrary extends PenpotPluginData {
+  /**
+   * An array of color elements in the library.
+   */
   colors: PenpotLibraryColor[];
+
+  /**
+   * An array of typography elements in the library.
+   */
   typographies: PenpotLibraryTypography[];
+
+  /**
+   * An array of component elements in the library.
+   */
   components: PenpotLibraryComponent[];
 
   /**
-   * TODO createColor
-   *
+   * Creates a new color element in the library.
+   * Returns a new `PenpotLibraryColor` object representing the created color element.
    * @example
    * ```js
-   * createColor code
+   * const newColor = library.createColor();
    * ```
    */
   createColor(): PenpotLibraryColor;
+
   /**
-   * TODO createTypography
-   *
+   * Creates a new typography element in the library.
+   * Returns a new `PenpotLibraryTypography` object representing the created typography element.
    * @example
    * ```js
-   * createTypography code
+   * const newTypography = library.createTypography();
    * ```
    */
   createTypography(): PenpotLibraryTypography;
+
   /**
-   * TODO createComponent
-   *
+   * Creates a new component element in the library using the provided shapes.
+   * @param shapes An array of `PenpotShape` objects representing the shapes to be included in the component.
+   * Returns a new `PenpotLibraryComponent` object representing the created component element.
    * @example
    * ```js
-   * createComponent code
+   * const newComponent = library.createComponent([shape1, shape2]);
    * ```
    */
   createComponent(shapes: PenpotShape[]): PenpotLibraryComponent;
 }
 
 /**
- * TODO PenpotLibraryContext
+ * Represents the context of Penpot libraries, including both local and connected libraries.
+ * This type contains references to the local library and an array of connected libraries.
  */
 export type PenpotLibraryContext = {
   /**
-   * TODO local
-   *
+   * The local library in the Penpot context.
    * @example
    * ```js
-   * local code
+   * const localLibrary = libraryContext.local;
    * ```
    */
   local: PenpotLibrary;
+
   /**
-   * TODO connected
-   *
+   * An array of connected libraries in the Penpot context.
    * @example
    * ```js
-   * connected code
+   * const connectedLibraries = libraryContext.connected;
    * ```
    */
   connected: PenpotLibrary[];
 };
 
 /**
- * TODO PenpotUser
+ * Represents a user in Penpot.
  */
 export interface PenpotUser {
   /**
-   * TODO id
-   *
+   * The unique identifier of the user.
    * @example
    * ```js
-   * id code
+   * const userId = user.id;
    * ```
    */
   readonly id: string;
+
   /**
-   * TODO name
-   *
+   * The name of the user.
    * @example
    * ```js
-   * name code
+   * const userName = user.name;
    * ```
    */
   readonly name?: string;
+
   /**
-   * TODO avatarUrl
-   *
+   * The URL of the user's avatar image.
    * @example
    * ```js
-   * avatarUrl code
+   * const avatarUrl = user.avatarUrl;
    * ```
    */
   readonly avatarUrl?: string;
+
   /**
-   * TODO color
-   *
+   * The color associated with the user.
    * @example
    * ```js
-   * color code
+   * const userColor = user.color;
    * ```
    */
   readonly color: string;
+
   /**
-   * TODO sessionId
-   *
+   * The session ID of the user.
    * @example
    * ```js
-   * sessionId code
+   * const sessionId = user.sessionId;
    * ```
    */
   readonly sessionId?: string;
 }
 
 /**
- * TODO PenpotActiveUser
+ * Represents an active user in Penpot, extending the `PenpotUser` interface.
+ * This interface includes additional properties specific to active users.
  */
 export interface PenpotActiveUser extends PenpotUser {
   /**
-   * TODO position
-   *
+   * The position of the active user.
    * @example
    * ```js
-   * position code
+   * const userPosition = activeUser.position;
    * ```
    */
-  readonly position?: { x: number; y: number };
+  position?: { x: number; y: number };
   /**
-   * TODO zoom
-   *
+   * The zoom level of the active user.
    * @example
    * ```js
-   * zoom code
+   * const userZoom = activeUser.zoom;
    * ```
    */
   readonly zoom?: number;
 }
 
 /**
- * TODO PenpotContext
+ * Represents the context of Penpot, providing access to various Penpot functionalities and data.
  */
 export interface PenpotContext {
   /**
-   * TODO root
-   *
+   * The root shape in the current Penpot context.
    * @example
    * ```js
-   * context.root;
+   * const rootShape = context.root;
    * ```
    */
   readonly root: PenpotShape;
   /**
-   * TODO currentPage
-   *
+   * The current page in the Penpot context.
    * @example
    * ```js
-   * context.currentPage;
+   * const currentPage = context.currentPage;
    * ```
    */
   readonly currentPage: PenpotPage;
   /**
-   * TODO viewport
-   *
+   * The viewport settings in the Penpot context.
    * @example
    * ```js
-   * context.viewport;
+   * const viewportSettings = context.viewport;
    * ```
    */
   readonly viewport: PenpotViewport;
   /**
-   * TODO library
-   *
+   * The library context in the Penpot context, including both local and connected libraries.
    * @example
    * ```js
-   * context.library;
+   * const libraryContext = context.library;
    * ```
    */
   readonly library: PenpotLibraryContext;
   /**
-   * TODO currentUser
-   *
+   * The current user in the Penpot context.
    * @example
    * ```js
-   * context.currentUser;
+   * const currentUser = context.currentUser;
    * ```
    */
   readonly currentUser: PenpotUser;
   /**
-   * TODO activeUsers
-   *
+   * An array of active users in the Penpot context.
    * @example
    * ```js
-   * context.activeUsers;
+   * const activeUsers = context.activeUsers;
    * ```
    */
   readonly activeUsers: PenpotActiveUser;
 
   /**
-   * TODO selection
-   *
+   * The currently selected shapes in Penpot.
    * @example
    * ```js
-   * penpot.selection;
+   * const selectedShapes = context.selection;
    * ```
    */
   selection: PenpotShape[];
 
   /**
-   * Use this method to get file data
-   *
+   * Retrieves file data from the current Penpot context.
+   * Returns the file data or `null` if no file is available.
    * @example
    * ```js
-   * penpot.getFile();
+   * const fileData = context.getFile();
    * ```
    */
   getFile(): PenpotFile | null;
   /**
-   * Use this method to get page data
-   *
+   * Retrieves page data from the current Penpot context.
+   * Returns the page data or `null` if no page is available.
    * @example
    * ```js
-   * penpot.getPage();
+   * const pageData = context.getPage();
    * ```
    */
   getPage(): PenpotPage | null;
   /**
-   * Use this method to get the selected elements on penpot. You'll get and array of ids.
-   *
+   * Retrieves the IDs of the currently selected elements in Penpot.
+   * Returns an array of IDs representing the selected elements.
    * @example
    * ```js
-   * penpot.getSelected();
+   * const selectedIds = context.getSelected();
    * ```
    */
   getSelected(): string[];
   /**
-   * Use this method to get the selected elements on penpot. You'll get the data from each shape.
-   *
+   * Retrieves the shapes of the currently selected elements in Penpot.
+   * Returns an array of shapes representing the selected elements.
    * @example
    * ```js
-   * penpot.getSelectedShapes();
+   * const selectedShapes = context.getSelectedShapes();
    * ```
    */
   getSelectedShapes(): PenpotShape[];
   /**
-   * Use this method to get the selected theme on penpot. This is necessary to take care of the dark and light mode of your plugin UI.
-   *
+   * Retrieves the current theme (light or dark) in Penpot.
+   * Returns the current theme.
    * @example
    * ```js
-   * penpot.getTheme();
+   * const currentTheme = context.getTheme();
    * ```
    */
   getTheme(): PenpotTheme;
 
+  /**
+   * Uploads media to Penpot and retrieves its image data.
+   * @param name The name of the media.
+   * @param url The URL of the media to be uploaded.
+   * Returns a promise that resolves to the image data of the uploaded media.
+   * @example
+   * ```js
+   * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
+   * ```
+   */
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
 
+  // Methods for creating shapes and components
   group(shapes: PenpotShape[]): PenpotGroup;
   ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
 
@@ -1175,26 +1947,29 @@ export interface PenpotContext {
    */
   createPath(): PenpotPath;
   /**
-   * TODO createboolean
-   *
+   * Creates a PenpotBoolean shape based on the specified boolean operation and shapes.
+   * @param boolType The type of boolean operation ('union', 'difference', 'exclude', 'intersection').
+   * @param shapes An array of shapes to perform the boolean operation on.
+   * Returns the newly created PenpotBoolean shape resulting from the boolean operation.
    * @example
    * ```js
-   * penpot.createBoolean();
+   * const booleanShape = context.createBoolean('union', [shape1, shape2]);
    * ```
    */
   createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool;
   /**
-   * TODO createShapeFromSvg
-   *
+   * Creates a PenpotGroup from an SVG string.
+   * @param svgString The SVG string representing the shapes to be converted into a group.
+   * Returns the newly created PenpotGroup containing the shapes from the SVG.
    * @example
    * ```js
-   * penpot.createShapeFromSvg();
+   * const svgGroup = context.createShapeFromSvg('<svg>...</svg>');
    * ```
    */
   createShapeFromSvg(svgString: string): PenpotGroup;
   /**
-   * TODO createText
-   *
+   * Creates a PenpotText shape with the specified text content.
+   * @param text The text content for the PenpotText shape.
    * @example
    * ```js
    * const board = penpot.createFrame();
@@ -1207,29 +1982,12 @@ export interface PenpotContext {
    * ```
    */
   createText(text: string): PenpotText;
-  /**
-   * TODO addListener
-   *
-   * @param type todo explanation
-   * @param callback todo explanation
-   *
-   * @example
-   * ```js
-   * penpot.addListener();
-   * ```
-   */
+
+  // Event listeners
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void
   ): symbol;
-  /**
-   * TODO removeListener
-   *
-   * @example
-   * ```js
-   * penpot.removeListener();
-   * ```
-   */
   removeListener(listenerId: symbol): void;
 }
 
@@ -1259,7 +2017,7 @@ export interface Penpot
       options?: { width: number; height: number }
     ) => void;
     /**
-     * TODO description of sendMessage
+     * Sends a message to the plugin UI.
      *
      * @param message content usually is an object
      *
@@ -1298,7 +2056,10 @@ export interface Penpot
    */
   closePlugin: () => void;
   /**
-   * TODO description of 'on'
+   * Adds an event listener for the specified event type.
+   *
+   * @param type The event type to listen for.
+   * @param callback The callback function to execute when the event is triggered.
    *
    * @example
    * ```js
@@ -1310,7 +2071,10 @@ export interface Penpot
     callback: (event: EventsMap[T]) => void
   ) => void;
   /**
-   * TODO description of 'off'
+   * Removes an event listener for the specified event type.
+   *
+   * @param type The event type to stop listening for.
+   * @param callback The callback function to remove.
    *
    * @example
    * ```js
