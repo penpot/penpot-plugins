@@ -43,6 +43,13 @@ npx nx publish plugin-types -- --version 0.1.0 --tag 0.1.0
 npx nx publish plugins-styles -- --version 0.1.0 --tag 0.1.0
 ```
 
+### Create the tag in git
+
+```shell
+git tag -a 0.1.0
+git push origin 0.1.0
+```
+
 ### Installing Libraries:
 
 When installing the library, ensure to specify the registry:
