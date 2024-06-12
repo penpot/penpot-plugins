@@ -83,7 +83,22 @@ Add the reference to the main tsconfig.json:
 ],
 ```
 
-### Strep 5: Hello world plugin code
+### Step 5: Add TS parser to eslint
+
+Add these options to the end of the `eslint.config.js` file to allow linting with type information:
+
+```js
+  {
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.*?.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+```
+
+### Strep 6: Hello world plugin code
 
 Create the file `apps/example-plugin/src/plugin.ts` with the following code:
 
@@ -91,7 +106,7 @@ Create the file `apps/example-plugin/src/plugin.ts` with the following code:
 console.log('Hello Plugin');
 ```
 
-### Step 6: Run the plugin
+### Step 7: Run the plugin
 
 Run this command:
 
@@ -101,7 +116,7 @@ npx nx run example-plugin:init
 
 This will run two tasks: `serve`, the usual Angular server, and `buildPlugin`, which will compile the `plugin.ts` file.
 
-### Step 6: Load the Plugin in Penpot
+### Step 8: Load the Plugin in Penpot
 
 Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
 
@@ -109,7 +124,7 @@ Finally, to load your plugin into Penpot, execute the following command in the b
 ɵloadPluginByUrl('http://localhost:4201/assets/manifest.json');
 ```
 
-### Step 7: Build plugin
+### Step 9: Build plugin
 
 ```
 npx nx run example-plugin:build

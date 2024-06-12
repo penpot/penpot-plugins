@@ -40,4 +40,12 @@ export default [
       rules: {},
     })),
   { ignores: ['**/assets/*.js'] },
+  {
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.*?.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
 ];

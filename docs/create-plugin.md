@@ -60,7 +60,22 @@ To preview your plugin, start a static server by running:
 npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 ```
 
-### Step 6: Load the Plugin in Penpot
+### Step 6: Add TS parser to eslint
+
+Add these options to the end of the `eslint.config.js` file to allow linting with type information:
+
+```js
+  {
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.*?.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+```
+
+### Step 7: Load the Plugin in Penpot
 
 Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
 

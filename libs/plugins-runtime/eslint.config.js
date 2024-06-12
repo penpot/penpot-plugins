@@ -1,20 +1,17 @@
 import baseConfig from '../../eslint.config.js';
-import typescriptEslintParser from '@typescript-eslint/parser';
 import jsoncParser from 'jsonc-eslint-parser';
 import globals from 'globals';
 
 export default [
   ...baseConfig,
   {
-    languageOptions: {
-      parser: typescriptEslintParser,
-      parserOptions: { project: './libs/plugins-runtime/tsconfig.*?.json' },
-    },
-  },
-  {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {},
     languageOptions: {
+      parserOptions: {
+        project: './tsconfig.*?.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
       globals: {
         ...globals.browser,
         PluginConfig: 'readonly',
