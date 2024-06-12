@@ -1,13 +1,14 @@
 import baseConfig from '../../eslint.config.js';
-import typescriptEslintParser from '@typescript-eslint/parser';
 import globals from 'globals';
 
 export default [
   ...baseConfig,
   {
     languageOptions: {
-      parser: typescriptEslintParser,
-      parserOptions: { project: './apps/example-styles/tsconfig.app.json' },
+      parserOptions: {
+        project: './tsconfig.*?.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
   {
