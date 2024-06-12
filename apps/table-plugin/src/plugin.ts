@@ -1,7 +1,7 @@
 import { PluginMessageEvent } from './app/model';
 
 penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
-  width: 260,
+  width: 280,
   height: 610,
 });
 
@@ -67,7 +67,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
 
         if (board.layoutChild) {
           board.layoutChild.horizontalSizing = 'fill';
-          board.layoutChild.verticalSizing = 'auto';
+          board.layoutChild.verticalSizing = 'fill';
         }
 
         if (message.content.options.alternateRows && !(row % 2)) {
