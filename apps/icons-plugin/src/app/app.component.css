@@ -26,4 +26,8 @@
     grid-auto-rows: max-content;
     justify-items: center;
   }
+
+  .no-icons-found {
+    font-size: var(--font-size-s);
+  }
 }

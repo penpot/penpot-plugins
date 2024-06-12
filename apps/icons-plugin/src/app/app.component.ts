@@ -30,6 +30,7 @@ import { PluginMessageEvent } from '../model';
     <div class="icons-list">
       @for (key of iconKeys(); track key) {
       <app-icon-button
+        [class]="theme()"
         [icon]="icons()[key]"
         (insertIcon)="this.insertIcon(key)"
       ></app-icon-button>
