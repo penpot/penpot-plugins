@@ -18,6 +18,7 @@ import type {
   PenpotBool,
   PenpotUser,
   PenpotActiveUser,
+  PenpotFontsContext,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -194,6 +195,11 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     get library(): PenpotLibraryContext {
       // checkPermission('library:read');
       return context.library;
+    },
+
+    get fonts(): PenpotFontsContext {
+      // checkPermission('viewport:read');
+      return context.fonts;
     },
 
     get currentUser(): PenpotUser {

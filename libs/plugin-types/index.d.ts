@@ -1662,6 +1662,11 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
    * ```
    */
   applyToTextRange(range: PenpotTextRange): void;
+
+  /**
+   * TODO setFont
+   */
+  setFont(font: PenpotFont, variant?: PenpotFontVariant): void;
 }
 
 /**
@@ -1755,6 +1760,96 @@ export type PenpotLibraryContext = {
    */
   connected: PenpotLibrary[];
 };
+
+/**
+ * TODO PenpotFontVariant
+ */
+export interface PenpotFontVariant {
+  /**
+   * TODO name
+   */
+  name: string;
+  /**
+   * TODO fontVariantId
+   */
+  fontVariantId: string;
+  /**
+   * TODO fontWeight
+   */
+  fontWeight: string;
+  /**
+   * TODO fontStyle
+   */
+  fontStyle: string;
+}
+
+/**
+ * TODO PenpotFont
+ */
+export interface PenpotFont {
+  /**
+   * TODO name
+   */
+  name: string;
+  /**
+   * TODO fontId
+   */
+  fontId: string;
+  /**
+   * TODO fontFamily
+   */
+  fontFamily: string;
+  /**
+   * TODO fontStyle
+   */
+  fontStyle: string;
+  /**
+   * TODO fontVariantId
+   */
+  fontVariantId: string;
+  /**
+   * TODO fontWeight
+   */
+  fontWeight: string;
+  /**
+   * TODO variants
+   */
+  variants: PenpotFontVariant[];
+  /**
+   * TODO applyToText
+   */
+  applyToText(text: PenpotText, variant?: PenpotFontVariant): void;
+  /**
+   * TODO applyToRange
+   */
+  applyToRange(range: PenpotTextRange, variant?: PenpotFontVariant): void;
+}
+
+/**
+ * TODO PenpotFontsContext
+ */
+export interface PenpotFontsContext {
+  /**
+   * TODO all
+   */
+  all: PenpotFont[];
+  /**
+   * TODO findById
+   */
+  findById(id: string): PenpotFont | null;
+  /**
+   * TODO findByName
+   */
+  findByName(name: string): PenpotFont | null;
+  /**
+   * TODO findAllById
+   */
+  findAllById(id: string): PenpotFont[];
+  /**
+   * TODO findAllByName
+   */
+  findAllByName(name: string): PenpotFont[];
+}
 
 /**
  * Represents a user in Penpot.
@@ -1865,6 +1960,10 @@ export interface PenpotContext {
    * ```
    */
   readonly library: PenpotLibraryContext;
+  /**
+   * TODO
+   */
+  readonly fonts: PenpotFontsContext;
   /**
    * The current user in the Penpot context.
    * @example
