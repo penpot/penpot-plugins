@@ -76,6 +76,13 @@ import type { PenpotShape } from '@penpot/plugin-types';
         >
           +COUNTER
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="stylizeWords()"
+        >
+          WORDS STYLES
+        </button>
       </div>
 
       <p>
@@ -192,6 +199,10 @@ export class AppComponent {
 
   increaseCounter() {
     this.#sendMessage({ content: 'increase-counter' });
+  }
+
+  stylizeWords() {
+    this.#sendMessage({ content: 'word-styles' });
   }
 
   #sendMessage(message: unknown) {

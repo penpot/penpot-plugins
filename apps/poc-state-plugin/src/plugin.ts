@@ -269,6 +269,40 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
 
     selection[0].setPluginData('counter', '' + counter);
     penpot.ui.sendMessage({ type: 'update-counter', content: { counter } });
+  } else if (message.content === 'word-styles') {
+    const selection = penpot.selection;
+
+    if (selection.length >= 1 && penpot.utils.types.isText(selection[0])) {
+      const shape = selection[0];
+      const text = shape.characters;
+
+      const isSplit = (c: string) => !!c.match(/\W/);
+
+      if (text.trim() === '') {
+        return;
+      }
+
+      let lastWordStart = 0;
+      let gettingWord = !isSplit(text[0]);
+      let wordProcessed = 0;
+
+      for (let i = 1; i < text.length; i++) {
+        if (gettingWord && isSplit(text[i])) {
+          if (wordProcessed % 2 === 0) {
+            const range = shape.getRange(lastWordStart, i);
+            range.fills = [{ fillColor: '#FF0000', fillOpacity: 1 }];
+            range.textTransform = 'uppercase';
+            range.fontSize = '20';
+          }
+
+          wordProcessed++;
+          gettingWord = false;
+        } else if (!gettingWord && !isSplit(text[i])) {
+          lastWordStart = i;
+          gettingWord = true;
+        }
+      }
+    }
   }
 });
 

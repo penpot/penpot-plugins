@@ -1247,7 +1247,12 @@ export interface PenpotTextRange {
   /**
    * The PenpotText shape to which this text range belongs.
    */
-  shape: PenpotText;
+  readonly shape: PenpotText;
+
+  /**
+   * The characters associated with the current text range.
+   */
+  readonly characters: string;
 
   /**
    * The font ID of the text range. It can be a specific font ID or 'mixed' if multiple fonts are used.
@@ -1293,6 +1298,26 @@ export interface PenpotTextRange {
    * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
    */
   textTransform: string | 'mixed';
+
+  /**
+   * TODO textDecoration
+   */
+  textDecoration: string | 'mixed';
+
+  /**
+   * TODO direction
+   */
+  direction: string | 'mixed';
+
+  /**
+   * TODO fills
+   */
+  fills: PenpotFill[];
+
+  /**
+   * TODO applyTypography
+   */
+  applyTypography(typography: PenpotLibraryTypography): void;
 }
 
 /**
@@ -1362,7 +1387,25 @@ export interface PenpotText extends PenpotShapeBase {
    */
   textTransform: string | 'mixed';
 
+  /**
+   * TODO textDecoration
+   */
+  textDecoration: string | 'mixed';
+
+  /**
+   * TODO direction
+   */
+  direction: string | 'mixed';
+
+  /**
+   * TODO getRange
+   */
   getRange(start: number, end: number): PenpotTextRange;
+
+  /**
+   * TODO applyTypography
+   */
+  applyTypography(typography: PenpotLibraryTypography): void;
 }
 
 /**
@@ -1609,6 +1652,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
    * ```
    */
   applyToText(shape: PenpotShape): void;
+
   /**
    * Applies the typography styles to a range of text within a text shape.
    * @param shape The text shape containing the text range to apply the typography styles to.
