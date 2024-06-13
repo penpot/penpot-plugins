@@ -44,6 +44,10 @@ export default [
               sourceTag: 'type:util',
               onlyDependOnLibsWithTags: ['type:util'],
             },
+            {
+              sourceTag: 'type:e2e',
+              onlyDependOnLibsWithTags: ['type:ui', 'type:util'],
+            },
           ],
         },
       ],
