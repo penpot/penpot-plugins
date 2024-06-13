@@ -24,6 +24,10 @@ export function loadManifest(url: string): Promise<Manifest> {
 }
 
 export function loadManifestCode(manifest: Manifest): Promise<string> {
+  if (!manifest.host && !manifest.code.startsWith('http')) {
+    return Promise.resolve(manifest.code);
+  }
+
   return fetch(getValidUrl(manifest.host, manifest.code)).then((response) => {
     if (response.ok) {
       return response.text();
