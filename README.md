@@ -24,43 +24,26 @@ npm run start:styles-example
 
 Open in your browser: `http://localhost:4202/`
 
-## Create a plugin from scratch or run the examples from the apps folder
+## Run Penpot sample plugins
 
-First of all it's necessary to have penpot running locally, you can check the steps [here](https://help.penpot.app/technical-guide/developer/devenv/)
+This guide will help you launch a Penpot plugin from the penpot-plugins repository. Before proceeding, ensure that you have Penpot running locally by following the [setup instructions](https://help.penpot.app/technical-guide/developer/devenv/).
 
-Once you've done the previous step, you'll need to move to the following [branch](https://github.com/penpot/penpot/tree/niwinz-poc-plugins) as we still have the penpot part WIP
-Remember to run penpot:
+In the terminal, navigate to the **penpot-plugins** repository and run `npm install` to install the required dependencies.
+Then, run `npm start` to launch the plugins wrapper.
 
-```
-./manage.sh pull-devenv
-./manage.sh run-devenv
-```
+After installing the dependencies, choose a plugin to launch. You can either run one of the provided examples or create your own (see "Creating a plugin from scratch" below). 
+To launch a plugin, Open a new terminal tab and run the appropriate startup script for the chosen plugin. 
 
-Then, you need to run `npm start` in the penpot-plugins repository.
-
-At this point, you have 2 choices:
-
-- if you want to run the examples you should run:
-
-```
-// for the example plugin
-npm run start:example
-
-or
-
-npm run start:pc-plugin
-```
-
-or
+For instance, to launch the Contrast plugin, use the following command:
 
 ```
 // for the contrast plugin
-npm run start:contrast-plugin
+npm run start:plugin:contrast
 ```
 
-Open in your browser: `http://localhost:4210/`
+Finally, open in your browser the specific port. In this specific example would be `http://localhost:4302`
 
-- if you want to create a new plugin, read the following [README](docs/create-plugin.md)
+A table listing the available plugins and their corresponding startup commands is provided below.
 
 ## Sample plugins
 
@@ -80,6 +63,10 @@ Open in your browser: `http://localhost:4210/`
 | --------------- | ----------------------------------------------------------------- | ---- | -------------------------------- | ---------------------- |
 | plugins-runtime | Runtime for the plugins subsystem                                 | 4200 | npm run start:app:runtime        |                        |
 | example-styles  | Showcase of some of the Penpot styles that can be used in plugins | 4201 | npm run start:app:styles-example | http://localhost:4201/ |
+
+## Creating a plugin from scratch
+
+If you want to create a new plugin, read the following [README](docs/create-plugin.md)
 
 ## License
 
