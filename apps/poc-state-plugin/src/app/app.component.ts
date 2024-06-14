@@ -83,6 +83,13 @@ import type { PenpotShape } from '@penpot/plugin-types';
         >
           WORDS STYLES
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="rotateShapes()"
+        >
+          Rotate
+        </button>
       </div>
 
       <p>
@@ -203,6 +210,10 @@ export class AppComponent {
 
   stylizeWords() {
     this.#sendMessage({ content: 'word-styles' });
+  }
+
+  rotateShapes() {
+    this.#sendMessage({ content: 'rotate-selection' });
   }
 
   #sendMessage(message: unknown) {
