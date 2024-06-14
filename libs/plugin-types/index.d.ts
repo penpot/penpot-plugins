@@ -996,6 +996,11 @@ export interface PenpotShapeBase extends PenpotPluginData {
   flipY: boolean;
 
   /**
+   * Returns the rotation in degrees of the shape with respect to it's center.
+   */
+  rotation: number;
+
+  /**
    * The fills applied to the shape.
    */
   fills: PenpotFill[];
@@ -1049,6 +1054,13 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * @param height The new height of the shape.
    */
   resize(width: number, height: number): void;
+
+  /**
+   * Rotates the shape in relation with the given center.
+   * @param angle Angle in degrees to rotate.
+   * @param center Center of the transform rotation. If not send will use the geometri center of the shapes.
+   */
+  rotate(angle: number, center?: { x: number; y: number } | null): void;
 
   /**
    * Creates a clone of the shape.
@@ -1150,6 +1162,12 @@ export interface PenpotGroup extends PenpotShapeBase {
    * @param child The child shape to insert.
    */
   insertChild(index: number, child: PenpotShape): void;
+
+  /**
+   * TODO
+   */
+  isMask(): boolean;
+
   /**
    * Converts the group into a mask.
    */
@@ -2135,6 +2153,72 @@ export interface PenpotContext {
 }
 
 /**
+ * TODO PenpotContextGeometryUtils
+ */
+export interface PenpotContextGeometryUtils {
+  /**
+   * TODO center
+   */
+  center(shapes: PenpotShape[]): { x: number; y: number } | null;
+}
+
+/**
+ * TODO PenpotContextTypesUtils
+ */
+export interface PenpotContextTypesUtils {
+  /**
+   * TODO isFrame
+   */
+  isFrame(shape: PenpotShape): shape is PenpotFrame;
+  /**
+   * TODO isGroup
+   */
+  isGroup(shape: PenpotShape): shape is PenpotGroup;
+  /**
+   * TODO isMask
+   */
+  isMask(shape: PenpotShape): shape is PenpotGroup;
+  /**
+   * TODO isBool
+   */
+  isBool(shape: PenpotShape): shape is PenpotBool;
+  /**
+   * TODO isRectangle
+   */
+  isRectangle(shape: PenpotShape): shape is PenpotRectangle;
+  /**
+   * TODO isPath
+   */
+  isPath(shape: PenpotShape): shape is PenpotPath;
+  /**
+   * TODO isText
+   */
+  isText(shape: PenpotShape): shape is PenpotText;
+  /**
+   * TODO isEllipse
+   */
+  isEllipse(shape: PenpotShape): shape is PenpotEllipse;
+  /**
+   * TODO isSVG
+   */
+  isSVG(shape: PenpotShape): shape is PenpotSvgRaw;
+}
+
+/**
+ * TODO PenpotContextUtils
+ */
+export interface PenpotContextUtils {
+  /**
+   * TODO PenpotContextGeometryUtils
+   */
+  readonly geometry: PenpotContextGeometryUtils;
+  /**
+   * TODO PenpotContextTypesUtils
+   */
+  readonly types: PenpotContextTypesUtils;
+}
+
+/**
  * These are methods and properties available on the `penpot` global object.
  *
  */
@@ -2182,13 +2266,10 @@ export interface Penpot
      */
     onMessage: <T>(callback: (message: T) => void) => void;
   };
-  utils: {
-    types: {
-      isText(shape: PenpotShape): shape is PenpotText;
-      isRectangle(shape: PenpotShape): shape is PenpotRectangle;
-      isFrame(shape: PenpotShape): shape is PenpotFrame;
-    };
-  };
+  /**
+   * TODO: utils
+   */
+  utils: PenpotContextUtils;
   /**
    * Closes the plugin. When this method is called the UI will be closed.
    *
