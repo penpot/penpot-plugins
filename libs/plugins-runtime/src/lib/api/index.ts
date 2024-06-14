@@ -19,6 +19,7 @@ import type {
   PenpotUser,
   PenpotActiveUser,
   PenpotFontsContext,
+  PenpotSvgRaw,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -119,15 +120,38 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     },
 
     utils: {
+      geometry: {
+        center(shapes: PenpotShape[]) {
+          return (window as any).app.plugins.public_utils.centerShapes(shapes);
+        },
+      },
       types: {
-        isText(shape: PenpotShape): shape is PenpotText {
-          return shape.type === 'text';
+        isFrame(shape: PenpotShape): shape is PenpotFrame {
+          return shape.type === 'frame';
+        },
+        isGroup(shape: PenpotShape): shape is PenpotGroup {
+          return shape.type === 'group';
+        },
+        isMask(shape: PenpotShape): shape is PenpotGroup {
+          return shape.type === 'group' && shape.isMask();
+        },
+        isBool(shape: PenpotShape): shape is PenpotBool {
+          return shape.type === 'bool';
         },
         isRectangle(shape: PenpotShape): shape is PenpotRectangle {
           return shape.type === 'rect';
         },
-        isFrame(shape: PenpotShape): shape is PenpotFrame {
-          return shape.type === 'frame';
+        isPath(shape: PenpotShape): shape is PenpotPath {
+          return shape.type === 'path';
+        },
+        isText(shape: PenpotShape): shape is PenpotText {
+          return shape.type === 'text';
+        },
+        isEllipse(shape: PenpotShape): shape is PenpotEllipse {
+          return shape.type === 'circle';
+        },
+        isSVG(shape: PenpotShape): shape is PenpotSvgRaw {
+          return shape.type === 'svg-raw';
         },
       },
     },
