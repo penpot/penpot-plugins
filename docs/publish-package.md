@@ -1,5 +1,7 @@
 # Publishing Packages
 
+- DEPRECATED -
+
 ## Introduction
 
 This guide details the process of publishing `plugin-types` and `plugins-styles` packages, which are essential for plugin development. To facilitate testing and distribution, we leverage npm for publishing and Verdaccio for setting up a local registry. Below is a walkthrough for publishing these packages, setting up a local registry, and managing releases.
