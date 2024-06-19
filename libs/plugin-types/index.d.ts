@@ -840,6 +840,107 @@ interface PenpotPathCommand {
 }
 
 /**
+ * TODO PenpotLayoutChildProperties
+ */
+export interface PenpotLayoutChildProperties {
+  /**
+   * TODO absolute
+   */
+  absolute: boolean;
+  /**
+   * TODO zIndex
+   */
+  zIndex: number;
+
+  /**
+   * TODO horizontalSizing
+   */
+  horizontalSizing: 'auto' | 'fill' | 'fix';
+  /**
+   * TODO verticalSizing
+   */
+  verticalSizing: 'auto' | 'fill' | 'fix';
+
+  /**
+   * TODO alignSelf
+   */
+  alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
+
+  /**
+   * TODO horizontalMargin
+   */
+  horizontalMargin: number;
+  /**
+   * TODO verticalMargin
+   */
+  verticalMargin: number;
+
+  /**
+   * TODO topMargin
+   */
+  topMargin: number;
+  /**
+   * TODO rightMargin
+   */
+  rightMargin: number;
+  /**
+   * TODO bottomMargin
+   */
+  bottomMargin: number;
+  /**
+   * TODO leftMargin
+   */
+  leftMargin: number;
+
+  /**
+   * TODO maxWidth
+   */
+  maxWidth: number | null;
+  /**
+   * TODO maxHeight
+   */
+  maxHeight: number | null;
+  /**
+   * TODO minWidth
+   */
+  minWidth: number | null;
+  /**
+   * TODO minHeight
+   */
+  minHeight: number | null;
+}
+
+/**
+ * TODO PenpotLayoutCellProperties
+ */
+export interface PenpotLayoutCellProperties {
+  /**
+   * TODO row
+   */
+  row?: number;
+  /**
+   * TODO rowSpan
+   */
+  rowSpan?: number;
+  /**
+   * TODO column
+   */
+  column?: number;
+  /**
+   * TODO columnSpan
+   */
+  columnSpan?: number;
+  /**
+   * TODO areaName
+   */
+  areaName?: string;
+  /**
+   * TODO position
+   */
+  position?: 'auto' | 'manual' | 'area';
+}
+
+/**
  * Represents the base properties and methods of a shape in Penpot.
  * This interface provides common properties and methods shared by all shapes.
  */
@@ -1013,40 +1114,33 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * Layout properties for children of the shape.
    */
-  readonly layoutChild?: {
-    absolute: boolean;
-    zIndex: number;
-
-    horizontalSizing: 'auto' | 'fill' | 'fix';
-    verticalSizing: 'auto' | 'fill' | 'fix';
-
-    alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
-
-    horizontalMargin: number;
-    verticalMargin: number;
-
-    topMargin: number;
-    rightMargin: number;
-    bottomMargin: number;
-    leftMargin: number;
-
-    maxWidth: number | null;
-    maxHeight: number | null;
-    minWidth: number | null;
-    minHeight: number | null;
-  };
+  readonly layoutChild?: PenpotLayoutChildProperties;
 
   /**
    * Layout properties for cells in a grid layout.
    */
-  readonly layoutCell?: {
-    row?: number;
-    rowSpan?: number;
-    column?: number;
-    columnSpan?: number;
-    areaName?: string;
-    position?: 'auto' | 'manual' | 'area';
-  };
+  readonly layoutCell?: PenpotLayoutChildProperties;
+
+  /*
+   * Returns true when the current shape is a root of the component
+   */
+  isComponentRoot(): boolean;
+
+  /*
+   * Returns true when the shape is inside a component instance
+   */
+  isComponentInstance(): boolean;
+
+  /*
+   * Returns true when the shape is inside a main component
+   */
+  isComponentMain(): boolean;
+
+  /*
+   * If the shape is a component instance, returns the reference to the component associated
+   * otherwise will return null
+   */
+  mainComponent(): PenpotLibraryComponent | null;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -1701,6 +1795,11 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
    * ```
    */
   instance(): PenpotShape;
+
+  /*
+   * Returns the reference to the main component shape.
+   */
+  main: PenpotShape;
 }
 
 /**
@@ -1708,6 +1807,16 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
  * This type provides methods to create new color, typography, and component elements within the library.
  */
 export interface PenpotLibrary extends PenpotPluginData {
+  /**
+   * TODO id
+   */
+  readonly id: string;
+
+  /**
+   * TODO name
+   */
+  readonly name: string;
+
   /**
    * An array of color elements in the library.
    */
