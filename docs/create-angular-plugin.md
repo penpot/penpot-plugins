@@ -1,6 +1,12 @@
 # Creating a Plugin
 
-This guide walks you through the steps to create an Angular plugin.
+This guide walks you through the steps to create an Angular plugin for our platform. You'll start by setting up the basic structure, configuring necessary files, and then running a local server to preview your plugin.
+
+If you prefer to create the plugin without a specific framework there's also [Creating a Plugin](./create-plugin.md).
+
+Keep in mind that this guide is for creating a plugin **inside `penpot-plugins` monorepo**. If you want to create a plugin outside our environment you can check the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template) or the documentation at [Create a Plugin](https://help.penpot.app/technical-guide/plugins/create-a-plugin/).
+
+Let's dive in.
 
 ### Step 1: Initialize the Plugin
 
@@ -57,6 +63,8 @@ Add the default port to the `serve.configurations.development` task:
   "port": 4302,
 }
 ```
+
+For choosing the port go check the Sample Plugins table at the [README](../README.md) so your plugin doesn't use a duplicate port. We're using the range 4300-4399.
 
 ### Step 4: Modify TypeScript Configuration
 
@@ -118,11 +126,13 @@ This will run two tasks: `serve`, the usual Angular server, and `buildPlugin`, w
 
 ### Step 8: Load the Plugin in Penpot
 
-Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
+To load your plugin into Penpot you can use the shortcut `Ctrl + Alt + P` to directly open the Plugin manager modal. There you need to provide the plugin's manifest URL (example: `http://plugin.example/manifest.json`) for the installation. If there's no issues the plugin will be installed and then you would be able to open it whenever you like.
 
-```typescript
-ɵloadPluginByUrl('http://localhost:4201/assets/manifest.json');
-```
+You can also open the Plugin manager modal via:
+
+- Menu
+
+  ![Penpot's menu image](./images/plugin-menu.png)
 
 ### Step 9: Build plugin
 
@@ -134,9 +144,4 @@ npx nx run example-plugin:build
 
 For more detailed information on plugin development, check out our guides:
 
-- [Plugin Usage Documentation](docs/plugin-usage.md)
-- [Create API Documentation](docs/create-api.md)
-
-### Using a Starter Template
-
-If you prefer to kickstart your plugin development, consider using the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template). It's a template designed to streamline the creation process for Penpot plugins.
+- [Plugin Usage Documentation](,/plugin-usage.md)

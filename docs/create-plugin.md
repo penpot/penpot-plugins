@@ -1,6 +1,12 @@
 # Creating a Plugin
 
-This guide walks you through the steps to create a plugin for our platform. You'll start by setting up the basic structure, configuring necessary files, and then running a local server to preview your plugin. Let's dive in.
+This guide walks you through the steps to create a plugin for our platform. You'll start by setting up the basic structure, configuring necessary files, and then running a local server to preview your plugin.
+
+If you prefer to create the plugin with angular, there's also a [Creating a Plugin (angular)](./create-angular-plugin.md).
+
+Keep in mind that this guide is for creating a plugin **inside `penpot-plugins` monorepo**. If you want to create a plugin outside our environment you can check the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template) or the documentation at [Create a Plugin](https://help.penpot.app/technical-guide/plugins/create-a-plugin/).
+
+Let's dive in.
 
 ### Step 1: Initialize the Plugin
 
@@ -77,19 +83,16 @@ Add these options to the end of the `eslint.config.js` file to allow linting wit
 
 ### Step 7: Load the Plugin in Penpot
 
-Finally, to load your plugin into Penpot, execute the following command in the browser's console devtools:
+To load your plugin into Penpot you can use the shortcut `Ctrl + Alt + P` to directly open the Plugin manager modal. There you need to provide the plugin's manifest URL (example: `http://plugin.example/manifest.json`) for the installation. If there's no issues the plugin will be installed and then you would be able to open it whenever you like.
 
-```typescript
-ɵloadPluginByUrl('http://localhost:4201/manifest.json');
-```
+You can also open the Plugin manager modal via:
+
+- Menu
+
+  ![Penpot's menu image](./images/plugin-menu.png)
 
 ### Learn More About Plugin Development
 
 For more detailed information on plugin development, check out our guides:
 
-- [Plugin Usage Documentation](docs/plugin-usage.md)
-- [Create API Documentation](docs/create-api.md)
-
-### Using a Starter Template
-
-If you prefer to kickstart your plugin development, consider using the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template). It's a template designed to streamline the creation process for Penpot plugins.
+- [Create API Documentation](./create-api.md)
