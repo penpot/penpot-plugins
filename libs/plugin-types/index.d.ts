@@ -1430,7 +1430,7 @@ export interface PenpotText extends PenpotShapeBase {
  * Represents a frame shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to frames.
  */
-export interface PepotFrame extends PenpotShapeBase {
+export interface PenpotFrame extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'frame' for frame shapes.
    */
