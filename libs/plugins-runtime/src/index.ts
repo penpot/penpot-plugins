@@ -23,9 +23,13 @@ const globalThisAny$ = globalThis as any;
 globalThisAny$.initPluginsRuntime = (
   contextBuilder: (id: string) => PenpotContext
 ) => {
-  console.log('%c[PLUGINS] Initialize runtime', 'color: #008d7c');
-  setContextBuilder(contextBuilder);
-  globalThisAny$.ɵcontext = contextBuilder('TEST');
-  globalThis.ɵloadPlugin = ɵloadPlugin;
-  globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
+  try {
+    console.log('%c[PLUGINS] Initialize runtime', 'color: #008d7c');
+    setContextBuilder(contextBuilder);
+    globalThisAny$.ɵcontext = contextBuilder('TEST');
+    globalThis.ɵloadPlugin = ɵloadPlugin;
+    globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
+  } catch (err) {
+    console.error(err);
+  }
 };

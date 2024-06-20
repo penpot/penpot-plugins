@@ -45,7 +45,7 @@ function generateText(event: TextPluginUIEvent) {
   const selection = getSelectedShapes();
 
   if (!selection.length) {
-    const text = penpot.createText('');
+    const text = penpot.createText('lorem ipsum');
     text.x = penpot.viewport.center.x;
     text.y = penpot.viewport.center.y;
     selection.push(text);
