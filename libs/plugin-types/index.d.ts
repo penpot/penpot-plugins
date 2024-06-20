@@ -480,7 +480,20 @@ export type PenpotFrameGuide =
  * Represents export settings in Penpot.
  * This interface includes properties for defining export configurations.
  */
-export interface PenpotExport {}
+export interface PenpotExport {
+  /**
+   * Type of the file to export. Can be one of the following values: png, jpeg, svg, pdf
+   */
+  type: 'png' | 'jpeg' | 'svg' | 'pdf';
+  /**
+   * For bitmap formats represent the scale of the original size to resize the export
+   */
+  scale: number;
+  /**
+   * Suffix that will be appended to the resulting exported file
+   */
+  suffix: string;
+}
 
 /**
  * Represents the type of track in Penpot.
@@ -948,7 +961,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * The unique identifier of the shape.
    */
-  id: string;
+  readonly id: string;
 
   /**
    * The name of the shape.
@@ -1064,7 +1077,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * The export settings of the shape.
    */
-  exports: PenpotExport;
+  exports: PenpotExport[];
 
   /**
    * The x-coordinate of the shape relative to its frame.
@@ -1122,25 +1135,58 @@ export interface PenpotShapeBase extends PenpotPluginData {
   readonly layoutCell?: PenpotLayoutChildProperties;
 
   /*
-   * Returns true when the current shape is a root of the component
-   */
-  isComponentRoot(): boolean;
-
-  /*
-   * Returns true when the shape is inside a component instance
+   * Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
 
   /*
-   * Returns true when the shape is inside a main component
+   * Returns true if the current shape is inside a component **main** instance
    */
-  isComponentMain(): boolean;
+  isComponentMainInstance(): boolean;
+
+  /*
+   * Returns true if the current shape is inside a component **copy** instance
+   */
+  isComponentCopyInstance(): boolean;
+
+  /*
+   * Returns true when the current shape is inside a **nested* component instance
+   */
+  isComponentNestedInstance(): boolean;
+
+  /*
+   * Returns true when the current shape is the root of a component tree
+   */
+  isComponentRoot(): boolean;
+
+  /*
+   * Returns true when the current shape is the head of a components tree nested structure
+   */
+  isComponentHead(): boolean;
+
+  /*
+   * Returns the equivalent shape in the component main instance. If the current shape is inside a
+   * main instance will return `null`;
+   */
+  readonly componentRefShape: PenpotShape | null;
+
+  /*
+   * Returns the root of the component tree structure for the current shape. If the current shape
+   * is already a root will return itself.
+   */
+  readonly componentRoot: PenpotShape | null;
+
+  /*
+   * Returns the head of the component tree structure for the current shape. If the current shape
+   * is already a head will return itself.
+   */
+  readonly componentHead: PenpotShape | null;
 
   /*
    * If the shape is a component instance, returns the reference to the component associated
    * otherwise will return null
    */
-  mainComponent(): PenpotLibraryComponent | null;
+  readonly component: PenpotLibraryComponent | null;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -1799,7 +1845,7 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
   /*
    * Returns the reference to the main component shape.
    */
-  main: PenpotShape;
+  mainInstance: PenpotShape;
 }
 
 /**
