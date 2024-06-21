@@ -308,6 +308,10 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     uploadMediaUrl(name: string, url: string) {
       return context.uploadMediaUrl(name, url);
     },
+
+    uploadMediaData(name: string, data: Uint8Array, mimeType: string) {
+      return context.uploadMediaData(name, data, mimeType);
+    },
   };
 
   return penpot;

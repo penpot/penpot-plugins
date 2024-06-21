@@ -2221,6 +2221,18 @@ export interface PenpotContext {
    */
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
 
+  /**
+   * Uploads media to penpot and retrieves the image data
+   * @param name The name of the media.
+   * @param data The image content data
+   * Returns a promise that resolves to the image data of the uploaded media.
+   */
+  uploadMediaData(
+    name: string,
+    data: Uint8Array,
+    mimeType: string
+  ): Promise<PenpotImageData>;
+
   // Methods for creating shapes and components
   group(shapes: PenpotShape[]): PenpotGroup;
   ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
