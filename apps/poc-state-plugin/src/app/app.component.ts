@@ -90,6 +90,8 @@ import type { PenpotShape } from '@penpot/plugin-types';
         >
           Rotate
         </button>
+
+        <input type="file" class="file-upload" (change)="uploadImage($event)" />
       </div>
 
       <p>
@@ -214,6 +216,24 @@ export class AppComponent {
 
   rotateShapes() {
     this.#sendMessage({ content: 'rotate-selection' });
+  }
+
+  async uploadImage(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      const file = input?.files[0];
+
+      if (file) {
+        const buff = await file.arrayBuffer();
+        const data = new Uint8Array(buff);
+        const mimeType = file.type;
+        this.#sendMessage({
+          content: 'create-image-data',
+          data: { data, mimeType },
+        });
+        input.value = '';
+      }
+    }
   }
 
   #sendMessage(message: unknown) {

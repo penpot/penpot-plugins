@@ -36,6 +36,12 @@ penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
     wordStyles();
   } else if (message.content === 'rotate-selection') {
     rotateSelection();
+  } else if (message.content === 'create-image-data') {
+    const { data, mimeType } = message.data as {
+      data: Uint8Array;
+      mimeType: string;
+    };
+    createImage(data, mimeType);
   }
 });
 
@@ -394,4 +400,19 @@ function rotateSelection() {
   selection.forEach((shape) => {
     shape.rotate(10, center);
   });
+}
+
+function createImage(data: Uint8Array, mimeType: string) {
+  penpot
+    .uploadMediaData('image', data, mimeType)
+    .then((data) => {
+      const shape = penpot.createRectangle();
+      const x = penpot.viewport.center.x - data.width / 2;
+      const y = penpot.viewport.center.y - data.height / 2;
+      shape.resize(data.width, data.height);
+      shape.x = x;
+      shape.y = y;
+      shape.fills = [{ fillOpacity: 1, fillImage: data }];
+    })
+    .catch((err) => console.error(err));
 }
