@@ -203,9 +203,11 @@ function addIcon() {
           </g>
 </svg>`;
   const shape = penpot.createShapeFromSvg(iconStr);
-  const center = penpot.viewport.center;
-  shape.x = center.x;
-  shape.y = center.y;
+  if (shape) {
+    const center = penpot.viewport.center;
+    shape.x = center.x;
+    shape.y = center.y;
+  }
 }
 
 function createGrid() {
@@ -242,8 +244,10 @@ function createGrid() {
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
       const text = penpot.createText(`${row + 1} - ${col + 1}`);
-      text.growType = 'auto-width';
-      grid.appendChild(text, row + 1, col + 1);
+      if (text) {
+        text.growType = 'auto-width';
+        grid.appendChild(text, row + 1, col + 1);
+      }
     }
   }
 }
@@ -340,8 +344,10 @@ function createColors() {
       flex.justifyContent = 'center';
 
       const text = penpot.createText(color.name);
-      text.growType = 'auto-width';
-      board.appendChild(text);
+      if (text) {
+        text.growType = 'auto-width';
+        board.appendChild(text);
+      }
     }
   }
 }
