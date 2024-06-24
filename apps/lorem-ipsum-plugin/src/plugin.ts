@@ -46,9 +46,11 @@ function generateText(event: TextPluginUIEvent) {
 
   if (!selection.length) {
     const text = penpot.createText('lorem ipsum');
-    text.x = penpot.viewport.center.x;
-    text.y = penpot.viewport.center.y;
-    selection.push(text);
+    if (text) {
+      text.x = penpot.viewport.center.x;
+      text.y = penpot.viewport.center.y;
+      selection.push(text);
+    }
   }
 
   selection.forEach((it) => {
