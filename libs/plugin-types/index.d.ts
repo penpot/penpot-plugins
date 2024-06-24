@@ -1473,6 +1473,16 @@ export interface PenpotTextRange {
   fills: PenpotFill[];
 
   /**
+   * TODO align
+   */
+  align: string | 'mixed';
+
+  /**
+   * TODO verticalAlign
+   */
+  verticalAlign: string | 'mixed';
+
+  /**
    * TODO applyTypography
    */
   applyTypography(typography: PenpotLibraryTypography): void;
@@ -1554,6 +1564,16 @@ export interface PenpotText extends PenpotShapeBase {
    * TODO direction
    */
   direction: string | 'mixed';
+
+  /**
+   * TODO align
+   */
+  align: string | 'mixed';
+
+  /**
+   * TODO verticalAlign
+   */
+  verticalAlign: string | 'mixed';
 
   /**
    * TODO getRange
@@ -2234,7 +2254,7 @@ export interface PenpotContext {
   ): Promise<PenpotImageData>;
 
   // Methods for creating shapes and components
-  group(shapes: PenpotShape[]): PenpotGroup;
+  group(shapes: PenpotShape[]): PenpotGroup | null;
   ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
 
   /**
@@ -2284,7 +2304,10 @@ export interface PenpotContext {
    * const booleanShape = context.createBoolean('union', [shape1, shape2]);
    * ```
    */
-  createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool;
+  createBoolean(
+    boolType: PenpotBoolType,
+    shapes: PenpotShape[]
+  ): PenpotBool | null;
   /**
    * Creates a PenpotGroup from an SVG string.
    * @param svgString The SVG string representing the shapes to be converted into a group.
@@ -2294,10 +2317,11 @@ export interface PenpotContext {
    * const svgGroup = context.createShapeFromSvg('<svg>...</svg>');
    * ```
    */
-  createShapeFromSvg(svgString: string): PenpotGroup;
+  createShapeFromSvg(svgString: string): PenpotGroup | null;
   /**
    * Creates a PenpotText shape with the specified text content.
    * @param text The text content for the PenpotText shape.
+   * Returns the new created shape, if the shape wasn't created can return null.
    * @example
    * ```js
    * const board = penpot.createFrame();
@@ -2309,7 +2333,7 @@ export interface PenpotContext {
    * board.appendChild(text);
    * ```
    */
-  createText(text: string): PenpotText;
+  createText(text: string): PenpotText | null;
 
   // Event listeners
   addListener<T extends keyof EventsMap>(
