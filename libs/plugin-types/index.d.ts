@@ -1868,6 +1868,33 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
   mainInstance: PenpotShape;
 }
 
+export interface PenpotLibrarySummary {
+  /**
+   * TODO id
+   */
+  readonly id: string;
+
+  /**
+   * TODO name
+   */
+  readonly name: string;
+
+  /**
+   * TODO numColors
+   */
+  readonly numColors: number;
+
+  /**
+   * TODO numComponents
+   */
+  readonly numComponents: number;
+
+  /**
+   * TODO numTypographies
+   */
+  readonly numTypographies: number;
+}
+
 /**
  * Represents a library in Penpot, containing colors, typographies, and components.
  * This type provides methods to create new color, typography, and component elements within the library.
@@ -1942,7 +1969,7 @@ export type PenpotLibraryContext = {
    * const localLibrary = libraryContext.local;
    * ```
    */
-  local: PenpotLibrary;
+  readonly local: PenpotLibrary;
 
   /**
    * An array of connected libraries in the Penpot context.
@@ -1951,7 +1978,17 @@ export type PenpotLibraryContext = {
    * const connectedLibraries = libraryContext.connected;
    * ```
    */
-  connected: PenpotLibrary[];
+  readonly connected: PenpotLibrary[];
+
+  /**
+   * TODO: availableLibraries
+   */
+  availableLibraries(): Promise<PenpotLibrarySummary[]>;
+
+  /**
+   * TODO: linkToFile
+   */
+  connectLibrary(libraryId: string): Promise<PenpotLibrary>;
 };
 
 /**
@@ -2334,6 +2371,32 @@ export interface PenpotContext {
    * ```
    */
   createText(text: string): PenpotText | null;
+
+  /**
+   *
+   * @param shapes
+   * @param markupType will default to 'html'
+   */
+  generateMarkup(
+    shapes: PenpotShape[],
+    options?: { type?: 'html' | 'svg' }
+  ): string;
+
+  /**
+   *
+   * @param shapes
+   * @param styleType will default to 'css'
+   * @param withPrelude will default to `false`
+   * @param includeChildren will default to `true`
+   */
+  generateStyle(
+    shapes: PenpotShape[],
+    options?: {
+      type?: 'css';
+      withPrelude?: boolean;
+      includeChildren?: boolean;
+    }
+  ): string;
 
   // Event listeners
   addListener<T extends keyof EventsMap>(

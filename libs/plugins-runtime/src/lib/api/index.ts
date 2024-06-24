@@ -275,7 +275,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.createEllipse();
     },
 
-    createText(text: string): PenpotText {
+    createText(text: string): PenpotText | null {
       // checkPermission('page:write');
       return context.createText(text);
     },
@@ -285,17 +285,20 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.createPath();
     },
 
-    createBoolean(boolType: PenpotBoolType, shapes: PenpotShape[]): PenpotBool {
+    createBoolean(
+      boolType: PenpotBoolType,
+      shapes: PenpotShape[]
+    ): PenpotBool | null {
       // checkPermission('page:write');
       return context.createBoolean(boolType, shapes);
     },
 
-    createShapeFromSvg(svgString: string): PenpotGroup {
+    createShapeFromSvg(svgString: string): PenpotGroup | null {
       // checkPermission('page:write');
       return context.createShapeFromSvg(svgString);
     },
 
-    group(shapes: PenpotShape[]): PenpotGroup {
+    group(shapes: PenpotShape[]): PenpotGroup | null {
       // checkPermission('page:write');
       return context.group(shapes);
     },
@@ -311,6 +314,26 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
 
     uploadMediaData(name: string, data: Uint8Array, mimeType: string) {
       return context.uploadMediaData(name, data, mimeType);
+    },
+
+    generateMarkup(
+      shapes: PenpotShape[],
+      options?: { type?: 'html' | 'svg' }
+    ): string {
+      // checkPermission('page:write');
+      return context.generateMarkup(shapes, options);
+    },
+
+    generateStyle(
+      shapes: PenpotShape[],
+      options?: {
+        type?: 'css';
+        withPrelude?: boolean;
+        includeChildren?: boolean;
+      }
+    ): string {
+      // checkPermission('page:write');
+      return context.generateStyle(shapes, options);
     },
   };
 
