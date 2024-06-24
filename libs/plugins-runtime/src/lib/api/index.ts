@@ -20,6 +20,8 @@ import type {
   PenpotActiveUser,
   PenpotFontsContext,
   PenpotSvgRaw,
+  PenpotColor,
+  PenpotColorShapeInfo,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -254,6 +256,20 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     getSelectedShapes(): PenpotShape[] {
       checkPermission('selection:read');
       return context.getSelectedShapes();
+    },
+
+    getColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[] {
+      // checkPermission('selection:read');
+      return context.getColors(shapes);
+    },
+
+    changeColor(
+      shapes: PenpotShape[],
+      oldColor: PenpotColor,
+      newColor: PenpotColor
+    ) {
+      // checkPermission('selection:read');
+      return context.changeColor(shapes, oldColor, newColor);
     },
 
     getTheme(): PenpotTheme {

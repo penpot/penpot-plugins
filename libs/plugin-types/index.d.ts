@@ -293,6 +293,36 @@ export interface PenpotColor {
 }
 
 /**
+ * TODO PenpotColorShapeInfoEntry
+ */
+export interface PenpotColorShapeInfoEntry {
+  /**
+   * TODO property
+   */
+  readonly property: string;
+
+  /**
+   * TODO index
+   */
+  readonly index: number;
+
+  /**
+   * TODO shapeId
+   */
+  readonly shapeId: string;
+}
+
+/**
+ * TODO PenpotColorShapeInfo
+ */
+export interface PenpotColorShapeInfo {
+  /**
+   * TODO shapesInfo
+   */
+  readonly shapesInfo: PenpotColorShapeInfoEntry[];
+}
+
+/**
  * Represents shadow properties in Penpot.
  * This interface includes properties for defining drop shadows and inner shadows, along with their visual attributes.
  */
@@ -2256,6 +2286,21 @@ export interface PenpotContext {
    * ```
    */
   getSelectedShapes(): PenpotShape[];
+
+  /**
+   * TODO: getSelectedColors
+   */
+  getColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
+
+  /**
+   * TODO: changeSelectedColor
+   */
+  changeColor(
+    shapes: PenpotShape[],
+    oldColor: PenpotColor,
+    newColor: PenpotColor
+  ): void;
+
   /**
    * Retrieves the current theme (light or dark) in Penpot.
    * Returns the current theme.
