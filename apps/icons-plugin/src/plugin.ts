@@ -12,10 +12,13 @@ penpot.ui.onMessage<PluginUIEvent>((message) => {
     if (!svg || !name) {
       return;
     }
+
     const icon = penpot.createShapeFromSvg(svg);
-    icon.name = name;
-    icon.x = penpot.viewport.center.x;
-    icon.y = penpot.viewport.center.y;
+    if (icon) {
+      icon.name = name;
+      icon.x = penpot.viewport.center.x;
+      icon.y = penpot.viewport.center.y;
+    }
   }
 });
 
