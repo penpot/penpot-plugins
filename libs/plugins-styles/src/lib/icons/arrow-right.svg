@@ -1,1 +1,22 @@
-<svg width="16" xmlns="http://www.w3.org/2000/svg" height="16" fill="none"><g class="fills"><rect rx="0" ry="0" width="16" height="16" class="frame-background"/></g><g class="frame-children"><path d="m6 12 4-4-4-4" class="fills"/><g class="strokes"><path d="m6 12 4-4-4-4" style="fill: none; stroke-width: 1; stroke: rgb(143, 157, 163); stroke-opacity: 1; stroke-linecap: round;" class="stroke-shape"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="none">
+  <path
+    d="M3.125 7.5h8.75"
+    style="
+      fill: none;
+      stroke-width: 1;
+      stroke: rgb(143, 157, 163);
+      stroke-opacity: 1;
+    "
+    class="stroke-shape"
+  />
+  <path
+    d="M7.5 3.125 11.875 7.5 7.5 11.875"
+    style="
+      fill: none;
+      stroke-width: 1;
+      stroke: rgb(143, 157, 163);
+      stroke-opacity: 1;
+    "
+    class="stroke-shape"
+  />
+</svg>

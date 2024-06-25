@@ -10,24 +10,24 @@
   user-select: none;
 }
 
-.icon-arrow-bottom {
-  background-image: url('../icons/arrow-bottom.svg');
+.icon-chevron-bottom {
+  background-image: url('../icons/chevron-bottom.svg');
 }
 
-.icon-arrow-left {
-  background-image: url('../icons/arrow-left.svg');
+.icon-chevron-left {
+  background-image: url('../icons/chevron-left.svg');
+}
+
+.icon-chevron-right {
+  background-image: url('../icons/chevron-right.svg');
+}
+
+.icon-chevron-top {
+  background-image: url('../icons/chevron-top.svg');
 }
 
 .icon-arrow-right {
   background-image: url('../icons/arrow-right.svg');
-}
-
-.icon-arrow-top {
-  background-image: url('../icons/arrow-top.svg');
-}
-
-.icon-arrow-right-full {
-  background-image: url('../icons/arrow-right-full.svg');
 }
 
 .icon-close {

@@ -1,1 +1,12 @@
-<svg width="16" xmlns="http://www.w3.org/2000/svg" height="16" fill="none"><g class="fills"><rect rx="0" ry="0" width="16" height="16" class="frame-background"/></g><g class="frame-children"><path d="M12.148 8.667H3.852c-.655 0-1.185.597-1.185 1.333v3.333c0 .737.53 1.334 1.185 1.334h8.296c.655 0 1.185-.597 1.185-1.334V10c0-.736-.53-1.333-1.185-1.333Zm-7.481 0v-4a3.334 3.334 0 0 1 6.666 0v4" class="fills"/><g class="strokes"><path d="M12.148 8.667H3.852c-.655 0-1.185.597-1.185 1.333v3.333c0 .737.53 1.334 1.185 1.334h8.296c.655 0 1.185-.597 1.185-1.334V10c0-.736-.53-1.333-1.185-1.333Zm-7.481 0v-4a3.334 3.334 0 0 1 6.666 0v4" style="fill: none; stroke-width: 1; stroke: rgb(143, 157, 163); stroke-opacity: 1; stroke-linecap: round;" class="stroke-shape"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+  <path
+    d="M12.148 8.667H3.852c-.655 0-1.185.597-1.185 1.333v3.333c0 .737.53 1.334 1.185 1.334h8.296c.655 0 1.185-.597 1.185-1.334V10c0-.736-.53-1.333-1.185-1.333Zm-7.481 0v-4a3.334 3.334 0 0 1 6.666 0v4"
+    style="
+      fill: none;
+      stroke-width: 1;
+      stroke: rgb(143, 157, 163);
+      stroke-opacity: 1;
+      stroke-linecap: round;
+    "
+  />
+</svg>
