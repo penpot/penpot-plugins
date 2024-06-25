@@ -293,31 +293,32 @@ export interface PenpotColor {
 }
 
 /**
- * TODO PenpotColorShapeInfoEntry
+ * Entry for the color shape additional information.
  */
 export interface PenpotColorShapeInfoEntry {
   /**
-   * TODO property
+   * Property that has the color (example: fill, stroke...)
    */
   readonly property: string;
 
   /**
-   * TODO index
+   * For properties that are indexes (such as fill) represent the index
+   * of the color inside that property.
    */
-  readonly index: number;
+  readonly index?: number;
 
   /**
-   * TODO shapeId
+   * Identifier of the shape that contains the color
    */
   readonly shapeId: string;
 }
 
 /**
- * TODO PenpotColorShapeInfo
+ * Additional color information for the methods to extract colors from a list of shapes.
  */
 export interface PenpotColorShapeInfo {
   /**
-   * TODO shapesInfo
+   * List of shapes with additional information
    */
   readonly shapesInfo: PenpotColorShapeInfoEntry[];
 }
@@ -2288,14 +2289,14 @@ export interface PenpotContext {
   getSelectedShapes(): PenpotShape[];
 
   /**
-   * TODO: getSelectedColors
+   * TODO: shapesColors
    */
-  getColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
+  shapesColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
 
   /**
-   * TODO: changeSelectedColor
+   * TODO: replaceColor
    */
-  changeColor(
+  replaceColor(
     shapes: PenpotShape[],
     oldColor: PenpotColor,
     newColor: PenpotColor
