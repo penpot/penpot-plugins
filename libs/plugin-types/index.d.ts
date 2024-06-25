@@ -2308,6 +2308,8 @@ export interface PenpotContext {
    * text.fontSize = '12';
    * board.appendChild(text);
    * ```
+   * @document
+   * ![example image](https://placehold.co/600x400)
    */
   createText(text: string): PenpotText;
 
