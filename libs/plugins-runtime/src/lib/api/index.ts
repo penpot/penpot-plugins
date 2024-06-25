@@ -258,18 +258,20 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.getSelectedShapes();
     },
 
-    getColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[] {
+    shapesColors(
+      shapes: PenpotShape[]
+    ): (PenpotColor & PenpotColorShapeInfo)[] {
       // checkPermission('selection:read');
-      return context.getColors(shapes);
+      return context.shapesColors(shapes);
     },
 
-    changeColor(
+    replaceColor(
       shapes: PenpotShape[],
       oldColor: PenpotColor,
       newColor: PenpotColor
     ) {
       // checkPermission('selection:read');
-      return context.changeColor(shapes, oldColor, newColor);
+      return context.replaceColor(shapes, oldColor, newColor);
     },
 
     getTheme(): PenpotTheme {
