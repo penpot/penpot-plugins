@@ -227,7 +227,9 @@ function generateMarkdownForItem(item) {
             markdown += singleTab + `**Parameters:**\n\n`;
             if (itemGroup.signatures[0] && itemGroup.signatures[0].parameters && itemGroup.signatures[0].parameters.some(param => param.comment)) {
               itemGroup.signatures[0].parameters.forEach(param => {
-                markdown += getParamsComments(param.name, param.comment.summary, 2);
+                if (param.comment) {
+                  markdown += getParamsComments(param.name, param.comment.summary, 2);
+                }
               });
             }
             markdown += getMarkdownCodeBlock(
@@ -344,7 +346,7 @@ function getParameters(signatures, tabs) {
 function getBlockTag(commentBlockTag, tabs) {
   const block = commentBlockTag.map((block) => {
     return block.content.map(content => content.text).join(' \n');
-  }).join(' ');
+  }).join(' \n\n');
   const formatContent = block.split('\n')
   .map((item) => tabsNumber[tabs] + item)
   .join('\n');
