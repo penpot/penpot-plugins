@@ -462,11 +462,11 @@
   <section aria-label="icons">
     <h2 class="title-large title-margin">Icons</h2>
     <div class="icons-section" style="margin-block-end: var(--spacing-20)">
-      <span class="icon icon-arrow-bottom"></span>
-      <span class="icon icon-arrow-top"></span>
+      <span class="icon icon-chevron-bottom"></span>
+      <span class="icon icon-chevron-top"></span>
+      <span class="icon icon-chevron-right"></span>
+      <span class="icon icon-chevron-left"></span>
       <span class="icon icon-arrow-right"></span>
-      <span class="icon icon-arrow-left"></span>
-      <span class="icon icon-arrow-right-full"></span>
       <span class="icon icon-close"></span>
       <span class="icon icon-close-l"></span>
       <span class="icon icon-delete"></span>
@@ -485,11 +485,11 @@
       <span class="icon icon-download"></span>
     </div>
     <template lang="html">
-      <span class="icon icon-arrow-bottom"></span>
-      <span class="icon icon-arrow-top"></span>
+      <span class="icon icon-chevron-bottom"></span>
+      <span class="icon icon-chevron-top"></span>
+      <span class="icon icon-chevron-right"></span>
+      <span class="icon icon-chevron-left"></span>
       <span class="icon icon-arrow-right"></span>
-      <span class="icon icon-arrow-left"></span>
-      <span class="icon icon-arrow-right-full"></span>
       <span class="icon icon-close"></span>
       <span class="icon icon-close-l"></span>
       <span class="icon icon-delete"></span>
