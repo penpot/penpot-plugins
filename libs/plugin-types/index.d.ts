@@ -884,102 +884,144 @@ interface PenpotPathCommand {
 }
 
 /**
- * TODO PenpotLayoutChildProperties
+ * Properties for defining the layout of a child element in Penpot.
  */
 export interface PenpotLayoutChildProperties {
   /**
-   * TODO absolute
+   * Specifies whether the child element is positioned absolutely.
+   * When set to true, the element is taken out of the normal document flow and positioned relative to its nearest positioned ancestor.
    */
   absolute: boolean;
+
   /**
-   * TODO zIndex
+   * Defines the stack order of the child element
+   * Elements with a higher zIndex will be displayed in front of those with a lower zIndex.
    */
   zIndex: number;
 
   /**
-   * TODO horizontalSizing
+   * Determines the horizontal sizing behavior of the child element
+   * - 'auto': The width is determined by the content.
+   * - 'fill': The element takes up the available width.
+   * - 'fix': The width is fixed.
    */
   horizontalSizing: 'auto' | 'fill' | 'fix';
+
   /**
-   * TODO verticalSizing
+   * Determines the vertical sizing behavior of the child element.
+   * - 'auto': The height is determined by the content.
+   * - 'fill': The element takes up the available height.
+   * - 'fix': The height is fixed.
    */
   verticalSizing: 'auto' | 'fill' | 'fix';
 
   /**
-   * TODO alignSelf
+   * Aligns the child element within its container.
+   * - 'auto': Default alignment.
+   * - 'start': Aligns the element at the start of the container.
+   * - 'center': Centers the element within the container.
+   * - 'end': Aligns the element at the end of the container.
+   * - 'stretch': Stretches the element to fill the container.
    */
   alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
 
   /**
-   * TODO horizontalMargin
+   * Sets the horizontal margin of the child element.
+   * This is the space on the left and right sides of the element.
    */
   horizontalMargin: number;
+
   /**
-   * TODO verticalMargin
+   * Sets the vertical margin of the child element.
+   * This is the space on the top and bottom sides of the element.
    */
   verticalMargin: number;
 
   /**
-   * TODO topMargin
+   * Sets the top margin of the child element.
+   * This is the space above the element.
    */
   topMargin: number;
+
   /**
-   * TODO rightMargin
+   * Sets the right margin of the child element.
+   * This is the space to the right of the element.
    */
   rightMargin: number;
+
   /**
-   * TODO bottomMargin
+   * Sets the bottom margin of the child element.
+   * This is the space below the element.
    */
   bottomMargin: number;
+
   /**
-   * TODO leftMargin
+   * Sets the left margin of the child element.
+   * This is the space to the left of the element.
    */
   leftMargin: number;
 
   /**
-   * TODO maxWidth
+   * Defines the maximum width of the child element.
+   * If set to null, there is no maximum width constraint.
    */
   maxWidth: number | null;
+
   /**
-   * TODO maxHeight
+   * Defines the maximum height of the child element.
+   * If set to null, there is no maximum height constraint.
    */
   maxHeight: number | null;
   /**
-   * TODO minWidth
+   * Defines the minimum width of the child element.
+   * If set to null, there is no minimum width constraint.
    */
   minWidth: number | null;
+
   /**
-   * TODO minHeight
+   * Defines the minimum height of the child element.
+   * If set to null, there is no minimum height constraint.
    */
   minHeight: number | null;
 }
 
 /**
- * TODO PenpotLayoutCellProperties
+ * Properties for defining the layout of a cell in Penpot.
  */
 export interface PenpotLayoutCellProperties {
   /**
-   * TODO row
+   * The row index of the cell.
+   * This value is optional and indicates the starting row of the cell.
    */
   row?: number;
+
   /**
-   * TODO rowSpan
+   * The number of rows the cell should span.
+   * This value is optional and determines the vertical span of the cell.
    */
   rowSpan?: number;
+
   /**
-   * TODO column
+   * The column index of the cell.
+   * This value is optional and indicates the starting column of the cell.
    */
   column?: number;
+
   /**
-   * TODO columnSpan
+   * The number of columns the cell should span.
+   * This value is optional and determines the horizontal span of the cell.
    */
   columnSpan?: number;
+
   /**
-   * TODO areaName
+   * The name of the grid area that this cell belongs to.
+   * This value is optional and can be used to define named grid areas.
    */
   areaName?: string;
+
   /**
-   * TODO position
+   * The positioning mode of the cell.
+   * This value can be 'auto', 'manual', or 'area' and determines how the cell is positioned within the layout.
    */
   position?: 'auto' | 'manual' | 'area';
 }
@@ -1335,7 +1377,8 @@ export interface PenpotGroup extends PenpotShapeBase {
   insertChild(index: number, child: PenpotShape): void;
 
   /**
-   * TODO
+   * Checks if the group is currently a mask.
+   * A mask defines a clipping path for its child shapes.
    */
   isMask(): boolean;
 
@@ -1489,32 +1532,34 @@ export interface PenpotTextRange {
   textTransform: string | 'mixed';
 
   /**
-   * TODO textDecoration
+   * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
    */
   textDecoration: string | 'mixed';
 
   /**
-   * TODO direction
+   * The text direction for the text range. It can be a specific direction or 'mixed' if multiple directions are used.
    */
   direction: string | 'mixed';
 
   /**
-   * TODO fills
+   * The fill styles applied to the text range.
    */
   fills: PenpotFill[];
 
   /**
-   * TODO align
+   * The horizontal alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
   align: string | 'mixed';
 
   /**
-   * TODO verticalAlign
+   * The vertical alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
   verticalAlign: string | 'mixed';
 
   /**
-   * TODO applyTypography
+   * Applies a typography style to the text range.
+   * This method sets various typography properties for the text range according to the given typography style.
+   * @param typography - The typography style to apply.
    */
   applyTypography(typography: PenpotLibraryTypography): void;
 }
@@ -1587,32 +1632,38 @@ export interface PenpotText extends PenpotShapeBase {
   textTransform: string | 'mixed';
 
   /**
-   * TODO textDecoration
+   * The text decoration applied to the text shape, or 'mixed' if multiple text decorations are used.
    */
   textDecoration: string | 'mixed';
 
   /**
-   * TODO direction
+   * The text direction for the text shape, or 'mixed' if multiple directions are used.
    */
   direction: string | 'mixed';
 
   /**
-   * TODO align
+   * The horizontal alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
   align: string | 'mixed';
 
   /**
-   * TODO verticalAlign
+   * The vertical alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
   verticalAlign: string | 'mixed';
 
   /**
-   * TODO getRange
+   * Gets a text range within the text shape.
+   * Returns a PenpotTextRange object representing the specified text range.
+   * @param start - The start index of the text range.
+   * @param end - The end index of the text range.
    */
   getRange(start: number, end: number): PenpotTextRange;
 
   /**
-   * TODO applyTypography
+   * Applies a typography style to the text shape.
+   * @param typography - The typography style to apply.
+   * @remarks
+   * This method sets various typography properties for the text shape according to the given typography style.
    */
   applyTypography(typography: PenpotLibraryTypography): void;
 }
@@ -1873,7 +1924,13 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   applyToTextRange(range: PenpotTextRange): void;
 
   /**
-   * TODO setFont
+   * Sets the font and optionally its variant for the typography element.
+   * @param font - The font to set.
+   * @param variant - The font variant to set (optional).
+   * @example
+   * ```js
+   * typographyElement.setFont(newFont, newVariant);
+   * ```
    */
   setFont(font: PenpotFont, variant?: PenpotFontVariant): void;
 }
@@ -1899,45 +1956,48 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
   mainInstance: PenpotShape;
 }
 
+/**
+ * Represents a summary of a Penpot library.
+ * This interface provides properties for summarizing various aspects of a Penpot library.
+ */
 export interface PenpotLibrarySummary {
   /**
-   * TODO id
+   * The unique identifier of the library.
    */
   readonly id: string;
 
   /**
-   * TODO name
+   * The name of the library.
    */
   readonly name: string;
 
   /**
-   * TODO numColors
+   * The number of colors in the library.
    */
   readonly numColors: number;
 
   /**
-   * TODO numComponents
+   * The number of components in the library.
    */
   readonly numComponents: number;
 
   /**
-   * TODO numTypographies
+   * The number of typographies in the library.
    */
   readonly numTypographies: number;
 }
 
 /**
  * Represents a library in Penpot, containing colors, typographies, and components.
- * This type provides methods to create new color, typography, and component elements within the library.
  */
 export interface PenpotLibrary extends PenpotPluginData {
   /**
-   * TODO id
+   * The unique identifier of the library.
    */
   readonly id: string;
 
   /**
-   * TODO name
+   * The name of the library.
    */
   readonly name: string;
 
@@ -2012,102 +2072,146 @@ export type PenpotLibraryContext = {
   readonly connected: PenpotLibrary[];
 
   /**
-   * TODO: availableLibraries
+   * Retrieves a summary of available libraries that can be connected to.
+   * Returns a promise that resolves to an array of `PenpotLibrarySummary` objects representing available libraries.
+   * @example
+   * ```js
+   * const availableLibraries = await libraryContext.availableLibraries();
+   * ```
    */
   availableLibraries(): Promise<PenpotLibrarySummary[]>;
 
   /**
    * TODO: linkToFile
    */
+  /**
+   * Connects to a specific library identified by its ID.
+   * Returns a promise that resolves to the `PenpotLibrary` object representing the connected library.
+   * @param libraryId - The ID of the library to connect to.
+   * @example
+   * ```js
+   * const connectedLibrary = await libraryContext.connectLibrary('library-id');
+   * ```
+   */
   connectLibrary(libraryId: string): Promise<PenpotLibrary>;
 };
 
 /**
- * TODO PenpotFontVariant
+ * Represents a font variant in Penpot, which defines a specific style variation of a font.
+ * This interface provides properties for describing the characteristics of a font variant.
  */
 export interface PenpotFontVariant {
   /**
-   * TODO name
+   * The name of the font variant.
    */
   name: string;
+
   /**
-   * TODO fontVariantId
+   * The unique identifier of the font variant.
    */
   fontVariantId: string;
+
   /**
-   * TODO fontWeight
+   * The font weight of the font variant.
    */
   fontWeight: string;
+
   /**
-   * TODO fontStyle
+   * The font style of the font variant.
    */
   fontStyle: string;
 }
 
 /**
- * TODO PenpotFont
+ * Represents a font in Penpot, which includes details about the font family, variants, and styling options.
+ * This interface provides properties and methods for describing and applying fonts within Penpot.
  */
 export interface PenpotFont {
   /**
-   * TODO name
+   * This property holds the human-readable name of the font.
    */
   name: string;
+
   /**
-   * TODO fontId
+   * The unique identifier of the font.
    */
   fontId: string;
+
   /**
-   * TODO fontFamily
+   * The font family of the font.
    */
   fontFamily: string;
+
   /**
-   * TODO fontStyle
+   * The default font style of the font.
    */
   fontStyle: string;
+
   /**
-   * TODO fontVariantId
+   * The default font variant ID of the font.
    */
   fontVariantId: string;
+
   /**
-   * TODO fontWeight
+   * The default font weight of the font.
    */
   fontWeight: string;
+
   /**
-   * TODO variants
+   * An array of font variants available for the font.
    */
   variants: PenpotFontVariant[];
+
   /**
-   * TODO applyToText
+   * Applies the font styles to a text shape.
+   * @param text - The text shape to apply the font styles to.
+   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
    */
   applyToText(text: PenpotText, variant?: PenpotFontVariant): void;
+
   /**
-   * TODO applyToRange
+   * Applies the font styles to a text range within a text shape.
+   * @param range - The text range to apply the font styles to.
+   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
    */
   applyToRange(range: PenpotTextRange, variant?: PenpotFontVariant): void;
 }
 
 /**
- * TODO PenpotFontsContext
+ * Represents the context for managing fonts in Penpot.
+ * This interface provides methods to interact with fonts, such as retrieving fonts by ID or name.
  */
 export interface PenpotFontsContext {
   /**
-   * TODO all
+   * An array containing all available fonts.
    */
   all: PenpotFont[];
+
   /**
-   * TODO findById
+   * Finds a font by its unique identifier.
+   * Returns the `PenpotFont` object if found, otherwise `null`.
+   * @param id - The ID of the font to find.
    */
   findById(id: string): PenpotFont | null;
+
   /**
-   * TODO findByName
+   * Finds a font by its name.
+   * Returns the `PenpotFont` object if found, otherwise `null`.
+   * @param name - The name of the font to find.
    */
   findByName(name: string): PenpotFont | null;
+
   /**
-   * TODO findAllById
+   * Finds all fonts matching a specific ID.
+   * Returns an array of `PenpotFont` objects matching the provided ID.
+   * @param id - The ID to match against.
    */
   findAllById(id: string): PenpotFont[];
+
   /**
-   * TODO findAllByName
+   * Finds all fonts matching a specific name.
+   * Returns an array of `PenpotFont` objects matching the provided name.
+   * @param name - The name to match against.
    */
   findAllByName(name: string): PenpotFont[];
 }
@@ -2222,7 +2326,7 @@ export interface PenpotContext {
    */
   readonly library: PenpotLibraryContext;
   /**
-   * TODO
+   * The fonts context in the Penpot context, providing methods to manage fonts.
    */
   readonly fonts: PenpotFontsContext;
   /**
@@ -2289,12 +2393,13 @@ export interface PenpotContext {
   getSelectedShapes(): PenpotShape[];
 
   /**
-   * TODO: shapesColors
+   * Retrieves colors applied to the given shapes in Penpot.
+   * Returns an array of colors and their shape information.
    */
   shapesColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
 
   /**
-   * TODO: replaceColor
+   * Replaces a specified old color with a new color in the given shapes.
    */
   replaceColor(
     shapes: PenpotShape[],
@@ -2455,67 +2560,99 @@ export interface PenpotContext {
 }
 
 /**
- * TODO PenpotContextGeometryUtils
+ * Utility methods for geometric calculations in Penpot.
  */
 export interface PenpotContextGeometryUtils {
   /**
-   * TODO center
+   * Calculates the center point of a given array of shapes.
+   * This method computes the geometric center (centroid) of the bounding boxes of the provided shapes.
+   * Returns the center point as an object with `x` and `y` coordinates, or null if the array is empty.
+   * @param shapes - The array of shapes to calculate the center for.
+   *
    */
   center(shapes: PenpotShape[]): { x: number; y: number } | null;
 }
 
 /**
- * TODO PenpotContextTypesUtils
+ * Utility methods for determining the types of Penpot shapes.
  */
 export interface PenpotContextTypesUtils {
   /**
-   * TODO isFrame
+   * Checks if the given shape is a frame.
+   * Returns true if the shape is a PenpotFrame, otherwise false.
+   * @param shape - The shape to check.
    */
   isFrame(shape: PenpotShape): shape is PenpotFrame;
+
   /**
-   * TODO isGroup
+   * Checks if the given shape is a group.
+   * Returns true if the shape is a PenpotGroup, otherwise false.
+   * @param shape - The shape to check.
    */
   isGroup(shape: PenpotShape): shape is PenpotGroup;
+
   /**
-   * TODO isMask
+   * Checks if the given shape is a mask.
+   * Returns true if the shape is a PenpotGroup (acting as a mask), otherwise false.
+   * @param shape - The shape to check.
    */
   isMask(shape: PenpotShape): shape is PenpotGroup;
+
   /**
-   * TODO isBool
+   * Checks if the given shape is a boolean operation.
+   * Returns true if the shape is a PenpotBool, otherwise false.
+   * @param shape - The shape to check.
    */
   isBool(shape: PenpotShape): shape is PenpotBool;
+
   /**
-   * TODO isRectangle
+   * Checks if the given shape is a rectangle.
+   * Returns true if the shape is a PenpotRectangle, otherwise false.
+   * @param shape - The shape to check.
    */
   isRectangle(shape: PenpotShape): shape is PenpotRectangle;
+
   /**
-   * TODO isPath
+   * Checks if the given shape is a path.
+   * Returns true if the shape is a PenpotPath, otherwise false.
+   * @param shape - The shape to check.
    */
   isPath(shape: PenpotShape): shape is PenpotPath;
+
   /**
-   * TODO isText
+   * Checks if the given shape is a text element.
+   * Returns true if the shape is a PenpotText, otherwise false.
+   * @param shape - The shape to check.
    */
   isText(shape: PenpotShape): shape is PenpotText;
+
   /**
-   * TODO isEllipse
+   * Checks if the given shape is an ellipse.
+   * Returns true if the shape is a PenpotEllipse, otherwise false.
+   * @param shape - The shape to check.
    */
   isEllipse(shape: PenpotShape): shape is PenpotEllipse;
+
   /**
-   * TODO isSVG
+   * Checks if the given shape is an SVG.
+   * Returns true if the shape is a PenpotSvgRaw, otherwise false.
+   * @param shape - The shape to check.
    */
   isSVG(shape: PenpotShape): shape is PenpotSvgRaw;
 }
 
 /**
- * TODO PenpotContextUtils
+ * Utility methods for various operations in Penpot.
  */
 export interface PenpotContextUtils {
   /**
-   * TODO PenpotContextGeometryUtils
+   * Geometry utility methods for Penpot.
+   * Provides methods for geometric calculations, such as finding the center of a group of shapes.
    */
   readonly geometry: PenpotContextGeometryUtils;
   /**
-   * TODO PenpotContextTypesUtils
+   * Type utility methods for Penpot.
+   * Provides methods for determining the types of various shapes in Penpot.
    */
   readonly types: PenpotContextTypesUtils;
 }
@@ -2569,7 +2706,7 @@ export interface Penpot
     onMessage: <T>(callback: (message: T) => void) => void;
   };
   /**
-   * TODO: utils
+   * Provides access to utility functions and context-specific operations.
    */
   utils: PenpotContextUtils;
   /**
