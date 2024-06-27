@@ -222,7 +222,11 @@ export class AppComponent {
   }
 
   #getShapeColor(shape?: PenpotShape): string | undefined {
-    return shape?.fills?.[0]?.fillColor ?? shape?.strokes?.[0]?.strokeColor;
+    const fills = shape?.fills;
+    if (fills && fills !== 'mixed') {
+      return fills?.[0]?.fillColor ?? shape?.strokes?.[0]?.strokeColor;
+    }
+    return undefined;
   }
 
   #sendMessage(message: PluginUIEvent) {

@@ -80,10 +80,28 @@ export interface PenpotPage extends PenpotPluginData {
    * @param id The unique identifier of the shape.
    */
   getShapeById(id: string): PenpotShape | null;
+
   /**
    * Finds all shapes on the page.
+   * Optionaly it gets a criteria object to search for specific criteria
+   * @param `criteria.name` search for the name in a case-insensitive manner
+   * @param `criteria.nameLike` search for name but for a partial match with the name
+   * @param `criteria.type` search for shapes of the specified type
    */
-  findShapes(): PenpotShape[];
+  findShapes(criteria?: {
+    name?: string;
+    nameLike?: string;
+    type?:
+      | 'frame'
+      | 'group'
+      | 'bool'
+      | 'rect'
+      | 'path'
+      | 'text'
+      | 'circle'
+      | 'svg-raw'
+      | 'image';
+  }): PenpotShape[];
 }
 
 /**
@@ -485,9 +503,9 @@ export interface PenpotFrameGuideRow {
  */
 export interface PenpotFrameGuideSquare {
   /**
-   * The type of the guide, which is always 'column' for square guides.
+   * The type of the guide, which is always 'square' for square guides.
    */
-  type: 'column';
+  type: 'square';
   /**
    * Specifies whether the square guide is displayed.
    */
@@ -1190,7 +1208,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: PenpotFill[] | 'mixed';
 
   /**
    * The strokes applied to the shape.
@@ -1319,6 +1337,11 @@ export interface PenpotFrame extends PenpotShapeBase {
    */
   verticalSizing?: 'auto' | 'fix';
 
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
+
   // Container Properties
   /**
    * The children shapes contained within the frame.
@@ -1422,6 +1445,11 @@ export interface PenpotBool extends PenpotShapeBase {
    */
   content: Array<PenpotPathCommand>;
 
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
+
   // Container Properties
   /**
    * The children shapes contained within the boolean shape.
@@ -1449,6 +1477,11 @@ export interface PenpotRectangle extends PenpotShapeBase {
    * The type of the shape, which is always 'rect' for rectangle shapes.
    */
   readonly type: 'rect';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
 }
 
 /**
@@ -1469,6 +1502,11 @@ export interface PenpotPath extends PenpotShapeBase {
    * The content of the path shape, defined as an array of path commands.
    */
   content: Array<PenpotPathCommand>;
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
 }
 
 /**
@@ -1514,7 +1552,7 @@ export interface PenpotTextRange {
   /**
    * The font style of the text range. It can be a specific font style or 'mixed' if multiple font styles are used.
    */
-  fontStyle: string | 'mixed';
+  fontStyle: 'normal' | 'italic' | 'mixed' | null;
 
   /**
    * The line height of the text range. It can be a specific line height or 'mixed' if multiple line heights are used.
@@ -1529,32 +1567,38 @@ export interface PenpotTextRange {
   /**
    * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
    */
-  textTransform: string | 'mixed';
+  textTransform:
+    | 'uppercase'
+    | 'capitalize'
+    | 'lowercase'
+    | 'none'
+    | 'mixed'
+    | null;
 
   /**
    * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
    */
-  textDecoration: string | 'mixed';
+  textDecoration: 'underline' | 'line-through' | 'none' | 'mixed' | null;
 
   /**
    * The text direction for the text range. It can be a specific direction or 'mixed' if multiple directions are used.
    */
-  direction: string | 'mixed';
+  direction: 'ltr' | 'rtl' | 'mixed' | null;
 
   /**
    * The fill styles applied to the text range.
    */
-  fills: PenpotFill[];
+  fills: PenpotFill[] | 'mixed';
 
   /**
    * The horizontal alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
-  align: string | 'mixed';
+  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
 
   /**
    * The vertical alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
-  verticalAlign: string | 'mixed';
+  verticalAlign: 'top' | 'center' | 'bottom' | 'mixed' | null;
 
   /**
    * Applies a typography style to the text range.
@@ -1614,7 +1658,7 @@ export interface PenpotText extends PenpotShapeBase {
   /**
    * The font style used in the text shape, or 'mixed' if multiple font styles are used.
    */
-  fontStyle: string | 'mixed';
+  fontStyle: 'normal' | 'italic' | 'mixed' | null;
 
   /**
    * The line height used in the text shape, or 'mixed' if multiple line heights are used.
@@ -1629,27 +1673,27 @@ export interface PenpotText extends PenpotShapeBase {
   /**
    * The text transform applied to the text shape, or 'mixed' if multiple text transforms are used.
    */
-  textTransform: string | 'mixed';
+  textTransform: 'uppercase' | 'capitalize' | 'lowercase' | 'mixed' | null;
 
   /**
    * The text decoration applied to the text shape, or 'mixed' if multiple text decorations are used.
    */
-  textDecoration: string | 'mixed';
+  textDecoration: 'underline' | 'line-through' | 'mixed' | null;
 
   /**
    * The text direction for the text shape, or 'mixed' if multiple directions are used.
    */
-  direction: string | 'mixed';
+  direction: 'ltr' | 'rtl' | 'mixed' | null;
 
   /**
    * The horizontal alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
-  align: string | 'mixed';
+  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
 
   /**
    * The vertical alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
    */
-  verticalAlign: string | 'mixed';
+  verticalAlign: 'top' | 'center' | 'bottom' | null;
 
   /**
    * Gets a text range within the text shape.
@@ -1669,27 +1713,16 @@ export interface PenpotText extends PenpotShapeBase {
 }
 
 /**
- * Represents a frame shape in Penpot.
- * This interface extends `PenpotShapeBase` and includes properties specific to frames.
- */
-export interface PenpotFrame extends PenpotShapeBase {
-  /**
-   * The type of the shape, which is always 'frame' for frame shapes.
-   */
-  readonly type: 'frame';
-
-  /**
-   * The children shapes contained within the frame.
-   */
-  readonly children: PenpotShape[];
-}
-
-/**
  * Represents an ellipse shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to ellipses.
  */
 export interface PenpotEllipse extends PenpotShapeBase {
   type: 'circle';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
 }
 
 /**
@@ -1706,6 +1739,11 @@ export interface PenpotSvgRaw extends PenpotShapeBase {
  */
 export interface PenpotImage extends PenpotShapeBase {
   type: 'image';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: PenpotFill[];
 }
 
 /**
@@ -1718,9 +1756,21 @@ export type PenpotPoint = { x: number; y: number };
  * defined by the coordinates of the top-left corner and the dimensions of the rectangle.
  */
 export type PenpotBounds = {
+  /**
+   * Top-left x position of the rectangular area defined
+   */
   x: number;
+  /**
+   * Top-left y position of the rectangular area defined
+   */
   y: number;
+  /**
+   * Width of the represented area
+   */
   width: number;
+  /**
+   * Height of the represented area
+   */
   height: number;
 };
 
@@ -1886,7 +1936,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   /**
    * The font style of the typography element.
    */
-  fontStyle: string;
+  fontStyle?: 'normal' | 'italic' | null;
 
   /**
    * The line height of the typography element.
@@ -1901,7 +1951,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   /**
    * The text transform applied to the typography element.
    */
-  textTransform: string;
+  textTransform?: 'uppercase' | 'capitalize' | 'lowercase' | null;
 
   /**
    * Applies the typography styles to a text shape.
@@ -2119,7 +2169,7 @@ export interface PenpotFontVariant {
   /**
    * The font style of the font variant.
    */
-  fontStyle: string;
+  fontStyle: 'normal' | 'italic';
 }
 
 /**
@@ -2145,7 +2195,7 @@ export interface PenpotFont {
   /**
    * The default font style of the font.
    */
-  fontStyle: string;
+  fontStyle?: 'normal' | 'italic' | null;
 
   /**
    * The default font variant ID of the font.
