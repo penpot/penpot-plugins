@@ -16,6 +16,7 @@
 
 .color-box {
   block-size: 66px;
+  border: 1px solid var(--background-quaternary);
   border-radius: var(--spacing-8);
   background: linear-gradient(
     to right,
@@ -36,6 +37,7 @@
 
   span {
     color: var(--foreground-primary);
+    font-weight: 600;
   }
 }
 
@@ -73,5 +75,19 @@
   &.fail {
     background-color: var(--error-950);
     border-color: var(--error-700);
+  }
+}
+
+:host[data-theme='light'] {
+  .tag {
+    color: var(--app-black);
+    &.good {
+      background-color: #a7e8d9;
+    }
+
+    &.fail {
+      background-color: var(--error-200);
+      border-color: var(--error-500);
+    }
   }
 }
