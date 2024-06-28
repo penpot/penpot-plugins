@@ -1,7 +1,7 @@
 import type { PluginMessageEvent, PluginUIEvent } from './model.js';
 
 penpot.ui.open('CONTRAST PLUGIN', `?theme=${penpot.getTheme()}`, {
-  width: 235,
+  width: 285,
   height: 525,
 });
 
