@@ -1259,25 +1259,25 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * Returns the equivalent shape in the component main instance. If the current shape is inside a
    * main instance will return `null`;
    */
-  readonly componentRefShape: PenpotShape | null;
+  componentRefShape(): PenpotShape | null;
 
   /*
    * Returns the root of the component tree structure for the current shape. If the current shape
    * is already a root will return itself.
    */
-  readonly componentRoot: PenpotShape | null;
+  componentRoot(): PenpotShape | null;
 
   /*
    * Returns the head of the component tree structure for the current shape. If the current shape
    * is already a head will return itself.
    */
-  readonly componentHead: PenpotShape | null;
+  componentHead(): PenpotShape | null;
 
   /*
    * If the shape is a component instance, returns the reference to the component associated
    * otherwise will return null
    */
-  readonly component: PenpotLibraryComponent | null;
+  component(): PenpotLibraryComponent | null;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -2003,7 +2003,7 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
   /*
    * Returns the reference to the main component shape.
    */
-  mainInstance: PenpotShape;
+  mainInstance(): PenpotShape;
 }
 
 /**
