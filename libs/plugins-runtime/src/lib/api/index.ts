@@ -48,8 +48,12 @@ let modals = new Set<PluginModalElement>([]);
 const eventListeners: Map<string, Callback<unknown>[]> = new Map();
 
 window.addEventListener('message', (event) => {
-  for (const callback of uiMessagesCallbacks) {
-    callback(event.data);
+  try {
+    for (const callback of uiMessagesCallbacks) {
+      callback(event.data);
+    }
+  } catch (err) {
+    console.error(err);
   }
 });
 
@@ -168,13 +172,8 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       z.enum(validEvents).parse(type);
       z.function().parse(callback);
 
-      if (type === 'pagechange') {
-        checkPermission('page:read');
-      } else if (type === 'filechange') {
-        checkPermission('file:read');
-      } else if (type === 'selectionchange') {
-        checkPermission('selection:read');
-      }
+      // To suscribe to events needs the read permission
+      checkPermission('content:read');
 
       const listeners = eventListeners.get(type) || [];
       listeners.push(callback as Callback<unknown>);
@@ -199,69 +198,68 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     // Penpot State API
 
     get root(): PenpotShape {
-      checkPermission('page:read');
+      checkPermission('content:read');
       return context.root;
     },
 
     get currentPage(): PenpotPage {
-      checkPermission('page:read');
+      checkPermission('content:read');
       return context.currentPage;
     },
 
     get selection(): PenpotShape[] {
-      checkPermission('selection:read');
+      checkPermission('content:read');
       return context.selection;
     },
 
     get viewport(): PenpotViewport {
-      // checkPermission('viewport:read');
       return context.viewport;
     },
 
     get library(): PenpotLibraryContext {
-      // checkPermission('library:read');
+      checkPermission('library:read');
       return context.library;
     },
 
     get fonts(): PenpotFontsContext {
-      // checkPermission('viewport:read');
+      checkPermission('content:read');
       return context.fonts;
     },
 
     get currentUser(): PenpotUser {
-      // checkPermission('user:read');
+      checkPermission('user:read');
       return context.currentUser;
     },
 
     get activeUsers(): PenpotActiveUser {
-      // checkPermission('activeUsers:read');
+      checkPermission('user:read');
       return context.activeUsers;
     },
 
     getFile(): PenpotFile | null {
-      checkPermission('file:read');
+      checkPermission('content:read');
       return context.getFile();
     },
 
     getPage(): PenpotPage | null {
-      checkPermission('page:read');
+      checkPermission('content:read');
       return context.getPage();
     },
 
     getSelected(): string[] {
-      checkPermission('selection:read');
+      checkPermission('content:read');
       return context.getSelected();
     },
 
     getSelectedShapes(): PenpotShape[] {
-      checkPermission('selection:read');
+      checkPermission('content:read');
       return context.getSelectedShapes();
     },
 
     shapesColors(
       shapes: PenpotShape[]
     ): (PenpotColor & PenpotColorShapeInfo)[] {
-      // checkPermission('selection:read');
+      checkPermission('content:read');
       return context.shapesColors(shapes);
     },
 
@@ -270,7 +268,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       oldColor: PenpotColor,
       newColor: PenpotColor
     ) {
-      // checkPermission('selection:read');
+      checkPermission('content:write');
       return context.replaceColor(shapes, oldColor, newColor);
     },
 
@@ -279,27 +277,27 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     },
 
     createFrame(): PenpotFrame {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createFrame();
     },
 
     createRectangle(): PenpotRectangle {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createRectangle();
     },
 
     createEllipse(): PenpotEllipse {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createEllipse();
     },
 
     createText(text: string): PenpotText | null {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createText(text);
     },
 
     createPath(): PenpotPath {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createPath();
     },
 
@@ -307,30 +305,32 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       boolType: PenpotBoolType,
       shapes: PenpotShape[]
     ): PenpotBool | null {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createBoolean(boolType, shapes);
     },
 
     createShapeFromSvg(svgString: string): PenpotGroup | null {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.createShapeFromSvg(svgString);
     },
 
     group(shapes: PenpotShape[]): PenpotGroup | null {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       return context.group(shapes);
     },
 
     ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void {
-      // checkPermission('page:write');
+      checkPermission('content:write');
       context.ungroup(group, ...other);
     },
 
     uploadMediaUrl(name: string, url: string) {
+      checkPermission('content:write');
       return context.uploadMediaUrl(name, url);
     },
 
     uploadMediaData(name: string, data: Uint8Array, mimeType: string) {
+      checkPermission('content:write');
       return context.uploadMediaData(name, data, mimeType);
     },
 
@@ -338,7 +338,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       shapes: PenpotShape[],
       options?: { type?: 'html' | 'svg' }
     ): string {
-      // checkPermission('page:write');
+      checkPermission('content:read');
       return context.generateMarkup(shapes, options);
     },
 
@@ -350,7 +350,7 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
         includeChildren?: boolean;
       }
     ): string {
-      // checkPermission('page:write');
+      checkPermission('content:read');
       return context.generateStyle(shapes, options);
     },
   };

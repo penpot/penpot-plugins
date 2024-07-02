@@ -4,8 +4,8 @@
   "code": "/plugin.js",
   "icon": "/assets/icon.png",
   "permissions": [
-    "page:read",
-    "file:read",
-    "selection:read"
+    "content:read",
+    "content:write",
+    "library:read"
   ]
 }

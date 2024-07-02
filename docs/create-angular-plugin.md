@@ -26,7 +26,13 @@ Next, create a `manifest.json` file inside the `/src/assets` directory. This fil
   "host": "http://localhost:4200",
   "code": "/assets/plugin.js",
   "icon": "/assets/icon.png",
-  "permissions": ["page:read", "file:read", "selection:read"]
+  "permissions": [
+    "content:read",
+    "content:write",
+    "library:read",
+    "library:write",
+    "user:read"
+  ]
 }
 ```
 

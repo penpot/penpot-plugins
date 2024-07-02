@@ -9,11 +9,11 @@ export const manifestSchema = z.object({
   description: z.string().max(200).optional(),
   permissions: z.array(
     z.enum([
-      'page:read',
-      'page:write',
-      'file:read',
-      'file:write',
-      'selection:read',
+      'content:read',
+      'content:write',
+      'library:read',
+      'library:write',
+      'user:read',
     ])
   ),
 });

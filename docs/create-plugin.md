@@ -26,7 +26,13 @@ Next, create a `manifest.json` file inside the `/public` directory. This file is
   "host": "http://localhost:4201",
   "code": "/plugin.js",
   "icon": "/icon.png",
-  "permissions": ["page:read", "file:read", "selection:read"]
+  "permissions": [
+    "content:read",
+    "content:write",
+    "library:read",
+    "library:write",
+    "user:read"
+  ]
 }
 ```
 
