@@ -35,7 +35,13 @@ describe('Plugin api', () => {
     name: 'test',
     code: '',
     host: 'http://fake.com',
-    permissions: ['page:read', 'file:read', 'selection:read'],
+    permissions: [
+      'content:read',
+      'content:write',
+      'library:read',
+      'library:write',
+      'user:read',
+    ],
   });
 
   const addEventListenerMock = vi.mocked(window.addEventListener);

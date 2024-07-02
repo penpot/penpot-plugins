@@ -3,8 +3,10 @@
   "description": "Sandbox plugin for plugins development",
   "code": "/assets/plugin.js",
   "permissions": [
-    "page:read",
-    "file:read",
-    "selection:read"
+    "content:read",
+    "content:write",
+    "library:read",
+    "library:write",
+    "user:read"
   ]
 }
