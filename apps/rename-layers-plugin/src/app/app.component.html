@@ -1,3 +1,21 @@
+<ng-template #iconArrowRight>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon"
+  >
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+    <polyline points="12 5 19 12 12 19"></polyline>
+  </svg>
+</ng-template>
+
 <div>
   <div role="tablist" class="nav-tabs">
     <button
@@ -53,7 +71,7 @@
     <ul class="preview-list">
       <li class="preview-item" *ngFor="let preview of previewList()">
         <span class="original" [title]="preview.name">{{ preview.name }}</span>
-        <span class="icon icon-arrow-right"></span>
+        <ng-template *ngTemplateOutlet="iconArrowRight"></ng-template>
         <span class="result" [title]="resultAddText(preview)">{{
           resultAddText(preview)
         }}</span>
@@ -112,7 +130,7 @@
           [innerHTML]="highlightMatch(preview.name)"
           [title]="preview.name"
         ></span>
-        <span class="icon icon-arrow-right"></span>
+        <ng-template *ngTemplateOutlet="iconArrowRight"></ng-template>
         <span class="result" [title]="resultReplaceText(preview.name)">{{
           resultReplaceText(preview.name)
         }}</span>

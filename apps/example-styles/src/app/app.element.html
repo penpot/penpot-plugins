@@ -459,56 +459,6 @@
     </ul>
   </section>
 
-  <section aria-label="icons">
-    <h2 class="title-large title-margin">Icons</h2>
-    <div class="icons-section" style="margin-block-end: var(--spacing-20)">
-      <span class="icon icon-chevron-bottom"></span>
-      <span class="icon icon-chevron-top"></span>
-      <span class="icon icon-chevron-right"></span>
-      <span class="icon icon-chevron-left"></span>
-      <span class="icon icon-arrow-right"></span>
-      <span class="icon icon-close"></span>
-      <span class="icon icon-close-l"></span>
-      <span class="icon icon-delete"></span>
-      <span class="icon icon-add"></span>
-      <span class="icon icon-remove"></span>
-      <span class="icon icon-search"></span>
-      <span class="icon icon-copy"></span>
-      <span class="icon icon-more"></span>
-      <span class="icon icon-loading"></span>
-      <span class="icon icon-help"></span>
-      <span class="icon icon-info"></span>
-      <span class="icon icon-show"></span>
-      <span class="icon icon-hide"></span>
-      <span class="icon icon-lock"></span>
-      <span class="icon icon-unlock"></span>
-      <span class="icon icon-download"></span>
-    </div>
-    <template lang="html">
-      <span class="icon icon-chevron-bottom"></span>
-      <span class="icon icon-chevron-top"></span>
-      <span class="icon icon-chevron-right"></span>
-      <span class="icon icon-chevron-left"></span>
-      <span class="icon icon-arrow-right"></span>
-      <span class="icon icon-close"></span>
-      <span class="icon icon-close-l"></span>
-      <span class="icon icon-delete"></span>
-      <span class="icon icon-add"></span>
-      <span class="icon icon-remove"></span>
-      <span class="icon icon-search"></span>
-      <span class="icon icon-copy"></span>
-      <span class="icon icon-more"></span>
-      <span class="icon icon-loading"></span>
-      <span class="icon icon-help"></span>
-      <span class="icon icon-info"></span>
-      <span class="icon icon-show"></span>
-      <span class="icon icon-hide"></span>
-      <span class="icon icon-lock"></span>
-      <span class="icon icon-unlock"></span>
-      <span class="icon icon-download"></span>
-    </template>
-  </section>
-
   <section aria-label="select">
     <h2 class="title-large title-margin">Select</h2>
     <div class="component-section select-section">
