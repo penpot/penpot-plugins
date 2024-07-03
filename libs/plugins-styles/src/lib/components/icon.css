@@ -3,93 +3,9 @@
   align-items: center;
   block-size: var(--spacing-16);
   cursor: default;
-  font-family: var(--body-font);
-  font-size: var(--font-size-medium);
+  font-family: var(--font-size-m);
+  font-size: var(--font-size-m);
   inline-size: var(--spacing-16);
   justify-content: center;
   user-select: none;
-}
-
-.icon-chevron-bottom {
-  background-image: url('../icons/chevron-bottom.svg');
-}
-
-.icon-chevron-left {
-  background-image: url('../icons/chevron-left.svg');
-}
-
-.icon-chevron-right {
-  background-image: url('../icons/chevron-right.svg');
-}
-
-.icon-chevron-top {
-  background-image: url('../icons/chevron-top.svg');
-}
-
-.icon-arrow-right {
-  background-image: url('../icons/arrow-right.svg');
-}
-
-.icon-close {
-  background-image: url('../icons/actions-close.svg');
-}
-
-.icon-close-l {
-  background-image: url('../icons/actions-close-l.svg');
-}
-
-.icon-delete {
-  background-image: url('../icons/actions-delete.svg');
-}
-
-.icon-add {
-  background-image: url('../icons/actions-add.svg');
-}
-
-.icon-remove {
-  background-image: url('../icons/actions-remove.svg');
-}
-
-.icon-search {
-  background-image: url('../icons/actions-search.svg');
-}
-
-.icon-copy {
-  background-image: url('../icons/actions-copy.svg');
-}
-
-.icon-more {
-  background-image: url('../icons/actions-more.svg');
-}
-
-.icon-loading {
-  background-image: url('../icons/actions-loading.svg');
-}
-
-.icon-help {
-  background-image: url('../icons/actions-help.svg');
-}
-
-.icon-info {
-  background-image: url('../icons/actions-info.svg');
-}
-
-.icon-show {
-  background-image: url('../icons/actions-show.svg');
-}
-
-.icon-hide {
-  background-image: url('../icons/actions-hide.svg');
-}
-
-.icon-lock {
-  background-image: url('../icons/actions-lock.svg');
-}
-
-.icon-unlock {
-  background-image: url('../icons/actions-unlock.svg');
-}
-
-.icon-download {
-  background-image: url('../icons/app-download.svg');
 }
