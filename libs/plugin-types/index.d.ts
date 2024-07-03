@@ -537,11 +537,11 @@ export interface PenpotExport {
   /**
    * For bitmap formats represent the scale of the original size to resize the export
    */
-  scale: number;
+  scale?: number;
   /**
    * Suffix that will be appended to the resulting exported file
    */
-  suffix: string;
+  suffix?: string;
 }
 
 /**
@@ -1292,6 +1292,11 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * @param center Center of the transform rotation. If not send will use the geometri center of the shapes.
    */
   rotate(angle: number, center?: { x: number; y: number } | null): void;
+
+  /**
+   * Generates an export from the current shape.
+   */
+  export(config: PenpotExport): Promise<Uint8Array>;
 
   /**
    * Creates a clone of the shape.
