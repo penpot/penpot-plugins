@@ -1,4 +1,4 @@
-button {
+:where([data-appearance]:is(button), [role='tab']:is(button)) {
   border: 2px solid transparent;
   font-weight: 500;
   font-size: 12px;

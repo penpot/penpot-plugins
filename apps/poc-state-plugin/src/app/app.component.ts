@@ -21,7 +21,7 @@ import type { PenpotShape } from '@penpot/plugin-types';
         <div class="name-wrap">
           <label>Selected Shape: </label>
           <input class="input" type="text" formControlName="name" />
-          <button type="submit">Update</button>
+          <button type="submit" data-appearance="primary">Update</button>
         </div>
       </form>
 
