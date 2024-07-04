@@ -212,6 +212,11 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       return context.selection;
     },
 
+    set selection(value: PenpotShape[]) {
+      checkPermission('content:read');
+      context.selection = value;
+    },
+
     get viewport(): PenpotViewport {
       return context.viewport;
     },
