@@ -2349,7 +2349,7 @@ export interface PenpotActiveUser extends PenpotUser {
  */
 export interface PenpotContext {
   /**
-   * The root shape in the current Penpot context.
+   * The root shape in the current Penpot context. Requires `content:read` permission.
    * @example
    * ```js
    * const rootShape = context.root;
@@ -2357,7 +2357,7 @@ export interface PenpotContext {
    */
   readonly root: PenpotShape;
   /**
-   * The current page in the Penpot context.
+   * The current page in the Penpot context. Requires `content:read` permission.
    * @example
    * ```js
    * const currentPage = context.currentPage;
@@ -2373,7 +2373,7 @@ export interface PenpotContext {
    */
   readonly viewport: PenpotViewport;
   /**
-   * The library context in the Penpot context, including both local and connected libraries.
+   * The library context in the Penpot context, including both local and connected libraries. Requires `library:read` permission.
    * @example
    * ```js
    * const libraryContext = context.library;
@@ -2381,11 +2381,11 @@ export interface PenpotContext {
    */
   readonly library: PenpotLibraryContext;
   /**
-   * The fonts context in the Penpot context, providing methods to manage fonts.
+   * The fonts context in the Penpot context, providing methods to manage fonts. Requires `content:read` permission.
    */
   readonly fonts: PenpotFontsContext;
   /**
-   * The current user in the Penpot context.
+   * The current user in the Penpot context. Requires `user:read` permission.
    * @example
    * ```js
    * const currentUser = context.currentUser;
@@ -2393,7 +2393,7 @@ export interface PenpotContext {
    */
   readonly currentUser: PenpotUser;
   /**
-   * An array of active users in the Penpot context.
+   * An array of active users in the Penpot context. Requires `user:read` permission.
    * @example
    * ```js
    * const activeUsers = context.activeUsers;
@@ -2402,7 +2402,7 @@ export interface PenpotContext {
   readonly activeUsers: PenpotActiveUser;
 
   /**
-   * The currently selected shapes in Penpot.
+   * The currently selected shapes in Penpot. Requires `content:read` permission.
    * @example
    * ```js
    * const selectedShapes = context.selection;
@@ -2411,7 +2411,7 @@ export interface PenpotContext {
   selection: PenpotShape[];
 
   /**
-   * Retrieves file data from the current Penpot context.
+   * Retrieves file data from the current Penpot context. Requires `content:read` permission.
    * Returns the file data or `null` if no file is available.
    * @example
    * ```js
@@ -2420,7 +2420,7 @@ export interface PenpotContext {
    */
   getFile(): PenpotFile | null;
   /**
-   * Retrieves page data from the current Penpot context.
+   * Retrieves page data from the current Penpot context. Requires `content:read` permission.
    * Returns the page data or `null` if no page is available.
    * @example
    * ```js
@@ -2429,7 +2429,7 @@ export interface PenpotContext {
    */
   getPage(): PenpotPage | null;
   /**
-   * Retrieves the IDs of the currently selected elements in Penpot.
+   * Retrieves the IDs of the currently selected elements in Penpot. Requires `content:read` permission.
    * Returns an array of IDs representing the selected elements.
    * @example
    * ```js
@@ -2438,7 +2438,7 @@ export interface PenpotContext {
    */
   getSelected(): string[];
   /**
-   * Retrieves the shapes of the currently selected elements in Penpot.
+   * Retrieves the shapes of the currently selected elements in Penpot. Requires `content:read` permission.
    * Returns an array of shapes representing the selected elements.
    * @example
    * ```js
@@ -2448,13 +2448,13 @@ export interface PenpotContext {
   getSelectedShapes(): PenpotShape[];
 
   /**
-   * Retrieves colors applied to the given shapes in Penpot.
+   * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
    * Returns an array of colors and their shape information.
    */
   shapesColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
 
   /**
-   * Replaces a specified old color with a new color in the given shapes.
+   * Replaces a specified old color with a new color in the given shapes. Requires `content:write` permission.
    */
   replaceColor(
     shapes: PenpotShape[],
@@ -2473,7 +2473,7 @@ export interface PenpotContext {
   getTheme(): PenpotTheme;
 
   /**
-   * Uploads media to Penpot and retrieves its image data.
+   * Uploads media to Penpot and retrieves its image data. Requires `content:write` permission.
    * @param name The name of the media.
    * @param url The URL of the media to be uploaded.
    * Returns a promise that resolves to the image data of the uploaded media.
@@ -2485,7 +2485,7 @@ export interface PenpotContext {
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
 
   /**
-   * Uploads media to penpot and retrieves the image data
+   * Uploads media to penpot and retrieves the image data. Requires `content:write` permission.
    * @param name The name of the media.
    * @param data The image content data
    * Returns a promise that resolves to the image data of the uploaded media.
@@ -2496,12 +2496,21 @@ export interface PenpotContext {
     mimeType: string
   ): Promise<PenpotImageData>;
 
-  // Methods for creating shapes and components
+  /**
+   * Groups the specified shapes. Requires `content:write` permission.
+   * @param shapes - An array of shapes to group.
+   * Returns the newly created group or `null` if the group could not be created.
+   */
   group(shapes: PenpotShape[]): PenpotGroup | null;
+  /**
+   * Ungroups the specified group. Requires `content:write` permission.
+   * @param group - The group to ungroup.
+   * @param other - Additional groups to ungroup.
+   */
   ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
 
   /**
-   * Use this method to create the shape of a rectangle.
+   * Use this method to create the shape of a rectangle. Requires `content:write` permission.
    *
    * @example
    * ```js
@@ -2510,7 +2519,7 @@ export interface PenpotContext {
    */
   createRectangle(): PenpotRectangle;
   /**
-   * Use this method to create a frame. This is the first step before anything else, the container.
+   * Use this method to create a frame. This is the first step before anything else, the container. Requires `content:write` permission.
    * Then you can add a gridlayout, flexlayout or add a shape inside the frame.
    *
    * @example
@@ -2520,7 +2529,7 @@ export interface PenpotContext {
    */
   createFrame(): PenpotFrame;
   /**
-   * Use this method to create the shape of a ellipse.
+   * Use this method to create the shape of a ellipse. Requires `content:write` permission.
    *
    * @example
    * ```js
@@ -2529,7 +2538,7 @@ export interface PenpotContext {
    */
   createEllipse(): PenpotEllipse;
   /**
-   * Use this method to create a path.
+   * Use this method to create a path. Requires `content:write` permission.
    *
    * @example
    * ```js
@@ -2538,7 +2547,7 @@ export interface PenpotContext {
    */
   createPath(): PenpotPath;
   /**
-   * Creates a PenpotBoolean shape based on the specified boolean operation and shapes.
+   * Creates a PenpotBoolean shape based on the specified boolean operation and shapes. Requires `content:write` permission.
    * @param boolType The type of boolean operation ('union', 'difference', 'exclude', 'intersection').
    * @param shapes An array of shapes to perform the boolean operation on.
    * Returns the newly created PenpotBoolean shape resulting from the boolean operation.
@@ -2552,7 +2561,7 @@ export interface PenpotContext {
     shapes: PenpotShape[]
   ): PenpotBool | null;
   /**
-   * Creates a PenpotGroup from an SVG string.
+   * Creates a PenpotGroup from an SVG string. Requires `content:write` permission.
    * @param svgString The SVG string representing the shapes to be converted into a group.
    * Returns the newly created PenpotGroup containing the shapes from the SVG.
    * @example
@@ -2562,7 +2571,7 @@ export interface PenpotContext {
    */
   createShapeFromSvg(svgString: string): PenpotGroup | null;
   /**
-   * Creates a PenpotText shape with the specified text content.
+   * Creates a PenpotText shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the PenpotText shape.
    * Returns the new created shape, if the shape wasn't created can return null.
    * @example
@@ -2581,7 +2590,7 @@ export interface PenpotContext {
   createText(text: string): PenpotText | null;
 
   /**
-   *
+   * Generates markup for the given shapes. Requires `content:read` permission
    * @param shapes
    * @param markupType will default to 'html'
    */
@@ -2591,7 +2600,7 @@ export interface PenpotContext {
   ): string;
 
   /**
-   *
+   * Generates styles for the given shapes. Requires `content:read` permission
    * @param shapes
    * @param styleType will default to 'css'
    * @param withPrelude will default to `false`
@@ -2774,7 +2783,7 @@ export interface Penpot
    */
   closePlugin: () => void;
   /**
-   * Adds an event listener for the specified event type.
+   * Adds an event listener for the specified event type. Subscribing to events requires `content:read` permission.
    *
    * @param type The event type to listen for.
    * @param callback The callback function to execute when the event is triggered.
