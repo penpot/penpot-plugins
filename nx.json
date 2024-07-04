@@ -4,9 +4,17 @@
       "analyzeSourceFiles": true
     }
   },
+  "release": {
+    "projects": ["libs/plugins-styles", "libs/plugin-types"]
+  },
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectName}"
+      }
+    },
     "@nx/vite:build": {
       "cache": true,
       "dependsOn": ["^build"],

@@ -10,10 +10,6 @@
         "outputPath": "dist/plugins-styles"
       }
     },
-    "publish": {
-      "command": "node tools/scripts/publish.mjs plugins-styles {args.ver} {args.tag}",
-      "dependsOn": ["build"]
-    },
     "lint": {
       "command": "echo 0"
     }
