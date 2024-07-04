@@ -1,84 +1,56 @@
 # Publishing Packages
 
-- DEPRECATED -
-
 ## Introduction
 
-This guide details the process of publishing `plugin-types` and `plugins-styles` packages, which are essential for plugin development. To facilitate testing and distribution, we leverage npm for publishing and Verdaccio for setting up a local registry. Below is a walkthrough for publishing these packages, setting up a local registry, and managing releases.
-
-## Setting Up a Local Registry with Verdaccio
-
-Setting up a local registry is for testing plugins in isolation from the monorepo. We utilize Verdaccio, a npm proxy registry, for this purpose.
-
-**Launch the Registry**: Initiate the Verdaccio registry by executing the command:
-
-```shell
-npm run registry
-```
+This guide details the process of publishing `plugin-types` and `plugins-styles` packages, which are essential for plugin development. Below is a walkthrough for publishing these packages and managing releases.
 
 ## Publishing Libraries
 
-Publishing packages allows you to distribute your libraries to other developers and environments. Follow the steps below for both automated and manual publishing processes.
+Publishing packages enables the distribution of types and styles libraries. Currently, all packages share the same version, meaning some releases might not contain updates but will still increment the version. Follow the steps below for the automated publishing processes.
 
-### Automated Publishing:
+### Previewing a Release
 
-To publish the libraries automatically, use the command:
-
-```shell
-npm run publish -- --version 0.1.0 --tag 0.1.0 --registry http://localhost:4873
-```
-
-### Manual Publishing:
-
-For manual publication, navigate to the library directory and execute:
+To generate a preview of the release to check if everything is as expected, run the following command:
 
 ```shell
-npm publish --registry http://localhost:4873
+npm run release
 ```
 
-### Independent Publishing:
+### Generating a Real Release
 
-To publish libraries independently, specify the package name along with version and tag:
+To create an actual release, disable the dry-run option:
 
 ```shell
-npx nx publish plugin-types -- --version 0.1.0 --tag 0.1.0
-npx nx publish plugins-styles -- --version 0.1.0 --tag 0.1.0
+npm run release -- --dry-run false
 ```
 
-### Create the tag in git
+This command will:
+
+- Update the `CHANGELOG.md`
+- Update libraries `package.json` file version
+- Generate a commit
+- Create a new git tag
+- Publish to NPM with the `latest` tag
+
+For detailed information, refer to the [Nx Release Documentation](https://nx.dev/recipes/nx-release/get-started-with-nx-release).
+
+### Creating a Preview Version
+
+To generate a preview version and avoid publishing it as the latest release, use:
 
 ```shell
-git tag -a 0.1.0
-git push origin 0.1.0
+npm run release -- --dry-run false --latest false --preid next
 ```
 
-### Installing Libraries:
+For example, if the current version is `0.8.0` and you select the `prepatch` option as a version specifier, it will generate the version `0.8.1-next.0` and publish it with the next tag on npm.
 
-When installing the library, ensure to specify the registry:
+### Help
+
+To see more options, run:
 
 ```shell
-npm i --registry http://localhost:4873
+npm run release -- --help
 ```
-
-**Note**: For direct npm publication, omit the `--registry` flag.
-
-## Managing Releases
-
-### Generating a Release:
-
-For regular releases, execute:
-
-```shell
-npx nx release
-```
-
-For the initial release, use the `--first-release` flag:
-
-```shell
-npx nx release --first-release
-```
-
-Refer to the [Nx Release Documentation](https://nx.dev/recipes/nx-release/publish-in-ci-cd) for detailed information.
 
 ## Important Reminders
 
@@ -86,9 +58,7 @@ Ensure to update the [penpot-plugin-starter-template](https://github.com/penpot/
 
 ## Relevant Files and Scripts
 
-- **Verdaccio Configuration**: `./project.json`
 - **CSS Build Script**: `./tools/scripts/build-css.mjs`
 - **Types Build Script**: `./tools/scripts/build-types.mjs`
-- **Publish Script**: `./tools/scripts/publish.mjs`
-
-This improved documentation aims to streamline the package publishing process, making it more accessible and understandable for developers.
+- **Release Script**: `./tools/scripts/publish.ts`
+- **Publish config**: `./nx.json`

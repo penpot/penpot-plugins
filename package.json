@@ -21,10 +21,10 @@
     "lint": "nx run-many --all --target=lint --parallel",
     "lint:affected": "npx nx affected --target=lint",
     "test": "nx run-many -t test --parallel -p plugins-runtime lorem-ipsum-plugin",
-    "publish": "nx run-many -t publish -p plugins-styles plugin-types --parallel=false --",
     "registry": "nx local-registry",
     "prepare": "husky",
-    "create:api-docs": "npx typedoc --tsconfig libs/plugins-runtime/tsconfig.lib.json --options typedoc.json"
+    "create:api-docs": "npx typedoc --tsconfig libs/plugins-runtime/tsconfig.lib.json --options typedoc.json",
+    "release": "npx tsx ./tools/scripts/publish.ts"
   },
   "private": true,
   "devDependencies": {
@@ -73,10 +73,9 @@
     "nx": "19.1.1",
     "prettier": "^2.6.2",
     "swc-loader": "0.1.15",
-    "ts-node": "10.9.1",
+    "tsx": "^4.16.2",
     "typedoc": "^0.25.13",
     "typescript": "~5.4.5",
-    "verdaccio": "^5.0.4",
     "vite": "^5.0.0",
     "vite-plugin-checker": "^0.6.4",
     "vite-plugin-dts": "~2.3.0",

@@ -12,10 +12,6 @@
       "options": {
         "outputPath": "dist/plugin-types"
       }
-    },
-    "publish": {
-      "command": "node tools/scripts/publish.mjs plugin-types {args.ver} {args.tag}",
-      "dependsOn": ["build"]
     }
   },
   "tags": ["type:ui"]
