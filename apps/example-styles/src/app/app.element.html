@@ -885,8 +885,8 @@
     </div>
   </section>
 
-  <section aria-label="checkox">
-    <h2 class="title-large title-margin">Checkox</h2>
+  <section aria-label="checkbox">
+    <h2 class="title-large title-margin">Checkbox</h2>
     <div class="component-section">
       <div class="theme-group" data-theme="dark">
         <div
