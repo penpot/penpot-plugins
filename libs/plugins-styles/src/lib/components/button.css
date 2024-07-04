@@ -6,6 +6,7 @@
   line-height: 1.2;
   padding: 8px 24px 8px 24px;
   text-transform: uppercase;
+  font-family: inherit;
 
   &:hover:not(:disabled) {
     cursor: pointer;
