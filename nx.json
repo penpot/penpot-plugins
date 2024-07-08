@@ -62,13 +62,15 @@
       "style": "css",
       "linter": "eslint",
       "unitTestRunner": "vitest",
-      "e2eTestRunner": "none"
+      "e2eTestRunner": "none",
+      "projectNameAndRootFormat": "as-provided"
     },
     "@nx/angular:application": {
       "e2eTestRunner": "none",
       "linter": "eslint",
       "style": "css",
-      "unitTestRunner": "none"
+      "unitTestRunner": "none",
+      "projectNameAndRootFormat": "as-provided"
     }
   }
 }
