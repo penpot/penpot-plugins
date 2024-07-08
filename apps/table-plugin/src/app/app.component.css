@@ -87,6 +87,7 @@ hr {
   block-size: 22px;
   display: flex;
   justify-content: space-between;
+  margin-block-end: var(--spacing-12);
 
   & .text {
     margin-block-start: 0;
