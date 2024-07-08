@@ -63,7 +63,8 @@
       "linter": "eslint",
       "unitTestRunner": "vitest",
       "e2eTestRunner": "none",
-      "projectNameAndRootFormat": "as-provided"
+      "projectNameAndRootFormat": "as-provided",
+      "bundler": "vite"
     },
     "@nx/angular:application": {
       "e2eTestRunner": "none",
