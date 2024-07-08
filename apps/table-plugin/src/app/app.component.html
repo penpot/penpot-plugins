@@ -29,24 +29,7 @@
       >{{ selectedRow }} rows x {{ selectedColumn }} cols</span
     >
   </div>
-  <div class="table-grid">
-    <span
-      class="cell"
-      *ngFor="let cell of cells; index as i"
-      (mouseenter)="setColRow(i)"
-      (mouseleave)="clearColRow()"
-      (click)="createTable(i)"
-    >
-      <span
-        class="square"
-        [class.active]="
-          selectedCell &&
-          selectedCell.column >= getCellColRow(i).column &&
-          selectedCell.row >= getCellColRow(i).row
-        "
-      ></span>
-    </span>
-  </div>
+
   <div class="checkbox-container">
     <input
       [(ngModel)]="tableOptions.borders"
@@ -87,5 +70,24 @@
       value="filled_header_column"
     />
     <label for="filledHeaderColumn" class="body-s">Filled header column</label>
+  </div>
+
+  <div class="table-grid">
+    <span
+      class="cell"
+      *ngFor="let cell of cells; index as i"
+      (mouseenter)="setColRow(i)"
+      (mouseleave)="clearColRow()"
+      (click)="createTable(i)"
+    >
+      <span
+        class="square"
+        [class.active]="
+          selectedCell &&
+          selectedCell.column >= getCellColRow(i).column &&
+          selectedCell.row >= getCellColRow(i).row
+        "
+      ></span>
+    </span>
   </div>
 </div>
