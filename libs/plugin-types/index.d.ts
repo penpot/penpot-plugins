@@ -1,4 +1,112 @@
 /**
+ * These are methods and properties available on the `penpot` global object.
+ *
+ */
+export interface Penpot
+  extends Omit<PenpotContext, 'addListener' | 'removeListener'> {
+  ui: {
+    /**
+     * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
+     * There is a minimum and maximum size for this modal and a default size but it's possible to customize it anyway with the options parameter.
+     *
+     * @param name title of the plugin, it'll be displayed on the top of the modal
+     * @param url of the plugin
+     * @param options height and width of the modal.
+     *
+     * @example
+     * ```js
+     * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
+     * ```
+     */
+    open: (
+      name: string,
+      url: string,
+      options?: { width: number; height: number }
+    ) => void;
+    /**
+     * Sends a message to the plugin UI.
+     *
+     * @param message content usually is an object
+     *
+     * @example
+     * ```js
+     * this.sendMessage({ type: 'example-type', content: 'data we want to share' });
+     * ```
+     */
+    sendMessage: (message: unknown) => void;
+    /**
+     * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
+     *
+     * @param message content usually is an object
+     *
+     * @example
+     * ```js
+     * penpot.ui.onMessage((message) => {if(message.type === 'example-type' { ...do something })});
+     * ```
+     */
+    onMessage: <T>(callback: (message: T) => void) => void;
+  };
+  /**
+   * Provides access to utility functions and context-specific operations.
+   */
+  utils: PenpotContextUtils;
+  /**
+   * Closes the plugin. When this method is called the UI will be closed.
+   *
+   * @example
+   * ```js
+   * penpot.closePlugin();
+   * ```
+   */
+  closePlugin: () => void;
+  /**
+   * Adds an event listener for the specified event type.
+   * Subscribing to events requires `content:read` permission.
+   *
+   * The following are the posible event types:
+   *  - pagechange: event emitted when the current page changes. The callback will receive the new page.
+   *  - shapechanged: event emitted when the shape changes. This event requires to send inside the `props` object the shape
+   *  that will be observed. For example:
+   *  ```javascript
+   *  // Observe the current selected shape
+   *  penpot.on('shapechanged', (shape) => console.log(shape.name), { shapeId: penpot.selection[0].id });
+   *  ```
+   *  - selectionchange: event emitted when the current selection changes. The callback will receive the list of ids for the new selection
+   *  - themechange: event emitted when the user changes its theme. The callback will receive the new theme (currentlly: either `dark` or `light`)
+   *  - documentsaved: event emitted afther the document is saved in the backend.
+   *
+   * @param type The event type to listen for.
+   * @param callback The callback function to execute when the event is triggered.
+   * @param props The properties for the current event handler. Only makes sense for specific events.
+   *
+   * @example
+   * ```js
+   * penpot.on('pagechange', () => {...do something}).
+   * ```
+   */
+  on: <T extends keyof EventsMap>(
+    type: T,
+    callback: (event: EventsMap[T]) => void,
+    props?: Map<string, unknown>
+  ) => void;
+  /**
+   * Removes an event listener for the specified event type.
+   *
+   * @param type The event type to stop listening for.
+   * @param callback The callback function to remove.
+   *
+   * @example
+   * ```js
+   * penpot.off('pagechange', () => {...do something}).
+   * ```
+   */
+  off: <T extends keyof EventsMap>(
+    type: T,
+    callback: (event: EventsMap[T]) => void
+  ) => void;
+}
+
+/**
  * Provides methods for managing plugin-specific data associated with a Penpot shape.
  */
 export interface PenpotPluginData {
@@ -1078,6 +1186,16 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * The height of the shape.
    */
   height: number;
+
+  /**
+   * Returns the bounding box surrounding the current shape
+   */
+  readonly bounds: PenpotBounds;
+
+  /**
+   * Returns the geometric center of the shape
+   */
+  readonly center: PenpotPoint;
 
   /**
    * Indicates whether the shape is blocked.
@@ -2615,11 +2733,18 @@ export interface PenpotContext {
     }
   ): string;
 
-  // Event listeners
+  /**
+   * Adds the current callback as an event listener
+   */
   addListener<T extends keyof EventsMap>(
     type: T,
-    callback: (event: EventsMap[T]) => void
+    callback: (event: EventsMap[T]) => void,
+    props?: Map<string, unknown>
   ): symbol;
+
+  /**
+   * Removes the listenerId from the list of listeners
+   */
   removeListener(listenerId: symbol): void;
 }
 
@@ -2719,99 +2844,6 @@ export interface PenpotContextUtils {
    * Provides methods for determining the types of various shapes in Penpot.
    */
   readonly types: PenpotContextTypesUtils;
-}
-
-/**
- * These are methods and properties available on the `penpot` global object.
- *
- */
-export interface Penpot
-  extends Omit<PenpotContext, 'addListener' | 'removeListener'> {
-  ui: {
-    /**
-     * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
-     * There is a minimum and maximum size for this modal and a default size but it's possible to customize it anyway with the options parameter.
-     *
-     * @param name title of the plugin, it'll be displayed on the top of the modal
-     * @param url of the plugin
-     * @param options height and width of the modal.
-     *
-     * @example
-     * ```js
-     * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
-     * ```
-     */
-    open: (
-      name: string,
-      url: string,
-      options?: { width: number; height: number }
-    ) => void;
-    /**
-     * Sends a message to the plugin UI.
-     *
-     * @param message content usually is an object
-     *
-     * @example
-     * ```js
-     * this.sendMessage({ type: 'example-type', content: 'data we want to share' });
-     * ```
-     */
-    sendMessage: (message: unknown) => void;
-    /**
-     * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
-     *
-     * @param message content usually is an object
-     *
-     * @example
-     * ```js
-     * penpot.ui.onMessage((message) => {if(message.type === 'example-type' { ...do something })});
-     * ```
-     */
-    onMessage: <T>(callback: (message: T) => void) => void;
-  };
-  /**
-   * Provides access to utility functions and context-specific operations.
-   */
-  utils: PenpotContextUtils;
-  /**
-   * Closes the plugin. When this method is called the UI will be closed.
-   *
-   * @example
-   * ```js
-   * penpot.closePlugin();
-   * ```
-   */
-  closePlugin: () => void;
-  /**
-   * Adds an event listener for the specified event type. Subscribing to events requires `content:read` permission.
-   *
-   * @param type The event type to listen for.
-   * @param callback The callback function to execute when the event is triggered.
-   *
-   * @example
-   * ```js
-   * penpot.on('pagechange', () => {...do something}).
-   * ```
-   */
-  on: <T extends keyof EventsMap>(
-    type: T,
-    callback: (event: EventsMap[T]) => void
-  ) => void;
-  /**
-   * Removes an event listener for the specified event type.
-   *
-   * @param type The event type to stop listening for.
-   * @param callback The callback function to remove.
-   *
-   * @example
-   * ```js
-   * penpot.off('pagechange', () => {...do something}).
-   * ```
-   */
-  off: <T extends keyof EventsMap>(
-    type: T,
-    callback: (event: EventsMap[T]) => void
-  ) => void;
 }
 
 declare global {
