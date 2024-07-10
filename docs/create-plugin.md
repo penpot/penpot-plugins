@@ -16,7 +16,11 @@ First, you need to create the scaffolding for your plugin. Use the following com
 npx nx g @nx/web:application example-plugin --directory=apps/example-plugin
 ```
 
-### Step 2: Configure the Manifest
+### Step 2: Migrate eslint to ESM
+
+Replace `module.exports = [` with `export default [` and const `baseConfig = require('../../eslint.base.config.js');` with `import baseConfig from '../../eslint.config.js';`.
+
+### Step 3: Configure the Manifest
 
 Next, create a `manifest.json` file inside the `/public` directory. This file is crucial as it defines key properties of your plugin, including permissions and the entry point script.
 
@@ -36,7 +40,7 @@ Next, create a `manifest.json` file inside the `/public` directory. This file is
 }
 ```
 
-### Step 3: Update Vite Configuration
+### Step 4: Update Vite Configuration
 
 Now, add the following configuration to your `vite.config.ts` to specify the entry points for the build process:
 
@@ -54,7 +58,7 @@ build: {
 }
 ```
 
-### Step 4: Modify TypeScript Configuration
+### Step 5: Modify TypeScript Configuration
 
 Update your `tsconfig.app.json` to include the necessary TypeScript files for your plugin:
 
@@ -64,7 +68,7 @@ Update your `tsconfig.app.json` to include the necessary TypeScript files for yo
 }
 ```
 
-### Step 5: Run a Static Server
+### Step 6: Run a Static Server
 
 To preview your plugin, start a static server by running:
 
@@ -72,7 +76,7 @@ To preview your plugin, start a static server by running:
 npx nx run example-plugin:build --watch & npx nx run example-plugin:preview
 ```
 
-### Step 6: Add TS parser to eslint
+### Step 7: Add TS parser to eslint
 
 Add these options to the end of the `eslint.config.js` file to allow linting with type information:
 
@@ -87,7 +91,7 @@ Add these options to the end of the `eslint.config.js` file to allow linting wit
   },
 ```
 
-### Step 7: Load the Plugin in Penpot
+### Step 8: Load the Plugin in Penpot
 
 To load your plugin into Penpot you can use the shortcut `Ctrl + Alt + P` to directly open the Plugin manager modal. There you need to provide the plugin's manifest URL (example: `http://plugin.example/manifest.json`) for the installation. If there's no issues the plugin will be installed and then you would be able to open it whenever you like.
 
