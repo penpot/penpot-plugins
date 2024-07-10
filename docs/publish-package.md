@@ -32,6 +32,15 @@ This command will:
 - Create a new git tag
 - Publish to NPM with the `latest` tag
 
+Ensure everything is correct before proceeding with the git push. Once verified, execute the following commands:
+
+```shell
+git push
+git push origin v0.0.0
+```
+
+Replace v0.0.0 with the new version number.
+
 For detailed information, refer to the [Nx Release Documentation](https://nx.dev/recipes/nx-release/get-started-with-nx-release).
 
 ### Creating a Preview Version
