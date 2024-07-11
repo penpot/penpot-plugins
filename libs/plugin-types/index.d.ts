@@ -1,11 +1,10 @@
-
-
 /* 
 Naming convention proposal:
 1/ Use {Name + "Node"} for new node entities. e.g. ComponentNode or InstanceNode.
 2/ Use {Name + "Node" + "Mixin"} for node-related properties mixins. E.g. FrameNodeMixin or TextNodeMixin
 3/ Use {Name + "Mixin"} for properties mixins. E.g. GridLayoutMixin or FlexLayoutMixin.
 4/ Additional, if there is a minimum required mixin, then it can be called {"Minimal" + MixinName}
+5/ Constant values to be written with uppercase. E.g.: type: "LINEAR" | "RADIAL"
 
 Right now it kinda of mess, especially with properties. See PenpotLayoutChildProperties vs PenpotCommonLayout.
 
@@ -27,12 +26,17 @@ interface UIAPI {
    * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
    * ```
    */
-  open: (name: string, url: string, options?: {
-    width: number;
-    height: number;
-  }) => void;
+  open: (
+    name: string,
+    url: string,
+    options?: {
+      width: number;
+      height: number;
+    }
+  ) => void;
+
   /**
-   * Sends a message to the plugin UI.
+   * Sends a message from the code to the plugin UI.
    *
    * @param message content usually is an object
    *
@@ -42,8 +46,9 @@ interface UIAPI {
    * ```
    */
   sendMessage: (message: unknown) => void;
+
   /**
-   * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
+   * Receives messages in the code from the plugin UI.
    *
    * @param message content usually is an object
    *
@@ -57,15 +62,16 @@ interface UIAPI {
 
 /**
  * These are methods and properties available on the `penpot` global object.
- *
  */
 export interface Penpot
   extends Omit<PenpotContext, 'addListener' | 'removeListener'> {
   readonly ui: UIAPI;
+
   /**
    * Provides access to utility functions and context-specific operations.
    */
-  utils: PenpotContextUtils;
+  readonly utils: UtilsAPI;
+
   /**
    * Closes the plugin. When this method is called the UI will be closed.
    *
@@ -75,6 +81,7 @@ export interface Penpot
    * ```
    */
   closePlugin: () => void;
+
   /**
    * Adds an event listener for the specified event type.
    * Subscribing to events requires `content:read` permission.
@@ -105,6 +112,7 @@ export interface Penpot
     callback: (event: EventsMap[T]) => void,
     props?: Map<string, unknown>
   ) => void;
+
   /**
    * Removes an event listener for the specified event type.
    *
@@ -125,7 +133,7 @@ export interface Penpot
 /**
  * Provides methods for managing plugin-specific data associated with a Penpot shape.
  */
-export interface PenpotPluginData {
+export interface PluginDataMixin {
   /**
    * Retrieves the plugin-specific data associated with the given key.
    *
@@ -147,7 +155,7 @@ export interface PenpotPluginData {
    *
    * Returns an array of strings representing all the keys.
    */
-  getPluginDataKeys(): string[];
+  getPluginDataKeys(): string[]; //QUESTION: isn't there a chance to get null?
 
   /**
    * Retrieves the shared plugin-specific data for the given namespace and key.
@@ -180,7 +188,7 @@ export interface PenpotPluginData {
  * FileNode represents a file in the Penpot application.
  * It includes properties for the file's identifier, name, and revision number.
  */
-export interface FileNode extends PenpotPluginData {
+export interface FileNode extends PluginDataMixin {
   id: string;
   name: string;
   revn: number;
@@ -190,7 +198,7 @@ export interface FileNode extends PenpotPluginData {
  * PageNode represents a page in the Penpot application.
  * It includes properties for the page's identifier and name, as well as methods for managing shapes on the page.
  */
-export interface PageNode extends PenpotPluginData {
+export interface PageNode extends PluginDataMixin {
   /**
    * The `id` property is a unique identifier for the page.
    */
@@ -205,8 +213,7 @@ export interface PageNode extends PenpotPluginData {
    */
   getNodeById(id: string): SceneNode | null; // QUESTION: Shouldn't it be on the penpot.getNodeById context? Right now is on PageNode context.
 
-
-  // NOTE: this might be more useful if it would be findAll(callback?: (node: PageNode | SceneNode) => boolean): PageNode | SceneNode | null;
+  // NOTE: this might be more useful if it would be findAll(callback?: (node: PageNode | SceneNode) => boolean): Array<PageNode | SceneNode>;
   /**
    * Finds all shapes on the page.
    * Optionaly it gets a criteria object to search for specific criteria
@@ -218,9 +225,8 @@ export interface PageNode extends PenpotPluginData {
     name?: string;
     nameLike?: string;
     type?: SceneNodeTypes;
-  }): SceneNode[] | null;
+  }): SceneNode[];
 }
-
 
 /**
  * Represents a gradient configuration in Penpot.
@@ -288,7 +294,7 @@ export type ImageMixin = {
    * Whether to keep the aspect ratio of the image when resizing.
    * Defaults to false if omitted.
    */
-  keepApectRatio?: boolean;
+  preserveAspectRatio?: boolean;
 };
 
 // It makes more sense to call it on plural (fills), because is possible to have multiple
@@ -527,6 +533,7 @@ export interface BlurMixin {
   hidden?: boolean;
 }
 
+// TODO: refactor this
 /**
  * Represents parameters for frame guide columns in Penpot.
  * This interface includes properties for defining the appearance and layout of column guides within a frame.
@@ -648,7 +655,7 @@ export type PenpotFrameGuide =
  * Represents export settings in Penpot.
  * This interface includes properties for defining export configurations.
  */
-export interface PenpotExport {
+export interface ExportSettings {
   /**
    * Type of the file to export. Can be one of the following values: png, jpeg, svg, pdf
    */
@@ -1170,7 +1177,7 @@ export interface CellLayoutProperties {
  * Represents the base properties and methods of a shape in Penpot.
  * This interface provides common properties and methods shared by all shapes.
  */
-export interface SceneNodeMixin extends PenpotPluginData {
+export interface SceneNodeMixin extends PluginDataMixin {
   // NOTE: it will help on long run to split in smaller chunks.
   // TODO: rename to SceneNodeMixin (double-check)
   /**
@@ -1302,7 +1309,7 @@ export interface SceneNodeMixin extends PenpotPluginData {
   /**
    * The export settings of the shape.
    */
-  exports: PenpotExport[];
+  exportSettings: ExportSettings[];
 
   /**
    * The x-coordinate of the shape relative to its frame.
@@ -1430,7 +1437,7 @@ export interface SceneNodeMixin extends PenpotPluginData {
   /**
    * Generates an export from the current shape.
    */
-  export(config: PenpotExport): Promise<Uint8Array>;
+  export(settings: ExportSettings): Promise<Uint8Array>;
 
   /**
    * Creates a clone of the shape.
@@ -1939,7 +1946,7 @@ export type SceneNode =
   | SvgRawNode
   | ImageNode;
 
-  export type SceneNodeTypes = SceneNode['type']
+export type SceneNodeTypes = SceneNode['type'];
 
 /**
  * Represents a mapping of events to their corresponding types in Penpot.
@@ -1978,7 +1985,7 @@ export type PenpotTheme = 'light' | 'dark';
  * Represents an element in a Penpot library.
  * This interface provides information about a specific element in a library.
  */
-export interface PenpotLibraryElement extends PenpotPluginData {
+export interface PenpotLibraryElement extends PluginDataMixin {
   /**
    * The unique identifier of the library element.
    */
@@ -2184,7 +2191,7 @@ export interface PenpotLibrarySummary {
 /**
  * Represents a library in Penpot, containing colors, typographies, and components.
  */
-export interface PenpotLibrary extends PenpotPluginData {
+export interface PenpotLibrary extends PluginDataMixin {
   /**
    * The unique identifier of the library.
    */
@@ -2487,7 +2494,6 @@ export interface PenpotActiveUser extends PenpotUser {
  * Represents the context of Penpot, providing access to various Penpot functionalities and data.
  */
 export interface PenpotContext {
-  
   /**
    * The root shape in the current Penpot context. Requires `content:read` permission.
    * @example
@@ -2771,7 +2777,7 @@ export interface PenpotContext {
 /**
  * Utility methods for geometric calculations in Penpot.
  */
-export interface PenpotContextGeometryUtils {
+export interface GeometryUtils {
   /**
    * Calculates the center point of a given array of nodes.
    * This method computes the geometric center (centroid) of the bounding boxes of the provided shapes.
@@ -2785,10 +2791,9 @@ export interface PenpotContextGeometryUtils {
 /**
  * Utility methods for determining the types of Penpot nodes.
  */
-export interface PenpotContextTypesUtils {
+export interface isTypeUtils {
   /**
-   * Checks if the given shape is a frame.
-   * Returns true if the shape is a PenpotFrame, otherwise false.
+   * Returns true if the node is a FrameNode, otherwise returns false.
    * @param node - The shape to check.
    */
   isFrame(node: SceneNode): node is FrameNode;
@@ -2853,17 +2858,17 @@ export interface PenpotContextTypesUtils {
 /**
  * Utility methods for various operations in Penpot.
  */
-export interface PenpotContextUtils {
+export interface UtilsAPI {
   /**
    * Geometry utility methods for Penpot.
    * Provides methods for geometric calculations, such as finding the center of a group of shapes.
    */
-  readonly geometry: PenpotContextGeometryUtils;
+  readonly geometry: GeometryUtils;
   /**
    * Type utility methods for Penpot.
    * Provides methods for determining the types of various shapes in Penpot.
    */
-  readonly types: PenpotContextTypesUtils;
+  readonly types: isTypeUtils;
 }
 
 declare global {
