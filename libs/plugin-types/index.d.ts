@@ -5,8 +5,12 @@ Naming convention proposal:
 1/ Use {Name + "Node"} for new node entities. e.g. ComponentNode or InstanceNode.
 2/ Use {Name + "Node" + "Mixin"} for node-related properties mixins. E.g. FrameNodeMixin or TextNodeMixin
 3/ Use {Name + "Mixin"} for properties mixins. E.g. GridLayoutMixin or FlexLayoutMixin.
+4/ Additional, if there is a minimum required mixin, then it can be called {"Minimal" + MixinName}
 
 Right now it kinda of mess, especially with properties. See PenpotLayoutChildProperties vs PenpotCommonLayout.
+
+The context is also important: we're already inside penpot file, so there is no need to repeat Penpot everywhere.
+Repeating Penpot makes everything longer without adding any value to it.
  */
 
 interface UIAPI {
@@ -222,7 +226,7 @@ export interface PageNode extends PenpotPluginData {
  * Represents a gradient configuration in Penpot.
  * A gradient can be either linear or radial and includes properties to define its shape, position, and color stops.
  */
-export type PenpotGradient = {
+export type GradientMixin = {
   /**
    * Specifies the type of gradient.
    * - 'linear': A gradient that transitions colors along a straight line.
@@ -259,7 +263,7 @@ export type PenpotGradient = {
  * Represents image data in Penpot.
  * This includes properties for defining the image's dimensions, metadata, and aspect ratio handling.
  */
-export type PenpotImageData = {
+export type ImageMixin = {
   /**
    * The optional name of the image.
    */
@@ -287,11 +291,12 @@ export type PenpotImageData = {
   keepApectRatio?: boolean;
 };
 
+// It makes more sense to call it on plural (fills), because is possible to have multiple
 /**
  * Represents fill properties in Penpot.
  * This interface includes properties for defining solid color fills, gradient fills, and image fills.
  */
-export interface PenpotFill {
+export interface FillsMixin {
   /**
    * The optional solid fill color, represented as a string (e.g., '#FF5733').
    */
@@ -304,7 +309,7 @@ export interface PenpotFill {
   /**
    * The optional gradient fill defined by a PenpotGradient object.
    */
-  fillColorGradient?: PenpotGradient;
+  fillColorGradient?: GradientMixin;
   /**
    * The optional reference to an external file for the fill color.
    */
@@ -316,7 +321,7 @@ export interface PenpotFill {
   /**
    * The optional image fill defined by a PenpotImageData object.
    */
-  fillImage?: PenpotImageData;
+  fillImage?: ImageMixin;
 }
 
 /**
@@ -377,7 +382,7 @@ export interface PenpotStroke {
   /**
    * The optional gradient stroke defined by a PenpotGradient object.
    */
-  strokeColorGradient?: PenpotGradient;
+  strokeColorGradient?: GradientMixin;
 }
 
 /**
@@ -417,11 +422,11 @@ export interface PenpotColor {
   /**
    * The optional gradient fill defined by a PenpotGradient object.
    */
-  gradient?: PenpotGradient;
+  gradient?: GradientMixin;
   /**
    * The optional image fill defined by a PenpotImageData object.
    */
-  image?: PenpotImageData;
+  image?: ImageMixin;
 }
 
 /**
@@ -662,13 +667,14 @@ export interface PenpotExport {
  * Represents the type of track in Penpot.
  * This type defines various track types that can be used in layout configurations.
  */
-export type PenpotTrackType = 'flex' | 'fixed' | 'percent' | 'auto';
+export type TrackType = 'flex' | 'fixed' | 'percent' | 'auto';
 
+// TBD: will see if this is a mixin or not
 /**
  * Represents a track configuration in Penpot.
  * This interface includes properties for defining the type and value of a track used in layout configurations.
  */
-export interface PenpotTrack {
+export interface GridLayoutTrack {
   /**
    * The type of the track.
    * This can be one of the following values:
@@ -677,7 +683,7 @@ export interface PenpotTrack {
    * - 'percent': A track type defined by a percentage.
    * - 'auto': An automatic track type.
    */
-  type: PenpotTrackType;
+  type: TrackType;
   /**
    * The value of the track.
    * This can be a number representing the size of the track, or null if not applicable.
@@ -689,7 +695,7 @@ export interface PenpotTrack {
  * PenpotCommonLayout represents a common layout interface in the Penpot application.
  * It includes various properties for alignment, spacing, padding, and sizing, as well as a method to remove the layout.
  */
-export interface PenpotCommonLayout {
+export interface LayoutMixin {
   /**
    * The `alignItems` property specifies the default alignment for items inside the container.
    * It can be one of the following values:
@@ -809,7 +815,7 @@ export interface PenpotCommonLayout {
  * PenpotGridLayout represents a grid layout in the Penpot application, extending the common layout interface.
  * It includes properties and methods to manage rows, columns, and child elements within the grid.
  */
-export interface PenpotGridLayout extends PenpotCommonLayout {
+export interface GridLayoutMixin extends LayoutMixin {
   /**
    * The `dir` property specifies the primary direction of the grid layout.
    * It can be either 'column' or 'row'.
@@ -819,39 +825,39 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * The `rows` property represents the collection of rows in the grid.
    * This property is read-only.
    */
-  readonly rows: PenpotTrack[];
+  readonly rows: GridLayoutTrack[];
   /**
    * The `columns` property represents the collection of columns in the grid.
    * This property is read-only.
    */
-  readonly columns: PenpotTrack[];
+  readonly columns: GridLayoutTrack[];
 
   /**
    * Adds a new row to the grid.
    * @param type The type of the row to add.
    * @param value The value associated with the row type (optional).
    */
-  addRow(type: PenpotTrackType, value?: number): void;
+  addRow(type: TrackType, value?: number): void;
   /**
    * Adds a new row to the grid at the specified index.
    * @param index The index at which to add the row.
    * @param type The type of the row to add.
    * @param value The value associated with the row type (optional).
    */
-  addRowAtIndex(index: number, type: PenpotTrackType, value?: number): void;
+  addRowAtIndex(index: number, type: TrackType, value?: number): void;
   /**
    * Adds a new column to the grid.
    * @param type The type of the column to add.
    * @param value The value associated with the column type (optional).
    */
-  addColumn(type: PenpotTrackType, value?: number): void;
+  addColumn(type: TrackType, value?: number): void;
   /**
    * Adds a new column to the grid at the specified index.
    * @param index The index at which to add the column.
    * @param type The type of the column to add.
    * @param value The value associated with the column type.
    */
-  addColumnAtIndex(index: number, type: PenpotTrackType, value: number): void;
+  addColumnAtIndex(index: number, type: TrackType, value: number): void;
   /**
    * Removes a row from the grid at the specified index.
    * @param index The index of the row to remove.
@@ -868,14 +874,14 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param type The type of the column.
    * @param value The value associated with the column type (optional).
    */
-  setColumn(index: number, type: PenpotTrackType, value?: number): void;
+  setColumn(index: number, type: TrackType, value?: number): void;
   /**
    * Sets the properties of a row at the specified index.
    * @param index The index of the row to set.
    * @param type The type of the row.
    * @param value The value associated with the row type (optional).
    */
-  setRow(index: number, type: PenpotTrackType, value?: number): void;
+  setRow(index: number, type: TrackType, value?: number): void;
 
   /**
    * Appends a child element to the grid at the specified row and column.
@@ -891,7 +897,7 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
  * This interface extends `PenpotCommonLayout` and includes properties for defining the direction,
  * wrapping behavior, and child management of a flex layout.
  */
-export interface PenpotFlexLayout extends PenpotCommonLayout {
+export interface FlexLayoutMixin extends LayoutMixin {
   /**
    * The direction of the flex layout.
    * - 'row': Main axis is horizontal, from left to right.
@@ -1015,10 +1021,11 @@ interface PenpotPathCommand {
   };
 }
 
+// QUESTION: i don't know what's with this one.
 /**
  * Properties for defining the layout of a child element in Penpot.
  */
-export interface PenpotLayoutChildProperties {
+export interface ChildLayoutMixin {
   /**
    * Specifies whether the child element is positioned absolutely.
    * When set to true, the element is taken out of the normal document flow and positioned relative to its nearest positioned ancestor.
@@ -1117,10 +1124,11 @@ export interface PenpotLayoutChildProperties {
   minHeight: number | null;
 }
 
+// I don't know what's with this one either
 /**
  * Properties for defining the layout of a cell in Penpot.
  */
-export interface PenpotLayoutCellProperties {
+export interface CellLayoutProperties {
   /**
    * The row index of the cell.
    * This value is optional and indicates the starting row of the cell.
@@ -1162,7 +1170,7 @@ export interface PenpotLayoutCellProperties {
  * Represents the base properties and methods of a shape in Penpot.
  * This interface provides common properties and methods shared by all shapes.
  */
-export interface PenpotShapeBase extends PenpotPluginData {
+export interface SceneNodeMixin extends PenpotPluginData {
   // NOTE: it will help on long run to split in smaller chunks.
   // TODO: rename to SceneNodeMixin (double-check)
   /**
@@ -1334,7 +1342,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[] | 'mixed';
+  fills: FillsMixin[] | 'mixed';
 
   /**
    * The strokes applied to the shape.
@@ -1344,12 +1352,12 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * Layout properties for children of the shape.
    */
-  readonly layoutChild?: PenpotLayoutChildProperties;
+  readonly layoutChild?: ChildLayoutMixin;
 
   /**
    * Layout properties for cells in a grid layout.
    */
-  readonly layoutCell?: PenpotLayoutChildProperties;
+  readonly layoutCell?: ChildLayoutMixin;
 
   /*
    * Returns true if the current shape is inside a component instance
@@ -1439,7 +1447,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
  * Represents a frame in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to frames.
  */
-export interface FrameNode extends PenpotShapeBase {
+export interface FrameNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'frame' for frames.
    */
@@ -1447,12 +1455,12 @@ export interface FrameNode extends PenpotShapeBase {
   /**
    * The grid layout configuration of the frame, if applicable.
    */
-  readonly grid?: PenpotGridLayout;
+  readonly grid?: GridLayoutMixin;
 
   /**
    * The flex layout configuration of the frame, if applicable.
    */
-  readonly flex?: PenpotFlexLayout;
+  readonly flex?: FlexLayoutMixin;
 
   /**
    * The guides associated with the frame.
@@ -1471,7 +1479,7 @@ export interface FrameNode extends PenpotShapeBase {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 
   // Container Properties
   /**
@@ -1495,19 +1503,19 @@ export interface FrameNode extends PenpotShapeBase {
    * Adds a flex layout configuration to the frame.
    * Returns the flex layout configuration added to the frame.
    */
-  addFlexLayout(): PenpotFlexLayout;
+  addFlexLayout(): FlexLayoutMixin;
   /**
    * Adds a grid layout configuration to the frame.
    * Returns the grid layout configuration added to the frame.
    */
-  addGridLayout(): PenpotGridLayout;
+  addGridLayout(): GridLayoutMixin;
 }
 
 /**
  * Represents a group of shapes in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to groups.
  */
-export interface GroupNode extends PenpotShapeBase {
+export interface GroupNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'group' for groups.
    */
@@ -1560,7 +1568,7 @@ export type PenpotBoolType =
  * Represents a boolean operation shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to boolean operations.
  */
-export interface BooleanNode extends PenpotShapeBase {
+export interface BooleanNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'bool' for boolean operation shapes.
    */
@@ -1579,7 +1587,7 @@ export interface BooleanNode extends PenpotShapeBase {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 
   // Container Properties
   /**
@@ -1603,7 +1611,7 @@ export interface BooleanNode extends PenpotShapeBase {
  * Represents a rectangle shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to rectangles.
  */
-export interface RectangleNode extends PenpotShapeBase {
+export interface RectangleNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'rect' for rectangle shapes.
    */
@@ -1612,14 +1620,14 @@ export interface RectangleNode extends PenpotShapeBase {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 }
 
 /**
  * Represents a path shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to paths.
  */
-export interface VectorNode extends PenpotShapeBase {
+export interface VectorNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'path' for path shapes.
    */
@@ -1637,7 +1645,7 @@ export interface VectorNode extends PenpotShapeBase {
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 }
 
 /**
@@ -1719,7 +1727,7 @@ export interface PenpotTextRange {
   /**
    * The fill styles applied to the text range.
    */
-  fills: PenpotFill[] | 'mixed';
+  fills: FillsMixin[] | 'mixed';
 
   /**
    * The horizontal alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
@@ -1743,7 +1751,7 @@ export interface PenpotTextRange {
  * PenpotText represents a text element in the Penpot application, extending the base shape interface.
  * It includes various properties to define the text content and its styling attributes.
  */
-export interface TextNode extends PenpotShapeBase {
+export interface TextNode extends SceneNodeMixin {
   /**
    * The type of the shape, which is always 'text' for text shapes.
    */
@@ -1847,20 +1855,20 @@ export interface TextNode extends PenpotShapeBase {
  * Represents an ellipse shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to ellipses.
  */
-export interface EllipseNode extends PenpotShapeBase {
+export interface EllipseNode extends SceneNodeMixin {
   type: 'circle';
 
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 }
 
 /**
  * Represents an SVG raw shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to raw SVG shapes.
  */
-export interface SvgRawNode extends PenpotShapeBase {
+export interface SvgRawNode extends SceneNodeMixin {
   type: 'svg-raw';
 }
 
@@ -1868,13 +1876,13 @@ export interface SvgRawNode extends PenpotShapeBase {
  * Represents an image shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to image shapes.
  */
-export interface ImageNode extends PenpotShapeBase {
+export interface ImageNode extends SceneNodeMixin {
   type: 'image';
 
   /**
    * The fills applied to the shape.
    */
-  fills: PenpotFill[];
+  fills: FillsMixin[];
 }
 
 /**
@@ -2009,12 +2017,12 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
   /**
    * The gradient value of the library color, if it's a gradient.
    */
-  gradient?: PenpotGradient;
+  gradient?: GradientMixin;
 
   /**
    * The image data of the library color, if it's an image fill.
    */
-  image?: PenpotImageData;
+  image?: ImageMixin;
 
   /**
    * Converts the library color into a fill object.
@@ -2024,7 +2032,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
    * const fill = libraryColor.asFill();
    * ```
    */
-  asFill(): PenpotFill;
+  asFill(): FillsMixin;
   /**
    * Converts the library color into a stroke object.
    * Returns a `PenpotStroke` object representing the color as a stroke.
@@ -2613,7 +2621,7 @@ export interface PenpotContext {
    * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
    * ```
    */
-  uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
+  uploadMediaUrl(name: string, url: string): Promise<ImageMixin>;
 
   /**
    * Uploads media to penpot and retrieves the image data. Requires `content:write` permission.
@@ -2625,7 +2633,7 @@ export interface PenpotContext {
     name: string,
     data: Uint8Array,
     mimeType: string
-  ): Promise<PenpotImageData>;
+  ): Promise<ImageMixin>;
 
   /**
    * Groups the specified shapes. Requires `content:write` permission.
