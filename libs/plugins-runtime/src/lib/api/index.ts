@@ -39,13 +39,16 @@ export const validEvents = [
   'filechange',
   'selectionchange',
   'themechange',
+  'shapechange',
+  'contentsave',
 ] as const;
 
 export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modals = new Set<PluginModalElement>([]);
 
-const eventListeners: Map<string, Callback<unknown>[]> = new Map();
+// TODO: Remove when deprecating method `off`
+let listeners: { [key: string]: Map<object, symbol> } = {};
 
 window.addEventListener('message', (event) => {
   try {
@@ -57,17 +60,10 @@ window.addEventListener('message', (event) => {
   }
 });
 
-export function triggerEvent(
-  type: keyof EventsMap,
-  message: EventsMap[keyof EventsMap]
-) {
-  if (type === 'themechange') {
-    modals.forEach((modal) => {
-      modal.setTheme(message as PenpotTheme);
-    });
-  }
-  const listeners = eventListeners.get(type) || [];
-  listeners.forEach((listener) => listener(message));
+export function themeChange(theme: PenpotTheme) {
+  modals.forEach((modal) => {
+    modal.setTheme(theme);
+  });
 }
 
 export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
@@ -166,8 +162,9 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
 
     on<T extends keyof EventsMap>(
       type: T,
-      callback: (event: EventsMap[T]) => void
-    ): void {
+      callback: (event: EventsMap[T]) => void,
+      props?: { [key: string]: unknown }
+    ): symbol {
       // z.function alter fn, so can't use it here
       z.enum(validEvents).parse(type);
       z.function().parse(callback);
@@ -175,24 +172,30 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       // To suscribe to events needs the read permission
       checkPermission('content:read');
 
-      const listeners = eventListeners.get(type) || [];
-      listeners.push(callback as Callback<unknown>);
-      eventListeners.set(type, listeners);
+      const id = context.addListener(type, callback, props);
+
+      if (!listeners[type]) {
+        listeners[type] = new Map<object, symbol>();
+      }
+      listeners[type].set(callback, id);
+      return id;
     },
 
     off<T extends keyof EventsMap>(
-      type: T,
-      callback: (event: EventsMap[T]) => void
+      idtype: symbol | T,
+      callback?: (event: EventsMap[T]) => void
     ): void {
-      z.enum(validEvents).parse(type);
-      z.function().parse(callback);
+      let listenerId: symbol | undefined;
 
-      const listeners = eventListeners.get(type) || [];
+      if (typeof idtype === 'symbol') {
+        listenerId = idtype;
+      } else if (callback) {
+        listenerId = listeners[idtype as T].get(callback);
+      }
 
-      eventListeners.set(
-        type,
-        listeners.filter((listener) => listener !== callback)
-      );
+      if (listenerId) {
+        context.removeListener(listenerId);
+      }
     },
 
     // Penpot State API

@@ -121,6 +121,16 @@ function createRect() {
   const center = penpot.viewport.center;
   shape.x = center.x;
   shape.y = center.y;
+
+  penpot.on(
+    'shapechange',
+    (s) => {
+      console.log('change', s.name, s.x, s.y);
+    },
+    {
+      shapeId: shape.id,
+    }
+  );
 }
 
 function moveX(data: { id: string }) {
