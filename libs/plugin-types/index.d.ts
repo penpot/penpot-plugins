@@ -156,7 +156,7 @@ export interface PluginDataMixin {
    *
    * Returns an array of strings representing all the keys.
    */
-  getPluginDataKeys(): string[]; //QUESTION: isn't there a chance to get null?
+  getPluginDataKeys(): string[];
 
   /**
    * Retrieves the shared plugin-specific data for the given namespace and key.
