@@ -187,7 +187,7 @@ export interface PageNode extends PenpotPluginData {
    * Retrieves a shape by its unique identifier.
    * @param id The unique identifier of the shape.
    */
-  getShapeById(id: string): SceneNode | null;
+  getNodeById(id: string): SceneNode | null; // QUESTION: Shouldn't it be on the penpot.getNodeById context? Right now is on PageNode context.
 
 
   // NOTE: this might be more useful if it would be findAll(callback?: (node: PageNode | SceneNode) => boolean): PageNode | SceneNode | null;
