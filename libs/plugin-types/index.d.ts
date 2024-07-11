@@ -78,17 +78,19 @@ export interface Penpot
    * @param type The event type to listen for.
    * @param callback The callback function to execute when the event is triggered.
    * @param props The properties for the current event handler. Only makes sense for specific events.
+   * @return the listener id that can be used to call `off` and cancel the listener
    *
    * @example
    * ```js
    * penpot.on('pagechange', () => {...do something}).
    * ```
    */
-  on: <T extends keyof EventsMap>(
+  on<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: Map<string, unknown>
-  ) => void;
+    props?: { [key: string]: unknown }
+  ): symbol;
+
   /**
    * Removes an event listener for the specified event type.
    *
@@ -99,11 +101,25 @@ export interface Penpot
    * ```js
    * penpot.off('pagechange', () => {...do something}).
    * ```
+   * @deprecated this method should not be used. Use instead off sending the `listenerId` (return value from `on` method)
    */
-  off: <T extends keyof EventsMap>(
+  off<T extends keyof EventsMap>(
     type: T,
-    callback: (event: EventsMap[T]) => void
-  ) => void;
+    callback?: (event: EventsMap[T]) => void
+  ): void;
+
+  /**
+   * Removes an event listener for the specified event type.
+   *
+   * @param listenerId the id returned by the `on` method when the callback was set
+   *
+   * @example
+   * ```js
+   * const listenerId = penpot.on('contentsave', () => console.log("Changed"));
+   * penpot.off(listenerId);
+   * ```
+   */
+  off(listenerId: symbol): void;
 }
 
 /**
@@ -1948,6 +1964,17 @@ export interface EventsMap {
    * The `finish` event is triggered when some operation is finished.
    */
   finish: string;
+
+  /**
+   * This event will triger whenever the shape in the props change. It's mandatory to send
+   * with the props an object like `{ shapeId: '<id>' }`
+   */
+  shapechange: PenpotShape;
+
+  /**
+   * The `contentsave` event will trigger when the content file changes.
+   */
+  contentsave: void;
 }
 
 /**
@@ -2739,7 +2766,7 @@ export interface PenpotContext {
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: Map<string, unknown>
+    props?: { [key: string]: unknown }
   ): symbol;
 
   /**

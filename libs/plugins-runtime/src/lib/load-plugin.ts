@@ -1,4 +1,4 @@
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
 
 import { createApi } from './api/index.js';
 import { loadManifest, loadManifestCode } from './parse-manifest.js';
@@ -25,9 +25,7 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
       return;
     }
 
-    for (const event of api.validEvents) {
-      context.addListener(event, api.triggerEvent.bind(null, event));
-    }
+    context.addListener('themechange', (e: PenpotTheme) => api.themeChange(e));
 
     const code = await loadManifestCode(manifest);
 
