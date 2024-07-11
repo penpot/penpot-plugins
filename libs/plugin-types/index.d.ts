@@ -534,12 +534,11 @@ export interface BlurMixin {
   hidden?: boolean;
 }
 
-// TODO: refactor this
 /**
  * Represents parameters for frame guide columns in Penpot.
  * This interface includes properties for defining the appearance and layout of column guides within a frame.
  */
-export interface PenpotFrameGuideColumnParams {
+export interface RowsColsGuideParams {
   /**
    * The color configuration for the column guides.
    */
@@ -574,7 +573,7 @@ export interface PenpotFrameGuideColumnParams {
  * Represents parameters for frame guide squares in Penpot.
  * This interface includes properties for defining the appearance and size of square guides within a frame.
  */
-export interface PenpotFrameGuideSquareParams {
+export interface SquaresGuideParams {
   /**
    * The color configuration for the square guides.
    */
@@ -589,7 +588,7 @@ export interface PenpotFrameGuideSquareParams {
  * Represents a frame guide for columns in Penpot.
  * This interface includes properties for defining the type, visibility, and parameters of column guides within a frame.
  */
-export interface PenpotFrameGuideColumn {
+export interface ColsGuide {
   /**
    * The type of the guide, which is always 'column' for column guides.
    */
@@ -601,14 +600,14 @@ export interface PenpotFrameGuideColumn {
   /**
    * The parameters defining the appearance and layout of the column guides.
    */
-  params: PenpotFrameGuideColumnParams;
+  params: RowsColsGuideParams;
 }
 
 /**
  * Represents a frame guide for rows in Penpot.
  * This interface includes properties for defining the type, visibility, and parameters of row guides within a frame.
  */
-export interface PenpotFrameGuideRow {
+export interface RowsGuide {
   /**
    * The type of the guide, which is always 'row' for row guides.
    */
@@ -621,14 +620,14 @@ export interface PenpotFrameGuideRow {
    * The parameters defining the appearance and layout of the row guides.
    * Note: This reuses the same parameter structure as column guides.
    */
-  params: PenpotFrameGuideColumnParams;
+  params: RowsColsGuideParams;
 }
 
 /**
  * Represents a frame guide for squares in Penpot.
  * This interface includes properties for defining the type, visibility, and parameters of square guides within a frame.
  */
-export interface PenpotFrameGuideSquare {
+export interface SquaresGuide {
   /**
    * The type of the guide, which is always 'square' for square guides.
    */
@@ -640,17 +639,14 @@ export interface PenpotFrameGuideSquare {
   /**
    * The parameters defining the appearance and layout of the square guides.
    */
-  params: PenpotFrameGuideSquareParams;
+  params: SquaresGuideParams;
 }
 
 /**
  * Represents a frame guide in Penpot.
  * This type can be one of several specific frame guide types: column, row, or square.
  */
-export type PenpotFrameGuide =
-  | PenpotFrameGuideColumn
-  | PenpotFrameGuideRow
-  | PenpotFrameGuideSquare;
+export type Guide = ColsGuide | RowsGuide | SquaresGuide;
 
 /**
  * Represents export settings in Penpot.
@@ -1473,7 +1469,7 @@ export interface FrameNode extends SceneNodeMixin {
   /**
    * The guides associated with the frame.
    */
-  guides: PenpotFrameGuide;
+  guides: Guide[] | null;
 
   /**
    * The horizontal sizing behavior of the frame.
