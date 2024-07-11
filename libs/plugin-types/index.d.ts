@@ -328,7 +328,7 @@ export interface FillsMixin {
  * Represents the cap style of a stroke in Penpot.
  * This type defines various styles for the ends of a stroke.
  */
-export type PenpotStrokeCap =
+export type StrokeCap =
   | 'round'
   | 'square'
   | 'line-arrow'
@@ -341,7 +341,7 @@ export type PenpotStrokeCap =
  * Represents stroke properties in Penpot.
  * This interface includes properties for defining the color, style, width, alignment, and caps of a stroke.
  */
-export interface PenpotStroke {
+export interface StrokesMixin {
   /**
    * The optional color of the stroke, represented as a string (e.g., '#FF5733').
    */
@@ -374,11 +374,11 @@ export interface PenpotStroke {
   /**
    * The optional cap style for the start of the stroke.
    */
-  strokeCapStart?: PenpotStrokeCap;
+  strokeCapStart?: StrokeCap;
   /**
    * The optional cap style for the end of the stroke.
    */
-  strokeCapEnd?: PenpotStrokeCap;
+  strokeCapEnd?: StrokeCap;
   /**
    * The optional gradient stroke defined by a PenpotGradient object.
    */
@@ -389,7 +389,7 @@ export interface PenpotStroke {
  * Represents color properties in Penpot.
  * This interface includes properties for defining solid colors, gradients, and image fills, along with metadata.
  */
-export interface PenpotColor {
+export interface SolidColorMixin {
   /**
    * The optional unique identifier for the color.
    */
@@ -464,7 +464,7 @@ export interface PenpotColorShapeInfo {
  * Represents shadow properties in Penpot.
  * This interface includes properties for defining drop shadows and inner shadows, along with their visual attributes.
  */
-export interface PenpotShadow {
+export interface ShadowMixin {
   /**
    * The optional unique identifier for the shadow.
    */
@@ -499,14 +499,14 @@ export interface PenpotShadow {
   /**
    * The optional color of the shadow, defined by a PenpotColor object.
    */
-  color?: PenpotColor;
+  color?: SolidColorMixin;
 }
 
 /**
  * Represents blur properties in Penpot.
  * This interface includes properties for defining the type and intensity of a blur effect, along with its visibility.
  */
-export interface PenpotBlur {
+export interface BlurMixin {
   /**
    * The optional unique identifier for the blur effect.
    */
@@ -1206,7 +1206,7 @@ export interface SceneNodeMixin extends PenpotPluginData {
   /**
    * Returns the bounding box surrounding the current shape
    */
-  readonly bounds: PenpotBounds;
+  readonly bounds: BoundingBox;
 
   /**
    * Returns the geometric center of the shape
@@ -1292,12 +1292,12 @@ export interface SceneNodeMixin extends PenpotPluginData {
   /**
    * The shadows applied to the shape.
    */
-  shadows: PenpotShadow[];
+  shadows: ShadowMixin[];
 
   /**
    * The blur effect applied to the shape.
    */
-  blur?: PenpotBlur;
+  blur?: BlurMixin;
 
   /**
    * The export settings of the shape.
@@ -1347,7 +1347,7 @@ export interface SceneNodeMixin extends PenpotPluginData {
   /**
    * The strokes applied to the shape.
    */
-  strokes: PenpotStroke[];
+  strokes: StrokesMixin[];
 
   /**
    * Layout properties for children of the shape.
@@ -1885,6 +1885,7 @@ export interface ImageNode extends SceneNodeMixin {
   fills: FillsMixin[];
 }
 
+// Isn't this the position? This might be reusable everywhere.
 /**
  * PenpotPoint represents a point in 2D space, typically with x and y coordinates.
  */
@@ -1894,7 +1895,7 @@ export type PenpotPoint = { x: number; y: number };
  * PenpotBounds represents the boundaries of a rectangular area,
  * defined by the coordinates of the top-left corner and the dimensions of the rectangle.
  */
-export type PenpotBounds = {
+export type BoundingBox = {
   /**
    * Top-left x position of the rectangular area defined
    */
@@ -1917,10 +1918,10 @@ export type PenpotBounds = {
  * PenpotViewport represents the viewport in the Penpot application.
  * It includes the center point, zoom level, and the bounds of the viewport.
  */
-export interface PenpotViewport {
+export interface Viewport {
   center: PenpotPoint;
   zoom: number;
-  readonly bounds: PenpotBounds;
+  readonly bounds: BoundingBox;
 }
 
 /**
@@ -2041,7 +2042,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
    * const stroke = libraryColor.asStroke();
    * ```
    */
-  asStroke(): PenpotStroke;
+  asStroke(): StrokesMixin;
 }
 
 /**
@@ -2125,7 +2126,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
    * typographyElement.setFont(newFont, newVariant);
    * ```
    */
-  setFont(font: PenpotFont, variant?: PenpotFontVariant): void;
+  setFont(font: FontMixin, variant?: FontVariantMixin): void;
 }
 
 /**
@@ -2293,7 +2294,7 @@ export type PenpotLibraryContext = {
  * Represents a font variant in Penpot, which defines a specific style variation of a font.
  * This interface provides properties for describing the characteristics of a font variant.
  */
-export interface PenpotFontVariant {
+export interface FontVariantMixin {
   /**
    * The name of the font variant.
    */
@@ -2319,7 +2320,7 @@ export interface PenpotFontVariant {
  * Represents a font in Penpot, which includes details about the font family, variants, and styling options.
  * This interface provides properties and methods for describing and applying fonts within Penpot.
  */
-export interface PenpotFont {
+export interface FontMixin {
   /**
    * This property holds the human-readable name of the font.
    */
@@ -2353,21 +2354,21 @@ export interface PenpotFont {
   /**
    * An array of font variants available for the font.
    */
-  variants: PenpotFontVariant[];
+  variants: FontVariantMixin[];
 
   /**
    * Applies the font styles to a text shape.
    * @param text - The text shape to apply the font styles to.
    * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
    */
-  applyToText(text: TextNode, variant?: PenpotFontVariant): void;
+  applyToText(text: TextNode, variant?: FontVariantMixin): void;
 
   /**
    * Applies the font styles to a text range within a text shape.
    * @param range - The text range to apply the font styles to.
    * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
    */
-  applyToRange(range: PenpotTextRange, variant?: PenpotFontVariant): void;
+  applyToRange(range: PenpotTextRange, variant?: FontVariantMixin): void;
 }
 
 /**
@@ -2378,35 +2379,35 @@ export interface PenpotFontsContext {
   /**
    * An array containing all available fonts.
    */
-  all: PenpotFont[];
+  all: FontMixin[];
 
   /**
    * Finds a font by its unique identifier.
    * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param id - The ID of the font to find.
    */
-  findById(id: string): PenpotFont | null;
+  findById(id: string): FontMixin | null;
 
   /**
    * Finds a font by its name.
    * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param name - The name of the font to find.
    */
-  findByName(name: string): PenpotFont | null;
+  findByName(name: string): FontMixin | null;
 
   /**
    * Finds all fonts matching a specific ID.
    * Returns an array of `PenpotFont` objects matching the provided ID.
    * @param id - The ID to match against.
    */
-  findAllById(id: string): PenpotFont[];
+  findAllById(id: string): FontMixin[];
 
   /**
    * Finds all fonts matching a specific name.
    * Returns an array of `PenpotFont` objects matching the provided name.
    * @param name - The name to match against.
    */
-  findAllByName(name: string): PenpotFont[];
+  findAllByName(name: string): FontMixin[];
 }
 
 /**
@@ -2510,7 +2511,7 @@ export interface PenpotContext {
    * const viewportSettings = context.viewport;
    * ```
    */
-  readonly viewport: PenpotViewport;
+  readonly viewport: Viewport;
   /**
    * The library context in the Penpot context, including both local and connected libraries. Requires `library:read` permission.
    * @example
@@ -2590,15 +2591,15 @@ export interface PenpotContext {
    * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
    * Returns an array of colors and their shape information.
    */
-  shapesColors(shapes: SceneNode[]): (PenpotColor & PenpotColorShapeInfo)[];
+  shapesColors(shapes: SceneNode[]): (SolidColorMixin & PenpotColorShapeInfo)[];
 
   /**
    * Replaces a specified old color with a new color in the given shapes. Requires `content:write` permission.
    */
   replaceColor(
     shapes: SceneNode[],
-    oldColor: PenpotColor,
-    newColor: PenpotColor
+    oldColor: SolidColorMixin,
+    newColor: SolidColorMixin
   ): void;
 
   /**
