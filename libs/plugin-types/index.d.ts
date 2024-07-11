@@ -1,5 +1,14 @@
 
 
+/* 
+Naming convention proposal:
+1/ Use {Name + "Node"} for new node entities. e.g. ComponentNode or InstanceNode.
+2/ Use {Name + "Node" + "Mixin"} for node-related properties mixins. E.g. FrameNodeMixin or TextNodeMixin
+3/ Use {Name + "Mixin"} for properties mixins. E.g. GridLayoutMixin or FlexLayoutMixin.
+
+Right now it kinda of mess, especially with properties. See PenpotLayoutChildProperties vs PenpotCommonLayout.
+ */
+
 interface UIAPI {
   /**
    * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
