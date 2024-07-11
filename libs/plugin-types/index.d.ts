@@ -2709,7 +2709,7 @@ export interface PenpotContext {
    * const svgGroup = context.createShapeFromSvg('<svg>...</svg>');
    * ```
    */
-  createShapeFromSvg(svgString: string): GroupNode | null;
+  createNodeFromSvg(svgString: string): GroupNode | null;
   /**
    * Creates a PenpotText shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the PenpotText shape.
@@ -2724,8 +2724,6 @@ export interface PenpotContext {
    * text.fontSize = '12';
    * board.appendChild(text);
    * ```
-   * @document
-   * ![example image](https://placehold.co/600x400)
    */
   createText(text: string): TextNode | null;
 
