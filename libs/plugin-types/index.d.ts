@@ -215,6 +215,12 @@ export interface PenpotPage extends PenpotPluginData {
    * The `name` property is the name of the page.
    */
   name: string;
+
+  /**
+   * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
+   */
+  root: PenpotShape;
+
   /**
    * Retrieves a shape by its unique identifier.
    * @param id The unique identifier of the shape.
