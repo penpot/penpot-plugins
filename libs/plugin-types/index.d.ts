@@ -161,20 +161,20 @@ export interface PenpotPluginData {
 }
 
 /**
- * PenpotFile represents a file in the Penpot application.
+ * FileNode represents a file in the Penpot application.
  * It includes properties for the file's identifier, name, and revision number.
  */
-export interface PenpotFile extends PenpotPluginData {
+export interface FileNode extends PenpotPluginData {
   id: string;
   name: string;
   revn: number;
 }
 
 /**
- * PenpotPage represents a page in the Penpot application.
+ * PageNode represents a page in the Penpot application.
  * It includes properties for the page's identifier and name, as well as methods for managing shapes on the page.
  */
-export interface PenpotPage extends PenpotPluginData {
+export interface PageNode extends PenpotPluginData {
   /**
    * The `id` property is a unique identifier for the page.
    */
@@ -187,8 +187,10 @@ export interface PenpotPage extends PenpotPluginData {
    * Retrieves a shape by its unique identifier.
    * @param id The unique identifier of the shape.
    */
-  getShapeById(id: string): PenpotShape | null;
+  getShapeById(id: string): SceneNode | null;
 
+
+  // NOTE: this might be more useful if it would be findAll(callback?: (node: PageNode | SceneNode) => boolean): PageNode | SceneNode | null;
   /**
    * Finds all shapes on the page.
    * Optionaly it gets a criteria object to search for specific criteria
@@ -209,7 +211,7 @@ export interface PenpotPage extends PenpotPluginData {
       | 'circle'
       | 'svg-raw'
       | 'image';
-  }): PenpotShape[];
+  }): SceneNode[];
 }
 
 /**
@@ -877,7 +879,7 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param row The row index where the child will be placed.
    * @param column The column index where the child will be placed.
    */
-  appendChild(child: PenpotShape, row: number, column: number): void;
+  appendChild(child: SceneNode, row: number, column: number): void;
 }
 
 /**
@@ -904,7 +906,7 @@ export interface PenpotFlexLayout extends PenpotCommonLayout {
    * Appends a child element to the flex layout.
    * @param child The child element to be appended, of type `PenpotShape`.
    */
-  appendChild(child: PenpotShape): void;
+  appendChild(child: SceneNode): void;
 }
 
 /**
@@ -1157,6 +1159,8 @@ export interface PenpotLayoutCellProperties {
  * This interface provides common properties and methods shared by all shapes.
  */
 export interface PenpotShapeBase extends PenpotPluginData {
+  // NOTE: it will help on long run to split in smaller chunks.
+  // TODO: rename to SceneNodeMixin (double-check)
   /**
    * The unique identifier of the shape.
    */
@@ -1377,19 +1381,19 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * Returns the equivalent shape in the component main instance. If the current shape is inside a
    * main instance will return `null`;
    */
-  componentRefShape(): PenpotShape | null;
+  componentRefShape(): SceneNode | null;
 
   /*
    * Returns the root of the component tree structure for the current shape. If the current shape
    * is already a root will return itself.
    */
-  componentRoot(): PenpotShape | null;
+  componentRoot(): SceneNode | null;
 
   /*
    * Returns the head of the component tree structure for the current shape. If the current shape
    * is already a head will return itself.
    */
-  componentHead(): PenpotShape | null;
+  componentHead(): SceneNode | null;
 
   /*
    * If the shape is a component instance, returns the reference to the component associated
@@ -1420,7 +1424,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * Creates a clone of the shape.
    * Returns a new instance of the shape with identical properties.
    */
-  clone(): PenpotShape;
+  clone(): SceneNode;
   /**
    * Removes the shape from its parent.
    */
@@ -1431,7 +1435,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
  * Represents a frame in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to frames.
  */
-export interface PenpotFrame extends PenpotShapeBase {
+export interface FrameNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'frame' for frames.
    */
@@ -1469,18 +1473,18 @@ export interface PenpotFrame extends PenpotShapeBase {
   /**
    * The children shapes contained within the frame.
    */
-  readonly children: PenpotShape[];
+  readonly children: SceneNode[];
   /**
    * Appends a child shape to the frame.
    * @param child The child shape to append.
    */
-  appendChild(child: PenpotShape): void;
+  appendChild(child: SceneNode): void;
   /**
    * Inserts a child shape at the specified index within the frame.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
    */
-  insertChild(index: number, child: PenpotShape): void;
+  insertChild(index: number, child: SceneNode): void;
 
   // Grid layout
   /**
@@ -1499,7 +1503,7 @@ export interface PenpotFrame extends PenpotShapeBase {
  * Represents a group of shapes in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to groups.
  */
-export interface PenpotGroup extends PenpotShapeBase {
+export interface GroupNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'group' for groups.
    */
@@ -1509,18 +1513,18 @@ export interface PenpotGroup extends PenpotShapeBase {
   /**
    * The children shapes contained within the group.
    */
-  readonly children: PenpotShape[];
+  readonly children: SceneNode[];
   /**
    * Appends a child shape to the group.
    * @param child The child shape to append.
    */
-  appendChild(child: PenpotShape): void;
+  appendChild(child: SceneNode): void;
   /**
    * Inserts a child shape at the specified index within the group.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
    */
-  insertChild(index: number, child: PenpotShape): void;
+  insertChild(index: number, child: SceneNode): void;
 
   /**
    * Checks if the group is currently a mask.
@@ -1552,7 +1556,7 @@ export type PenpotBoolType =
  * Represents a boolean operation shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to boolean operations.
  */
-export interface PenpotBool extends PenpotShapeBase {
+export interface BooleanNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'bool' for boolean operation shapes.
    */
@@ -1577,25 +1581,25 @@ export interface PenpotBool extends PenpotShapeBase {
   /**
    * The children shapes contained within the boolean shape.
    */
-  readonly children: PenpotShape[];
+  readonly children: SceneNode[];
   /**
    * Appends a child shape to the boolean shape.
    * @param child The child shape to append.
    */
-  appendChild(child: PenpotShape): void;
+  appendChild(child: SceneNode): void;
   /**
    * Inserts a child shape at the specified index within the boolean shape.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
    */
-  insertChild(index: number, child: PenpotShape): void;
+  insertChild(index: number, child: SceneNode): void;
 }
 
 /**
  * Represents a rectangle shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to rectangles.
  */
-export interface PenpotRectangle extends PenpotShapeBase {
+export interface RectangleNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'rect' for rectangle shapes.
    */
@@ -1611,7 +1615,7 @@ export interface PenpotRectangle extends PenpotShapeBase {
  * Represents a path shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties and methods specific to paths.
  */
-export interface PenpotPath extends PenpotShapeBase {
+export interface VectorNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'path' for path shapes.
    */
@@ -1640,7 +1644,7 @@ export interface PenpotTextRange {
   /**
    * The PenpotText shape to which this text range belongs.
    */
-  readonly shape: PenpotText;
+  readonly shape: TextNode;
 
   /**
    * The characters associated with the current text range.
@@ -1735,7 +1739,7 @@ export interface PenpotTextRange {
  * PenpotText represents a text element in the Penpot application, extending the base shape interface.
  * It includes various properties to define the text content and its styling attributes.
  */
-export interface PenpotText extends PenpotShapeBase {
+export interface TextNode extends PenpotShapeBase {
   /**
    * The type of the shape, which is always 'text' for text shapes.
    */
@@ -1839,7 +1843,7 @@ export interface PenpotText extends PenpotShapeBase {
  * Represents an ellipse shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to ellipses.
  */
-export interface PenpotEllipse extends PenpotShapeBase {
+export interface EllipseNode extends PenpotShapeBase {
   type: 'circle';
 
   /**
@@ -1852,7 +1856,7 @@ export interface PenpotEllipse extends PenpotShapeBase {
  * Represents an SVG raw shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to raw SVG shapes.
  */
-export interface PenpotSvgRaw extends PenpotShapeBase {
+export interface SvgRawNode extends PenpotShapeBase {
   type: 'svg-raw';
 }
 
@@ -1860,7 +1864,7 @@ export interface PenpotSvgRaw extends PenpotShapeBase {
  * Represents an image shape in Penpot.
  * This interface extends `PenpotShapeBase` and includes properties specific to image shapes.
  */
-export interface PenpotImage extends PenpotShapeBase {
+export interface ImageNode extends PenpotShapeBase {
   type: 'image';
 
   /**
@@ -1908,19 +1912,19 @@ export interface PenpotViewport {
 }
 
 /**
- * PenpotShape represents a union of various shape types used in the Penpot project.
- * This type allows for different shapes to be handled under a single type umbrella.
+ * SceneNode represents all the nodes that can exists within a PageNode.
  */
-export type PenpotShape =
-  | PenpotFrame
-  | PenpotGroup
-  | PenpotBool
-  | PenpotRectangle
-  | PenpotPath
-  | PenpotText
-  | PenpotEllipse
-  | PenpotSvgRaw
-  | PenpotImage;
+
+export type SceneNode =
+  | FrameNode
+  | GroupNode
+  | BooleanNode
+  | RectangleNode
+  | VectorNode
+  | TextNode
+  | EllipseNode
+  | SvgRawNode
+  | ImageNode;
 
 /**
  * Represents a mapping of events to their corresponding types in Penpot.
@@ -1930,11 +1934,11 @@ export interface EventsMap {
   /**
    * The `pagechange` event is triggered when the active page in the project is changed.
    */
-  pagechange: PenpotPage;
+  pagechange: PageNode;
   /**
    * The `filechange` event is triggered when there are changes in the current file.
    */
-  filechange: PenpotFile;
+  filechange: FileNode;
   /**
    * The `selectionchange` event is triggered when the selection of elements changes.
    * This event passes a list of identifiers of the selected elements.
@@ -2031,6 +2035,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
  * This interface extends `PenpotLibraryElement` and includes properties specific to typography elements.
  */
 export interface PenpotLibraryTypography extends PenpotLibraryElement {
+  // Question: i don't understand why are these method not specific to TextNode?
   /**
    * The unique identifier of the font used in the typography element.
    */
@@ -2078,14 +2083,15 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
 
   /**
    * Applies the typography styles to a text shape.
-   * @param shape The text shape to apply the typography styles to.
+   * @param node The node to apply the typography styles to.
    * @example
    * ```js
    * typographyElement.applyToText(textShape);
    * ```
    */
-  applyToText(shape: PenpotShape): void;
+  applyToText(node: SceneNode): void;
 
+  // NOTE: something is wrong here, the shape doesn't exist.
   /**
    * Applies the typography styles to a range of text within a text shape.
    * @param shape The text shape containing the text range to apply the typography styles to.
@@ -2121,12 +2127,12 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
    * const componentInstance = libraryComponent.instance();
    * ```
    */
-  instance(): PenpotShape;
+  instance(): SceneNode;
 
   /*
    * Returns the reference to the main component shape.
    */
-  mainInstance(): PenpotShape;
+  mainInstance(): SceneNode;
 }
 
 /**
@@ -2211,14 +2217,14 @@ export interface PenpotLibrary extends PenpotPluginData {
 
   /**
    * Creates a new component element in the library using the provided shapes.
-   * @param shapes An array of `PenpotShape` objects representing the shapes to be included in the component.
+   * @param nodes An array of all nodes to be included in the component.
    * Returns a new `PenpotLibraryComponent` object representing the created component element.
    * @example
    * ```js
    * const newComponent = library.createComponent([shape1, shape2]);
    * ```
    */
-  createComponent(shapes: PenpotShape[]): PenpotLibraryComponent;
+  createComponent(nodes: SceneNode[]): PenpotLibraryComponent;
 }
 
 /**
@@ -2340,7 +2346,7 @@ export interface PenpotFont {
    * @param text - The text shape to apply the font styles to.
    * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
    */
-  applyToText(text: PenpotText, variant?: PenpotFontVariant): void;
+  applyToText(text: TextNode, variant?: PenpotFontVariant): void;
 
   /**
    * Applies the font styles to a text range within a text shape.
@@ -2466,6 +2472,7 @@ export interface PenpotActiveUser extends PenpotUser {
  * Represents the context of Penpot, providing access to various Penpot functionalities and data.
  */
 export interface PenpotContext {
+  
   /**
    * The root shape in the current Penpot context. Requires `content:read` permission.
    * @example
@@ -2473,7 +2480,7 @@ export interface PenpotContext {
    * const rootShape = context.root;
    * ```
    */
-  readonly root: PenpotShape;
+  readonly root: SceneNode; // I suppose root should always be FileNode
   /**
    * The current page in the Penpot context. Requires `content:read` permission.
    * @example
@@ -2481,7 +2488,7 @@ export interface PenpotContext {
    * const currentPage = context.currentPage;
    * ```
    */
-  readonly currentPage: PenpotPage;
+  readonly currentPage: PageNode;
   /**
    * The viewport settings in the Penpot context.
    * @example
@@ -2526,7 +2533,7 @@ export interface PenpotContext {
    * const selectedShapes = context.selection;
    * ```
    */
-  selection: PenpotShape[];
+  selection: SceneNode[];
 
   /**
    * Retrieves file data from the current Penpot context. Requires `content:read` permission.
@@ -2536,7 +2543,7 @@ export interface PenpotContext {
    * const fileData = context.getFile();
    * ```
    */
-  getFile(): PenpotFile | null;
+  getFile(): FileNode | null;
   /**
    * Retrieves page data from the current Penpot context. Requires `content:read` permission.
    * Returns the page data or `null` if no page is available.
@@ -2545,7 +2552,7 @@ export interface PenpotContext {
    * const pageData = context.getPage();
    * ```
    */
-  getPage(): PenpotPage | null;
+  getPage(): PageNode | null;
   /**
    * Retrieves the IDs of the currently selected elements in Penpot. Requires `content:read` permission.
    * Returns an array of IDs representing the selected elements.
@@ -2563,19 +2570,19 @@ export interface PenpotContext {
    * const selectedShapes = context.getSelectedShapes();
    * ```
    */
-  getSelectedShapes(): PenpotShape[];
+  getSelectedShapes(): SceneNode[];
 
   /**
    * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
    * Returns an array of colors and their shape information.
    */
-  shapesColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
+  shapesColors(shapes: SceneNode[]): (PenpotColor & PenpotColorShapeInfo)[];
 
   /**
    * Replaces a specified old color with a new color in the given shapes. Requires `content:write` permission.
    */
   replaceColor(
-    shapes: PenpotShape[],
+    shapes: SceneNode[],
     oldColor: PenpotColor,
     newColor: PenpotColor
   ): void;
@@ -2616,16 +2623,16 @@ export interface PenpotContext {
 
   /**
    * Groups the specified shapes. Requires `content:write` permission.
-   * @param shapes - An array of shapes to group.
+   * @param nodes - An array of nodes to group.
    * Returns the newly created group or `null` if the group could not be created.
    */
-  group(shapes: PenpotShape[]): PenpotGroup | null;
+  group(nodes: SceneNode[]): GroupNode | null;
   /**
    * Ungroups the specified group. Requires `content:write` permission.
    * @param group - The group to ungroup.
    * @param other - Additional groups to ungroup.
    */
-  ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
+  ungroup(group: GroupNode, ...other: GroupNode[]): void;
 
   /**
    * Use this method to create the shape of a rectangle. Requires `content:write` permission.
@@ -2635,7 +2642,7 @@ export interface PenpotContext {
    * penpot.createRectangle();
    * ```
    */
-  createRectangle(): PenpotRectangle;
+  createRectangle(): RectangleNode;
   /**
    * Use this method to create a frame. This is the first step before anything else, the container. Requires `content:write` permission.
    * Then you can add a gridlayout, flexlayout or add a shape inside the frame.
@@ -2645,7 +2652,7 @@ export interface PenpotContext {
    * penpot.createFrame();
    * ```
    */
-  createFrame(): PenpotFrame;
+  createFrame(): FrameNode;
   /**
    * Use this method to create the shape of a ellipse. Requires `content:write` permission.
    *
@@ -2654,7 +2661,7 @@ export interface PenpotContext {
    * penpot.createEllipse();
    * ```
    */
-  createEllipse(): PenpotEllipse;
+  createEllipse(): EllipseNode;
   /**
    * Use this method to create a path. Requires `content:write` permission.
    *
@@ -2663,11 +2670,11 @@ export interface PenpotContext {
    * penpot.createPath();
    * ```
    */
-  createPath(): PenpotPath;
+  createPath(): VectorNode;
   /**
    * Creates a PenpotBoolean shape based on the specified boolean operation and shapes. Requires `content:write` permission.
    * @param boolType The type of boolean operation ('union', 'difference', 'exclude', 'intersection').
-   * @param shapes An array of shapes to perform the boolean operation on.
+   * @param nodes An array of nodes to perform the boolean operation on.
    * Returns the newly created PenpotBoolean shape resulting from the boolean operation.
    * @example
    * ```js
@@ -2676,8 +2683,8 @@ export interface PenpotContext {
    */
   createBoolean(
     boolType: PenpotBoolType,
-    shapes: PenpotShape[]
-  ): PenpotBool | null;
+    nodes: SceneNode[]
+  ): BooleanNode | null;
   /**
    * Creates a PenpotGroup from an SVG string. Requires `content:write` permission.
    * @param svgString The SVG string representing the shapes to be converted into a group.
@@ -2687,7 +2694,7 @@ export interface PenpotContext {
    * const svgGroup = context.createShapeFromSvg('<svg>...</svg>');
    * ```
    */
-  createShapeFromSvg(svgString: string): PenpotGroup | null;
+  createShapeFromSvg(svgString: string): GroupNode | null;
   /**
    * Creates a PenpotText shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the PenpotText shape.
@@ -2705,27 +2712,27 @@ export interface PenpotContext {
    * @document
    * ![example image](https://placehold.co/600x400)
    */
-  createText(text: string): PenpotText | null;
+  createText(text: string): TextNode | null;
 
   /**
-   * Generates markup for the given shapes. Requires `content:read` permission
-   * @param shapes
+   * Generates markup for the given nodes. Requires `content:read` permission
+   * @param nodes
    * @param markupType will default to 'html'
    */
   generateMarkup(
-    shapes: PenpotShape[],
+    nodes: SceneNode[],
     options?: { type?: 'html' | 'svg' }
   ): string;
 
   /**
-   * Generates styles for the given shapes. Requires `content:read` permission
-   * @param shapes
+   * Generates styles for the given nodes. Requires `content:read` permission
+   * @param nodes
    * @param styleType will default to 'css'
    * @param withPrelude will default to `false`
    * @param includeChildren will default to `true`
    */
   generateStyle(
-    shapes: PenpotShape[],
+    nodes: SceneNode[],
     options?: {
       type?: 'css';
       withPrelude?: boolean;
@@ -2753,81 +2760,81 @@ export interface PenpotContext {
  */
 export interface PenpotContextGeometryUtils {
   /**
-   * Calculates the center point of a given array of shapes.
+   * Calculates the center point of a given array of nodes.
    * This method computes the geometric center (centroid) of the bounding boxes of the provided shapes.
    * Returns the center point as an object with `x` and `y` coordinates, or null if the array is empty.
-   * @param shapes - The array of shapes to calculate the center for.
+   * @param nodes - The array of nodes to calculate the center for.
    *
    */
-  center(shapes: PenpotShape[]): { x: number; y: number } | null;
+  center(nodes: SceneNode[]): { x: number; y: number } | null;
 }
 
 /**
- * Utility methods for determining the types of Penpot shapes.
+ * Utility methods for determining the types of Penpot nodes.
  */
 export interface PenpotContextTypesUtils {
   /**
    * Checks if the given shape is a frame.
    * Returns true if the shape is a PenpotFrame, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isFrame(shape: PenpotShape): shape is PenpotFrame;
+  isFrame(node: SceneNode): node is FrameNode;
 
   /**
    * Checks if the given shape is a group.
    * Returns true if the shape is a PenpotGroup, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isGroup(shape: PenpotShape): shape is PenpotGroup;
+  isGroup(node: SceneNode): node is GroupNode;
 
   /**
    * Checks if the given shape is a mask.
    * Returns true if the shape is a PenpotGroup (acting as a mask), otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isMask(shape: PenpotShape): shape is PenpotGroup;
+  isMask(node: SceneNode): node is GroupNode;
 
   /**
    * Checks if the given shape is a boolean operation.
    * Returns true if the shape is a PenpotBool, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isBool(shape: PenpotShape): shape is PenpotBool;
+  isBool(node: SceneNode): node is BooleanNode;
 
   /**
    * Checks if the given shape is a rectangle.
    * Returns true if the shape is a PenpotRectangle, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isRectangle(shape: PenpotShape): shape is PenpotRectangle;
+  isRectangle(node: SceneNode): node is RectangleNode;
 
   /**
    * Checks if the given shape is a path.
    * Returns true if the shape is a PenpotPath, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isPath(shape: PenpotShape): shape is PenpotPath;
+  isPath(node: SceneNode): node is VectorNode;
 
   /**
    * Checks if the given shape is a text element.
    * Returns true if the shape is a PenpotText, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isText(shape: PenpotShape): shape is PenpotText;
+  isText(node: SceneNode): node is TextNode;
 
   /**
    * Checks if the given shape is an ellipse.
    * Returns true if the shape is a PenpotEllipse, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isEllipse(shape: PenpotShape): shape is PenpotEllipse;
+  isEllipse(node: SceneNode): node is EllipseNode;
 
   /**
    * Checks if the given shape is an SVG.
    * Returns true if the shape is a PenpotSvgRaw, otherwise false.
-   * @param shape - The shape to check.
+   * @param node - The shape to check.
    */
-  isSVG(shape: PenpotShape): shape is PenpotSvgRaw;
+  isSVG(node: SceneNode): node is SvgRawNode;
 }
 
 /**
