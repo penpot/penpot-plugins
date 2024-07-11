@@ -1,51 +1,54 @@
+
+
+interface UIAPI {
+  /**
+   * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
+   * There is a minimum and maximum size for this modal and a default size but it's possible to customize it anyway with the options parameter.
+   *
+   * @param name title of the plugin, it'll be displayed on the top of the modal
+   * @param url of the plugin
+   * @param options height and width of the modal.
+   *
+   * @example
+   * ```js
+   * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
+   * ```
+   */
+  open: (name: string, url: string, options?: {
+    width: number;
+    height: number;
+  }) => void;
+  /**
+   * Sends a message to the plugin UI.
+   *
+   * @param message content usually is an object
+   *
+   * @example
+   * ```js
+   * this.sendMessage({ type: 'example-type', content: 'data we want to share' });
+   * ```
+   */
+  sendMessage: (message: unknown) => void;
+  /**
+   * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
+   *
+   * @param message content usually is an object
+   *
+   * @example
+   * ```js
+   * penpot.ui.onMessage((message) => {if(message.type === 'example-type' { ...do something })});
+   * ```
+   */
+  onMessage: <T>(callback: (message: T) => void) => void;
+}
+
 /**
  * These are methods and properties available on the `penpot` global object.
  *
  */
 export interface Penpot
   extends Omit<PenpotContext, 'addListener' | 'removeListener'> {
-  ui: {
-    /**
-     * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
-     * There is a minimum and maximum size for this modal and a default size but it's possible to customize it anyway with the options parameter.
-     *
-     * @param name title of the plugin, it'll be displayed on the top of the modal
-     * @param url of the plugin
-     * @param options height and width of the modal.
-     *
-     * @example
-     * ```js
-     * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
-     * ```
-     */
-    open: (
-      name: string,
-      url: string,
-      options?: { width: number; height: number }
-    ) => void;
-    /**
-     * Sends a message to the plugin UI.
-     *
-     * @param message content usually is an object
-     *
-     * @example
-     * ```js
-     * this.sendMessage({ type: 'example-type', content: 'data we want to share' });
-     * ```
-     */
-    sendMessage: (message: unknown) => void;
-    /**
-     * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
-     *
-     * @param message content usually is an object
-     *
-     * @example
-     * ```js
-     * penpot.ui.onMessage((message) => {if(message.type === 'example-type' { ...do something })});
-     * ```
-     */
-    onMessage: <T>(callback: (message: T) => void) => void;
-  };
+  readonly ui: UIAPI;
   /**
    * Provides access to utility functions and context-specific operations.
    */
