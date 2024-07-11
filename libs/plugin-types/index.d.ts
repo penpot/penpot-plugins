@@ -12,10 +12,18 @@ The context is also important: we're already inside penpot file, so there is no 
 Repeating Penpot makes everything longer without adding any value to it.
  */
 
+/**
+ *  @defaults { width: 300, height: 200 }
+ *  @minimum { width: 80, height: 100 }
+ */
+interface UIOptions {
+  width: number;
+  height: number;
+}
+
 interface UIAPI {
   /**
    * Opens the plugin UI. It is possible to develop a plugin without interface (see Palette color example) but if you need, the way to open this UI is using `penpot.ui.open`.
-   * There is a minimum and maximum size for this modal and a default size but it's possible to customize it anyway with the options parameter.
    *
    * @param name title of the plugin, it'll be displayed on the top of the modal
    * @param url of the plugin
@@ -26,14 +34,7 @@ interface UIAPI {
    * penpot.ui.open('Plugin name', 'url', {width: 150, height: 300});
    * ```
    */
-  open: (
-    name: string,
-    url: string,
-    options?: {
-      width: number;
-      height: number;
-    }
-  ) => void;
+  open: (name: string, url: string, options?: UIOptions) => void;
 
   /**
    * Sends a message from the code to the plugin UI.
