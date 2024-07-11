@@ -201,21 +201,13 @@ export interface PageNode extends PenpotPluginData {
    * @param `criteria.nameLike` search for name but for a partial match with the name
    * @param `criteria.type` search for shapes of the specified type
    */
-  findShapes(criteria?: {
+  findNodesBy(criteria?: {
     name?: string;
     nameLike?: string;
-    type?:
-      | 'frame'
-      | 'group'
-      | 'bool'
-      | 'rect'
-      | 'path'
-      | 'text'
-      | 'circle'
-      | 'svg-raw'
-      | 'image';
-  }): SceneNode[];
+    type?: SceneNodeTypes;
+  }): SceneNode[] | null;
 }
+
 
 /**
  * Represents a gradient configuration in Penpot.
@@ -1928,6 +1920,8 @@ export type SceneNode =
   | EllipseNode
   | SvgRawNode
   | ImageNode;
+
+  export type SceneNodeTypes = SceneNode['type']
 
 /**
  * Represents a mapping of events to their corresponding types in Penpot.
