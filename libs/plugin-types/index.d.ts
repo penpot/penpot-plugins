@@ -1200,6 +1200,12 @@ export interface PenpotShapeBase extends PenpotPluginData {
   name: string;
 
   /**
+   * The parent shape. If the shape is the first level the parent will be the root shape.
+   * For the root shape the parent is null
+   */
+  readonly parent: PenpotShape | null;
+
+  /**
    * The x-coordinate of the shape's position.
    */
   x: number;
