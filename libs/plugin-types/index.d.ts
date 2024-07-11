@@ -181,9 +181,25 @@ export interface PenpotPluginData {
  * It includes properties for the file's identifier, name, and revision number.
  */
 export interface PenpotFile extends PenpotPluginData {
+  /**
+   * The `id` property is a unique identifier for the file.
+   */
   id: string;
+
+  /**
+   * The `name` for the file
+   */
   name: string;
+
+  /**
+   * The `revn` will change for every document update
+   */
   revn: number;
+
+  /**
+   * List all the pages for the current file
+   */
+  pages: PenpotPage[];
 }
 
 /**
