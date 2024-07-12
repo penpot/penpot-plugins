@@ -184,7 +184,7 @@ export interface PenpotFile extends PenpotPluginData {
   /**
    * The `id` property is a unique identifier for the file.
    */
-  id: string;
+  readonly id: string;
 
   /**
    * The `name` for the file
@@ -200,6 +200,14 @@ export interface PenpotFile extends PenpotPluginData {
    * List all the pages for the current file
    */
   pages: PenpotPage[];
+
+  /*
+   * Export the current file to an archive
+   * @param `exportType` indicates the type of file to generate.
+   * - `'penpot'` will create a *.penpot file with a binary representation of the file
+   * - `'zip'` will create a *.zip with the file exported in several SVG files with some JSON metadata
+   */
+  export(exportType: 'penpot' | 'zip'): Uint8Array;
 }
 
 /**
@@ -210,7 +218,7 @@ export interface PenpotPage extends PenpotPluginData {
   /**
    * The `id` property is a unique identifier for the page.
    */
-  id: string;
+  readonly id: string;
   /**
    * The `name` property is the name of the page.
    */
@@ -248,6 +256,24 @@ export interface PenpotPage extends PenpotPluginData {
       | 'svg-raw'
       | 'image';
   }): PenpotShape[];
+
+  /**
+   * The interaction flows defined for the page.
+   */
+  readonly flows: PenpotFlow[];
+
+  /**
+   * Creates a new flow in the page.
+   * @param `name` the name identifying the flow
+   * @param `frame` the starting frame for the current flow
+   */
+  createFlow(name: string, frame: PenpotFrame): PenpotFlow;
+
+  /**
+   * Removes the flow from the page
+   * @param `flow` the flow to be removed from the page
+   */
+  removeFlow(flow: PenpotFlow): void;
 }
 
 /**
@@ -1467,10 +1493,34 @@ export interface PenpotShapeBase extends PenpotPluginData {
   export(config: PenpotExport): Promise<Uint8Array>;
 
   /**
+   * The interactions for the current shape.
+   */
+  readonly interactions: PenpotInteraction[];
+
+  /**
+   * Adds a new interaction to the shape.
+   * @param `trigger` defines the conditions under which the action will be triggered
+   * @param `action` defines what will be executed when the trigger happens
+   * @param `delay` for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
+   */
+  addInteraction(
+    trigger: PenpotTrigger,
+    action: PenpotAction,
+    delay?: number
+  ): PenpotInteraction;
+
+  /**
+   * Removes the interaction from the shape.
+   * @param `interaction` is the interaction to remove from the shape
+   */
+  removeInteraction(interaction: PenpotInteraction): void;
+
+  /**
    * Creates a clone of the shape.
    * Returns a new instance of the shape with identical properties.
    */
   clone(): PenpotShape;
+
   /**
    * Removes the shape from its parent.
    */
@@ -2316,9 +2366,6 @@ export type PenpotLibraryContext = {
   availableLibraries(): Promise<PenpotLibrarySummary[]>;
 
   /**
-   * TODO: linkToFile
-   */
-  /**
    * Connects to a specific library identified by its ID.
    * Returns a promise that resolves to the `PenpotLibrary` object representing the connected library.
    * @param libraryId - The ID of the library to connect to.
@@ -2807,7 +2854,327 @@ export interface PenpotContext {
    * Removes the listenerId from the list of listeners
    */
   removeListener(listenerId: symbol): void;
+
+  /**
+   * Opens the viewer section
+   */
+  openViewer(): void;
+
+  /**
+   * Creates a new page
+   */
+  createPage(): PenpotPage;
+
+  /**
+   * Changes the current open page to given page
+   * @param `page` the page to open
+   */
+  openPage(page: PenpotPage): void;
 }
+
+/**
+ * Defines an interaction flow inside penpot. A flow is defined by a starting board for an interaction.
+ */
+export interface PenpotFlow {
+  /**
+   * The page in which the flow is defined
+   */
+  readonly page: PenpotPage;
+
+  /**
+   * The name for the current flow
+   */
+  name: string;
+
+  /**
+   * The starting frame for this interaction flow
+   */
+  startingFrame: PenpotFrame;
+
+  /**
+   * Remvoes the flow from the page
+   */
+  remove(): void;
+}
+
+/**
+ * Penpot allows you to prototype interactions by connecting boards, which can act as screens.
+ */
+export interface PenpotInteraction {
+  /**
+   * The shape that owns the interaction
+   */
+  readonly shape?: PenpotShape;
+
+  /**
+   * The user action that will start the interaction.
+   */
+  trigger: PenpotTrigger;
+
+  /**
+   * Time in **milliseconds** after the action will happen. Only applies to `after-delay` triggers.
+   */
+  delay?: number | null;
+
+  /**
+   * The action that will execute after the trigger happens.
+   */
+  action: PenpotAction;
+
+  /**
+   * Removes the interaction
+   */
+  remove(): void;
+}
+
+/**
+ * Types of triggers defined:
+ * - `click` triggers when the user uses the mouse to click on a shape
+ * - `mouse-enter` triggers when the user moves the mouse inside the shape (even if no mouse button is pressed)
+ * - `mouse-leave` triggers when the user moves the mouse outside the shape.
+ * - `after-delay` triggers after the `delay` time has passed even if no interaction from the user happens.
+ */
+export type PenpotTrigger =
+  | 'click'
+  | 'mouse-enter'
+  | 'mouse-leave'
+  | 'after-delay';
+
+/**
+ * It takes the user from one board to the destination set in the interaction.
+ */
+export interface PenpotNavigateTo {
+  /**
+   * Type of action
+   */
+  readonly type: 'navigate-to';
+
+  /**
+   * Board to which the action targets
+   */
+  readonly destination: PenpotFrame;
+
+  /**
+   * When true the scroll will be preserved.
+   */
+  readonly preserveScrollPosition?: boolean;
+
+  /**
+   * Animation displayed with this interaction.
+   */
+  readonly animation?: PenpotAnimation;
+}
+
+/**
+ * Base type for the actions "open-overlay" and "toggle-overlay" that share most of their properties
+ */
+export interface PenpotOverlayAction {
+  /**
+   * Overlay board that will be openned.
+   */
+  readonly destination: PenpotFrame;
+
+  /**
+   * Base shape to which the overlay will be positioned taking constraints into account.
+   */
+  readonly relativeTo?: PenpotShape;
+
+  /**
+   * Positioning of the overlay.
+   */
+  readonly position?:
+    | 'manual'
+    | 'center'
+    | 'top-left'
+    | 'top-right'
+    | 'top-center'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'bottom-center';
+
+  /**
+   * For `position = 'manual'` the location of the overlay.
+   */
+  readonly manualPositionLocation?: PenpotPoint;
+
+  /**
+   * When true the overlay will be closed when clicking outside
+   */
+  readonly closeWhenClickOutside?: boolean;
+
+  /**
+   * When true a background will be added to the overlay.
+   */
+  readonly addBackgroundOverlay?: boolean;
+
+  /**
+   * Animation displayed with this interaction.
+   */
+  readonly animation?: PenpotAnimation;
+}
+
+/**
+ * It opens a board right over the current board.
+ */
+export interface PenpotOpenOverlay extends PenpotOverlayAction {
+  /**
+   * The action type
+   */
+  readonly type: 'open-overlay';
+}
+
+/**
+ * It opens an overlay if it is not already opened or closes it if it is already opened.
+ */
+export interface PenpotToggleOverlay extends PenpotOverlayAction {
+  /**
+   * The action type
+   */
+  readonly type: 'toggle-overlay';
+}
+
+/**
+ * This action will close a targeted board that is opened as an overlay.
+ */
+export interface PenpotCloseOverlay {
+  /**
+   * The action type
+   */
+  readonly type: 'close-overlay';
+
+  /**
+   * The overlay to be closed with this action.
+   */
+  readonly destination?: PenpotFrame;
+
+  /**
+   * Animation displayed with this interaction.
+   */
+  readonly animation: PenpotAnimation;
+}
+
+/**
+ * It takes back to the last board shown.
+ */
+export interface PenpotPreviousScreen {
+  /**
+   * The action type
+   */
+  readonly type: 'previous-screen';
+}
+
+/**
+ * This action opens an URL in a new tab.
+ */
+export interface PenpotOpenUrl {
+  /**
+   * The action type
+   */
+  readonly type: 'open-url';
+  /**
+   * The URL to open when the action is executed
+   */
+  readonly url: string;
+}
+
+/**
+ * Type for all the possible types of actions in an interaction.
+ */
+export type PenpotAction =
+  | PenpotNavigateTo
+  | PenpotOpenOverlay
+  | PenpotToggleOverlay
+  | PenpotCloseOverlay
+  | PenpotPreviousScreen
+  | PenpotOpenUrl;
+
+/**
+ * Dissolve animation
+ */
+export interface PenpotDissolve {
+  /**
+   * Type of the animation
+   */
+  readonly type: 'dissolve';
+
+  /**
+   * Duration of the animation effect
+   */
+  readonly duration: number;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Slide animation
+ */
+export interface PenpotSlide {
+  /**
+   * Type of the animation.
+   */
+  readonly type: 'slide';
+
+  /**
+   * Indicate if the slide will be either in-to-out `in` or out-to-in `out`.
+   */
+  readonly way: 'in' | 'out';
+
+  /**
+   * Direction for the slide animaton.
+   */
+  readonly direction: 'right' | 'left' | 'up' | 'down';
+
+  /**
+   * Duration of the animation effect.
+   */
+  readonly duration: number;
+
+  /**
+   * If `true` the offset effect will be used.
+   */
+  readonly offsetEffect?: boolean;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Push animation
+ */
+export interface PenpotPush {
+  /**
+   * Type of the animation
+   */
+  readonly type: 'push';
+
+  /**
+   * Direction for the push animaton
+   */
+  readonly direction: 'right' | 'left' | 'up' | 'down';
+
+  /**
+   * Duration of the animation effect
+   */
+  readonly duration: number;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Type of all the animations that can be added to an interaction.
+ */
+export type PenpotAnimation = PenpotDissolve | PenpotSlide | PenpotPush;
 
 /**
  * Utility methods for geometric calculations in Penpot.
