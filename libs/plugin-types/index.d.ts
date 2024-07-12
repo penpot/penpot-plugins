@@ -1441,6 +1441,12 @@ export interface PenpotShapeBase extends PenpotPluginData {
    */
   component(): PenpotLibraryComponent | null;
 
+  /*
+   * If the current shape is a component it will remove the component information and leave the
+   * shape as a "basic shape"
+   */
+  detach(): void;
+
   /**
    * Resizes the shape to the specified width and height.
    * @param width The new width of the shape.

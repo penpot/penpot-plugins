@@ -120,12 +120,14 @@ describe('Plugin api', () => {
 
       const id = api.on('pagechange', callback);
       expect(mockContext.addListener).toHaveBeenCalled();
-      expect(mockContext.addListener.mock.calls[0][0]).toBe('pagechange');
-      expect(mockContext.addListener.mock.calls[0][1]).toBe(callback);
+      expect((mockContext.addListener.mock as any).lastCall[0]).toBe(
+        'pagechange'
+      );
+      expect((mockContext.addListener.mock as any).lastCall[1]).toBe(callback);
 
       api.off(id);
       expect(mockContext.removeListener).toHaveBeenCalled();
-      expect(mockContext.removeListener.mock.calls[0][0]).toBe(id);
+      expect((mockContext.removeListener.mock as any).lastCall[0]).toBe(id);
     });
   });
 
