@@ -223,7 +223,7 @@ export interface FileNode extends PluginDataMixin {
   /**
    * List all the pages for the current file
    */
-  pages: PageNode[];
+  pages: PageNode[]; // NOTE: This should be 'children'. And be consistent with everything else. Parent > Child hierarchy.
 }
 
 /**
