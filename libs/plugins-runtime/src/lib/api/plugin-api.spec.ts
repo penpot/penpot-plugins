@@ -1,5 +1,5 @@
 import { expect, describe, vi } from 'vitest';
-import { createApi, triggerEvent, uiMessagesCallbacks } from './index.js';
+import { createApi, themeChange, uiMessagesCallbacks } from './index.js';
 import openUIApi from './openUI.api.js';
 import type { PenpotFile } from '@penpot/plugin-types';
 
@@ -28,6 +28,8 @@ describe('Plugin api', () => {
     getSelected: vi.fn(),
     getSelectedShapes: vi.fn(),
     getTheme: vi.fn(() => 'dark'),
+    addListener: vi.fn(() => Symbol()),
+    removeListener: vi.fn(),
   };
 
   const api = createApi(mockContext as any, {
@@ -116,62 +118,17 @@ describe('Plugin api', () => {
     it('pagechange', () => {
       const callback = vi.fn();
 
-      api.on('pagechange', callback);
+      const id = api.on('pagechange', callback);
+      expect(mockContext.addListener).toHaveBeenCalled();
+      expect((mockContext.addListener.mock as any).lastCall[0]).toBe(
+        'pagechange'
+      );
+      expect((mockContext.addListener.mock as any).lastCall[1]).toBe(callback);
 
-      triggerEvent('pagechange', 'test' as any);
-
-      api.off('pagechange', callback);
-
-      triggerEvent('pagechange', 'test' as any);
-
-      expect(callback).toHaveBeenCalledWith('test');
-      expect(callback).toHaveBeenCalledTimes(1);
+      api.off(id);
+      expect(mockContext.removeListener).toHaveBeenCalled();
+      expect((mockContext.removeListener.mock as any).lastCall[0]).toBe(id);
     });
-
-    it('filechange', () => {
-      const callback = vi.fn();
-
-      api.on('filechange', callback);
-
-      triggerEvent('filechange', 'test' as any);
-
-      api.off('filechange', callback);
-
-      triggerEvent('filechange', 'test' as any);
-
-      expect(callback).toHaveBeenCalledWith('test');
-      expect(callback).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it('selectionchange', () => {
-    const callback = vi.fn();
-
-    api.on('selectionchange', callback);
-
-    triggerEvent('selectionchange', 'test' as any);
-
-    api.off('selectionchange', callback);
-
-    triggerEvent('selectionchange', 'test' as any);
-
-    expect(callback).toHaveBeenCalledWith('test');
-    expect(callback).toHaveBeenCalledTimes(1);
-  });
-
-  it('themechange', () => {
-    const callback = vi.fn();
-
-    api.on('themechange', callback);
-
-    triggerEvent('themechange', 'light');
-
-    api.off('themechange', callback);
-
-    triggerEvent('themechange', 'light');
-
-    expect(callback).toHaveBeenCalledWith('light');
-    expect(callback).toHaveBeenCalledTimes(1);
   });
 
   describe.concurrent('permissions', () => {
@@ -266,7 +223,7 @@ describe('Plugin api', () => {
     expect(modalMock.setTheme).toHaveBeenCalledWith('light');
     expect(api.getTheme()).toBe('light');
 
-    triggerEvent('themechange', 'dark' as any);
+    themeChange('dark');
     expect(modalMock.setTheme).toHaveBeenCalledWith('dark');
   });
 

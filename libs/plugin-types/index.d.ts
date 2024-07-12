@@ -102,17 +102,18 @@ export interface Penpot
    * @param type The event type to listen for.
    * @param callback The callback function to execute when the event is triggered.
    * @param props The properties for the current event handler. Only makes sense for specific events.
+   * @return the listener id that can be used to call `off` and cancel the listener
    *
    * @example
    * ```js
    * penpot.on('pagechange', () => {...do something}).
    * ```
    */
-  on: <T extends keyof EventsMap>(
+  on<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: Map<string, unknown>
-  ) => void;
+    props?: { [key: string]: unknown }
+  ): symbol;
 
   /**
    * Removes an event listener for the specified event type.
@@ -124,11 +125,25 @@ export interface Penpot
    * ```js
    * penpot.off('pagechange', () => {...do something}).
    * ```
+   * @deprecated this method should not be used. Use instead off sending the `listenerId` (return value from `on` method)
    */
-  off: <T extends keyof EventsMap>(
+  off<T extends keyof EventsMap>(
     type: T,
-    callback: (event: EventsMap[T]) => void
-  ) => void;
+    callback?: (event: EventsMap[T]) => void
+  ): void;
+
+  /**
+   * Removes an event listener for the specified event type.
+   *
+   * @param listenerId the id returned by the `on` method when the callback was set
+   *
+   * @example
+   * ```js
+   * const listenerId = penpot.on('contentsave', () => console.log("Changed"));
+   * penpot.off(listenerId);
+   * ```
+   */
+  off(listenerId: symbol): void;
 }
 
 /**
@@ -190,9 +205,25 @@ export interface PluginDataMixin {
  * It includes properties for the file's identifier, name, and revision number.
  */
 export interface FileNode extends PluginDataMixin {
+  /**
+   * The `id` property is a unique identifier for the file.
+   */
   id: string;
+
+  /**
+   * The `name` for the file
+   */
   name: string;
+
+  /**
+   * The `revn` will change for every document update
+   */
   revn: number;
+
+  /**
+   * List all the pages for the current file
+   */
+  pages: PageNode[];
 }
 
 /**
@@ -208,6 +239,12 @@ export interface PageNode extends PluginDataMixin {
    * The `name` property is the name of the page.
    */
   name: string;
+
+  /**
+   * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
+   */
+  root: FileNode;
+
   /**
    * Retrieves a shape by its unique identifier.
    * @param id The unique identifier of the shape.
@@ -1188,6 +1225,12 @@ export interface SceneNodeMixin extends PluginDataMixin {
   name: string;
 
   /**
+   * The parent shape. If the shape is the first level the parent will be the root shape.
+   * For the root shape the parent is null
+   */
+  readonly parent: SceneNode | PageNode; // Updated to be SceneNode | PageNode, because there is no way to jump from a SceneNode directly to FileNode
+
+  /**
    * The x-coordinate of the shape's position.
    */
   x: number;
@@ -1416,6 +1459,12 @@ export interface SceneNodeMixin extends PluginDataMixin {
    * otherwise will return null
    */
   component(): PenpotLibraryComponent | null;
+
+  /*
+   * If the current shape is a component it will remove the component information and leave the
+   * shape as a "basic shape"
+   */
+  detach(): void;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -1971,6 +2020,17 @@ export interface EventsMap {
    * The `finish` event is triggered when some operation is finished.
    */
   finish: string;
+
+  /**
+   * This event will triger whenever the shape in the props change. It's mandatory to send
+   * with the props an object like `{ shapeId: '<id>' }`
+   */
+  shapechange: SceneNode; // TODO: rename to nodechange or even sceneNodeChange
+
+  /**
+   * The `contentsave` event will trigger when the content file changes.
+   */
+  contentsave: void;
 }
 
 /**
@@ -2762,7 +2822,7 @@ export interface PenpotContext {
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: Map<string, unknown>
+    props?: { [key: string]: unknown }
   ): symbol;
 
   /**
