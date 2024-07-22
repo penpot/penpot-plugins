@@ -14,13 +14,36 @@ penpot.ui.onMessage<PluginUIEvent>((message) => {
         selection: penpot.getSelectedShapes(),
       },
     });
+
+    initEvents();
   }
 });
 
 penpot.on('selectionchange', () => {
   const shapes = penpot.getSelectedShapes();
   sendMessage({ type: 'selection', content: shapes });
+
+  initEvents();
 });
+
+let listeners: symbol[] = [];
+
+function initEvents() {
+  listeners.forEach((listener) => {
+    penpot.off(listener);
+  });
+
+  listeners = penpot.selection.map((shape) => {
+    return penpot.on(
+      'shapechange',
+      () => {
+        const shapes = penpot.getSelectedShapes();
+        sendMessage({ type: 'selection', content: shapes });
+      },
+      { shapeId: shape.id }
+    );
+  });
+}
 
 penpot.on('themechange', () => {
   const theme = penpot.getTheme();
