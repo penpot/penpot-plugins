@@ -65,11 +65,11 @@ export interface Penpot
    *
    * The following are the posible event types:
    *  - pagechange: event emitted when the current page changes. The callback will receive the new page.
-   *  - shapechanged: event emitted when the shape changes. This event requires to send inside the `props` object the shape
+   *  - shapechange: event emitted when the shape changes. This event requires to send inside the `props` object the shape
    *  that will be observed. For example:
    *  ```javascript
    *  // Observe the current selected shape
-   *  penpot.on('shapechanged', (shape) => console.log(shape.name), { shapeId: penpot.selection[0].id });
+   *  penpot.on('shapechange', (shape) => console.log(shape.name), { shapeId: penpot.selection[0].id });
    *  ```
    *  - selectionchange: event emitted when the current selection changes. The callback will receive the list of ids for the new selection
    *  - themechange: event emitted when the user changes its theme. The callback will receive the new theme (currentlly: either `dark` or `light`)
