@@ -19,6 +19,14 @@ export function setContextBuilder(builder: ContextBuilder) {
 
 export const ɵloadPlugin = async function (manifest: Manifest) {
   try {
+    const closeAllPlugins = () => {
+      createdApis.forEach((pluginApi) => {
+        pluginApi.closePlugin();
+      });
+
+      createdApis = [];
+    };
+
     const context = contextBuilder && contextBuilder(manifest.pluginId);
 
     if (!context) {
@@ -35,9 +43,7 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
     }
 
     if (createdApis && !multiPlugin) {
-      createdApis.forEach((pluginApi) => {
-        pluginApi.closePlugin();
-      });
+      closeAllPlugins();
     }
 
     const pluginApi = createApi(context, manifest);
@@ -70,9 +76,7 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
     c.evaluate(code);
 
     const listenerId: symbol = context.addListener('finish', () => {
-      createdApis.forEach((pluginApi) => {
-        pluginApi.closePlugin();
-      });
+      closeAllPlugins();
 
       context?.removeListener(listenerId);
     });

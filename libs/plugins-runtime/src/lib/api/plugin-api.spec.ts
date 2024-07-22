@@ -129,6 +129,15 @@ describe('Plugin api', () => {
       expect(mockContext.removeListener).toHaveBeenCalled();
       expect((mockContext.removeListener.mock as any).lastCall[0]).toBe(id);
     });
+
+    it('remove event on close plugin', () => {
+      const callback = vi.fn();
+
+      api.on('pagechange', callback);
+      api.closePlugin();
+
+      expect(mockContext.removeListener).toHaveBeenCalled();
+    });
   });
 
   describe.concurrent('permissions', () => {
@@ -227,7 +236,7 @@ describe('Plugin api', () => {
     expect(modalMock.setTheme).toHaveBeenCalledWith('dark');
   });
 
-  it('close puglin', () => {
+  it('close plugin', () => {
     const name = 'test';
     const url = 'http://fake.com';
     const options = { width: 100, height: 100 };

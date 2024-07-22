@@ -70,6 +70,13 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
   let modal: PluginModalElement | null = null;
 
   const closePlugin = () => {
+    // remove all event listeners
+    Object.entries(listeners).forEach(([, map]) => {
+      map.forEach((id) => {
+        context.removeListener(id);
+      });
+    });
+
     if (modal) {
       modals.delete(modal);
 
