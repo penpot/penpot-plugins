@@ -207,7 +207,7 @@ export interface PenpotFile extends PenpotPluginData {
    * - `'penpot'` will create a *.penpot file with a binary representation of the file
    * - `'zip'` will create a *.zip with the file exported in several SVG files with some JSON metadata
    */
-  export(exportType: 'penpot' | 'zip'): Uint8Array;
+  export(exportType: 'penpot' | 'zip'): Promise<Uint8Array>;
 }
 
 /**

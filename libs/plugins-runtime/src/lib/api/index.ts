@@ -368,6 +368,21 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
       checkPermission('content:read');
       return context.generateStyle(shapes, options);
     },
+
+    openViewer(): void {
+      checkPermission('content:read');
+      context.openViewer();
+    },
+
+    createPage(): PenpotPage {
+      checkPermission('content:write');
+      return context.createPage();
+    },
+
+    openPage(page: PenpotPage): void {
+      checkPermission('content:read');
+      context.openPage(page);
+    },
   };
 
   return penpot;
