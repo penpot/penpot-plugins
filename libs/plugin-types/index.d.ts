@@ -1224,12 +1224,12 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * The width of the shape.
    */
-  width: number;
+  readonly width: number;
 
   /**
    * The height of the shape.
    */
-  height: number;
+  readonly height: number;
 
   /**
    * Returns the bounding box surrounding the current shape
