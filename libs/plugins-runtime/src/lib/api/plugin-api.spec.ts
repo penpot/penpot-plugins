@@ -28,7 +28,7 @@ describe('Plugin api', () => {
     getSelected: vi.fn(),
     getSelectedShapes: vi.fn(),
     getTheme: vi.fn(() => 'dark'),
-    addListener: vi.fn(() => Symbol()),
+    addListener: vi.fn().mockReturnValueOnce(Symbol()),
     removeListener: vi.fn(),
   };
 
