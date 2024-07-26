@@ -202,12 +202,21 @@ export interface PenpotFile extends PenpotPluginData {
   pages: PenpotPage[];
 
   /*
-   * Export the current file to an archive
+   * Export the current file to an archive.
    * @param `exportType` indicates the type of file to generate.
    * - `'penpot'` will create a *.penpot file with a binary representation of the file
    * - `'zip'` will create a *.zip with the file exported in several SVG files with some JSON metadata
+   * @param `libraryExportType` indicates what to do with the linked libraries of the file when
+   * exporting it. Defaults to `all` if not sent.
+   * - `'all'` will include the libraries as external files that will be exported in a single bundle
+   * - `'merge'` will add all the assets into the main file and only one file will be imported
+   * - `'detach'` will unlink all the external assets and no libraries will be imported
+   * @param `progressCallback` for `zip` export can be pass this callback so a progress report is sent.
    */
-  export(exportType: 'penpot' | 'zip'): Promise<Uint8Array>;
+  export(
+    exportType: 'penpot' | 'zip',
+    libraryExportType?: 'all' | 'merge' | 'detach'
+  ): Promise<Uint8Array>;
 }
 
 /**
@@ -2598,6 +2607,12 @@ export interface PenpotContext {
    * ```
    */
   readonly viewport: PenpotViewport;
+
+  /**
+   * Context encapsulating the history operations
+   */
+  readonly history: PenpotHistoryContext;
+
   /**
    * The library context in the Penpot context, including both local and connected libraries. Requires `library:read` permission.
    * @example
@@ -3175,6 +3190,24 @@ export interface PenpotPush {
  * Type of all the animations that can be added to an interaction.
  */
 export type PenpotAnimation = PenpotDissolve | PenpotSlide | PenpotPush;
+
+/**
+ * This object allows to access to some history functions
+ */
+export interface PenpotHistoryContext {
+  /**
+   * Starts an undo block. All operations done inside this block will be undone together until
+   * a call to `undoBlockFinish` is called.
+   * @returns the block identifier
+   */
+  undoBlockBegin(): Symbol;
+
+  /**
+   * Ends the undo block started with `undoBlockBegin`
+   * @parm `blockId` is the id returned by `undoBlockBegin`
+   */
+  undoBlockFinish(blockId: Symbol): void;
+}
 
 /**
  * Utility methods for geometric calculations in Penpot.
