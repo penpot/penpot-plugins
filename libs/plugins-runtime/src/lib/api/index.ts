@@ -22,6 +22,7 @@ import type {
   PenpotSvgRaw,
   PenpotColor,
   PenpotColorShapeInfo,
+  PenpotHistoryContext,
 } from '@penpot/plugin-types';
 
 import { Manifest, Permissions } from '../models/manifest.model.js';
@@ -229,6 +230,10 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
 
     get viewport(): PenpotViewport {
       return context.viewport;
+    },
+
+    get history(): PenpotHistoryContext {
+      return context.history;
     },
 
     get library(): PenpotLibraryContext {
