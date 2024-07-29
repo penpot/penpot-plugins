@@ -775,7 +775,11 @@
       <template lang="html">
         <div data-theme="dark">
           <button type="button" data-appearance="primary">Primary Dark</button>
-          <button type="button" data-appearance="primary">
+          <button
+            type="button"
+            data-appearance="primary"
+            data-variant="destructive"
+          >
             Primary Dark destructive
           </button>
         </div>
