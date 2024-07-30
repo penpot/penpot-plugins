@@ -1,7 +1,6 @@
 {
   "name": "Penpot plugins API",
-  "out": "docs/api",
-  "json": "docs/api/api-doc.json",
+  "out": "dist/apps/api-doc",
   "entryPoints": ["libs/plugin-types/index.d.ts"],
   "sort": "source-order",
   "theme": "default"
