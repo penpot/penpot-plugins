@@ -23,7 +23,7 @@
     "test": "nx run-many -t test --parallel -p plugins-runtime lorem-ipsum-plugin",
     "registry": "nx local-registry",
     "prepare": "husky",
-    "create:api-docs": "npx typedoc --tsconfig libs/plugins-runtime/tsconfig.lib.json",
+    "create:api-docs": "npx typedoc --tsconfig libs/plugins-runtime/tsconfig.lib.json --customCss ./tools/typedoc.css",
     "release": "npx tsx ./tools/scripts/publish.ts"
   },
   "private": true,
