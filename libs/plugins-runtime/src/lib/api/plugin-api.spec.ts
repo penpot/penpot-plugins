@@ -32,19 +32,23 @@ describe('Plugin api', () => {
     removeListener: vi.fn(),
   };
 
-  const api = createApi(mockContext as any, {
-    pluginId: 'test',
-    name: 'test',
-    code: '',
-    host: 'http://fake.com',
-    permissions: [
-      'content:read',
-      'content:write',
-      'library:read',
-      'library:write',
-      'user:read',
-    ],
-  });
+  const api = createApi(
+    mockContext as any,
+    {
+      pluginId: 'test',
+      name: 'test',
+      code: '',
+      host: 'http://fake.com',
+      permissions: [
+        'content:read',
+        'content:write',
+        'library:read',
+        'library:write',
+        'user:read',
+      ],
+    },
+    () => {}
+  );
 
   const addEventListenerMock = vi.mocked(window.addEventListener);
   const messageEvent = addEventListenerMock.mock.calls[0][1] as EventListener;
@@ -147,7 +151,8 @@ describe('Plugin api', () => {
         name: 'test',
         code: '',
         permissions: [],
-      } as any
+      } as any,
+      () => {}
     );
 
     it('on', () => {

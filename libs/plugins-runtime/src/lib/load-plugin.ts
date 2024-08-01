@@ -4,8 +4,8 @@ import { createApi } from './api/index.js';
 import { loadManifest, loadManifestCode } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
 import * as api from './api/index.js';
+import { ses } from './ses.js';
 
-let isLockedDown = false;
 let createdApis: ReturnType<typeof createApi>[] = [];
 const multiPlugin = false;
 
@@ -17,16 +17,16 @@ export function setContextBuilder(builder: ContextBuilder) {
   contextBuilder = builder;
 }
 
-export const ɵloadPlugin = async function (manifest: Manifest) {
+const closeAllPlugins = () => {
+  createdApis.forEach((pluginApi) => {
+    pluginApi.closePlugin();
+  });
+
+  createdApis = [];
+};
+
+export const loadPlugin = async function (manifest: Manifest) {
   try {
-    const closeAllPlugins = () => {
-      createdApis.forEach((pluginApi) => {
-        pluginApi.closePlugin();
-      });
-
-      createdApis = [];
-    };
-
     const context = contextBuilder && contextBuilder(manifest.pluginId);
 
     if (!context) {
@@ -37,21 +37,24 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
 
     const code = await loadManifestCode(manifest);
 
-    if (!isLockedDown) {
-      isLockedDown = true;
-      hardenIntrinsics();
-    }
+    ses.hardenIntrinsics();
 
     if (createdApis && !multiPlugin) {
       closeAllPlugins();
     }
 
-    const pluginApi = createApi(context, manifest);
+    const pluginApi = createApi(context, manifest, () => {
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
+    });
+
     createdApis.push(pluginApi);
 
-    const c = new Compartment({
-      penpot: harden(pluginApi),
-      fetch: harden((...args: Parameters<typeof fetch>) => {
+    const timeouts = new Set<ReturnType<typeof setTimeout>>();
+
+    const publicPluginApi = {
+      penpot: ses.harden(pluginApi),
+      fetch: ses.harden((...args: Parameters<typeof fetch>) => {
         const requestArgs: RequestInit = {
           ...args[1],
           credentials: 'omit',
@@ -59,19 +62,27 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
 
         return fetch(args[0], requestArgs);
       }),
-      console: harden(window.console),
-      Math: harden(Math),
-      setTimeout: harden(
+      console: ses.harden(window.console),
+      Math: ses.harden(Math),
+      setTimeout: ses.harden(
         (...[handler, timeout]: Parameters<typeof setTimeout>) => {
-          return setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             handler();
           }, timeout);
+
+          timeouts.add(timeoutId);
+
+          return timeoutId;
         }
-      ),
-      clearTimeout: harden((id: Parameters<typeof clearTimeout>[0]) => {
+      ) as typeof setTimeout,
+      clearTimeout: ses.harden((id: ReturnType<typeof setTimeout>) => {
         clearTimeout(id);
+
+        timeouts.delete(id);
       }),
-    });
+    };
+
+    const c = ses.createCompartment(publicPluginApi);
 
     c.evaluate(code);
 
@@ -80,9 +91,23 @@ export const ɵloadPlugin = async function (manifest: Manifest) {
 
       context?.removeListener(listenerId);
     });
+
+    return {
+      compartment: c,
+      publicPluginApi,
+      timeouts,
+      context,
+    };
   } catch (error) {
+    closeAllPlugins();
     console.error(error);
   }
+
+  return;
+};
+
+export const ɵloadPlugin = async function (manifest: Manifest) {
+  loadPlugin(manifest);
 };
 
 export const ɵloadPluginByUrl = async function (manifestUrl: string) {

@@ -67,7 +67,11 @@ export function themeChange(theme: PenpotTheme) {
   });
 }
 
-export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
+export function createApi(
+  context: PenpotContext,
+  manifest: Manifest,
+  closed: () => void
+): Penpot {
   let modal: PluginModalElement | null = null;
 
   const closePlugin = () => {
@@ -86,6 +90,8 @@ export function createApi(context: PenpotContext, manifest: Manifest): Penpot {
     }
     uiMessagesCallbacks = [];
     modal = null;
+
+    closed();
   };
 
   const checkPermission = (permission: Permissions) => {
