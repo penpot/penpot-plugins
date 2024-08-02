@@ -1,10 +1,9 @@
-import { describe, it, vi, expect, beforeEach, afterEach, Mock } from 'vitest';
+import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
 import { loadPlugin, setContextBuilder } from './load-plugin.js';
 import { loadManifestCode } from './parse-manifest.js';
 import { createApi, themeChange } from './api/index.js';
 import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
-import { ses } from './ses.js';
 
 vi.mock('./parse-manifest.js', () => ({
   loadManifestCode: vi.fn(),
@@ -15,17 +14,25 @@ vi.mock('./api/index.js', () => ({
   themeChange: vi.fn(),
 }));
 
+const evaluateMock = vi.fn();
+
 vi.mock('./ses.js', () => ({
   ses: {
     hardenIntrinsics: vi.fn().mockReturnValue(null),
-    createCompartment: vi.fn().mockReturnValue({
-      evaluate: vi.fn(),
+    createCompartment: vi.fn().mockImplementation((publicApi) => {
+      return {
+        evaluate: evaluateMock,
+        globalThis: publicApi,
+      };
     }),
     harden: vi.fn().mockImplementation((obj) => obj),
   },
 }));
 
 describe('loadPlugin', () => {
+  vi.spyOn(globalThis, 'clearTimeout');
+  vi.spyOn(globalThis.console, 'error').mockImplementation(() => {});
+
   let mockContext: PenpotContext;
   let manifest: Manifest = {
     pluginId: 'test-plugin',
@@ -54,8 +61,8 @@ describe('loadPlugin', () => {
       closePlugin: vi.fn(),
     } as unknown as ReturnType<typeof createApi>;
 
-    (createApi as Mock).mockReturnValue(mockApi);
-    (loadManifestCode as Mock).mockResolvedValue(
+    vi.mocked(createApi).mockReturnValue(mockApi);
+    vi.mocked(loadManifestCode).mockResolvedValue(
       'console.log("Plugin loaded");'
     );
     setContextBuilder(() => mockContext);
@@ -96,20 +103,6 @@ describe('loadPlugin', () => {
     expect(mockApi.closePlugin).toHaveBeenCalledTimes(1);
   });
 
-  it('should clear timeouts on plugin close', async () => {
-    await loadPlugin(manifest);
-
-    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
-    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
-
-    const timeoutCallback = vi.fn();
-    const timeoutId = setTimeout(timeoutCallback, 1000);
-    clearTimeout(timeoutId);
-
-    expect(clearTimeoutSpy).toHaveBeenCalledWith(timeoutId);
-    expect(setTimeoutSpy).toHaveBeenCalled();
-  });
-
   it('should remove finish event listener on plugin finish', async () => {
     await loadPlugin(manifest);
 
@@ -123,16 +116,6 @@ describe('loadPlugin', () => {
   });
 
   it('shoud clean setTimeout when plugin is closed', async () => {
-    vi.spyOn(globalThis, 'clearTimeout');
-
-    let closedCallback = () => {};
-
-    (createApi as Mock).mockImplementation((context, manifest, closed) => {
-      closedCallback = closed;
-
-      return mockApi;
-    });
-
     const plugin = await loadPlugin(manifest);
 
     if (!plugin) {
@@ -144,6 +127,7 @@ describe('loadPlugin', () => {
 
     expect(plugin.timeouts.size).toBe(2);
 
+    const closedCallback = vi.mocked(createApi).mock.calls[0][2];
     closedCallback();
 
     expect(plugin.timeouts.size).toBe(0);
@@ -151,16 +135,32 @@ describe('loadPlugin', () => {
   });
 
   it('should close plugin on evaluation error', async () => {
-    ses.createCompartment = vi.fn().mockImplementation(() => {
-      return {
-        evaluate: vi.fn().mockImplementation(() => {
-          throw new Error('Error in plugin');
-        }),
-      };
+    evaluateMock.mockImplementationOnce(() => {
+      throw new Error('Evaluation error');
     });
 
     await loadPlugin(manifest);
 
     expect(mockApi.closePlugin).toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  it('should prevent using the api after closing the plugin', async () => {
+    const plugin = await loadPlugin(manifest);
+
+    if (!plugin) {
+      throw new Error('Plugin not loaded');
+    }
+
+    expect(
+      Object.keys(plugin.compartment.globalThis).filter((it) => !!it).length
+    ).toBeGreaterThan(0);
+
+    const closedCallback = vi.mocked(createApi).mock.calls[0][2];
+    closedCallback();
+
+    expect(
+      Object.keys(plugin.compartment.globalThis).filter((it) => !!it).length
+    ).toBe(0);
   });
 });
