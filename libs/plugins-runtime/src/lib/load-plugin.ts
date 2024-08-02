@@ -44,8 +44,15 @@ export const loadPlugin = async function (manifest: Manifest) {
     }
 
     const pluginApi = createApi(context, manifest, () => {
+      createdApis = createdApis.filter((api) => api !== pluginApi);
+
       timeouts.forEach(clearTimeout);
       timeouts.clear();
+
+      // Remove all public API from globalThis
+      Object.keys(publicPluginApi).forEach((key) => {
+        delete c.globalThis[key];
+      });
     });
 
     createdApis.push(pluginApi);
@@ -53,7 +60,7 @@ export const loadPlugin = async function (manifest: Manifest) {
     const timeouts = new Set<ReturnType<typeof setTimeout>>();
 
     const publicPluginApi = {
-      penpot: ses.harden(pluginApi),
+      penpot: ses.harden(pluginApi) as typeof pluginApi,
       fetch: ses.harden((...args: Parameters<typeof fetch>) => {
         const requestArgs: RequestInit = {
           ...args[1],
