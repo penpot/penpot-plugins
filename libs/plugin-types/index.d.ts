@@ -131,6 +131,12 @@ export interface PenpotPluginData {
    *
    * @param key The key for which to retrieve the data.
    * Returns the data associated with the key as a string.
+   *
+   * @example
+   * ```js
+   * const data = shape.getPluginData('exampleKey');
+   * console.log(data);
+   * ```
    */
   getPluginData(key: string): string;
 
@@ -139,6 +145,11 @@ export interface PenpotPluginData {
    *
    * @param key The key for which to set the data.
    * @param value The data to set for the key.
+   *
+   * @example
+   * ```js
+   * shape.setPluginData('exampleKey', 'exampleValue');
+   * ```
    */
   setPluginData(key: string, value: string): void;
 
@@ -146,6 +157,12 @@ export interface PenpotPluginData {
    * Retrieves all the keys for the plugin-specific data.
    *
    * Returns an array of strings representing all the keys.
+   *
+   * @example
+   * ```js
+   * const keys = shape.getPluginDataKeys();
+   * console.log(keys);
+   * ```
    */
   getPluginDataKeys(): string[];
 
@@ -155,6 +172,12 @@ export interface PenpotPluginData {
    * @param namespace The namespace for the shared data.
    * @param key The key for which to retrieve the data.
    * Returns the shared data associated with the key as a string.
+   *
+   * @example
+   * ```js
+   * const sharedData = shape.getSharedPluginData('exampleNamespace', 'exampleKey');
+   * console.log(sharedData);
+   * ```
    */
   getSharedPluginData(namespace: string, key: string): string;
 
@@ -164,6 +187,11 @@ export interface PenpotPluginData {
    * @param namespace The namespace for the shared data.
    * @param key The key for which to set the data.
    * @param value The data to set for the key.
+   *
+   * @example
+   * ```js
+   * shape.setSharedPluginData('exampleNamespace', 'exampleKey', 'exampleValue');
+   * ```
    */
   setSharedPluginData(namespace: string, key: string, value: string): void;
 
@@ -172,6 +200,12 @@ export interface PenpotPluginData {
    *
    * @param namespace The namespace for the shared data.
    * Returns an array of strings representing all the keys in the namespace.
+   *
+   * @example
+   * ```js
+   * const sharedKeys = shape.getSharedPluginDataKeys('exampleNamespace');
+   * console.log(sharedKeys);
+   * ```
    */
   getSharedPluginDataKeys(namespace: string): string[];
 }
@@ -212,6 +246,11 @@ export interface PenpotFile extends PenpotPluginData {
    * - `'merge'` will add all the assets into the main file and only one file will be imported
    * - `'detach'` will unlink all the external assets and no libraries will be imported
    * @param `progressCallback` for `zip` export can be pass this callback so a progress report is sent.
+   *
+   * @example
+   * ```js
+   * const exportedData = await file.export('penpot', 'all');
+   * ```
    */
   export(
     exportType: 'penpot' | 'zip',
@@ -241,6 +280,11 @@ export interface PenpotPage extends PenpotPluginData {
   /**
    * Retrieves a shape by its unique identifier.
    * @param id The unique identifier of the shape.
+   *
+   * @example
+   * ```js
+   * const shape = page.getShapeById('shapeId');
+   * ```
    */
   getShapeById(id: string): PenpotShape | null;
 
@@ -250,6 +294,11 @@ export interface PenpotPage extends PenpotPluginData {
    * @param `criteria.name` search for the name in a case-insensitive manner
    * @param `criteria.nameLike` search for name but for a partial match with the name
    * @param `criteria.type` search for shapes of the specified type
+   *
+   * @example
+   * ```js
+   * const shapes = page.findShapes({ name: 'exampleName' });
+   * ```
    */
   findShapes(criteria?: {
     name?: string;
@@ -275,6 +324,11 @@ export interface PenpotPage extends PenpotPluginData {
    * Creates a new flow in the page.
    * @param `name` the name identifying the flow
    * @param `frame` the starting frame for the current flow
+   *
+   * @example
+   * ```js
+   * const flow = page.createFlow('exampleFlow', frame);
+   * ```
    */
   createFlow(name: string, frame: PenpotFrame): PenpotFlow;
 
@@ -294,6 +348,11 @@ export type PenpotGradient = {
    * Specifies the type of gradient.
    * - 'linear': A gradient that transitions colors along a straight line.
    * - 'radial': A gradient that transitions colors radiating outward from a central point.
+   *
+   * @example
+   * ```js
+   * const gradient: PenpotGradient = { type: 'linear', startX: 0, startY: 0, endX: 100, endY: 100, width: 100, stops: [{ color: '#FF5733', offset: 0 }] };
+   * ```
    */
   type: 'linear' | 'radial';
   /**
@@ -897,6 +956,11 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * Adds a new row to the grid.
    * @param type The type of the row to add.
    * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.addRow('flex');
+   * ```
    */
   addRow(type: PenpotTrackType, value?: number): void;
   /**
@@ -904,12 +968,22 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param index The index at which to add the row.
    * @param type The type of the row to add.
    * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.addRowAtIndex(0, 'fixed', 100);
+   * ```
    */
   addRowAtIndex(index: number, type: PenpotTrackType, value?: number): void;
   /**
    * Adds a new column to the grid.
    * @param type The type of the column to add.
    * @param value The value associated with the column type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.addColumn('percent', 50);
+   * ```
    */
   addColumn(type: PenpotTrackType, value?: number): void;
   /**
@@ -917,16 +991,31 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param index The index at which to add the column.
    * @param type The type of the column to add.
    * @param value The value associated with the column type.
+   *
+   * @example
+   * ```js
+   * gridLayout.addColumnAtIndex(1, 'auto');
+   * ```
    */
   addColumnAtIndex(index: number, type: PenpotTrackType, value: number): void;
   /**
    * Removes a row from the grid at the specified index.
    * @param index The index of the row to remove.
+   *
+   * @example
+   * ```js
+   * gridLayout.removeRow(2);
+   * ```
    */
   removeRow(index: number): void;
   /**
    * Removes a column from the grid at the specified index.
    * @param index The index of the column to remove.
+   *
+   * @example
+   * ```js
+   * gridLayout.removeColumn(3);
+   * ```
    */
   removeColumn(index: number): void;
   /**
@@ -934,6 +1023,11 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param index The index of the column to set.
    * @param type The type of the column.
    * @param value The value associated with the column type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.setColumn(0, 'fixed', 200);
+   * ```
    */
   setColumn(index: number, type: PenpotTrackType, value?: number): void;
   /**
@@ -941,6 +1035,11 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param index The index of the row to set.
    * @param type The type of the row.
    * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.setRow(1, 'flex');
+   * ```
    */
   setRow(index: number, type: PenpotTrackType, value?: number): void;
 
@@ -949,6 +1048,11 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    * @param child The child element to append.
    * @param row The row index where the child will be placed.
    * @param column The column index where the child will be placed.
+   *
+   * @example
+   * ```js
+   * gridLayout.appendChild(childShape, 0, 1);
+   * ```
    */
   appendChild(child: PenpotShape, row: number, column: number): void;
 }
@@ -976,6 +1080,11 @@ export interface PenpotFlexLayout extends PenpotCommonLayout {
   /**
    * Appends a child element to the flex layout.
    * @param child The child element to be appended, of type `PenpotShape`.
+   *
+   * @example
+   * ```js
+   * flexLayout.appendChild(childShape);
+   * ```
    */
   appendChild(child: PenpotShape): void;
 }
@@ -998,6 +1107,11 @@ interface PenpotPathCommand {
    * - 'Q' or 'quadratic-bezier-curve-to': Draw a quadratic Bezier curve to a new point.
    * - 'T' or 'smooth-quadratic-bezier-curve-to': Draw a smooth quadratic Bezier curve to a new point.
    * - 'A' or 'elliptical-arc': Draw an elliptical arc to a new point.
+   *
+   * @example
+   * ```js
+   * const pathCommand: PenpotPathCommand = { command: 'M', params: { x: 0, y: 0 } };
+   * ```
    */
   command:
     | 'M'
@@ -1486,6 +1600,11 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * Resizes the shape to the specified width and height.
    * @param width The new width of the shape.
    * @param height The new height of the shape.
+   *
+   * @example
+   * ```js
+   * shape.resize(200, 100);
+   * ```
    */
   resize(width: number, height: number): void;
 
@@ -1493,11 +1612,21 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * Rotates the shape in relation with the given center.
    * @param angle Angle in degrees to rotate.
    * @param center Center of the transform rotation. If not send will use the geometri center of the shapes.
+   *
+   * @example
+   * ```js
+   * shape.rotate(45);
+   * ```
    */
   rotate(angle: number, center?: { x: number; y: number } | null): void;
 
   /**
    * Generates an export from the current shape.
+   *
+   * @example
+   * ```js
+   * shape.export({ type: 'png', scale: 2 });
+   * ```
    */
   export(config: PenpotExport): Promise<Uint8Array>;
 
@@ -1511,6 +1640,11 @@ export interface PenpotShapeBase extends PenpotPluginData {
    * @param `trigger` defines the conditions under which the action will be triggered
    * @param `action` defines what will be executed when the trigger happens
    * @param `delay` for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
+   *
+   * @example
+   * ```js
+   * shape.addInteraction('click', { type: 'navigate-to', destination: anotherFrame });
+   * ```
    */
   addInteraction(
     trigger: PenpotTrigger,
@@ -1521,6 +1655,11 @@ export interface PenpotShapeBase extends PenpotPluginData {
   /**
    * Removes the interaction from the shape.
    * @param `interaction` is the interaction to remove from the shape
+   *
+   * @example
+   * ```js
+   * shape.removeInteraction(interaction);
+   * ```
    */
   removeInteraction(interaction: PenpotInteraction): void;
 
@@ -1582,12 +1721,22 @@ export interface PenpotFrame extends PenpotShapeBase {
   /**
    * Appends a child shape to the frame.
    * @param child The child shape to append.
+   *
+   * @example
+   * ```js
+   * frame.appendChild(childShape);
+   * ```
    */
   appendChild(child: PenpotShape): void;
   /**
    * Inserts a child shape at the specified index within the frame.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
+   *
+   * @example
+   * ```js
+   * frame.insertChild(0, childShape);
+   * ```
    */
   insertChild(index: number, child: PenpotShape): void;
 
@@ -1622,12 +1771,22 @@ export interface PenpotGroup extends PenpotShapeBase {
   /**
    * Appends a child shape to the group.
    * @param child The child shape to append.
+   *
+   * @example
+   * ```js
+   * group.appendChild(childShape);
+   * ```
    */
   appendChild(child: PenpotShape): void;
   /**
    * Inserts a child shape at the specified index within the group.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
+   *
+   * @example
+   * ```js
+   * group.insertChild(0, childShape);
+   * ```
    */
   insertChild(index: number, child: PenpotShape): void;
 
@@ -1690,12 +1849,22 @@ export interface PenpotBool extends PenpotShapeBase {
   /**
    * Appends a child shape to the boolean shape.
    * @param child The child shape to append.
+   *
+   * @example
+   * ```js
+   * boolShape.appendChild(childShape);
+   * ```
    */
   appendChild(child: PenpotShape): void;
   /**
    * Inserts a child shape at the specified index within the boolean shape.
    * @param index The index at which to insert the child shape.
    * @param child The child shape to insert.
+   *
+   * @example
+   * ```js
+   * boolShape.insertChild(0, childShape);
+   * ```
    */
   insertChild(index: number, child: PenpotShape): void;
 }
@@ -1836,6 +2005,11 @@ export interface PenpotTextRange {
    * Applies a typography style to the text range.
    * This method sets various typography properties for the text range according to the given typography style.
    * @param typography - The typography style to apply.
+   *
+   * @example
+   * ```js
+   * textRange.applyTypography(typography);
+   * ```
    */
   applyTypography(typography: PenpotLibraryTypography): void;
 }
@@ -1932,6 +2106,12 @@ export interface PenpotText extends PenpotShapeBase {
    * Returns a PenpotTextRange object representing the specified text range.
    * @param start - The start index of the text range.
    * @param end - The end index of the text range.
+   *
+   * @example
+   * ```js
+   * const textRange = textShape.getRange(0, 10);
+   * console.log(textRange.characters);
+   * ```
    */
   getRange(start: number, end: number): PenpotTextRange;
 
@@ -1940,6 +2120,11 @@ export interface PenpotText extends PenpotShapeBase {
    * @param typography - The typography style to apply.
    * @remarks
    * This method sets various typography properties for the text shape according to the given typography style.
+   *
+   * @example
+   * ```js
+   * textShape.applyTypography(typography);
+   * ```
    */
   applyTypography(typography: PenpotLibraryTypography): void;
 }
@@ -1986,6 +2171,12 @@ export type PenpotPoint = { x: number; y: number };
 /**
  * PenpotBounds represents the boundaries of a rectangular area,
  * defined by the coordinates of the top-left corner and the dimensions of the rectangle.
+ *
+ * @example
+ * ```js
+ * const bounds = { x: 50, y: 50, width: 200, height: 100 };
+ * console.log(bounds);
+ * ```
  */
 export type PenpotBounds = {
   /**
@@ -2019,6 +2210,14 @@ export interface PenpotViewport {
 /**
  * PenpotShape represents a union of various shape types used in the Penpot project.
  * This type allows for different shapes to be handled under a single type umbrella.
+ *
+ * @example
+ * ```js
+ * let shape: PenpotShape;
+ * if (penpot.utils.types.isRectangle(shape)) {
+ *   console.log(shape.type);
+ * }
+ * ```
  */
 export type PenpotShape =
   | PenpotFrame
@@ -2034,6 +2233,13 @@ export type PenpotShape =
 /**
  * Represents a mapping of events to their corresponding types in Penpot.
  * This interface provides information about various events that can be triggered in the application.
+ *
+ * @example
+ * ```js
+ * penpot.on('pagechange', (event) => {
+ *   console.log(event);
+ * });
+ * ```
  */
 export interface EventsMap {
   /**
@@ -2129,6 +2335,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
   /**
    * Converts the library color into a fill object.
    * Returns a `PenpotFill` object representing the color as a fill.
+   *
    * @example
    * ```js
    * const fill = libraryColor.asFill();
@@ -2138,6 +2345,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
   /**
    * Converts the library color into a stroke object.
    * Returns a `PenpotStroke` object representing the color as a stroke.
+   *
    * @example
    * ```js
    * const stroke = libraryColor.asStroke();
@@ -2199,6 +2407,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   /**
    * Applies the typography styles to a text shape.
    * @param shape The text shape to apply the typography styles to.
+   *
    * @example
    * ```js
    * typographyElement.applyToText(textShape);
@@ -2209,6 +2418,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
   /**
    * Applies the typography styles to a range of text within a text shape.
    * @param shape The text shape containing the text range to apply the typography styles to.
+   *
    * @example
    * ```js
    * typographyElement.applyToTextRange(textShape);
@@ -2220,6 +2430,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
    * Sets the font and optionally its variant for the typography element.
    * @param font - The font to set.
    * @param variant - The font variant to set (optional).
+   *
    * @example
    * ```js
    * typographyElement.setFont(newFont, newVariant);
@@ -2236,6 +2447,7 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
   /**
    * Creates an instance of the component.
    * Returns a `PenpotShape` object representing the instance of the component.
+   *
    * @example
    * ```js
    * const componentInstance = libraryComponent.instance();
@@ -2312,6 +2524,7 @@ export interface PenpotLibrary extends PenpotPluginData {
   /**
    * Creates a new color element in the library.
    * Returns a new `PenpotLibraryColor` object representing the created color element.
+   *
    * @example
    * ```js
    * const newColor = library.createColor();
@@ -2322,6 +2535,7 @@ export interface PenpotLibrary extends PenpotPluginData {
   /**
    * Creates a new typography element in the library.
    * Returns a new `PenpotLibraryTypography` object representing the created typography element.
+   *
    * @example
    * ```js
    * const newTypography = library.createTypography();
@@ -2333,6 +2547,7 @@ export interface PenpotLibrary extends PenpotPluginData {
    * Creates a new component element in the library using the provided shapes.
    * @param shapes An array of `PenpotShape` objects representing the shapes to be included in the component.
    * Returns a new `PenpotLibraryComponent` object representing the created component element.
+   *
    * @example
    * ```js
    * const newComponent = library.createComponent([shape1, shape2]);
@@ -2348,6 +2563,7 @@ export interface PenpotLibrary extends PenpotPluginData {
 export type PenpotLibraryContext = {
   /**
    * The local library in the Penpot context.
+   *
    * @example
    * ```js
    * const localLibrary = libraryContext.local;
@@ -2357,6 +2573,7 @@ export type PenpotLibraryContext = {
 
   /**
    * An array of connected libraries in the Penpot context.
+   *
    * @example
    * ```js
    * const connectedLibraries = libraryContext.connected;
@@ -2367,6 +2584,7 @@ export type PenpotLibraryContext = {
   /**
    * Retrieves a summary of available libraries that can be connected to.
    * Returns a promise that resolves to an array of `PenpotLibrarySummary` objects representing available libraries.
+   *
    * @example
    * ```js
    * const availableLibraries = await libraryContext.availableLibraries();
@@ -2378,6 +2596,7 @@ export type PenpotLibraryContext = {
    * Connects to a specific library identified by its ID.
    * Returns a promise that resolves to the `PenpotLibrary` object representing the connected library.
    * @param libraryId - The ID of the library to connect to.
+   *
    * @example
    * ```js
    * const connectedLibrary = await libraryContext.connectLibrary('library-id');
@@ -2456,6 +2675,11 @@ export interface PenpotFont {
    * Applies the font styles to a text shape.
    * @param text - The text shape to apply the font styles to.
    * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
+   *
+   * @example
+   * ```js
+   * font.applyToText(textShape, fontVariant);
+   * ```
    */
   applyToText(text: PenpotText, variant?: PenpotFontVariant): void;
 
@@ -2463,6 +2687,11 @@ export interface PenpotFont {
    * Applies the font styles to a text range within a text shape.
    * @param range - The text range to apply the font styles to.
    * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
+   *
+   * @example
+   * ```js
+   * font.applyToRange(textRange, fontVariant);
+   * ```
    */
   applyToRange(range: PenpotTextRange, variant?: PenpotFontVariant): void;
 }
@@ -2481,6 +2710,14 @@ export interface PenpotFontsContext {
    * Finds a font by its unique identifier.
    * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param id - The ID of the font to find.
+   *
+   * @example
+   * ```js
+   * const font = fontsContext.findById('font-id');
+   * if (font) {
+   *   console.log(font.name);
+   * }
+   * ```
    */
   findById(id: string): PenpotFont | null;
 
@@ -2488,6 +2725,14 @@ export interface PenpotFontsContext {
    * Finds a font by its name.
    * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param name - The name of the font to find.
+   *
+   * @example
+   * ```js
+   * const font = fontsContext.findByName('font-name');
+   * if (font) {
+   *   console.log(font.name);
+   * }
+   * ```
    */
   findByName(name: string): PenpotFont | null;
 
@@ -2495,6 +2740,12 @@ export interface PenpotFontsContext {
    * Finds all fonts matching a specific ID.
    * Returns an array of `PenpotFont` objects matching the provided ID.
    * @param id - The ID to match against.
+   *
+   * @example
+   * ```js
+   * const fonts = fontsContext.findAllById('font-id');
+   * console.log(fonts);
+   * ```
    */
   findAllById(id: string): PenpotFont[];
 
@@ -2502,6 +2753,12 @@ export interface PenpotFontsContext {
    * Finds all fonts matching a specific name.
    * Returns an array of `PenpotFont` objects matching the provided name.
    * @param name - The name to match against.
+   *
+   * @example
+   * ```js
+   * const fonts = fontsContext.findAllByName('font-name');
+   * console.log(fonts);
+   * ```
    */
   findAllByName(name: string): PenpotFont[];
 }
@@ -2512,45 +2769,55 @@ export interface PenpotFontsContext {
 export interface PenpotUser {
   /**
    * The unique identifier of the user.
+   *
    * @example
    * ```js
    * const userId = user.id;
+   * console.log(userId);
    * ```
    */
   readonly id: string;
 
   /**
    * The name of the user.
+   *
    * @example
    * ```js
    * const userName = user.name;
+   * console.log(userName);
    * ```
    */
   readonly name?: string;
 
   /**
    * The URL of the user's avatar image.
+   *
    * @example
    * ```js
    * const avatarUrl = user.avatarUrl;
+   * console.log(avatarUrl);
    * ```
    */
   readonly avatarUrl?: string;
 
   /**
    * The color associated with the user.
+   *
    * @example
    * ```js
    * const userColor = user.color;
+   * console.log(userColor);
    * ```
    */
   readonly color: string;
 
   /**
    * The session ID of the user.
+   *
    * @example
    * ```js
    * const sessionId = user.sessionId;
+   * console.log(sessionId);
    * ```
    */
   readonly sessionId?: string;
@@ -2563,17 +2830,21 @@ export interface PenpotUser {
 export interface PenpotActiveUser extends PenpotUser {
   /**
    * The position of the active user.
+   *
    * @example
    * ```js
    * const userPosition = activeUser.position;
+   * console.log(userPosition);
    * ```
    */
   position?: { x: number; y: number };
   /**
    * The zoom level of the active user.
+   *
    * @example
    * ```js
    * const userZoom = activeUser.zoom;
+   * console.log(userZoom);
    * ```
    */
   readonly zoom?: number;
@@ -2585,68 +2856,94 @@ export interface PenpotActiveUser extends PenpotUser {
 export interface PenpotContext {
   /**
    * The root shape in the current Penpot context. Requires `content:read` permission.
+   *
    * @example
    * ```js
    * const rootShape = context.root;
+   * console.log(rootShape);
    * ```
    */
   readonly root: PenpotShape;
   /**
    * The current page in the Penpot context. Requires `content:read` permission.
+   *
    * @example
    * ```js
    * const currentPage = context.currentPage;
+   * console.log(currentPage);
    * ```
    */
   readonly currentPage: PenpotPage;
   /**
    * The viewport settings in the Penpot context.
+   *
    * @example
    * ```js
    * const viewportSettings = context.viewport;
+   * console.log(viewportSettings);
    * ```
    */
   readonly viewport: PenpotViewport;
 
   /**
    * Context encapsulating the history operations
+   *
+   * @example
+   * ```js
+   * const historyContext = context.history;
+   * console.log(historyContext);
+   * ```
    */
   readonly history: PenpotHistoryContext;
 
   /**
    * The library context in the Penpot context, including both local and connected libraries. Requires `library:read` permission.
+   *
    * @example
    * ```js
    * const libraryContext = context.library;
+   * console.log(libraryContext);
    * ```
    */
   readonly library: PenpotLibraryContext;
   /**
    * The fonts context in the Penpot context, providing methods to manage fonts. Requires `content:read` permission.
+   *
+   * @example
+   * ```js
+   * const fontsContext = context.fonts;
+   * console.log(fontsContext);
+   * ```
    */
   readonly fonts: PenpotFontsContext;
   /**
    * The current user in the Penpot context. Requires `user:read` permission.
+   *
    * @example
    * ```js
    * const currentUser = context.currentUser;
+   * console.log(currentUser);
    * ```
    */
   readonly currentUser: PenpotUser;
   /**
    * An array of active users in the Penpot context. Requires `user:read` permission.
+   *
    * @example
    * ```js
    * const activeUsers = context.activeUsers;
+   * console.log(activeUsers);
    * ```
    */
-  readonly activeUsers: PenpotActiveUser;
+  readonly activeUsers: PenpotActiveUser[];
 
   /**
    * The currently selected shapes in Penpot. Requires `content:read` permission.
+   *
    * @example
    * ```js
    * const selectedShapes = context.selection;
+   * console.log(selectedShapes);
    * ```
    */
   selection: PenpotShape[];
@@ -2654,36 +2951,44 @@ export interface PenpotContext {
   /**
    * Retrieves file data from the current Penpot context. Requires `content:read` permission.
    * Returns the file data or `null` if no file is available.
+   *
    * @example
    * ```js
    * const fileData = context.getFile();
+   * console.log(fileData);
    * ```
    */
   getFile(): PenpotFile | null;
   /**
    * Retrieves page data from the current Penpot context. Requires `content:read` permission.
    * Returns the page data or `null` if no page is available.
+   *
    * @example
    * ```js
    * const pageData = context.getPage();
+   * console.log(pageData);
    * ```
    */
   getPage(): PenpotPage | null;
   /**
    * Retrieves the IDs of the currently selected elements in Penpot. Requires `content:read` permission.
    * Returns an array of IDs representing the selected elements.
+   *
    * @example
    * ```js
    * const selectedIds = context.getSelected();
+   * console.log(selectedIds);
    * ```
    */
   getSelected(): string[];
   /**
    * Retrieves the shapes of the currently selected elements in Penpot. Requires `content:read` permission.
    * Returns an array of shapes representing the selected elements.
+   *
    * @example
    * ```js
    * const selectedShapes = context.getSelectedShapes();
+   * console.log(selectedShapes);
    * ```
    */
   getSelectedShapes(): PenpotShape[];
@@ -2691,11 +2996,22 @@ export interface PenpotContext {
   /**
    * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
    * Returns an array of colors and their shape information.
+   *
+   * @example
+   * ```js
+   * const colors = context.shapesColors(shapes);
+   * console.log(colors);
+   * ```
    */
   shapesColors(shapes: PenpotShape[]): (PenpotColor & PenpotColorShapeInfo)[];
 
   /**
    * Replaces a specified old color with a new color in the given shapes. Requires `content:write` permission.
+   *
+   * @example
+   * ```js
+   * context.replaceColor(shapes, oldColor, newColor);
+   * ```
    */
   replaceColor(
     shapes: PenpotShape[],
@@ -2706,9 +3022,11 @@ export interface PenpotContext {
   /**
    * Retrieves the current theme (light or dark) in Penpot.
    * Returns the current theme.
+   *
    * @example
    * ```js
    * const currentTheme = context.getTheme();
+   * console.log(currentTheme);
    * ```
    */
   getTheme(): PenpotTheme;
@@ -2718,9 +3036,11 @@ export interface PenpotContext {
    * @param name The name of the media.
    * @param url The URL of the media to be uploaded.
    * Returns a promise that resolves to the image data of the uploaded media.
+   *
    * @example
    * ```js
    * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
+   * console.log(imageData);
    * ```
    */
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
@@ -2730,6 +3050,12 @@ export interface PenpotContext {
    * @param name The name of the media.
    * @param data The image content data
    * Returns a promise that resolves to the image data of the uploaded media.
+   *
+   * @example
+   * ```js
+   * const imageData = await context.uploadMediaData('example', imageData, 'image/jpeg');
+   * console.log(imageData);
+   * ```
    */
   uploadMediaData(
     name: string,
@@ -2792,6 +3118,7 @@ export interface PenpotContext {
    * @param boolType The type of boolean operation ('union', 'difference', 'exclude', 'intersection').
    * @param shapes An array of shapes to perform the boolean operation on.
    * Returns the newly created PenpotBoolean shape resulting from the boolean operation.
+   *
    * @example
    * ```js
    * const booleanShape = context.createBoolean('union', [shape1, shape2]);
@@ -2805,6 +3132,7 @@ export interface PenpotContext {
    * Creates a PenpotGroup from an SVG string. Requires `content:write` permission.
    * @param svgString The SVG string representing the shapes to be converted into a group.
    * Returns the newly created PenpotGroup containing the shapes from the SVG.
+   *
    * @example
    * ```js
    * const svgGroup = context.createShapeFromSvg('<svg>...</svg>');
@@ -2815,6 +3143,7 @@ export interface PenpotContext {
    * Creates a PenpotText shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the PenpotText shape.
    * Returns the new created shape, if the shape wasn't created can return null.
+   *
    * @example
    * ```js
    * const board = penpot.createFrame();
@@ -2834,6 +3163,12 @@ export interface PenpotContext {
    * Generates markup for the given shapes. Requires `content:read` permission
    * @param shapes
    * @param markupType will default to 'html'
+   *
+   * @example
+   * ```js
+   * const markup = context.generateMarkup(shapes, { type: 'html' });
+   * console.log(markup);
+   * ```
    */
   generateMarkup(
     shapes: PenpotShape[],
@@ -2846,6 +3181,12 @@ export interface PenpotContext {
    * @param styleType will default to 'css'
    * @param withPrelude will default to `false`
    * @param includeChildren will default to `true`
+   *
+   * @example
+   * ```js
+   * const styles = context.generateStyle(shapes, { type: 'css' });
+   * console.log(styles);
+   * ```
    */
   generateStyle(
     shapes: PenpotShape[],
@@ -2858,6 +3199,13 @@ export interface PenpotContext {
 
   /**
    * Adds the current callback as an event listener
+   *
+   * @example
+   * ```js
+   * const listenerId = context.addListener('selectionchange', (event) => {
+   *   console.log(event);
+   * });
+   * ```
    */
   addListener<T extends keyof EventsMap>(
     type: T,
@@ -2867,6 +3215,11 @@ export interface PenpotContext {
 
   /**
    * Removes the listenerId from the list of listeners
+   *
+   * @example
+   * ```js
+   * context.removeListener(listenerId);
+   * ```
    */
   removeListener(listenerId: symbol): void;
 
@@ -2883,6 +3236,11 @@ export interface PenpotContext {
   /**
    * Changes the current open page to given page
    * @param `page` the page to open
+   *
+   * @example
+   * ```js
+   * context.openPage(page);
+   * ```
    */
   openPage(page: PenpotPage): void;
 }
@@ -3205,12 +3563,23 @@ export interface PenpotHistoryContext {
   /**
    * Ends the undo block started with `undoBlockBegin`
    * @parm `blockId` is the id returned by `undoBlockBegin`
+   *
+   * @example
+   * ```js
+   * historyContext.undoBlockFinish(blockId);
+   * ```
    */
   undoBlockFinish(blockId: Symbol): void;
 }
 
 /**
  * Utility methods for geometric calculations in Penpot.
+ *
+ * @example
+ * ```js
+ * const centerPoint = geometryUtils.center(shapes);
+ * console.log(centerPoint);
+ * ```
  */
 export interface PenpotContextGeometryUtils {
   /**
@@ -3219,12 +3588,23 @@ export interface PenpotContextGeometryUtils {
    * Returns the center point as an object with `x` and `y` coordinates, or null if the array is empty.
    * @param shapes - The array of shapes to calculate the center for.
    *
+   * @example
+   * ```js
+   * const centerPoint = geometryUtils.center(shapes);
+   * console.log(centerPoint);
+   * ```
    */
   center(shapes: PenpotShape[]): { x: number; y: number } | null;
 }
 
 /**
  * Utility methods for determining the types of Penpot shapes.
+ *
+ * @example
+ * ```js
+ * const isFrame = typesUtils.isFrame(shape);
+ * console.log(isFrame);
+ * ```
  */
 export interface PenpotContextTypesUtils {
   /**
@@ -3298,11 +3678,23 @@ export interface PenpotContextUtils {
   /**
    * Geometry utility methods for Penpot.
    * Provides methods for geometric calculations, such as finding the center of a group of shapes.
+   *
+   * @example
+   * ```js
+   * const centerPoint = penpot.utils.geometry.center(shapes);
+   * console.log(centerPoint);
+   * ```
    */
   readonly geometry: PenpotContextGeometryUtils;
   /**
    * Type utility methods for Penpot.
    * Provides methods for determining the types of various shapes in Penpot.
+   *
+   * @example
+   * ```js
+   * const isFrame = utils.types.isFrame(shape);
+   * console.log(isFrame);
+   * ```
    */
   readonly types: PenpotContextTypesUtils;
 }
