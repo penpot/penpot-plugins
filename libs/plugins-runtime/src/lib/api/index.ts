@@ -257,7 +257,7 @@ export function createApi(
       return context.currentUser;
     },
 
-    get activeUsers(): PenpotActiveUser {
+    get activeUsers(): PenpotActiveUser[] {
       checkPermission('user:read');
       return context.activeUsers;
     },
