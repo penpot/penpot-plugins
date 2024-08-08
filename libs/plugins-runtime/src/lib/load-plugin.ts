@@ -72,7 +72,7 @@ export const loadPlugin = async function (manifest: Manifest) {
 
       pluginApi.closePlugin();
 
-      c.evaluate(code);
+      loadPlugin(manifest);
     };
 
     const pluginApi = createApi(context, manifest, onClose, onLoad);
