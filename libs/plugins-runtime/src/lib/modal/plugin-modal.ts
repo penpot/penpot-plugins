@@ -100,6 +100,15 @@ export class PluginModalElement extends HTMLElement {
       'allow-storage-access-by-user-activation'
     );
 
+    iframe.addEventListener('load', () => {
+      this.shadowRoot?.dispatchEvent(
+        new CustomEvent('load', {
+          composed: true,
+          bubbles: true,
+        })
+      );
+    });
+
     this.addEventListener('message', (e: Event) => {
       if (!iframe.contentWindow) {
         return;

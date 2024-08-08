@@ -34,6 +34,11 @@ export const loadPlugin = async function (manifest: Manifest) {
     }
 
     context.addListener('themechange', (e: PenpotTheme) => api.themeChange(e));
+    const listenerId: symbol = context.addListener('finish', () => {
+      closeAllPlugins();
+
+      context?.removeListener(listenerId);
+    });
 
     const code = await loadManifestCode(manifest);
 
@@ -43,7 +48,7 @@ export const loadPlugin = async function (manifest: Manifest) {
       closeAllPlugins();
     }
 
-    const pluginApi = createApi(context, manifest, () => {
+    const onClose = () => {
       createdApis = createdApis.filter((api) => api !== pluginApi);
 
       timeouts.forEach(clearTimeout);
@@ -53,7 +58,24 @@ export const loadPlugin = async function (manifest: Manifest) {
       Object.keys(publicPluginApi).forEach((key) => {
         delete c.globalThis[key];
       });
-    });
+    };
+
+    let loaded = false;
+
+    const onLoad = () => {
+      console.log('Plugin loaded');
+
+      if (!loaded) {
+        loaded = true;
+        return;
+      }
+
+      pluginApi.closePlugin();
+
+      c.evaluate(code);
+    };
+
+    const pluginApi = createApi(context, manifest, onClose, onLoad);
 
     createdApis.push(pluginApi);
 
@@ -92,12 +114,6 @@ export const loadPlugin = async function (manifest: Manifest) {
     const c = ses.createCompartment(publicPluginApi);
 
     c.evaluate(code);
-
-    const listenerId: symbol = context.addListener('finish', () => {
-      closeAllPlugins();
-
-      context?.removeListener(listenerId);
-    });
 
     return {
       compartment: c,

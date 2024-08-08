@@ -70,7 +70,8 @@ export function themeChange(theme: PenpotTheme) {
 export function createApi(
   context: PenpotContext,
   manifest: Manifest,
-  closed: () => void
+  closed: () => void,
+  load: () => void
 ): Penpot {
   let modal: PluginModalElement | null = null;
 
@@ -117,6 +118,8 @@ export function createApi(
         modal.addEventListener('close', closePlugin, {
           once: true,
         });
+
+        modal.addEventListener('load', load);
 
         modals.add(modal);
       },

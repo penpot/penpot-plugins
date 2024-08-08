@@ -1,5 +1,7 @@
 import type { PluginMessageEvent, PluginUIEvent } from './model.js';
 
+console.log('init contrast plugin2');
+
 penpot.ui.open('CONTRAST PLUGIN', `?theme=${penpot.getTheme()}`, {
   width: 285,
   height: 525,
