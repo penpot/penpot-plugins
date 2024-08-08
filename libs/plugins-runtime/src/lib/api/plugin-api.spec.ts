@@ -3,15 +3,26 @@ import { createApi, themeChange, uiMessagesCallbacks } from './index.js';
 import openUIApi from './openUI.api.js';
 import type { PenpotFile } from '@penpot/plugin-types';
 
+const mockUrl = 'http://fake.fake/';
+
 vi.mock('./openUI.api', () => {
   return {
     default: vi.fn().mockImplementation(() => ({
-      addEventListener: vi.fn(),
+      addEventListener: vi
+        .fn()
+        .mockImplementation((type: string, fn: () => void) => {
+          if (type === 'load') {
+            fn();
+          }
+        }),
       dispatchEvent: vi.fn(),
       removeEventListener: vi.fn(),
       remove: vi.fn(),
       setAttribute: vi.fn(),
       setTheme: vi.fn(),
+      getAttribute: () => {
+        return mockUrl;
+      },
     })),
   };
 });
@@ -32,26 +43,33 @@ describe('Plugin api', () => {
     removeListener: vi.fn(),
   };
 
-  const api = createApi(
-    mockContext as any,
-    {
-      pluginId: 'test',
-      name: 'test',
-      code: '',
-      host: 'http://fake.com',
-      permissions: [
-        'content:read',
-        'content:write',
-        'library:read',
-        'library:write',
-        'user:read',
-      ],
-    },
-    () => {}
-  );
+  let api: ReturnType<typeof createApi>;
 
   const addEventListenerMock = vi.mocked(window.addEventListener);
   const messageEvent = addEventListenerMock.mock.calls[0][1] as EventListener;
+  const closedCallback = vi.fn();
+  const loadCallback = vi.fn();
+
+  beforeEach(() => {
+    api = createApi(
+      mockContext as any,
+      {
+        pluginId: 'test',
+        name: 'test',
+        code: '',
+        host: mockUrl,
+        permissions: [
+          'content:read',
+          'content:write',
+          'library:read',
+          'library:write',
+          'user:read',
+        ],
+      },
+      closedCallback,
+      loadCallback
+    );
+  });
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -64,7 +82,7 @@ describe('Plugin api', () => {
       const options = { width: 100, height: 100 };
       const openUIApiMock = vi.mocked(openUIApi);
 
-      api.ui.open(name, url, options);
+      api.penpot.ui.open(name, url, options);
 
       const modalMock = openUIApiMock.mock.results[0].value;
 
@@ -74,6 +92,13 @@ describe('Plugin api', () => {
         expect.any(Function),
         { once: true }
       );
+
+      expect(modalMock.addEventListener).toHaveBeenCalledWith(
+        'load',
+        expect.any(Function)
+      );
+
+      expect(loadCallback).toHaveBeenCalled();
     });
 
     it('sendMessage', () => {
@@ -83,8 +108,8 @@ describe('Plugin api', () => {
       const message = { test: 'test' };
       const openUIApiMock = vi.mocked(openUIApi);
 
-      api.ui.open(name, url, options);
-      api.ui.sendMessage(message);
+      api.penpot.ui.open(name, url, options);
+      api.penpot.ui.sendMessage(message);
 
       const modalMock = openUIApiMock.mock.results[0].value;
       const eventPassedToDispatchEvent =
@@ -104,7 +129,7 @@ describe('Plugin api', () => {
 
       const callback = vi.fn();
 
-      api.ui.onMessage(callback);
+      api.penpot.ui.onMessage(callback);
       messageEvent(message);
 
       expect(uiMessagesCallbacks.length).toEqual(1);
@@ -115,21 +140,21 @@ describe('Plugin api', () => {
   describe('events', () => {
     it('invalid event', () => {
       expect(() => {
-        api.on('invalid' as any, vi.fn());
+        api.penpot.on('invalid' as any, vi.fn());
       }).toThrow();
     });
 
     it('pagechange', () => {
       const callback = vi.fn();
 
-      const id = api.on('pagechange', callback);
+      const id = api.penpot.on('pagechange', callback);
       expect(mockContext.addListener).toHaveBeenCalled();
       expect((mockContext.addListener.mock as any).lastCall[0]).toBe(
         'pagechange'
       );
       expect((mockContext.addListener.mock as any).lastCall[1]).toBe(callback);
 
-      api.off(id);
+      api.penpot.off(id);
       expect(mockContext.removeListener).toHaveBeenCalled();
       expect((mockContext.removeListener.mock as any).lastCall[0]).toBe(id);
     });
@@ -137,8 +162,8 @@ describe('Plugin api', () => {
     it('remove event on close plugin', () => {
       const callback = vi.fn();
 
-      api.on('pagechange', callback);
-      api.closePlugin();
+      api.penpot.on('pagechange', callback);
+      api.penpot.closePlugin();
 
       expect(mockContext.removeListener).toHaveBeenCalled();
     });
@@ -152,6 +177,7 @@ describe('Plugin api', () => {
         code: '',
         permissions: [],
       } as any,
+      () => {},
       () => {}
     );
 
@@ -159,29 +185,29 @@ describe('Plugin api', () => {
       const callback = vi.fn();
 
       expect(() => {
-        api.on('filechange', callback);
+        api.penpot.on('filechange', callback);
       }).toThrow();
 
       expect(() => {
-        api.on('pagechange', callback);
+        api.penpot.on('pagechange', callback);
       }).toThrow();
 
       expect(() => {
-        api.on('selectionchange', callback);
+        api.penpot.on('selectionchange', callback);
       }).toThrow();
     });
 
     it('get states', () => {
       expect(() => {
-        api.getFile();
+        api.penpot.getFile();
       }).toThrow();
 
       expect(() => {
-        api.getPage();
+        api.penpot.getPage();
       }).toThrow();
 
       expect(() => {
-        api.getSelected();
+        api.penpot.getSelected();
       }).toThrow();
     });
   });
@@ -194,7 +220,7 @@ describe('Plugin api', () => {
 
     mockContext.getPage.mockImplementation(() => examplePage);
 
-    const pageState = api.getPage();
+    const pageState = api.penpot.getPage();
 
     expect(pageState).toEqual(examplePage);
   });
@@ -208,7 +234,7 @@ describe('Plugin api', () => {
 
     mockContext.getFile.mockImplementation(() => exampleFile);
 
-    const fileState = api.getFile();
+    const fileState = api.penpot.getFile();
 
     expect(fileState).toEqual(exampleFile);
   });
@@ -218,43 +244,68 @@ describe('Plugin api', () => {
 
     mockContext.getSelected.mockImplementation(() => selection);
 
-    const currentSelection = api.getSelected();
+    const currentSelection = api.penpot.getSelected();
 
     expect(currentSelection).toEqual(selection);
   });
 
   it('set theme refresh modal theme', () => {
     const name = 'test';
-    const url = 'http://fake.com';
+    const url = mockUrl;
     const options = { width: 100, height: 100 };
     const openUIApiMock = vi.mocked(openUIApi);
 
     mockContext.getTheme.mockImplementation(() => 'light');
 
-    api.ui.open(name, url, options);
+    api.penpot.ui.open(name, url, options);
 
     const modalMock = openUIApiMock.mock.results[0].value;
     expect(modalMock.setTheme).toHaveBeenCalledWith('light');
-    expect(api.getTheme()).toBe('light');
+    expect(api.penpot.getTheme()).toBe('light');
 
     themeChange('dark');
     expect(modalMock.setTheme).toHaveBeenCalledWith('dark');
   });
 
+  it('should not open twice the same url', () => {
+    const name = 'test';
+    const url = mockUrl;
+    const options = { width: 100, height: 100 };
+    const openUIApiMock = vi.mocked(openUIApi);
+
+    api.penpot.ui.open(name, url, options);
+    api.penpot.ui.open(name, url, options);
+
+    expect(openUIApiMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('open twice diffennt url', () => {
+    const name = 'test';
+    const url = mockUrl + '1';
+    const options = { width: 100, height: 100 };
+    const openUIApiMock = vi.mocked(openUIApi);
+
+    api.penpot.ui.open(name, url, options);
+    api.penpot.ui.open(name, url, options);
+
+    expect(openUIApiMock).toHaveBeenCalledTimes(2);
+  });
+
   it('close plugin', () => {
     const name = 'test';
-    const url = 'http://fake.com';
+    const url = mockUrl;
     const options = { width: 100, height: 100 };
     const openUIApiMock = vi.mocked(openUIApi);
     const callback = vi.fn();
 
-    api.ui.open(name, url, options);
-    api.ui.onMessage(callback);
+    api.penpot.ui.open(name, url, options);
+    api.penpot.ui.onMessage(callback);
 
-    api.closePlugin();
+    api.penpot.closePlugin();
 
     const modalMock = openUIApiMock.mock.results[0].value;
 
+    expect(closedCallback).toHaveBeenCalled();
     expect(modalMock.remove).toHaveBeenCalled();
     expect(modalMock.removeEventListener).toHaveBeenCalled();
     expect(callback).not.toHaveBeenCalled();
