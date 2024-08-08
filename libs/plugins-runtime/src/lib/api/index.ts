@@ -48,9 +48,6 @@ export let uiMessagesCallbacks: Callback<unknown>[] = [];
 
 let modals = new Set<PluginModalElement>([]);
 
-// TODO: Remove when deprecating method `off`
-let listeners: { [key: string]: Map<object, symbol> } = {};
-
 window.addEventListener('message', (event) => {
   try {
     for (const callback of uiMessagesCallbacks) {
@@ -70,17 +67,26 @@ export function themeChange(theme: PenpotTheme) {
 export function createApi(
   context: PenpotContext,
   manifest: Manifest,
-  closed: () => void
-): Penpot {
+  closed: () => void,
+  load: () => void
+) {
   let modal: PluginModalElement | null = null;
 
-  const closePlugin = () => {
-    // remove all event listeners
+  // TODO: Remove when deprecating method `off`
+  let listeners: { [key: string]: Map<object, symbol> } = {};
+
+  const removeAllEventListeners = () => {
     Object.entries(listeners).forEach(([, map]) => {
       map.forEach((id) => {
         context.removeListener(id);
       });
     });
+
+    uiMessagesCallbacks = [];
+  };
+
+  const closePlugin = () => {
+    removeAllEventListeners();
 
     if (modal) {
       modals.delete(modal);
@@ -88,7 +94,7 @@ export function createApi(
       modal.removeEventListener('close', closePlugin);
       modal.remove();
     }
-    uiMessagesCallbacks = [];
+
     modal = null;
 
     closed();
@@ -105,18 +111,21 @@ export function createApi(
       open: (name: string, url: string, options?: OpenUIOptions) => {
         const theme = context.getTheme() as 'light' | 'dark';
 
-        modal = openUIApi(
-          name,
-          getValidUrl(manifest.host, url),
-          theme,
-          options
-        );
+        const modalUrl = getValidUrl(manifest.host, url);
+
+        if (modal?.getAttribute('iframe-src') === modalUrl) {
+          return;
+        }
+
+        modal = openUIApi(name, modalUrl, theme, options);
 
         modal.setTheme(theme);
 
         modal.addEventListener('close', closePlugin, {
           once: true,
         });
+
+        modal.addEventListener('load', load);
 
         modals.add(modal);
       },
@@ -396,5 +405,8 @@ export function createApi(
     },
   };
 
-  return penpot;
+  return {
+    penpot,
+    removeAllEventListeners,
+  };
 }

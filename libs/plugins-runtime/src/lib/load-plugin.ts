@@ -1,4 +1,4 @@
-import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
+import type { Penpot, PenpotContext, PenpotTheme } from '@penpot/plugin-types';
 
 import { createApi } from './api/index.js';
 import { loadManifest, loadManifestCode } from './parse-manifest.js';
@@ -19,7 +19,7 @@ export function setContextBuilder(builder: ContextBuilder) {
 
 const closeAllPlugins = () => {
   createdApis.forEach((pluginApi) => {
-    pluginApi.closePlugin();
+    pluginApi.penpot.closePlugin();
   });
 
   createdApis = [];
@@ -34,6 +34,11 @@ export const loadPlugin = async function (manifest: Manifest) {
     }
 
     context.addListener('themechange', (e: PenpotTheme) => api.themeChange(e));
+    const listenerId: symbol = context.addListener('finish', () => {
+      closeAllPlugins();
+
+      context?.removeListener(listenerId);
+    });
 
     const code = await loadManifestCode(manifest);
 
@@ -43,7 +48,7 @@ export const loadPlugin = async function (manifest: Manifest) {
       closeAllPlugins();
     }
 
-    const pluginApi = createApi(context, manifest, () => {
+    const onClose = () => {
       createdApis = createdApis.filter((api) => api !== pluginApi);
 
       timeouts.forEach(clearTimeout);
@@ -53,14 +58,30 @@ export const loadPlugin = async function (manifest: Manifest) {
       Object.keys(publicPluginApi).forEach((key) => {
         delete c.globalThis[key];
       });
-    });
+    };
+
+    let loaded = false;
+
+    const onLoad = async () => {
+      if (!loaded) {
+        loaded = true;
+        return;
+      }
+
+      pluginApi.removeAllEventListeners();
+
+      const code = await loadManifestCode(manifest);
+      c.evaluate(code);
+    };
+
+    const pluginApi = createApi(context, manifest, onClose, onLoad);
 
     createdApis.push(pluginApi);
 
     const timeouts = new Set<ReturnType<typeof setTimeout>>();
 
     const publicPluginApi = {
-      penpot: ses.harden(pluginApi) as typeof pluginApi,
+      penpot: ses.harden(pluginApi.penpot) as Penpot,
       fetch: ses.harden((...args: Parameters<typeof fetch>) => {
         const requestArgs: RequestInit = {
           ...args[1],
@@ -92,12 +113,6 @@ export const loadPlugin = async function (manifest: Manifest) {
     const c = ses.createCompartment(publicPluginApi);
 
     c.evaluate(code);
-
-    const listenerId: symbol = context.addListener('finish', () => {
-      closeAllPlugins();
-
-      context?.removeListener(listenerId);
-    });
 
     return {
       compartment: c,

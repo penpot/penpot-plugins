@@ -58,7 +58,10 @@ describe('loadPlugin', () => {
     } as unknown as PenpotContext;
 
     mockApi = {
-      closePlugin: vi.fn(),
+      penpot: {
+        closePlugin: vi.fn(),
+      },
+      removeAllEventListeners: vi.fn(),
     } as unknown as ReturnType<typeof createApi>;
 
     vi.mocked(createApi).mockReturnValue(mockApi);
@@ -79,6 +82,7 @@ describe('loadPlugin', () => {
     expect(createApi).toHaveBeenCalledWith(
       mockContext,
       manifest,
+      expect.any(Function),
       expect.any(Function)
     );
   });
@@ -100,7 +104,7 @@ describe('loadPlugin', () => {
     await loadPlugin(manifest);
     await loadPlugin(manifest);
 
-    expect(mockApi.closePlugin).toHaveBeenCalledTimes(1);
+    expect(mockApi.penpot.closePlugin).toHaveBeenCalledTimes(1);
   });
 
   it('should remove finish event listener on plugin finish', async () => {
@@ -141,7 +145,7 @@ describe('loadPlugin', () => {
 
     await loadPlugin(manifest);
 
-    expect(mockApi.closePlugin).toHaveBeenCalled();
+    expect(mockApi.penpot.closePlugin).toHaveBeenCalled();
     expect(console.error).toHaveBeenCalled();
   });
 
@@ -162,5 +166,23 @@ describe('loadPlugin', () => {
     expect(
       Object.keys(plugin.compartment.globalThis).filter((it) => !!it).length
     ).toBe(0);
+  });
+  it('should re-evaluate and remove listeners if plugin reload', async () => {
+    const plugin = await loadPlugin(manifest);
+
+    if (!plugin) {
+      throw new Error('Plugin not loaded');
+    }
+
+    const onLoad = vi.mocked(createApi).mock.calls[0][3];
+    // regular load
+    await onLoad();
+
+    // reload
+    await onLoad();
+
+    expect(mockApi.removeAllEventListeners).toHaveBeenCalledOnce();
+    expect(evaluateMock).toHaveBeenCalledTimes(2);
+    expect(loadManifestCode).toHaveBeenCalledTimes(2);
   });
 });
