@@ -15,7 +15,7 @@ esbuild.build({
   outfile: `${dist}/styles.css`,
   minify: true,
   loader: {
-    '.svg': 'text'
+    '.svg': 'dataurl'
   }
 }).catch(handleErr);
 
