@@ -1152,22 +1152,22 @@ interface PenpotPathCommand {
     /**
      * The x-coordinate of the first control point for curves.
      */
-    c1x: number;
+    c1x?: number;
 
     /**
      * The y-coordinate of the first control point for curves.
      */
-    c1y: number;
+    c1y?: number;
 
     /**
      * The x-coordinate of the second control point for curves.
      */
-    c2x: number;
+    c2x?: number;
 
     /**
      * The y-coordinate of the second control point for curves.
      */
-    c2y: number;
+    c2y?: number;
 
     /**
      * The radius of the ellipse's x-axis.
