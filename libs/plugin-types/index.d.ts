@@ -37,7 +37,8 @@ export interface Penpot
     /**
      * This is usually used in the `plugin.ts` file in order to handle the data sent by our plugin
      *
-     * @param message content usually is an object
+     @param callback - A function that will be called whenever a message is received.
+     * The function receives a single argument, `message`, which is of type `T`.
      *
      * @example
      * ```js
@@ -127,7 +128,7 @@ export interface Penpot
  */
 export interface PenpotPluginData {
   /**
-   * Retrieves the plugin-specific data associated with the given key.
+   * Retrieves the data for our own plugin, given a specific key.
    *
    * @param key The key for which to retrieve the data.
    * Returns the data associated with the key as a string.
@@ -167,7 +168,7 @@ export interface PenpotPluginData {
   getPluginDataKeys(): string[];
 
   /**
-   * Retrieves the shared plugin-specific data for the given namespace and key.
+   * If we know the namespace of an external plugin, this is the way to get their data.
    *
    * @param namespace The namespace for the shared data.
    * @param key The key for which to retrieve the data.
@@ -283,7 +284,7 @@ export interface PenpotPage extends PenpotPluginData {
    *
    * @example
    * ```js
-   * const shape = page.getShapeById('shapeId');
+   * const shape = penpot.getPage().getShapeById('shapeId');
    * ```
    */
   getShapeById(id: string): PenpotShape | null;
@@ -291,13 +292,10 @@ export interface PenpotPage extends PenpotPluginData {
   /**
    * Finds all shapes on the page.
    * Optionaly it gets a criteria object to search for specific criteria
-   * @param `criteria.name` search for the name in a case-insensitive manner
-   * @param `criteria.nameLike` search for name but for a partial match with the name
-   * @param `criteria.type` search for shapes of the specified type
-   *
+   * @param criteria
    * @example
    * ```js
-   * const shapes = page.findShapes({ name: 'exampleName' });
+   * const shapes = penpot.getPage().findShapes({ name: 'exampleName' });
    * ```
    */
   findShapes(criteria?: {
@@ -322,19 +320,19 @@ export interface PenpotPage extends PenpotPluginData {
 
   /**
    * Creates a new flow in the page.
-   * @param `name` the name identifying the flow
-   * @param `frame` the starting frame for the current flow
+   * @param name the name identifying the flow
+   * @param frame the starting frame for the current flow
    *
    * @example
    * ```js
-   * const flow = page.createFlow('exampleFlow', frame);
+   * const flow = penpot.getPage().createFlow('exampleFlow', frame);
    * ```
    */
   createFlow(name: string, frame: PenpotFrame): PenpotFlow;
 
   /**
    * Removes the flow from the page
-   * @param `flow` the flow to be removed from the page
+   * @param flow the flow to be removed from the page
    */
   removeFlow(flow: PenpotFlow): void;
 }
@@ -959,7 +957,9 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    *
    * @example
    * ```js
-   * gridLayout.addRow('flex');
+   * const frame = penpot.createFrame();
+   * const grid = frame.addGridLayout();
+   * grid.addRow("flex", 1);
    * ```
    */
   addRow(type: PenpotTrackType, value?: number): void;
@@ -982,7 +982,9 @@ export interface PenpotGridLayout extends PenpotCommonLayout {
    *
    * @example
    * ```js
-   * gridLayout.addColumn('percent', 50);
+   * const frame = penpot.createFrame();
+   * const grid = frame.addGridLayout();
+   * grid.addColumn('percent', 50);
    * ```
    */
   addColumn(type: PenpotTrackType, value?: number): void;
@@ -1637,9 +1639,9 @@ export interface PenpotShapeBase extends PenpotPluginData {
 
   /**
    * Adds a new interaction to the shape.
-   * @param `trigger` defines the conditions under which the action will be triggered
-   * @param `action` defines what will be executed when the trigger happens
-   * @param `delay` for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
+   * @param trigger defines the conditions under which the action will be triggered
+   * @param action defines what will be executed when the trigger happens
+   * @param delay for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
    *
    * @example
    * ```js
@@ -1654,7 +1656,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
 
   /**
    * Removes the interaction from the shape.
-   * @param `interaction` is the interaction to remove from the shape
+   * @param interaction is the interaction to remove from the shape
    *
    * @example
    * ```js
@@ -1740,15 +1742,39 @@ export interface PenpotFrame extends PenpotShapeBase {
    */
   insertChild(index: number, child: PenpotShape): void;
 
-  // Grid layout
   /**
-   * Adds a flex layout configuration to the frame.
+   * Adds a flex layout configuration to the frame (so it's necessary to create a frame first of all).
    * Returns the flex layout configuration added to the frame.
+   * @example
+   * ```js
+   * const frame = penpot.createFrame();
+   * const flex = frame.addGridLayout();
+   *
+   * // You can change the flex properties as follows.
+   * flex.dir = "column";
+   * flex.wrap = "wrap";
+   * flex.alignItems = "center";
+   * lex.justifyContent = "center";
+   * flex.horizontalSizing = "fill";
+   * flex.verticalSizing = "fill";
+   * ```
    */
   addFlexLayout(): PenpotFlexLayout;
   /**
-   * Adds a grid layout configuration to the frame.
+   * Adds a grid layout configuration to the frame (so it's necessary to create a frame first of all). You can add rows and columns, check addRow/addColumn.
    * Returns the grid layout configuration added to the frame.
+   * @example
+   * ```js
+   * const frame = penpot.createFrame();
+   * const grid = frame.addGridLayout();
+   *
+   * // You can change the grid properties as follows.
+   * grid.alignItems = "center";
+   * grid.justifyItems = "start";
+   * grid.rowGap = 10;
+   * grid.columnGap = 10;
+   * grid.verticalPadding = 5;
+   * grid.horizontalPadding = 5;
    */
   addGridLayout(): PenpotGridLayout;
 }
@@ -2417,7 +2443,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
 
   /**
    * Applies the typography styles to a range of text within a text shape.
-   * @param shape The text shape containing the text range to apply the typography styles to.
+   * @param range Represents a range of text within a PenpotText shape. This interface provides properties for styling and formatting text ranges.
    *
    * @example
    * ```js
@@ -2508,6 +2534,10 @@ export interface PenpotLibrary extends PenpotPluginData {
 
   /**
    * An array of color elements in the library.
+   * @example
+   * ```js
+   * console.log(penpot.library.local.colors);
+   * ```
    */
   colors: PenpotLibraryColor[];
 
@@ -2518,6 +2548,9 @@ export interface PenpotLibrary extends PenpotPluginData {
 
   /**
    * An array of component elements in the library.
+   * @example
+   * ```js
+   * console.log(penpot.library.local.components);
    */
   components: PenpotLibraryComponent[];
 
@@ -2527,7 +2560,8 @@ export interface PenpotLibrary extends PenpotPluginData {
    *
    * @example
    * ```js
-   * const newColor = library.createColor();
+   * const newColor = penpot.library.local.createColor();
+   * console.log(newColor);
    * ```
    */
   createColor(): PenpotLibraryColor;
@@ -2550,7 +2584,7 @@ export interface PenpotLibrary extends PenpotPluginData {
    *
    * @example
    * ```js
-   * const newComponent = library.createComponent([shape1, shape2]);
+   * const newComponent = penpot.library.local.createComponent([shape1, shape2]);
    * ```
    */
   createComponent(shapes: PenpotShape[]): PenpotLibraryComponent;
@@ -3041,6 +3075,12 @@ export interface PenpotContext {
    * ```js
    * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
    * console.log(imageData);
+   *
+   * // to insert the image in a shape we can do
+   * const frame = penpot.createFrame();
+   * const shape = penpot.createRectangle();
+   * frame.appendChild(shape);
+   * shape.fills = [{ fillOpacity: 1, fillImage: imageData }];
    * ```
    */
   uploadMediaUrl(name: string, url: string): Promise<PenpotImageData>;
@@ -3067,12 +3107,26 @@ export interface PenpotContext {
    * Groups the specified shapes. Requires `content:write` permission.
    * @param shapes - An array of shapes to group.
    * Returns the newly created group or `null` if the group could not be created.
+   * @example
+   * ```js
+   * const penpotShapesArray = penpot.selection;
+   * penpot.group(penpotShapesArray);
+   * ```
    */
   group(shapes: PenpotShape[]): PenpotGroup | null;
   /**
    * Ungroups the specified group. Requires `content:write` permission.
    * @param group - The group to ungroup.
    * @param other - Additional groups to ungroup.
+   *
+   * @example
+   * ```js
+   * const penpotShapesArray = penpot.selection;
+   * // We need to make sure that something is selected, and if the selected shape is a group,
+   * if (selected.length && penpot.utils.types.isGroup(penpotShapesArray[0])) {
+   *   penpot.group(penpotShapesArray[0]);
+   * }
+   * ```
    */
   ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void;
 
@@ -3081,17 +3135,38 @@ export interface PenpotContext {
    *
    * @example
    * ```js
-   * penpot.createRectangle();
+   * const shape = penpot.createRectangle();
+   * // just change the values like this
+   * shape.name = "Example rectangle";
+   * shape.fills = [{ fillColor: "#7EFFF5" }];
+   * shape.borderRadius = 8;
+   * shape.strokes = [
+   *  {
+   *    strokeColor: "#2e3434",
+   *    strokeStyle: "solid",
+   *    strokeWidth: 2,
+   *    strokeAlignment: "center",
+   *  },
+   *];
    * ```
    */
   createRectangle(): PenpotRectangle;
   /**
    * Use this method to create a frame. This is the first step before anything else, the container. Requires `content:write` permission.
    * Then you can add a gridlayout, flexlayout or add a shape inside the frame.
+   * Just a heads-up: frame is a board in Penpot UI.
    *
    * @example
    * ```js
-   * penpot.createFrame();
+   * const frame = penpot.createFrame();
+   *
+   * // to add grid layout of flex layout
+   * frame.addGridLayout();
+   * frame.addFlexLayout();
+   *
+   * // to create a shape inside the frame
+   * const shape = penpot.createRectangle();
+   * frame.appendChild(shape);
    * ```
    */
   createFrame(): PenpotFrame;
@@ -3100,7 +3175,18 @@ export interface PenpotContext {
    *
    * @example
    * ```js
-   * penpot.createEllipse();
+   * const shape = penpot.createEllipse();
+   * // just change the values like this
+   * shape.name = "Example ellipse";
+   * shape.fills = [{ fillColor: "#7EFFF5" }];
+   * shape.strokes = [
+   *  {
+   *    strokeColor: "#2e3434",
+   *    strokeStyle: "solid",
+   *    strokeWidth: 2,
+   *    strokeAlignment: "center",
+   *  },
+   *];
    * ```
    */
   createEllipse(): PenpotEllipse;
@@ -3149,6 +3235,7 @@ export interface PenpotContext {
    * const board = penpot.createFrame();
    * let text;
    * text = penpot.createText();
+   * // just change the values like this
    * text.growType = 'auto-height';
    * text.fontFamily = 'Work Sans';
    * text.fontSize = '12';
@@ -3162,7 +3249,7 @@ export interface PenpotContext {
   /**
    * Generates markup for the given shapes. Requires `content:read` permission
    * @param shapes
-   * @param markupType will default to 'html'
+   * @param options
    *
    * @example
    * ```js
@@ -3178,9 +3265,7 @@ export interface PenpotContext {
   /**
    * Generates styles for the given shapes. Requires `content:read` permission
    * @param shapes
-   * @param styleType will default to 'css'
-   * @param withPrelude will default to `false`
-   * @param includeChildren will default to `true`
+   * @param options
    *
    * @example
    * ```js
@@ -3235,7 +3320,7 @@ export interface PenpotContext {
 
   /**
    * Changes the current open page to given page
-   * @param `page` the page to open
+   * @param page the page to open
    *
    * @example
    * ```js
@@ -3562,7 +3647,7 @@ export interface PenpotHistoryContext {
 
   /**
    * Ends the undo block started with `undoBlockBegin`
-   * @parm `blockId` is the id returned by `undoBlockBegin`
+   * @param blockId is the id returned by `undoBlockBegin`
    *
    * @example
    * ```js
