@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:wght@400+500&display=swap');
+
 :root {
   /* Light */
   --light-color-background: #ffffff;
@@ -40,4 +42,12 @@
   :root {
     --code-background: var(--dark-code-background);
   }
+}
+
+html,
+body,
+p {
+  font-family: 'Work Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
