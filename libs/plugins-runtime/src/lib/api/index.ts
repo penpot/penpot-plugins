@@ -1,5 +1,4 @@
 import type {
-  PenpotContext,
   Penpot,
   EventsMap,
   PenpotPage,
@@ -25,14 +24,10 @@ import type {
   PenpotHistoryContext,
 } from '@penpot/plugin-types';
 
-import { Manifest, Permissions } from '../models/manifest.model.js';
+import { Permissions } from '../models/manifest.model.js';
 import { OpenUIOptions } from '../models/open-ui-options.model.js';
-import openUIApi from './openUI.api.js';
 import { z } from 'zod';
-import type { PluginModalElement } from '../modal/plugin-modal.js';
-import { getValidUrl } from '../parse-manifest.js';
-
-type Callback<T> = (message: T) => void;
+import { createPluginManager } from '../plugin-manager.js';
 
 export const validEvents = [
   'finish',
@@ -44,64 +39,11 @@ export const validEvents = [
   'contentsave',
 ] as const;
 
-export let uiMessagesCallbacks: Callback<unknown>[] = [];
-
-let modals = new Set<PluginModalElement>([]);
-
-window.addEventListener('message', (event) => {
-  try {
-    for (const callback of uiMessagesCallbacks) {
-      callback(event.data);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-export function themeChange(theme: PenpotTheme) {
-  modals.forEach((modal) => {
-    modal.setTheme(theme);
-  });
-}
-
 export function createApi(
-  context: PenpotContext,
-  manifest: Manifest,
-  closed: () => void,
-  load: () => void
+  plugin: Awaited<ReturnType<typeof createPluginManager>>
 ) {
-  let modal: PluginModalElement | null = null;
-
-  // TODO: Remove when deprecating method `off`
-  let listeners: { [key: string]: Map<object, symbol> } = {};
-
-  const removeAllEventListeners = () => {
-    Object.entries(listeners).forEach(([, map]) => {
-      map.forEach((id) => {
-        context.removeListener(id);
-      });
-    });
-
-    uiMessagesCallbacks = [];
-  };
-
-  const closePlugin = () => {
-    removeAllEventListeners();
-
-    if (modal) {
-      modals.delete(modal);
-
-      modal.removeEventListener('close', closePlugin);
-      modal.remove();
-    }
-
-    modal = null;
-
-    closed();
-  };
-
   const checkPermission = (permission: Permissions) => {
-    if (!manifest.permissions.includes(permission)) {
+    if (!plugin.manifest.permissions.includes(permission)) {
       throw new Error(`Permission ${permission} is not granted`);
     }
   };
@@ -109,25 +51,7 @@ export function createApi(
   const penpot: Penpot = {
     ui: {
       open: (name: string, url: string, options?: OpenUIOptions) => {
-        const theme = context.getTheme() as 'light' | 'dark';
-
-        const modalUrl = getValidUrl(manifest.host, url);
-
-        if (modal?.getAttribute('iframe-src') === modalUrl) {
-          return;
-        }
-
-        modal = openUIApi(name, modalUrl, theme, options);
-
-        modal.setTheme(theme);
-
-        modal.addEventListener('close', closePlugin, {
-          once: true,
-        });
-
-        modal.addEventListener('load', load);
-
-        modals.add(modal);
+        plugin.openModal(name, url, options);
       },
 
       sendMessage(message: unknown) {
@@ -135,12 +59,13 @@ export function createApi(
           detail: message,
         });
 
-        modal?.dispatchEvent(event);
+        plugin.getModal()?.dispatchEvent(event);
       },
 
       onMessage: <T>(callback: (message: T) => void) => {
         z.function().parse(callback);
-        uiMessagesCallbacks.push(callback as Callback<unknown>);
+
+        plugin.registerMessageCallback(callback as (message: unknown) => void);
       },
     },
 
@@ -181,8 +106,9 @@ export function createApi(
       },
     },
 
-    closePlugin,
-
+    closePlugin: () => {
+      plugin.close();
+    },
     on<T extends keyof EventsMap>(
       type: T,
       callback: (event: EventsMap[T]) => void,
@@ -195,107 +121,91 @@ export function createApi(
       // To suscribe to events needs the read permission
       checkPermission('content:read');
 
-      const id = context.addListener(type, callback, props);
-
-      if (!listeners[type]) {
-        listeners[type] = new Map<object, symbol>();
-      }
-      listeners[type].set(callback, id);
-      return id;
+      return plugin.registerListener(type, callback, props);
     },
 
     off<T extends keyof EventsMap>(
       idtype: symbol | T,
       callback?: (event: EventsMap[T]) => void
     ): void {
-      let listenerId: symbol | undefined;
-
-      if (typeof idtype === 'symbol') {
-        listenerId = idtype;
-      } else if (callback) {
-        listenerId = listeners[idtype as T].get(callback);
-      }
-
-      if (listenerId) {
-        context.removeListener(listenerId);
-      }
+      plugin.destroyListener(idtype, callback);
     },
 
     // Penpot State API
 
     get root(): PenpotShape {
       checkPermission('content:read');
-      return context.root;
+      return plugin.context.root;
     },
 
     get currentPage(): PenpotPage {
       checkPermission('content:read');
-      return context.currentPage;
+      return plugin.context.currentPage;
     },
 
     get selection(): PenpotShape[] {
       checkPermission('content:read');
-      return context.selection;
+      return plugin.context.selection;
     },
 
     set selection(value: PenpotShape[]) {
       checkPermission('content:read');
-      context.selection = value;
+      plugin.context.selection = value;
     },
 
     get viewport(): PenpotViewport {
-      return context.viewport;
+      return plugin.context.viewport;
     },
 
     get history(): PenpotHistoryContext {
-      return context.history;
+      return plugin.context.history;
     },
 
     get library(): PenpotLibraryContext {
       checkPermission('library:read');
-      return context.library;
+      return plugin.context.library;
     },
 
     get fonts(): PenpotFontsContext {
       checkPermission('content:read');
-      return context.fonts;
+      return plugin.context.fonts;
     },
 
     get currentUser(): PenpotUser {
       checkPermission('user:read');
-      return context.currentUser;
+      return plugin.context.currentUser;
     },
 
     get activeUsers(): PenpotActiveUser[] {
       checkPermission('user:read');
-      return context.activeUsers;
+      return plugin.context.activeUsers;
     },
 
     getFile(): PenpotFile | null {
       checkPermission('content:read');
-      return context.getFile();
+      return plugin.context.getFile();
     },
 
     getPage(): PenpotPage | null {
       checkPermission('content:read');
-      return context.getPage();
+      return plugin.context.getPage();
     },
 
     getSelected(): string[] {
       checkPermission('content:read');
-      return context.getSelected();
+      return plugin.context.getSelected();
     },
 
     getSelectedShapes(): PenpotShape[] {
       checkPermission('content:read');
-      return context.getSelectedShapes();
+      return plugin.context.getSelectedShapes();
     },
 
     shapesColors(
       shapes: PenpotShape[]
     ): (PenpotColor & PenpotColorShapeInfo)[] {
       checkPermission('content:read');
-      return context.shapesColors(shapes);
+      return plugin.context.shapesColors(shapes);
     },
 
     replaceColor(
@@ -304,36 +214,36 @@ export function createApi(
       newColor: PenpotColor
     ) {
       checkPermission('content:write');
-      return context.replaceColor(shapes, oldColor, newColor);
+      return plugin.context.replaceColor(shapes, oldColor, newColor);
     },
 
     getTheme(): PenpotTheme {
-      return context.getTheme();
+      return plugin.context.getTheme();
     },
 
     createFrame(): PenpotFrame {
       checkPermission('content:write');
-      return context.createFrame();
+      return plugin.context.createFrame();
     },
 
     createRectangle(): PenpotRectangle {
       checkPermission('content:write');
-      return context.createRectangle();
+      return plugin.context.createRectangle();
     },
 
     createEllipse(): PenpotEllipse {
       checkPermission('content:write');
-      return context.createEllipse();
+      return plugin.context.createEllipse();
     },
 
     createText(text: string): PenpotText | null {
       checkPermission('content:write');
-      return context.createText(text);
+      return plugin.context.createText(text);
     },
 
     createPath(): PenpotPath {
       checkPermission('content:write');
-      return context.createPath();
+      return plugin.context.createPath();
     },
 
     createBoolean(
@@ -341,32 +251,32 @@ export function createApi(
       shapes: PenpotShape[]
     ): PenpotBool | null {
       checkPermission('content:write');
-      return context.createBoolean(boolType, shapes);
+      return plugin.context.createBoolean(boolType, shapes);
     },
 
     createShapeFromSvg(svgString: string): PenpotGroup | null {
       checkPermission('content:write');
-      return context.createShapeFromSvg(svgString);
+      return plugin.context.createShapeFromSvg(svgString);
     },
 
     group(shapes: PenpotShape[]): PenpotGroup | null {
       checkPermission('content:write');
-      return context.group(shapes);
+      return plugin.context.group(shapes);
     },
 
     ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void {
       checkPermission('content:write');
-      context.ungroup(group, ...other);
+      plugin.context.ungroup(group, ...other);
     },
 
     uploadMediaUrl(name: string, url: string) {
       checkPermission('content:write');
-      return context.uploadMediaUrl(name, url);
+      return plugin.context.uploadMediaUrl(name, url);
     },
 
     uploadMediaData(name: string, data: Uint8Array, mimeType: string) {
       checkPermission('content:write');
-      return context.uploadMediaData(name, data, mimeType);
+      return plugin.context.uploadMediaData(name, data, mimeType);
     },
 
     generateMarkup(
@@ -374,7 +284,7 @@ export function createApi(
       options?: { type?: 'html' | 'svg' }
     ): string {
       checkPermission('content:read');
-      return context.generateMarkup(shapes, options);
+      return plugin.context.generateMarkup(shapes, options);
     },
 
     generateStyle(
@@ -386,27 +296,26 @@ export function createApi(
       }
     ): string {
       checkPermission('content:read');
-      return context.generateStyle(shapes, options);
+      return plugin.context.generateStyle(shapes, options);
     },
 
     openViewer(): void {
       checkPermission('content:read');
-      context.openViewer();
+      plugin.context.openViewer();
     },
 
     createPage(): PenpotPage {
       checkPermission('content:write');
-      return context.createPage();
+      return plugin.context.createPage();
     },
 
     openPage(page: PenpotPage): void {
       checkPermission('content:read');
-      context.openPage(page);
+      plugin.context.openPage(page);
     },
   };
 
   return {
     penpot,
-    removeAllEventListeners,
   };
 }

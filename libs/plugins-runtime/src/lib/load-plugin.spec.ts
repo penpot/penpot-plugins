@@ -1,73 +1,59 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
-import { loadPlugin, setContextBuilder } from './load-plugin.js';
-import { loadManifestCode } from './parse-manifest.js';
-import { createApi, themeChange } from './api/index.js';
-import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
+import {
+  loadPlugin,
+  ɵloadPlugin,
+  ɵloadPluginByUrl,
+  setContextBuilder,
+  getPlugins,
+} from './load-plugin';
+import { loadManifest } from './parse-manifest';
+import { createPlugin } from './create-plugin';
+import type { PenpotContext } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
 
-vi.mock('./parse-manifest.js', () => ({
-  loadManifestCode: vi.fn(),
+vi.mock('./parse-manifest', () => ({
+  loadManifest: vi.fn(),
 }));
 
-vi.mock('./api/index.js', () => ({
-  createApi: vi.fn(),
-  themeChange: vi.fn(),
+vi.mock('./create-plugin', () => ({
+  createPlugin: vi.fn(),
 }));
 
-const evaluateMock = vi.fn();
-
-vi.mock('./ses.js', () => ({
-  ses: {
-    hardenIntrinsics: vi.fn().mockReturnValue(null),
-    createCompartment: vi.fn().mockImplementation((publicApi) => {
-      return {
-        evaluate: evaluateMock,
-        globalThis: publicApi,
-      };
-    }),
-    harden: vi.fn().mockImplementation((obj) => obj),
-  },
-}));
-
-describe('loadPlugin', () => {
-  vi.spyOn(globalThis, 'clearTimeout');
-  vi.spyOn(globalThis.console, 'error').mockImplementation(() => {});
-
+describe('plugin-loader', () => {
   let mockContext: PenpotContext;
-  let manifest: Manifest = {
-    pluginId: 'test-plugin',
-    name: 'Test Plugin',
-    host: '',
-    code: '',
-    permissions: [
-      'content:read',
-      'content:write',
-      'library:read',
-      'library:write',
-      'user:read',
-    ],
-  };
-  let mockApi: ReturnType<typeof createApi>;
-  let addListenerMock: ReturnType<typeof vi.fn>;
+  let manifest: Manifest;
+  let mockPluginApi: Awaited<ReturnType<typeof createPlugin>>;
+  let mockClose: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    addListenerMock = vi.fn();
+    manifest = {
+      pluginId: 'test-plugin',
+      name: 'Test Plugin',
+      host: '',
+      code: '',
+      permissions: [
+        'content:read',
+        'content:write',
+        'library:read',
+        'library:write',
+        'user:read',
+      ],
+    };
+
+    mockClose = vi.fn();
+    mockPluginApi = {
+      plugin: {
+        close: mockClose,
+        sendMessage: vi.fn(),
+      },
+    } as unknown as Awaited<ReturnType<typeof createPlugin>>;
+
     mockContext = {
-      addListener: addListenerMock,
+      addListener: vi.fn(),
       removeListener: vi.fn(),
     } as unknown as PenpotContext;
 
-    mockApi = {
-      penpot: {
-        closePlugin: vi.fn(),
-      },
-      removeAllEventListeners: vi.fn(),
-    } as unknown as ReturnType<typeof createApi>;
-
-    vi.mocked(createApi).mockReturnValue(mockApi);
-    vi.mocked(loadManifestCode).mockResolvedValue(
-      'console.log("Plugin loaded");'
-    );
+    vi.mocked(createPlugin).mockResolvedValue(mockPluginApi);
     setContextBuilder(() => mockContext);
   });
 
@@ -75,114 +61,79 @@ describe('loadPlugin', () => {
     vi.clearAllMocks();
   });
 
-  it('should set up the context and load the manifest code', async () => {
+  it('should load and initialize a plugin', async () => {
     await loadPlugin(manifest);
 
-    expect(loadManifestCode).toHaveBeenCalledWith(manifest);
-    expect(createApi).toHaveBeenCalledWith(
+    expect(createPlugin).toHaveBeenCalledWith(
       mockContext,
       manifest,
-      expect.any(Function),
+      expect.any(Function)
+    );
+    expect(mockPluginApi.plugin.close).not.toHaveBeenCalled();
+    expect(getPlugins()).toHaveLength(1);
+  });
+
+  it('should close all plugins before loading a new one', async () => {
+    await loadPlugin(manifest);
+    await loadPlugin(manifest);
+
+    expect(mockClose).toHaveBeenCalledTimes(1);
+    expect(createPlugin).toHaveBeenCalledTimes(2);
+  });
+
+  it('should remove the plugin from the list on close', async () => {
+    await loadPlugin(manifest);
+
+    const closeCallback = vi.mocked(createPlugin).mock.calls[0][2];
+    closeCallback();
+
+    expect(getPlugins()).toHaveLength(0);
+  });
+
+  it('should handle errors and close all plugins', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    vi.mocked(createPlugin).mockRejectedValue(
+      new Error('Plugin creation failed')
+    );
+
+    await loadPlugin(manifest);
+
+    expect(getPlugins()).toHaveLength(0);
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it('should handle messages sent to plugins', async () => {
+    await loadPlugin(manifest);
+
+    window.dispatchEvent(new MessageEvent('message', { data: 'test-message' }));
+
+    expect(mockPluginApi.plugin.sendMessage).toHaveBeenCalledWith(
+      'test-message'
+    );
+  });
+
+  it('should load plugin using ɵloadPlugin', async () => {
+    await ɵloadPlugin(manifest);
+
+    expect(createPlugin).toHaveBeenCalledWith(
+      mockContext,
+      manifest,
       expect.any(Function)
     );
   });
 
-  it('should handle theme change events', async () => {
-    await loadPlugin(manifest);
+  it('should load plugin by URL using ɵloadPluginByUrl', async () => {
+    const manifestUrl = 'https://example.com/manifest.json';
+    vi.mocked(loadManifest).mockResolvedValue(manifest);
 
-    const themeChangeListener = addListenerMock.mock.calls
-      .find((call) => call[0] === 'themechange')
-      ?.at(1);
+    await ɵloadPluginByUrl(manifestUrl);
 
-    const mockTheme: PenpotTheme = 'dark';
-    themeChangeListener(mockTheme);
-
-    expect(themeChange).toHaveBeenCalledWith(mockTheme);
-  });
-
-  it('should close all plugins when a new plugin is loaded', async () => {
-    await loadPlugin(manifest);
-    await loadPlugin(manifest);
-
-    expect(mockApi.penpot.closePlugin).toHaveBeenCalledTimes(1);
-  });
-
-  it('should remove finish event listener on plugin finish', async () => {
-    await loadPlugin(manifest);
-
-    const finishListener = addListenerMock.mock.calls
-      .find((call) => call[0] === 'finish')
-      ?.at(1);
-
-    finishListener();
-
-    expect(mockContext.removeListener).toHaveBeenCalled();
-  });
-
-  it('shoud clean setTimeout when plugin is closed', async () => {
-    const plugin = await loadPlugin(manifest);
-
-    if (!plugin) {
-      throw new Error('Plugin not loaded');
-    }
-
-    plugin.publicPluginApi.setTimeout(() => {}, 1000);
-    plugin.publicPluginApi.setTimeout(() => {}, 1000);
-
-    expect(plugin.timeouts.size).toBe(2);
-
-    const closedCallback = vi.mocked(createApi).mock.calls[0][2];
-    closedCallback();
-
-    expect(plugin.timeouts.size).toBe(0);
-    expect(clearTimeout).toHaveBeenCalledTimes(2);
-  });
-
-  it('should close plugin on evaluation error', async () => {
-    evaluateMock.mockImplementationOnce(() => {
-      throw new Error('Evaluation error');
-    });
-
-    await loadPlugin(manifest);
-
-    expect(mockApi.penpot.closePlugin).toHaveBeenCalled();
-    expect(console.error).toHaveBeenCalled();
-  });
-
-  it('should prevent using the api after closing the plugin', async () => {
-    const plugin = await loadPlugin(manifest);
-
-    if (!plugin) {
-      throw new Error('Plugin not loaded');
-    }
-
-    expect(
-      Object.keys(plugin.compartment.globalThis).filter((it) => !!it).length
-    ).toBeGreaterThan(0);
-
-    const closedCallback = vi.mocked(createApi).mock.calls[0][2];
-    closedCallback();
-
-    expect(
-      Object.keys(plugin.compartment.globalThis).filter((it) => !!it).length
-    ).toBe(0);
-  });
-  it('should re-evaluate and remove listeners if plugin reload', async () => {
-    const plugin = await loadPlugin(manifest);
-
-    if (!plugin) {
-      throw new Error('Plugin not loaded');
-    }
-
-    const onLoad = vi.mocked(createApi).mock.calls[0][3];
-    // regular load
-    await onLoad();
-
-    // reload
-    await onLoad();
-
-    expect(mockApi.removeAllEventListeners).toHaveBeenCalledOnce();
-    expect(evaluateMock).toHaveBeenCalledTimes(2);
-    expect(loadManifestCode).toHaveBeenCalledTimes(2);
+    expect(loadManifest).toHaveBeenCalledWith(manifestUrl);
+    expect(createPlugin).toHaveBeenCalledWith(
+      mockContext,
+      manifest,
+      expect.any(Function)
+    );
   });
 });

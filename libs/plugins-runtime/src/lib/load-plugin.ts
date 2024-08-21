@@ -1,13 +1,10 @@
-import type { Penpot, PenpotContext, PenpotTheme } from '@penpot/plugin-types';
+import type { PenpotContext } from '@penpot/plugin-types';
 
-import { createApi } from './api/index.js';
-import { loadManifest, loadManifestCode } from './parse-manifest.js';
+import { loadManifest } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
-import * as api from './api/index.js';
-import { ses } from './ses.js';
+import { createPlugin } from './create-plugin.js';
 
-let createdApis: ReturnType<typeof createApi>[] = [];
-const multiPlugin = false;
+let plugins: Awaited<ReturnType<typeof createPlugin>>[] = [];
 
 export type ContextBuilder = (id: string) => PenpotContext;
 
@@ -17,13 +14,25 @@ export function setContextBuilder(builder: ContextBuilder) {
   contextBuilder = builder;
 }
 
+export const getPlugins = () => plugins;
+
 const closeAllPlugins = () => {
-  createdApis.forEach((pluginApi) => {
-    pluginApi.penpot.closePlugin();
+  plugins.forEach((pluginApi) => {
+    pluginApi.plugin.close();
   });
 
-  createdApis = [];
+  plugins = [];
 };
+
+window.addEventListener('message', (event) => {
+  try {
+    for (const it of plugins) {
+      it.plugin.sendMessage(event.data);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 export const loadPlugin = async function (manifest: Manifest) {
   try {
@@ -33,99 +42,17 @@ export const loadPlugin = async function (manifest: Manifest) {
       return;
     }
 
-    context.addListener('themechange', (e: PenpotTheme) => api.themeChange(e));
-    const listenerId: symbol = context.addListener('finish', () => {
-      closeAllPlugins();
+    closeAllPlugins();
 
-      context?.removeListener(listenerId);
+    const plugin = await createPlugin(context, manifest, () => {
+      plugins = plugins.filter((api) => api !== plugin);
     });
 
-    const code = await loadManifestCode(manifest);
-
-    ses.hardenIntrinsics();
-
-    if (createdApis && !multiPlugin) {
-      closeAllPlugins();
-    }
-
-    const onClose = () => {
-      createdApis = createdApis.filter((api) => api !== pluginApi);
-
-      timeouts.forEach(clearTimeout);
-      timeouts.clear();
-
-      // Remove all public API from globalThis
-      Object.keys(publicPluginApi).forEach((key) => {
-        delete c.globalThis[key];
-      });
-    };
-
-    let loaded = false;
-
-    const onLoad = async () => {
-      if (!loaded) {
-        loaded = true;
-        return;
-      }
-
-      pluginApi.removeAllEventListeners();
-
-      const code = await loadManifestCode(manifest);
-      c.evaluate(code);
-    };
-
-    const pluginApi = createApi(context, manifest, onClose, onLoad);
-
-    createdApis.push(pluginApi);
-
-    const timeouts = new Set<ReturnType<typeof setTimeout>>();
-
-    const publicPluginApi = {
-      penpot: ses.harden(pluginApi.penpot) as Penpot,
-      fetch: ses.harden((...args: Parameters<typeof fetch>) => {
-        const requestArgs: RequestInit = {
-          ...args[1],
-          credentials: 'omit',
-        };
-
-        return fetch(args[0], requestArgs);
-      }),
-      console: ses.harden(window.console),
-      Math: ses.harden(Math),
-      setTimeout: ses.harden(
-        (...[handler, timeout]: Parameters<typeof setTimeout>) => {
-          const timeoutId = setTimeout(() => {
-            handler();
-          }, timeout);
-
-          timeouts.add(timeoutId);
-
-          return timeoutId;
-        }
-      ) as typeof setTimeout,
-      clearTimeout: ses.harden((id: ReturnType<typeof setTimeout>) => {
-        clearTimeout(id);
-
-        timeouts.delete(id);
-      }),
-    };
-
-    const c = ses.createCompartment(publicPluginApi);
-
-    c.evaluate(code);
-
-    return {
-      compartment: c,
-      publicPluginApi,
-      timeouts,
-      context,
-    };
+    plugins.push(plugin);
   } catch (error) {
     closeAllPlugins();
     console.error(error);
   }
-
-  return;
 };
 
 export const ɵloadPlugin = async function (manifest: Manifest) {
