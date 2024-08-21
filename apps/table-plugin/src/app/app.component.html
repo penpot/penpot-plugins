@@ -1,4 +1,4 @@
-<div>
+<div [formGroup]="form">
   <p class="text body-s">Import a data file (CSV)</p>
   <div class="error" *ngIf="fileError">
     <img
@@ -32,7 +32,7 @@
 
   <div class="checkbox-container">
     <input
-      [(ngModel)]="tableOptions.borders"
+      formControlName="borders"
       class="checkbox-input"
       type="checkbox"
       id="tableBorders"
@@ -43,7 +43,7 @@
   </div>
   <div class="checkbox-container">
     <input
-      [(ngModel)]="tableOptions.alternateRows"
+      formControlName="alternateRows"
       class="checkbox-input"
       type="checkbox"
       id="alternateRow"
@@ -53,7 +53,7 @@
   </div>
   <div class="checkbox-container">
     <input
-      [(ngModel)]="tableOptions.filledHeaderRow"
+      formControlName="filledHeaderRow"
       class="checkbox-input"
       type="checkbox"
       id="filledHeaderRow"
@@ -63,7 +63,7 @@
   </div>
   <div class="checkbox-container">
     <input
-      [(ngModel)]="tableOptions.filledHeaderColumn"
+      formControlName="filledHeaderColumn"
       class="checkbox-input"
       type="checkbox"
       id="filledHeaderColumn"

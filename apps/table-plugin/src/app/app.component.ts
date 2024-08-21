@@ -1,14 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import type { Cell, PluginMessageEvent, TableOptions } from '../app/model';
+import type {
+  Cell,
+  PluginMessageEvent,
+  TableConfigEvent,
+  TableOptions,
+} from '../app/model';
 import { filter, fromEvent, map, merge, take } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -17,18 +22,21 @@ import { FormsModule } from '@angular/forms';
   },
 })
 export class AppComponent {
+  private readonly fb = inject(FormBuilder);
+
   public table: string[][] = [];
   public cells = [...Array(48).keys()];
   public selectedRow = 0;
   public selectedColumn = 0;
   public selectedCell: Cell | undefined;
-  public tableOptions: TableOptions = {
-    filledHeaderRow: true,
-    filledHeaderColumn: false,
-    borders: true,
-    alternateRows: true,
-  };
   public fileError = false;
+
+  public form: FormGroup = this.fb.group({
+    filledHeaderRow: [false],
+    filledHeaderColumn: [false],
+    borders: [false],
+    alternateRows: [false],
+  });
 
   route = inject(ActivatedRoute);
   messages$ = fromEvent<MessageEvent<PluginMessageEvent>>(window, 'message');
@@ -51,6 +59,10 @@ export class AppComponent {
     )
   );
 
+  constructor() {
+    this.initConfig();
+  }
+
   onSelectFile(event: Event) {
     const target = event.target as HTMLInputElement;
     if (
@@ -71,7 +83,7 @@ export class AppComponent {
           content: {
             import: this.table,
             type: 'import',
-            options: this.tableOptions,
+            options: this.form.value,
           },
           type: 'table',
         });
@@ -87,7 +99,7 @@ export class AppComponent {
       content: {
         new: { column: data.column, row: data.row },
         type: 'new',
-        options: this.tableOptions,
+        options: this.form.value,
       },
       type: 'table',
     });
@@ -115,6 +127,54 @@ export class AppComponent {
       column: (cell % 8) + 1,
       row: Math.floor(cell / 8) + 1,
     };
+  }
+
+  private initConfig(): void {
+    this.messages$
+      .pipe(
+        filter(
+          (event) =>
+            event.data.type === 'tableconfig' &&
+            event.data.content.type === 'retrieve'
+        ),
+        take(1),
+        map((event) => {
+          const data = (event.data as TableConfigEvent).content.options;
+
+          return data;
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.form.patchValue(data, { emitEvent: false });
+        } else {
+          this.form.patchValue({
+            filledHeaderRow: true,
+            filledHeaderColumn: false,
+            borders: true,
+            alternateRows: true,
+          });
+        }
+      });
+
+    this.form.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((options: TableOptions) => {
+        this.sendMessage({
+          type: 'tableconfig',
+          content: {
+            type: 'save',
+            options,
+          },
+        });
+      });
+
+    this.sendMessage({
+      type: 'tableconfig',
+      content: {
+        type: 'retrieve',
+      },
+    });
   }
 
   private sendMessage(message: PluginMessageEvent): void {

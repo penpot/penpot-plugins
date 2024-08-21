@@ -6,11 +6,9 @@ penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
   height: 610,
 });
 
-penpot.on('themechange', (theme) => {
-  penpot.ui.sendMessage({ type: 'theme', content: theme });
-});
-
 penpot.ui.onMessage<PluginMessageEvent>((message) => {
+  pluginData(message);
+
   if (message.type === 'table') {
     let numRows = 0;
     let numCols = 0;
@@ -216,4 +214,30 @@ function createFlexCell(
       text.layoutChild.verticalSizing = 'fix';
     }
   }
+}
+
+function pluginData(message: PluginMessageEvent) {
+  if (message.type === 'tableconfig') {
+    const { type, options } = message.content;
+    const page = penpot.getPage();
+
+    if (type === 'save') {
+      page?.setPluginData('table-plugin', JSON.stringify(options));
+    } else if (message.content.type === 'retrieve') {
+      const data = page?.getPluginData('table-plugin');
+      const options = data ? JSON.parse(data) : null;
+
+      sendMessage({
+        type: 'tableconfig',
+        content: {
+          type: 'retrieve',
+          options,
+        },
+      });
+    }
+  }
+}
+
+function sendMessage(message: PluginMessageEvent) {
+  penpot.ui.sendMessage(message);
 }
