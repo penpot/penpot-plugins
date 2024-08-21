@@ -5,6 +5,14 @@ export interface InitPluginEvent {
   };
 }
 
+export interface TableConfigEvent {
+  type: 'tableconfig';
+  content: {
+    type: 'save' | 'retrieve';
+    options?: TableOptions;
+  };
+}
+
 export interface TablePluginEvent {
   type: 'table';
   content: {
@@ -23,7 +31,8 @@ export interface ThemePluginEvent {
 export type PluginMessageEvent =
   | InitPluginEvent
   | TablePluginEvent
-  | ThemePluginEvent;
+  | ThemePluginEvent
+  | TableConfigEvent;
 
 export type Cell = { column: number; row: number };
 
