@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { openUISchema } from '../models/open-ui-options.schema.js';
 import { createModal } from '../create-modal.js';
 
-export default z
+export const openUIApi = z
   .function()
   .args(
     z.string(),
