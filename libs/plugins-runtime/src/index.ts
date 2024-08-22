@@ -16,6 +16,7 @@ repairIntrinsics({
   stackFiltering: 'verbose',
   errorTaming: 'unsafe',
   consoleTaming: 'unsafe',
+  errorTrapping: 'none',
 });
 
 const globalThisAny$ = globalThis as any;
