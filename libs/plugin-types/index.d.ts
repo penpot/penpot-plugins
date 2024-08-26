@@ -131,7 +131,7 @@ export interface PenpotPluginData {
    * Retrieves the data for our own plugin, given a specific key.
    *
    * @param key The key for which to retrieve the data.
-   * Returns the data associated with the key as a string.
+   * @return Returns the data associated with the key as a string.
    *
    * @example
    * ```js
@@ -157,7 +157,7 @@ export interface PenpotPluginData {
   /**
    * Retrieves all the keys for the plugin-specific data.
    *
-   * Returns an array of strings representing all the keys.
+   * @return Returns an array of strings representing all the keys.
    *
    * @example
    * ```js
@@ -172,7 +172,7 @@ export interface PenpotPluginData {
    *
    * @param namespace The namespace for the shared data.
    * @param key The key for which to retrieve the data.
-   * Returns the shared data associated with the key as a string.
+   * @return Returns the shared data associated with the key as a string.
    *
    * @example
    * ```js
@@ -200,7 +200,7 @@ export interface PenpotPluginData {
    * Retrieves all the keys for the shared plugin-specific data in the given namespace.
    *
    * @param namespace The namespace for the shared data.
-   * Returns an array of strings representing all the keys in the namespace.
+   * @return Returns an array of strings representing all the keys in the namespace.
    *
    * @example
    * ```js
@@ -275,6 +275,7 @@ export interface PenpotPage extends PenpotPluginData {
 
   /**
    * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
+   * Requires `content:read` permission.
    */
   root: PenpotShape;
 
@@ -412,7 +413,7 @@ export type PenpotImageData = {
 };
 
 /**
- * Represents fill properties in Penpot.
+ * Represents fill properties in Penpot. You can add a fill to any shape except for groups.
  * This interface includes properties for defining solid color fills, gradient fills, and image fills.
  */
 export interface PenpotFill {
@@ -457,7 +458,7 @@ export type PenpotStrokeCap =
   | 'diamond-marker';
 
 /**
- * Represents stroke properties in Penpot.
+ * Represents stroke properties in Penpot. You can add a stroke to any shape except for groups.
  * This interface includes properties for defining the color, style, width, alignment, and caps of a stroke.
  */
 export interface PenpotStroke {
@@ -1383,12 +1384,12 @@ export interface PenpotShapeBase extends PenpotPluginData {
   readonly height: number;
 
   /**
-   * Returns the bounding box surrounding the current shape
+   * @return Returns the bounding box surrounding the current shape
    */
   readonly bounds: PenpotBounds;
 
   /**
-   * Returns the geometric center of the shape
+   * @return Returns the geometric center of the shape
    */
   readonly center: PenpotPoint;
 
@@ -1514,7 +1515,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
   flipY: boolean;
 
   /**
-   * Returns the rotation in degrees of the shape with respect to it's center.
+   * @return Returns the rotation in degrees of the shape with respect to it's center.
    */
   rotation: number;
 
@@ -1538,61 +1539,61 @@ export interface PenpotShapeBase extends PenpotPluginData {
    */
   readonly layoutCell?: PenpotLayoutChildProperties;
 
-  /*
-   * Returns true if the current shape is inside a component instance
+  /**
+   * @return Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
 
-  /*
-   * Returns true if the current shape is inside a component **main** instance
+  /**
+   * @return Returns true if the current shape is inside a component **main** instance
    */
   isComponentMainInstance(): boolean;
 
-  /*
-   * Returns true if the current shape is inside a component **copy** instance
+  /**
+   * @return Returns true if the current shape is inside a component **copy** instance
    */
   isComponentCopyInstance(): boolean;
 
-  /*
-   * Returns true when the current shape is inside a **nested* component instance
+  /**
+   * @return Returns true when the current shape is inside a **nested* component instance
    */
   isComponentNestedInstance(): boolean;
 
-  /*
-   * Returns true when the current shape is the root of a component tree
+  /**
+   * @return Returns true when the current shape is the root of a component tree
    */
   isComponentRoot(): boolean;
 
-  /*
-   * Returns true when the current shape is the head of a components tree nested structure
+  /**
+   * @return Returns true when the current shape is the head of a components tree nested structure
    */
   isComponentHead(): boolean;
 
-  /*
-   * Returns the equivalent shape in the component main instance. If the current shape is inside a
+  /**
+   * @return Returns the equivalent shape in the component main instance. If the current shape is inside a
    * main instance will return `null`;
    */
   componentRefShape(): PenpotShape | null;
 
-  /*
-   * Returns the root of the component tree structure for the current shape. If the current shape
+  /**
+   * @return Returns the root of the component tree structure for the current shape. If the current shape
    * is already a root will return itself.
    */
   componentRoot(): PenpotShape | null;
 
-  /*
-   * Returns the head of the component tree structure for the current shape. If the current shape
+  /**
+   * @return Returns the head of the component tree structure for the current shape. If the current shape
    * is already a head will return itself.
    */
   componentHead(): PenpotShape | null;
 
-  /*
-   * If the shape is a component instance, returns the reference to the component associated
+  /**
+   * @return If the shape is a component instance, returns the reference to the component associated
    * otherwise will return null
    */
   component(): PenpotLibraryComponent | null;
 
-  /*
+  /**
    * If the current shape is a component it will remove the component information and leave the
    * shape as a "basic shape"
    */
@@ -1667,7 +1668,7 @@ export interface PenpotShapeBase extends PenpotPluginData {
 
   /**
    * Creates a clone of the shape.
-   * Returns a new instance of the shape with identical properties.
+   * @return Returns a new instance of the shape with identical properties.
    */
   clone(): PenpotShape;
 
@@ -1744,7 +1745,7 @@ export interface PenpotFrame extends PenpotShapeBase {
 
   /**
    * Adds a flex layout configuration to the frame (so it's necessary to create a frame first of all).
-   * Returns the flex layout configuration added to the frame.
+   * @return Returns the flex layout configuration added to the frame.
    * @example
    * ```js
    * const frame = penpot.createFrame();
@@ -1762,7 +1763,7 @@ export interface PenpotFrame extends PenpotShapeBase {
   addFlexLayout(): PenpotFlexLayout;
   /**
    * Adds a grid layout configuration to the frame (so it's necessary to create a frame first of all). You can add rows and columns, check addRow/addColumn.
-   * Returns the grid layout configuration added to the frame.
+   * @return Returns the grid layout configuration added to the frame.
    * @example
    * ```js
    * const frame = penpot.createFrame();
@@ -1854,7 +1855,7 @@ export interface PenpotBool extends PenpotShapeBase {
 
   /**
    * Converts the boolean shape to its path data representation.
-   * Returns the path data (d attribute) as a string.
+   * @return Returns the path data (d attribute) as a string.
    */
   toD(): string;
   /**
@@ -1922,7 +1923,7 @@ export interface PenpotPath extends PenpotShapeBase {
   readonly type: 'path';
   /**
    * Converts the path shape to its path data representation.
-   * Returns the path data (d attribute) as a string.
+   * @return Returns the path data (d attribute) as a string.
    */
   toD(): string;
   /**
@@ -2129,9 +2130,9 @@ export interface PenpotText extends PenpotShapeBase {
 
   /**
    * Gets a text range within the text shape.
-   * Returns a PenpotTextRange object representing the specified text range.
    * @param start - The start index of the text range.
    * @param end - The end index of the text range.
+   * @return Returns a PenpotTextRange object representing the specified text range.
    *
    * @example
    * ```js
@@ -2360,7 +2361,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
 
   /**
    * Converts the library color into a fill object.
-   * Returns a `PenpotFill` object representing the color as a fill.
+   * @return Returns a `PenpotFill` object representing the color as a fill.
    *
    * @example
    * ```js
@@ -2370,7 +2371,7 @@ export interface PenpotLibraryColor extends PenpotLibraryElement {
   asFill(): PenpotFill;
   /**
    * Converts the library color into a stroke object.
-   * Returns a `PenpotStroke` object representing the color as a stroke.
+   * @return Returns a `PenpotStroke` object representing the color as a stroke.
    *
    * @example
    * ```js
@@ -2472,7 +2473,7 @@ export interface PenpotLibraryTypography extends PenpotLibraryElement {
 export interface PenpotLibraryComponent extends PenpotLibraryElement {
   /**
    * Creates an instance of the component.
-   * Returns a `PenpotShape` object representing the instance of the component.
+   * @return Returns a `PenpotShape` object representing the instance of the component.
    *
    * @example
    * ```js
@@ -2481,8 +2482,8 @@ export interface PenpotLibraryComponent extends PenpotLibraryElement {
    */
   instance(): PenpotShape;
 
-  /*
-   * Returns the reference to the main component shape.
+  /**
+   * @return Returns the reference to the main component shape.
    */
   mainInstance(): PenpotShape;
 }
@@ -2556,7 +2557,7 @@ export interface PenpotLibrary extends PenpotPluginData {
 
   /**
    * Creates a new color element in the library.
-   * Returns a new `PenpotLibraryColor` object representing the created color element.
+   * @return Returns a new `PenpotLibraryColor` object representing the created color element.
    *
    * @example
    * ```js
@@ -2568,7 +2569,7 @@ export interface PenpotLibrary extends PenpotPluginData {
 
   /**
    * Creates a new typography element in the library.
-   * Returns a new `PenpotLibraryTypography` object representing the created typography element.
+   * @return Returns a new `PenpotLibraryTypography` object representing the created typography element.
    *
    * @example
    * ```js
@@ -2580,7 +2581,7 @@ export interface PenpotLibrary extends PenpotPluginData {
   /**
    * Creates a new component element in the library using the provided shapes.
    * @param shapes An array of `PenpotShape` objects representing the shapes to be included in the component.
-   * Returns a new `PenpotLibraryComponent` object representing the created component element.
+   * @return Returns a new `PenpotLibraryComponent` object representing the created component element.
    *
    * @example
    * ```js
@@ -2617,7 +2618,7 @@ export type PenpotLibraryContext = {
 
   /**
    * Retrieves a summary of available libraries that can be connected to.
-   * Returns a promise that resolves to an array of `PenpotLibrarySummary` objects representing available libraries.
+   * @return Returns a promise that resolves to an array of `PenpotLibrarySummary` objects representing available libraries.
    *
    * @example
    * ```js
@@ -2628,7 +2629,7 @@ export type PenpotLibraryContext = {
 
   /**
    * Connects to a specific library identified by its ID.
-   * Returns a promise that resolves to the `PenpotLibrary` object representing the connected library.
+   * @return Returns a promise that resolves to the `PenpotLibrary` object representing the connected library.
    * @param libraryId - The ID of the library to connect to.
    *
    * @example
@@ -2742,8 +2743,8 @@ export interface PenpotFontsContext {
 
   /**
    * Finds a font by its unique identifier.
-   * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param id - The ID of the font to find.
+   * @return Returns the `PenpotFont` object if found, otherwise `null`.
    *
    * @example
    * ```js
@@ -2757,8 +2758,8 @@ export interface PenpotFontsContext {
 
   /**
    * Finds a font by its name.
-   * Returns the `PenpotFont` object if found, otherwise `null`.
    * @param name - The name of the font to find.
+   * @return Returns the `PenpotFont` object if found, otherwise `null`.
    *
    * @example
    * ```js
@@ -2772,8 +2773,8 @@ export interface PenpotFontsContext {
 
   /**
    * Finds all fonts matching a specific ID.
-   * Returns an array of `PenpotFont` objects matching the provided ID.
    * @param id - The ID to match against.
+   * @return Returns an array of `PenpotFont` objects matching the provided ID.
    *
    * @example
    * ```js
@@ -2785,8 +2786,8 @@ export interface PenpotFontsContext {
 
   /**
    * Finds all fonts matching a specific name.
-   * Returns an array of `PenpotFont` objects matching the provided name.
    * @param name - The name to match against.
+   * @return Returns an array of `PenpotFont` objects matching the provided name.
    *
    * @example
    * ```js
@@ -2984,7 +2985,7 @@ export interface PenpotContext {
 
   /**
    * Retrieves file data from the current Penpot context. Requires `content:read` permission.
-   * Returns the file data or `null` if no file is available.
+   * @return Returns the file data or `null` if no file is available.
    *
    * @example
    * ```js
@@ -2995,7 +2996,7 @@ export interface PenpotContext {
   getFile(): PenpotFile | null;
   /**
    * Retrieves page data from the current Penpot context. Requires `content:read` permission.
-   * Returns the page data or `null` if no page is available.
+   * @return Returns the page data or `null` if no page is available.
    *
    * @example
    * ```js
@@ -3006,7 +3007,7 @@ export interface PenpotContext {
   getPage(): PenpotPage | null;
   /**
    * Retrieves the IDs of the currently selected elements in Penpot. Requires `content:read` permission.
-   * Returns an array of IDs representing the selected elements.
+   * @return Returns an array of IDs representing the selected elements.
    *
    * @example
    * ```js
@@ -3017,7 +3018,7 @@ export interface PenpotContext {
   getSelected(): string[];
   /**
    * Retrieves the shapes of the currently selected elements in Penpot. Requires `content:read` permission.
-   * Returns an array of shapes representing the selected elements.
+   * @return Returns an array of shapes representing the selected elements.
    *
    * @example
    * ```js
@@ -3029,7 +3030,7 @@ export interface PenpotContext {
 
   /**
    * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
-   * Returns an array of colors and their shape information.
+   * @return Returns an array of colors and their shape information.
    *
    * @example
    * ```js
@@ -3055,7 +3056,7 @@ export interface PenpotContext {
 
   /**
    * Retrieves the current theme (light or dark) in Penpot.
-   * Returns the current theme.
+   * @return Returns the current theme.
    *
    * @example
    * ```js
@@ -3069,7 +3070,7 @@ export interface PenpotContext {
    * Uploads media to Penpot and retrieves its image data. Requires `content:write` permission.
    * @param name The name of the media.
    * @param url The URL of the media to be uploaded.
-   * Returns a promise that resolves to the image data of the uploaded media.
+   * @return Returns a promise that resolves to the image data of the uploaded media.
    *
    * @example
    * ```js
@@ -3089,7 +3090,7 @@ export interface PenpotContext {
    * Uploads media to penpot and retrieves the image data. Requires `content:write` permission.
    * @param name The name of the media.
    * @param data The image content data
-   * Returns a promise that resolves to the image data of the uploaded media.
+   * @return Returns a promise that resolves to the image data of the uploaded media.
    *
    * @example
    * ```js
@@ -3106,7 +3107,7 @@ export interface PenpotContext {
   /**
    * Groups the specified shapes. Requires `content:write` permission.
    * @param shapes - An array of shapes to group.
-   * Returns the newly created group or `null` if the group could not be created.
+   * @return Returns the newly created group or `null` if the group could not be created.
    * @example
    * ```js
    * const penpotShapesArray = penpot.selection;
@@ -3138,7 +3139,36 @@ export interface PenpotContext {
    * const shape = penpot.createRectangle();
    * // just change the values like this
    * shape.name = "Example rectangle";
+   *
+   * // for solid color
    * shape.fills = [{ fillColor: "#7EFFF5" }];
+   * // for linear gradient color
+   * shape.fills = [{
+   *  fillColorGradient: {
+   *    "type": "linear",
+   *    "startX": 0.5,
+   *    "startY": 0,
+   *    "endX": 0.5,
+   *    "endY": 1,
+   *    "width": 1,
+   *    "stops": [
+   *      {
+   *        "color": "#003ae9",
+   *        "opacity": 1,
+   *        "offset": 0
+   *      },
+   *      {
+   *        "color": "#003ae9",
+   *        "opacity": 0,
+   *        "offset": 1
+   *      }
+   *    ]
+   *  }
+   *}];
+   * // for a image fill
+   * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
+   * shape.fills = [{ fillOpacity: 1, fillImage: imageData }];
+   *
    * shape.borderRadius = 8;
    * shape.strokes = [
    *  {
@@ -3160,8 +3190,9 @@ export interface PenpotContext {
    * ```js
    * const frame = penpot.createFrame();
    *
-   * // to add grid layout of flex layout
+   * // to add grid layout
    * frame.addGridLayout();
+   * // to add flex layout
    * frame.addFlexLayout();
    *
    * // to create a shape inside the frame
@@ -3178,7 +3209,36 @@ export interface PenpotContext {
    * const shape = penpot.createEllipse();
    * // just change the values like this
    * shape.name = "Example ellipse";
+   * 
+   * // for solid color
    * shape.fills = [{ fillColor: "#7EFFF5" }];
+   * // for linear gradient color
+   * shape.fills = [{
+   *  fillColorGradient: {
+   *    "type": "linear",
+   *    "startX": 0.5,
+   *    "startY": 0,
+   *    "endX": 0.5,
+   *    "endY": 1,
+   *    "width": 1,
+   *    "stops": [
+   *      {
+   *        "color": "#003ae9",
+   *        "opacity": 1,
+   *        "offset": 0
+   *      },
+   *      {
+   *        "color": "#003ae9",
+   *        "opacity": 0,
+   *        "offset": 1
+   *      }
+   *    ]
+   *  }
+   *}];
+   * // for a image fill
+   * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
+   * shape.fills = [{ fillOpacity: 1, fillImage: imageData }];
+   *
    * shape.strokes = [
    *  {
    *    strokeColor: "#2e3434",
@@ -3195,7 +3255,12 @@ export interface PenpotContext {
    *
    * @example
    * ```js
-   * penpot.createPath();
+   * const path = penpot.createPath();
+   * path.name = "My path";
+   *
+   * // for solid color
+   * path.fills = [{ fillColor: "#7EFFF5" }];
+   *
    * ```
    */
   createPath(): PenpotPath;
@@ -3203,7 +3268,7 @@ export interface PenpotContext {
    * Creates a PenpotBoolean shape based on the specified boolean operation and shapes. Requires `content:write` permission.
    * @param boolType The type of boolean operation ('union', 'difference', 'exclude', 'intersection').
    * @param shapes An array of shapes to perform the boolean operation on.
-   * Returns the newly created PenpotBoolean shape resulting from the boolean operation.
+   * @return Returns the newly created PenpotBoolean shape resulting from the boolean operation.
    *
    * @example
    * ```js
@@ -3217,7 +3282,7 @@ export interface PenpotContext {
   /**
    * Creates a PenpotGroup from an SVG string. Requires `content:write` permission.
    * @param svgString The SVG string representing the shapes to be converted into a group.
-   * Returns the newly created PenpotGroup containing the shapes from the SVG.
+   * @return Returns the newly created PenpotGroup containing the shapes from the SVG.
    *
    * @example
    * ```js
@@ -3228,7 +3293,7 @@ export interface PenpotContext {
   /**
    * Creates a PenpotText shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the PenpotText shape.
-   * Returns the new created shape, if the shape wasn't created can return null.
+   * @return Returns the new created shape, if the shape wasn't created can return null.
    *
    * @example
    * ```js
@@ -3239,10 +3304,10 @@ export interface PenpotContext {
    * text.growType = 'auto-height';
    * text.fontFamily = 'Work Sans';
    * text.fontSize = '12';
+   * text.fills = [{fillColor: '#9f05ff', fillOpacity: 1}];
+   * text.strokes = [{strokeOpacity: 1, strokeStyle: 'solid', strokeWidth: 2, strokeColor: '#deabff', strokeAlignment: 'outer'}];
    * board.appendChild(text);
    * ```
-   * @document
-   * ![example image](https://placehold.co/600x400)
    */
   createText(text: string): PenpotText | null;
 
@@ -3309,17 +3374,17 @@ export interface PenpotContext {
   removeListener(listenerId: symbol): void;
 
   /**
-   * Opens the viewer section
+   * Opens the viewer section. Requires `content:read` permission.
    */
   openViewer(): void;
 
   /**
-   * Creates a new page
+   * Creates a new page. Requires `content:write` permission.
    */
   createPage(): PenpotPage;
 
   /**
-   * Changes the current open page to given page
+   * Changes the current open page to given page. Requires `content:read` permission.
    * @param page the page to open
    *
    * @example
@@ -3670,8 +3735,8 @@ export interface PenpotContextGeometryUtils {
   /**
    * Calculates the center point of a given array of shapes.
    * This method computes the geometric center (centroid) of the bounding boxes of the provided shapes.
-   * Returns the center point as an object with `x` and `y` coordinates, or null if the array is empty.
    * @param shapes - The array of shapes to calculate the center for.
+   * @return Returns the center point as an object with `x` and `y` coordinates, or null if the array is empty.
    *
    * @example
    * ```js
@@ -3694,64 +3759,64 @@ export interface PenpotContextGeometryUtils {
 export interface PenpotContextTypesUtils {
   /**
    * Checks if the given shape is a frame.
-   * Returns true if the shape is a PenpotFrame, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotFrame, otherwise false.
    */
   isFrame(shape: PenpotShape): shape is PenpotFrame;
 
   /**
    * Checks if the given shape is a group.
-   * Returns true if the shape is a PenpotGroup, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotGroup, otherwise false.
    */
   isGroup(shape: PenpotShape): shape is PenpotGroup;
 
   /**
    * Checks if the given shape is a mask.
-   * Returns true if the shape is a PenpotGroup (acting as a mask), otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotGroup (acting as a mask), otherwise false.
    */
   isMask(shape: PenpotShape): shape is PenpotGroup;
 
   /**
    * Checks if the given shape is a boolean operation.
-   * Returns true if the shape is a PenpotBool, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotBool, otherwise false.
    */
   isBool(shape: PenpotShape): shape is PenpotBool;
 
   /**
    * Checks if the given shape is a rectangle.
-   * Returns true if the shape is a PenpotRectangle, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotRectangle, otherwise false.
    */
   isRectangle(shape: PenpotShape): shape is PenpotRectangle;
 
   /**
    * Checks if the given shape is a path.
-   * Returns true if the shape is a PenpotPath, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotPath, otherwise false.
    */
   isPath(shape: PenpotShape): shape is PenpotPath;
 
   /**
    * Checks if the given shape is a text element.
-   * Returns true if the shape is a PenpotText, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotText, otherwise false.
    */
   isText(shape: PenpotShape): shape is PenpotText;
 
   /**
    * Checks if the given shape is an ellipse.
-   * Returns true if the shape is a PenpotEllipse, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotEllipse, otherwise false.
    */
   isEllipse(shape: PenpotShape): shape is PenpotEllipse;
 
   /**
    * Checks if the given shape is an SVG.
-   * Returns true if the shape is a PenpotSvgRaw, otherwise false.
    * @param shape - The shape to check.
+   * @return Returns true if the shape is a PenpotSvgRaw, otherwise false.
    */
   isSVG(shape: PenpotShape): shape is PenpotSvgRaw;
 }
