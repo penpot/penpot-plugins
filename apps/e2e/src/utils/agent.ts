@@ -1,12 +1,14 @@
 import puppeteer from 'puppeteer';
 import { PenpotApi } from './api';
 import { getFileUrl } from './get-file-url';
+import { idObjectToArray } from './clean-id';
 
 interface Shape {
   ':id': string;
   ':frame-id'?: string;
   ':parent-id'?: string;
   ':shapes'?: string[];
+  ':layout-grid-cells'?: string[];
 }
 
 function replaceIds(shapes: Shape[]) {
@@ -30,6 +32,13 @@ function replaceIds(shapes: Shape[]) {
         node[':shapes'] = node[':shapes']?.map((shapeId) => {
           return shapeId === id ? newId : shapeId;
         });
+      }
+
+      if (node[':layout-grid-cells']) {
+        node[':layout-grid-cells'] = idObjectToArray(
+          node[':layout-grid-cells'],
+          newId
+        );
       }
     }
   }
