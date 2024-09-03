@@ -1787,13 +1787,13 @@ export interface Board extends ShapeBase {
    * @example
    * ```js
    * const board = penpot.createBoard();
-   * const flex = board.addGridLayout();
+   * const flex = board.addFlexLayout();
    *
    * // You can change the flex properties as follows.
    * flex.dir = "column";
    * flex.wrap = "wrap";
    * flex.alignItems = "center";
-   * lex.justifyContent = "center";
+   * flex.justifyContent = "center";
    * flex.horizontalSizing = "fill";
    * flex.verticalSizing = "fill";
    * ```
