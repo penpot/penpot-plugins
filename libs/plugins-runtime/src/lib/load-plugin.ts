@@ -1,4 +1,4 @@
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { Context } from '@penpot/plugin-types';
 
 import { loadManifest } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
@@ -6,7 +6,7 @@ import { createPlugin } from './create-plugin.js';
 
 let plugins: Awaited<ReturnType<typeof createPlugin>>[] = [];
 
-export type ContextBuilder = (id: string) => PenpotContext;
+export type ContextBuilder = (id: string) => Context;
 
 let contextBuilder: ContextBuilder | null = null;
 

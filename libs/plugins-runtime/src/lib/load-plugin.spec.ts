@@ -8,7 +8,7 @@ import {
 } from './load-plugin';
 import { loadManifest } from './parse-manifest';
 import { createPlugin } from './create-plugin';
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { Context } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
 
 vi.mock('./parse-manifest', () => ({
@@ -20,7 +20,7 @@ vi.mock('./create-plugin', () => ({
 }));
 
 describe('plugin-loader', () => {
-  let mockContext: PenpotContext;
+  let mockContext: Context;
   let manifest: Manifest;
   let mockPluginApi: Awaited<ReturnType<typeof createPlugin>>;
   let mockClose: ReturnType<typeof vi.fn>;
@@ -51,7 +51,7 @@ describe('plugin-loader', () => {
     mockContext = {
       addListener: vi.fn(),
       removeListener: vi.fn(),
-    } as unknown as PenpotContext;
+    } as unknown as Context;
 
     vi.mocked(createPlugin).mockResolvedValue(mockPluginApi);
     setContextBuilder(() => mockContext);

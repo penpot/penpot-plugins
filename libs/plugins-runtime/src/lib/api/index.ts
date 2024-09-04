@@ -1,27 +1,27 @@
 import type {
   Penpot,
   EventsMap,
-  PenpotPage,
-  PenpotShape,
-  PenpotRectangle,
-  PenpotFrame,
-  PenpotGroup,
-  PenpotViewport,
-  PenpotText,
-  PenpotFile,
-  PenpotTheme,
-  PenpotLibraryContext,
-  PenpotEllipse,
-  PenpotPath,
-  PenpotBoolType,
-  PenpotBool,
-  PenpotUser,
-  PenpotActiveUser,
-  PenpotFontsContext,
-  PenpotSvgRaw,
-  PenpotColor,
-  PenpotColorShapeInfo,
-  PenpotHistoryContext,
+  Page,
+  Shape,
+  Rectangle,
+  Board,
+  Group,
+  Viewport,
+  Text,
+  File,
+  Theme,
+  LibraryContext,
+  Ellipse,
+  Path,
+  BooleanType,
+  Boolean,
+  User,
+  ActiveUser,
+  FontsContext,
+  SvgRaw,
+  Color,
+  ColorShapeInfo,
+  HistoryContext,
 } from '@penpot/plugin-types';
 
 import { Permissions } from '../models/manifest.model.js';
@@ -71,36 +71,36 @@ export function createApi(
 
     utils: {
       geometry: {
-        center(shapes: PenpotShape[]) {
+        center(shapes: Shape[]) {
           return (window as any).app.plugins.public_utils.centerShapes(shapes);
         },
       },
       types: {
-        isFrame(shape: PenpotShape): shape is PenpotFrame {
-          return shape.type === 'frame';
+        isBoard(shape: Shape): shape is Board {
+          return shape.type === 'board';
         },
-        isGroup(shape: PenpotShape): shape is PenpotGroup {
+        isGroup(shape: Shape): shape is Group {
           return shape.type === 'group';
         },
-        isMask(shape: PenpotShape): shape is PenpotGroup {
+        isMask(shape: Shape): shape is Group {
           return shape.type === 'group' && shape.isMask();
         },
-        isBool(shape: PenpotShape): shape is PenpotBool {
-          return shape.type === 'bool';
+        isBool(shape: Shape): shape is Boolean {
+          return shape.type === 'boolean';
         },
-        isRectangle(shape: PenpotShape): shape is PenpotRectangle {
-          return shape.type === 'rect';
+        isRectangle(shape: Shape): shape is Rectangle {
+          return shape.type === 'rectangle';
         },
-        isPath(shape: PenpotShape): shape is PenpotPath {
+        isPath(shape: Shape): shape is Path {
           return shape.type === 'path';
         },
-        isText(shape: PenpotShape): shape is PenpotText {
+        isText(shape: Shape): shape is Text {
           return shape.type === 'text';
         },
-        isEllipse(shape: PenpotShape): shape is PenpotEllipse {
-          return shape.type === 'circle';
+        isEllipse(shape: Shape): shape is Ellipse {
+          return shape.type === 'ellipse';
         },
-        isSVG(shape: PenpotShape): shape is PenpotSvgRaw {
+        isSVG(shape: Shape): shape is SvgRaw {
           return shape.type === 'svg-raw';
         },
       },
@@ -133,60 +133,60 @@ export function createApi(
 
     // Penpot State API
 
-    get root(): PenpotShape {
+    get root(): Shape {
       checkPermission('content:read');
       return plugin.context.root;
     },
 
-    get currentPage(): PenpotPage {
+    get currentPage(): Page {
       checkPermission('content:read');
       return plugin.context.currentPage;
     },
 
-    get selection(): PenpotShape[] {
+    get selection(): Shape[] {
       checkPermission('content:read');
       return plugin.context.selection;
     },
 
-    set selection(value: PenpotShape[]) {
+    set selection(value: Shape[]) {
       checkPermission('content:read');
       plugin.context.selection = value;
     },
 
-    get viewport(): PenpotViewport {
+    get viewport(): Viewport {
       return plugin.context.viewport;
     },
 
-    get history(): PenpotHistoryContext {
+    get history(): HistoryContext {
       return plugin.context.history;
     },
 
-    get library(): PenpotLibraryContext {
+    get library(): LibraryContext {
       checkPermission('library:read');
       return plugin.context.library;
     },
 
-    get fonts(): PenpotFontsContext {
+    get fonts(): FontsContext {
       checkPermission('content:read');
       return plugin.context.fonts;
     },
 
-    get currentUser(): PenpotUser {
+    get currentUser(): User {
       checkPermission('user:read');
       return plugin.context.currentUser;
     },
 
-    get activeUsers(): PenpotActiveUser[] {
+    get activeUsers(): ActiveUser[] {
       checkPermission('user:read');
       return plugin.context.activeUsers;
     },
 
-    getFile(): PenpotFile | null {
+    getFile(): File | null {
       checkPermission('content:read');
       return plugin.context.getFile();
     },
 
-    getPage(): PenpotPage | null {
+    getPage(): Page | null {
       checkPermission('content:read');
       return plugin.context.getPage();
     },
@@ -196,75 +196,66 @@ export function createApi(
       return plugin.context.getSelected();
     },
 
-    getSelectedShapes(): PenpotShape[] {
+    getSelectedShapes(): Shape[] {
       checkPermission('content:read');
       return plugin.context.getSelectedShapes();
     },
 
-    shapesColors(
-      shapes: PenpotShape[]
-    ): (PenpotColor & PenpotColorShapeInfo)[] {
+    shapesColors(shapes: Shape[]): (Color & ColorShapeInfo)[] {
       checkPermission('content:read');
       return plugin.context.shapesColors(shapes);
     },
 
-    replaceColor(
-      shapes: PenpotShape[],
-      oldColor: PenpotColor,
-      newColor: PenpotColor
-    ) {
+    replaceColor(shapes: Shape[], oldColor: Color, newColor: Color) {
       checkPermission('content:write');
       return plugin.context.replaceColor(shapes, oldColor, newColor);
     },
 
-    getTheme(): PenpotTheme {
+    getTheme(): Theme {
       return plugin.context.getTheme();
     },
 
-    createFrame(): PenpotFrame {
+    createBoard(): Board {
       checkPermission('content:write');
-      return plugin.context.createFrame();
+      return plugin.context.createBoard();
     },
 
-    createRectangle(): PenpotRectangle {
+    createRectangle(): Rectangle {
       checkPermission('content:write');
       return plugin.context.createRectangle();
     },
 
-    createEllipse(): PenpotEllipse {
+    createEllipse(): Ellipse {
       checkPermission('content:write');
       return plugin.context.createEllipse();
     },
 
-    createText(text: string): PenpotText | null {
+    createText(text: string): Text | null {
       checkPermission('content:write');
       return plugin.context.createText(text);
     },
 
-    createPath(): PenpotPath {
+    createPath(): Path {
       checkPermission('content:write');
       return plugin.context.createPath();
     },
 
-    createBoolean(
-      boolType: PenpotBoolType,
-      shapes: PenpotShape[]
-    ): PenpotBool | null {
+    createBoolean(boolType: BooleanType, shapes: Shape[]): Boolean | null {
       checkPermission('content:write');
       return plugin.context.createBoolean(boolType, shapes);
     },
 
-    createShapeFromSvg(svgString: string): PenpotGroup | null {
+    createShapeFromSvg(svgString: string): Group | null {
       checkPermission('content:write');
       return plugin.context.createShapeFromSvg(svgString);
     },
 
-    group(shapes: PenpotShape[]): PenpotGroup | null {
+    group(shapes: Shape[]): Group | null {
       checkPermission('content:write');
       return plugin.context.group(shapes);
     },
 
-    ungroup(group: PenpotGroup, ...other: PenpotGroup[]): void {
+    ungroup(group: Group, ...other: Group[]): void {
       checkPermission('content:write');
       plugin.context.ungroup(group, ...other);
     },
@@ -280,7 +271,7 @@ export function createApi(
     },
 
     generateMarkup(
-      shapes: PenpotShape[],
+      shapes: Shape[],
       options?: { type?: 'html' | 'svg' }
     ): string {
       checkPermission('content:read');
@@ -288,7 +279,7 @@ export function createApi(
     },
 
     generateStyle(
-      shapes: PenpotShape[],
+      shapes: Shape[],
       options?: {
         type?: 'css';
         withPrelude?: boolean;
@@ -304,12 +295,12 @@ export function createApi(
       plugin.context.openViewer();
     },
 
-    createPage(): PenpotPage {
+    createPage(): Page {
       checkPermission('content:write');
       return plugin.context.createPage();
     },
 
-    openPage(page: PenpotPage): void {
+    openPage(page: Page): void {
       checkPermission('content:read');
       plugin.context.openPage(page);
     },

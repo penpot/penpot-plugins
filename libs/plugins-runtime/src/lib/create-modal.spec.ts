@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { createModal } from './create-modal.js';
-import type { PenpotTheme } from '@penpot/plugin-types';
+import type { Theme } from '@penpot/plugin-types';
 import type { OpenUIOptions } from './models/open-ui-options.model';
 import type { PluginModalElement } from './modal/plugin-modal';
 
@@ -27,7 +27,7 @@ describe('createModal', () => {
   });
 
   it('should create and configure a modal element', () => {
-    const theme: PenpotTheme = 'light';
+    const theme: Theme = 'light';
     const options: OpenUIOptions = { width: 400, height: 600 };
 
     const modal = createModal(
@@ -61,7 +61,7 @@ describe('createModal', () => {
   });
 
   it('should apply default dimensions if options are not provided', () => {
-    const theme: PenpotTheme = 'light';
+    const theme: Theme = 'light';
 
     const modal = createModal('Test Modal', 'https://example.com', theme);
 
@@ -70,7 +70,7 @@ describe('createModal', () => {
   });
 
   it('should limit modal dimensions to the window size', () => {
-    const theme: PenpotTheme = 'light';
+    const theme: Theme = 'light';
     const options: OpenUIOptions = { width: 2000, height: 2000 };
 
     window.innerWidth = 1000;
@@ -97,7 +97,7 @@ describe('createModal', () => {
   });
 
   it('should apply minimum dimensions to the modal', () => {
-    const theme: PenpotTheme = 'light';
+    const theme: Theme = 'light';
     const options: OpenUIOptions = { width: 100, height: 100 };
 
     const modal = createModal(

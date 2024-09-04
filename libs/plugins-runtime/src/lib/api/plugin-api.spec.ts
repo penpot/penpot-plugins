@@ -1,6 +1,6 @@
 import { expect, describe, vi } from 'vitest';
 import { createApi } from './index.js';
-import type { PenpotFile } from '@penpot/plugin-types';
+import type { File } from '@penpot/plugin-types';
 
 const mockUrl = 'http://fake.fake/';
 
@@ -107,7 +107,7 @@ describe('Plugin api', () => {
         name: 'test',
         id: '123',
         revn: 0,
-      } as PenpotFile;
+    } as File;
 
       pluginManager.context.getFile.mockImplementation(() => exampleFile);
 
