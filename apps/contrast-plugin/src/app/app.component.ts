@@ -13,7 +13,7 @@ import type {
 } from '../model';
 import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { PenpotShape } from '@penpot/plugin-types';
+import { Shape } from '@penpot/plugin-types';
 
 @Component({
   standalone: true,
@@ -221,7 +221,7 @@ export class AppComponent {
     return [r, g, b];
   }
 
-  #getShapeColor(shape?: PenpotShape): string | undefined {
+  #getShapeColor(shape?: Shape): string | undefined {
     const fills = shape?.fills;
     if (fills && fills !== 'mixed') {
       return fills?.[0]?.fillColor ?? shape?.strokes?.[0]?.strokeColor;
