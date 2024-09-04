@@ -1,4 +1,4 @@
-import { PenpotGridLayout } from '@penpot/plugin-types';
+import { GridLayout } from '@penpot/plugin-types';
 import { PluginMessageEvent, TablePluginEvent } from './app/model';
 
 penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
@@ -20,7 +20,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
       numCols = message.content.new.column;
     }
 
-    const frame = penpot.createFrame();
+    const frame = penpot.createBoard();
     frame.name = 'Table';
 
     const viewport = penpot.viewport;
@@ -60,7 +60,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
 });
 
 function createGroupCell(
-  grid: PenpotGridLayout,
+  grid: GridLayout,
   numRows: number,
   numCols: number,
   row: number,
@@ -140,14 +140,14 @@ function createGroupCell(
 }
 
 function createFlexCell(
-  grid: PenpotGridLayout,
+  grid: GridLayout,
   numRows: number,
   numCols: number,
   row: number,
   col: number,
   message: TablePluginEvent
 ) {
-  const board = penpot.createFrame();
+  const board = penpot.createBoard();
 
   if (col === 0 && row === 0) {
     board.borderRadiusTopLeft = 8;
