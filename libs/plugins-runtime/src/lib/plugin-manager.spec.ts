@@ -3,7 +3,7 @@ import { createPluginManager } from './plugin-manager';
 import { loadManifestCode, getValidUrl } from './parse-manifest.js';
 import { PluginModalElement } from './modal/plugin-modal.js';
 import { openUIApi } from './api/openUI.api.js';
-import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
+import type { Context, Theme } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
 
 vi.mock('./parse-manifest.js', () => ({
@@ -16,7 +16,7 @@ vi.mock('./api/openUI.api.js', () => ({
 }));
 
 describe('createPluginManager', () => {
-  let mockContext: PenpotContext;
+  let mockContext: Context;
   let manifest: Manifest;
   let onCloseCallback: ReturnType<typeof vi.fn>;
   let onReloadModal: ReturnType<typeof vi.fn>;
@@ -59,7 +59,7 @@ describe('createPluginManager', () => {
       addListener: vi.fn().mockReturnValue(Symbol()),
       removeListener: vi.fn(),
       getTheme: vi.fn().mockReturnValue('light'),
-    } as unknown as PenpotContext;
+    } as unknown as Context;
 
     onCloseCallback = vi.fn();
     onReloadModal = vi.fn();
@@ -159,7 +159,7 @@ describe('createPluginManager', () => {
       throw new Error('Theme change callback not found');
     }
 
-    themeChangeCallback('dark' as PenpotTheme);
+    themeChangeCallback('dark' as Theme);
 
     expect(mockModal.setTheme).toHaveBeenCalledWith('dark');
   });

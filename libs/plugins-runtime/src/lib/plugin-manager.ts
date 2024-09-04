@@ -1,4 +1,4 @@
-import type { PenpotContext, PenpotTheme } from '@penpot/plugin-types';
+import type { Context, Theme } from '@penpot/plugin-types';
 
 import { getValidUrl, loadManifestCode } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
@@ -8,7 +8,7 @@ import { OpenUIOptions } from './models/open-ui-options.model.js';
 import { RegisterListener, DestroyListener } from './models/plugin.model.js';
 
 export async function createPluginManager(
-  context: PenpotContext,
+  context: Context,
   manifest: Manifest,
   onCloseCallback: () => void,
   onReloadModal: (code: string) => void
@@ -21,12 +21,9 @@ export async function createPluginManager(
   let uiMessagesCallbacks: ((message: unknown) => void)[] = [];
   const timeouts = new Set<ReturnType<typeof setTimeout>>();
 
-  const themeChangeId = context.addListener(
-    'themechange',
-    (theme: PenpotTheme) => {
-      modal?.setTheme(theme);
-    }
-  );
+  const themeChangeId = context.addListener('themechange', (theme: Theme) => {
+    modal?.setTheme(theme);
+  });
 
   const listenerId: symbol = context.addListener('finish', () => {
     closePlugin();
