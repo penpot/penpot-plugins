@@ -1,6 +1,6 @@
 import { Component, effect, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import type { PenpotShape } from '@penpot/plugin-types';
+import type { Shape } from '@penpot/plugin-types';
 
 @Component({
   standalone: true,
@@ -113,7 +113,7 @@ export class AppComponent {
   #pageId: null | string = null;
   #fileId = null;
   #revn = 0;
-  #selection = signal<PenpotShape[]>([]);
+  #selection = signal<Shape[]>([]);
 
   form = new FormGroup({
     name: new FormControl(''),
@@ -245,7 +245,7 @@ export class AppComponent {
     this.projectName.set(name || 'Unknown');
   }
 
-  #refreshSelection(selection: PenpotShape[]) {
+  #refreshSelection(selection: Shape[]) {
     this.#selection.set(selection);
     if (selection && selection.length > 0) {
       this.form.get('name')?.setValue(this.#selection()[0].name);

@@ -221,7 +221,7 @@ function addIcon() {
 }
 
 function createGrid() {
-  const frame = penpot.createFrame();
+  const frame = penpot.createBoard();
   frame.name = 'Frame Grid';
 
   const viewport = penpot.viewport;
@@ -263,7 +263,7 @@ function createGrid() {
 }
 
 function createColors() {
-  const frame = penpot.createFrame();
+  const frame = penpot.createBoard();
   frame.name = 'Palette';
 
   const viewport = penpot.viewport;
@@ -337,7 +337,7 @@ function createColors() {
         return;
       }
 
-      const board = penpot.createFrame();
+      const board = penpot.createBoard();
       grid.appendChild(board, row + 1, col + 1);
       board.fills = [color.asFill()];
       board.strokes = [
