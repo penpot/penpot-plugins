@@ -2,7 +2,7 @@ import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
 import { createPlugin } from './create-plugin';
 import { createPluginManager } from './plugin-manager.js';
 import { createSandbox } from './create-sandbox.js';
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { Context } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
 
 vi.mock('./plugin-manager.js', () => ({
@@ -14,7 +14,7 @@ vi.mock('./create-sandbox.js', () => ({
 }));
 
 describe('createPlugin', () => {
-  let mockContext: PenpotContext;
+  let mockContext: Context;
   let manifest: Manifest;
   let onCloseCallback: ReturnType<typeof vi.fn>;
   let mockPluginManager: Awaited<ReturnType<typeof createPluginManager>>;
@@ -59,7 +59,7 @@ describe('createPlugin', () => {
       addListener: vi.fn(),
       removeListener: vi.fn(),
       getTheme: vi.fn().mockReturnValue('light'),
-    } as unknown as PenpotContext;
+    } as unknown as Context;
 
     onCloseCallback = vi.fn();
 

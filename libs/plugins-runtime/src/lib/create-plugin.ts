@@ -1,10 +1,10 @@
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { Context } from '@penpot/plugin-types';
 import type { Manifest } from './models/manifest.model.js';
 import { createPluginManager } from './plugin-manager.js';
 import { createSandbox } from './create-sandbox.js';
 
 export async function createPlugin(
-  context: PenpotContext,
+  context: Context,
   manifest: Manifest,
   onCloseCallback: () => void
 ) {

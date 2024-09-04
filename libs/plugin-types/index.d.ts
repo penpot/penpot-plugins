@@ -354,7 +354,7 @@ export interface Page extends PluginData {
   /**
    * Removes the `guide` from the current page.
    */
-  removeRulerGuide(guide: RulerGuide);
+  removeRulerGuide(guide: RulerGuide): void;
 }
 
 /**
@@ -1845,7 +1845,7 @@ export interface Board extends ShapeBase {
   /**
    * Removes the `guide` from the current page.
    */
-  removeRulerGuide(guide: RulerGuide);
+  removeRulerGuide(guide: RulerGuide): void;
 }
 
 /**
@@ -2312,18 +2312,18 @@ export interface Viewport {
   /**
    * Resets the zoom level.
    */
-  zoomReset();
+  zoomReset(): void;
 
   /**
    * Changes the viewport and zoom so can fit all the current shapes in the page.
    */
-  zoomToFitAll();
+  zoomToFitAll(): void;
 
   /**
    * Changes the viewport and zoom so all the `shapes` in the argument are
    * visible.
    */
-  zoomToShapes(shapes: Shape[]);
+  zoomToShapes(shapes: Shape[]): void;
 }
 
 /**
@@ -2341,7 +2341,7 @@ export interface Viewport {
 export type Shape =
   | Board
   | Group
-  | Bool
+  | Boolean
   | Rectangle
   | Path
   | Text
@@ -3363,7 +3363,7 @@ export interface Context {
    * const booleanShape = context.createBoolean('union', [shape1, shape2]);
    * ```
    */
-  createBoolean(boolType: BooleanType, shapes: Shape[]): Bool | null;
+  createBoolean(boolType: BooleanType, shapes: Shape[]): Boolean | null;
   /**
    * Creates a Group from an SVG string. Requires `content:write` permission.
    * @param svgString The SVG string representing the shapes to be converted into a group.
@@ -3861,7 +3861,7 @@ export interface ContextTypesUtils {
    * @param shape - The shape to check.
    * @return Returns true if the shape is a Bool, otherwise false.
    */
-  isBool(shape: Shape): shape is Bool;
+  isBool(shape: Shape): shape is Boolean;
 
   /**
    * Checks if the given shape is a rectangle.
