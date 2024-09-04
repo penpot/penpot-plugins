@@ -1,4 +1,4 @@
-import { PenpotShape } from '@penpot/plugin-types';
+import { Shape } from '@penpot/plugin-types';
 
 export interface ReadyPluginEvent {
   type: 'ready';
@@ -7,14 +7,14 @@ export interface InitPluginEvent {
   type: 'init';
   content: {
     theme: string;
-    selection: PenpotShape[];
+    selection: Shape[];
   };
 }
 
 export interface SelectionPluginEvent {
   type: 'selection';
   content: {
-    selection: PenpotShape[];
+    selection: Shape[];
   };
 }
 export interface ThemePluginEvent {

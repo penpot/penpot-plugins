@@ -9,7 +9,7 @@ import type {
 } from '../app/model';
 import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PenpotShape } from '@penpot/plugin-types';
+import { Shape } from '@penpot/plugin-types';
 
 @Component({
   standalone: true,
@@ -138,7 +138,7 @@ export class AppComponent {
     }, 750);
   }
 
-  public resultAddText(shape: PenpotShape) {
+  public resultAddText(shape: Shape) {
     return this.addText.replace('[Original layer name]', shape.name);
   }
 
