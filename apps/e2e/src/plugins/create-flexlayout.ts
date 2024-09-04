@@ -1,6 +1,6 @@
 export default function () {
   function createFlexLayout(): void {
-    const frame = penpot.createFrame();
+    const frame = penpot.createBoard();
     frame.horizontalSizing = 'auto';
     frame.verticalSizing = 'auto';
 
