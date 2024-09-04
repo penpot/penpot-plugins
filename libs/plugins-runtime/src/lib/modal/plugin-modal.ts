@@ -1,7 +1,7 @@
 const closeSvg = `
 <svg width="16"  height="16"xmlns="http://www.w3.org/2000/svg" fill="none"><g class="fills"><rect rx="0" ry="0" width="16" height="16" class="frame-background"/></g><g class="frame-children"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" class="fills"/><g class="strokes"><path d="M11.997 3.997 8 8l-3.997 4.003m-.006-8L8 8l4.003 3.997" style="fill: none; stroke-width: 1; stroke: rgb(143, 157, 163); stroke-opacity: 1; stroke-linecap: round;" class="stroke-shape"/></g></g></svg>`;
 
-import type { PenpotTheme } from '@penpot/plugin-types';
+import type { Theme } from '@penpot/plugin-types';
 import { dragHandler } from '../drag-handler.js';
 import modalCss from './plugin.modal.css?inline';
 
@@ -14,7 +14,7 @@ export class PluginModalElement extends HTMLElement {
   #wrapper: HTMLElement | null = null;
   #dragEvents: ReturnType<typeof dragHandler> | null = null;
 
-  setTheme(theme: PenpotTheme) {
+  setTheme(theme: Theme) {
     if (this.#wrapper) {
       this.#wrapper.setAttribute('data-theme', theme);
     }

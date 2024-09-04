@@ -7,7 +7,7 @@ import {
   ɵloadPluginByUrl,
 } from './lib/load-plugin.js';
 
-import type { PenpotContext } from '@penpot/plugin-types';
+import type { Context } from '@penpot/plugin-types';
 
 console.log('%c[PLUGINS] Loading plugin system', 'color: #008d7c');
 
@@ -22,7 +22,7 @@ repairIntrinsics({
 const globalThisAny$ = globalThis as any;
 
 globalThisAny$.initPluginsRuntime = (
-  contextBuilder: (id: string) => PenpotContext
+  contextBuilder: (id: string) => Context
 ) => {
   try {
     console.log('%c[PLUGINS] Initialize runtime', 'color: #008d7c');
