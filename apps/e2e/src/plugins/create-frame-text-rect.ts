@@ -1,11 +1,7 @@
-import type {
-  PenpotFrame,
-  PenpotRectangle,
-  PenpotText,
-} from '@penpot/plugin-types';
+import type { Board, Rectangle, Text } from '@penpot/plugin-types';
 
 export default function () {
-  function createText(text: string): PenpotText | undefined {
+  function createText(text: string): Text | undefined {
     const textNode = penpot.createText(text);
 
     if (!textNode) {
@@ -18,7 +14,7 @@ export default function () {
     return textNode;
   }
 
-  function createRectangle(): PenpotRectangle {
+  function createRectangle(): Rectangle {
     const rectangle = penpot.createRectangle();
 
     rectangle.setPluginData('customKey', 'customValue');
@@ -31,19 +27,19 @@ export default function () {
     return rectangle;
   }
 
-  function createFrame(): PenpotFrame {
-    const frame = penpot.createFrame();
+  function createBoard(): Board {
+    const board = penpot.createBoard();
 
-    frame.name = 'Frame name';
+    board.name = 'Board name';
 
     console.log(penpot.viewport.center.x);
 
-    frame.x = penpot.viewport.center.x;
-    frame.y = penpot.viewport.center.y;
+    board.x = penpot.viewport.center.x;
+    board.y = penpot.viewport.center.y;
 
-    frame.borderRadius = 8;
+    board.borderRadius = 8;
 
-    frame.resize(300, 300);
+    board.resize(300, 300);
 
     const text = penpot.createText('Hello from frame');
 
@@ -53,12 +49,12 @@ export default function () {
 
     text.x = 10;
     text.y = 10;
-    frame.appendChild(text);
+    board.appendChild(text);
 
-    return frame;
+    return board;
   }
 
   createText('Hello from plugin');
   createRectangle();
-  createFrame();
+  createBoard();
 }

@@ -1,6 +1,6 @@
 export default function () {
   function createGridLayout(): void {
-    const frame = penpot.createFrame();
+    const frame = penpot.createBoard();
 
     const grid = frame.addGridLayout();
 
