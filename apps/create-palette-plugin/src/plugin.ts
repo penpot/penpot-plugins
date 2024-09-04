@@ -20,7 +20,7 @@ function createPalette() {
   const width = cols * 200 + Math.max(0, cols - 1) * 10 + 20;
   const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
-  const frame = penpot.createFrame();
+  const frame = penpot.createBoard();
   frame.name = 'Palette';
 
   const viewport = penpot.viewport;
@@ -67,7 +67,7 @@ function createPalette() {
         return;
       }
 
-      const board = penpot.createFrame();
+      const board = penpot.createBoard();
       grid.appendChild(board, row + 1, col + 1);
       board.fills = [color.asFill()];
       board.strokes = [
