@@ -1,4 +1,4 @@
-import { PenpotText } from '@penpot/plugin-types';
+import { Text } from '@penpot/plugin-types';
 import type {
   PluginMessageEvent,
   PluginUIEvent,
@@ -17,8 +17,8 @@ penpot.on('themechange', (theme) => {
   sendMessage({ type: 'theme', content: theme });
 });
 
-function getSelectedShapes(): PenpotText[] {
-  return penpot.selection.filter((it): it is PenpotText => {
+function getSelectedShapes(): Text[] {
+  return penpot.selection.filter((it): it is Text => {
     return penpot.utils.types.isText(it);
   });
 }
