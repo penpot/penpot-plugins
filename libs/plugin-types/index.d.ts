@@ -95,23 +95,6 @@ export interface Penpot
   /**
    * Removes an event listener for the specified event type.
    *
-   * @param type The event type to stop listening for.
-   * @param callback The callback function to remove.
-   *
-   * @example
-   * ```js
-   * penpot.off('pagechange', () => {...do something}).
-   * ```
-   * @deprecated this method should not be used. Use instead off sending the `listenerId` (return value from `on` method)
-   */
-  off<T extends keyof EventsMap>(
-    type: T,
-    callback?: (event: EventsMap[T]) => void
-  ): void;
-
-  /**
-   * Removes an event listener for the specified event type.
-   *
    * @param listenerId the id returned by the `on` method when the callback was set
    *
    * @example

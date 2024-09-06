@@ -5,7 +5,7 @@ import { Manifest } from './models/manifest.model.js';
 import { PluginModalElement } from './modal/plugin-modal.js';
 import { openUIApi } from './api/openUI.api.js';
 import { OpenUIOptions } from './models/open-ui-options.model.js';
-import { RegisterListener, DestroyListener } from './models/plugin.model.js';
+import { RegisterListener } from './models/plugin.model.js';
 
 export async function createPluginManager(
   context: Context,
@@ -31,20 +31,17 @@ export async function createPluginManager(
     context?.removeListener(listenerId);
   });
 
-  // TODO: Remove when deprecating method `off`
-  let listeners: { [key: string]: Map<object, symbol> } = {};
+  let listeners: symbol[] = [];
 
   const removeAllEventListeners = () => {
-    context.removeListener(themeChangeId);
+    destroyListener(themeChangeId);
 
-    Object.entries(listeners).forEach(([, map]) => {
-      map.forEach((id) => {
-        destroyListener(id);
-      });
+    listeners.forEach((id) => {
+      destroyListener(id);
     });
 
     uiMessagesCallbacks = [];
-    listeners = {};
+    listeners = [];
   };
 
   const closePlugin = () => {
@@ -115,25 +112,13 @@ export async function createPluginManager(
       props
     );
 
-    if (!listeners[type]) {
-      listeners[type] = new Map<object, symbol>();
-    }
-    listeners[type].set(callback, id);
+    listeners.push(id);
+
     return id;
   };
 
-  const destroyListener: DestroyListener = (idtype, callback) => {
-    let listenerId: symbol | undefined;
-
-    if (typeof idtype === 'symbol') {
-      listenerId = idtype;
-    } else if (callback) {
-      listenerId = listeners[idtype].get(callback);
-    }
-
-    if (listenerId) {
-      context.removeListener(listenerId);
-    }
+  const destroyListener = (listenerId: symbol) => {
+    context.removeListener(listenerId);
   };
 
   return {
