@@ -124,11 +124,8 @@ export function createApi(
       return plugin.registerListener(type, callback, props);
     },
 
-    off<T extends keyof EventsMap>(
-      idtype: symbol | T,
-      callback?: (event: EventsMap[T]) => void
-    ): void {
-      plugin.destroyListener(idtype, callback);
+    off(eventId: symbol): void {
+      plugin.destroyListener(eventId);
     },
 
     // Penpot State API
