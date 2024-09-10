@@ -195,6 +195,71 @@ export interface PluginData {
 }
 
 /**
+ * Comments allow the team to have one priceless conversation getting and
+ * providing feedback right over the designs and prototypes.
+ */
+export interface Comment {
+  /**
+   * The `user` that has created the comment.
+   */
+  readonly user: User;
+
+  /**
+   * The `date` the comment has been created.
+   */
+  readonly date: Date;
+
+  /**
+   * The `text` for the commentary. The owner can modify the comment.
+   */
+  text: string;
+
+  /**
+   * Remove the current comment from its comment thread. Only the owner can remove their comments.
+   */
+  delete(): void;
+}
+
+/**
+ * Represents a list of comments one after the other. Usually this threads
+ * are conversations the users have in Penpot.
+ */
+export interface CommentThread {
+  /**
+   * If the thread is attached to a `board` this will have that board
+   * reference.
+   */
+  board?: Board;
+
+  /**
+   * The `position` in absolute coordinates in the canvas.
+   */
+  position: Point;
+
+  /**
+   * List of `comments` ordered by creation date.
+   */
+  comments: Comment[];
+
+  /**
+   * Whether the thread has been marked as `resolved` or not.
+   */
+  resolved: boolean;
+
+  /**
+   * Creates a new comment after the last one in the thread. The current user will
+   * be used as the creation user.
+   */
+  reply(text: string): Comment;
+
+  /**
+   * Removes the current comment thread. Only the user that created the thread can
+   * delete it.
+   */
+  delete(): void;
+}
+
+/**
  * File represents a file in the Penpot application.
  * It includes properties for the file's identifier, name, and revision number.
  */
@@ -260,6 +325,11 @@ export interface Page extends PluginData {
    * The ruler guides attached to the board
    */
   readonly rulerGuides: RulerGuide[];
+
+  /**
+   * The comment threads that are in the page.
+   */
+  readonly commentThreads: CommentThread[];
 
   /**
    * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
@@ -328,7 +398,7 @@ export interface Page extends PluginData {
   /**
    * Creates a new ruler guide.
    */
-  createRulerGuide(
+  addRulerGuide(
     orientation: RulerGuideOrientation,
     value: number,
     board?: Board
@@ -338,6 +408,30 @@ export interface Page extends PluginData {
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * Creates a new comment thread in the `position`. Optionaly adds
+   * it into the `board`.
+   * Returns the thread created.
+   */
+  addCommentThread(position: Point, board?: Board): CommentThread;
+
+  /**
+   * Removes the comment thread.
+   */
+  removeCommentThread(commentThread: CommentThread): void;
+
+  /**
+   * Find all the comments that match the criteria.
+   * - `onlyYours`: if true will return the threads where the current
+   *                user has engaged.
+   * - `showResolved`: by default resolved comments will be hidden. If `true`
+   *                   the resolved will be returned.
+   */
+  findComments(criteria: {
+    onlyYours: boolean;
+    showResolved: boolean;
+  }): CommentThread[];
 }
 
 /**
@@ -776,18 +870,13 @@ export interface RulerGuide {
   /**
    * `orientation` indicates whether the ruler is either `horizontal` or `vertical`
    */
-  orientation: RulerGuideOrientation;
+  readonly orientation: RulerGuideOrientation;
 
   /**
-   * `value` is the position in the axis in absolute positioning.
+   * `position` is the position in the axis in absolute positioning. If this is a frame
+   * guide will return the positioning relative to the board.
    */
-  value: number;
-
-  /**
-   * If the property board is present will be the value relative to the coordinates
-   * for the board. Otherwise will be undefined.
-   */
-  boardValue?: number;
+  position: number;
 
   /**
    * If the guide is attached to a board this will retrieve the board shape
@@ -1740,6 +1829,11 @@ export interface Board extends ShapeBase {
   readonly rulerGuides: RulerGuide[];
 
   /**
+   * The comment threads that are in the board.
+   */
+  readonly commentThreads: CommentThread[];
+
+  /**
    * The horizontal sizing behavior of the board.
    */
   horizontalSizing?: 'auto' | 'fix';
@@ -1820,15 +1914,36 @@ export interface Board extends ShapeBase {
   /**
    * Creates a new ruler guide.
    */
-  createRulerGuide(
-    orientation: RulerGuideOrientation,
-    value: number
-  ): RulerGuide;
+  addRulerGuide(orientation: RulerGuideOrientation, value: number): RulerGuide;
 
   /**
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * Creates a new comment thread in the `position`. Optionaly adds
+   * it into the `board`.
+   * Returns the thread created.
+   */
+  addCommentThread(position: Point): CommentThread;
+
+  /**
+   * Removes the comment thread.
+   */
+  removeCommentThread(commentThread: CommentThread): void;
+
+  /**
+   * Find all the comments that match the criteria.
+   * - `onlyYours`: if true will return the threads where the current
+   *                user has engaged.
+   * - `showResolved`: by default resolved comments will be hidden. If `true`
+   *                   the resolved will be returned.
+   */
+  findComments(criteria: {
+    onlyYours: boolean;
+    showResolved: boolean;
+  }): CommentThread[];
 }
 
 /**
@@ -2306,7 +2421,7 @@ export interface Viewport {
    * Changes the viewport and zoom so all the `shapes` in the argument are
    * visible.
    */
-  zoomToShapes(shapes: Shape[]): void;
+  zoomIntoView(shapes: Shape[]): void;
 }
 
 /**
@@ -3458,6 +3573,44 @@ export interface Context {
    * ```
    */
   openPage(page: Page): void;
+
+  /**
+   * Aligning will move all the selected layers to a position relative to one
+   * of them in the horizontal direction.
+   * @param shapes to align
+   * @param direction where the shapes will be aligned
+   */
+  alignHorizontal(
+    shapes: Shape[],
+    direction: 'left' | 'center' | 'right'
+  ): void;
+
+  /**
+   * Aligning will move all the selected layers to a position relative to one
+   * of them in the vertical direction.
+   * @param shapes to align
+   * @param direction where the shapes will be aligned
+   */
+  alignVertical(shapes: Shape[], direction: 'top' | 'center' | 'bottom'): void;
+
+  /**
+   * Distributing objects to position them  horizontally with equal distances between them.
+   * @param shapes to distribute
+   */
+  distributeHorizontal(shapes: Shape[]): void;
+
+  /**
+   * Distributing objects to position them vertically with equal distances between them.
+   * @param shapes to distribute
+   */
+  distributeVertical(shapes: Shape[]): void;
+
+  /**
+   * Converts the shapes into Paths. If the shapes are complex will put together
+   * all its paths into one.
+   * @param shapes to flatten
+   */
+  flatten(shapes: Shape[]): Path[];
 }
 
 /**
