@@ -18,6 +18,7 @@ vi.mock('./ses.js', () => ({
       };
     }),
     harden: vi.fn().mockImplementation((obj) => obj),
+    safeReturn: vi.fn().mockImplementation((obj) => obj),
   },
 }));
 
@@ -90,21 +91,47 @@ describe('createSandbox', () => {
     expect(Object.keys(compartment.globalThis).length).toBe(0);
   });
 
-  it('should ensure fetch requests omit credentials', async () => {
+  it('should ensure fetch requests omit credentials and return a harden response', async () => {
+    const mockResponse = {
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      url: 'https://example.com/api',
+      text: vi.fn().mockResolvedValue('response text'),
+      json: vi.fn().mockResolvedValue({ key: 'value' }),
+    };
+
     const sandbox = createSandbox(mockPlugin);
     const fetchSpy = vi
       .spyOn(window, 'fetch')
-      .mockResolvedValue(new Response());
+      .mockResolvedValue(mockResponse as unknown as Response);
 
     await sandbox.compartment.globalThis['fetch']('https://example.com/api', {
       method: 'GET',
       credentials: 'include',
+      headers: {
+        Authorization: 'Bearer token',
+      },
     });
 
     expect(fetchSpy).toHaveBeenCalledWith('https://example.com/api', {
       method: 'GET',
       credentials: 'omit',
+      headers: expect.objectContaining({
+        Authorization: '',
+      }),
     });
+
+    expect(ses.safeReturn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        url: 'https://example.com/api',
+        text: expect.any(Function),
+        json: expect.any(Function),
+      })
+    );
 
     fetchSpy.mockRestore();
   });
@@ -121,5 +148,16 @@ describe('createSandbox', () => {
     expect(
       Object.keys(sandbox.compartment.globalThis).filter((it) => !!it).length
     ).toBe(0);
+  });
+
+  it('should return safe values for penpot methods via proxy', () => {
+    const sandbox = createSandbox(mockPlugin);
+    const mockPenpotMethod = vi.fn().mockReturnValue('penpot result');
+    sandbox.compartment.globalThis['penpot'].mockMethod = mockPenpotMethod;
+
+    const result = sandbox.compartment.globalThis['penpot'].mockMethod();
+
+    expect(ses.safeReturn).toHaveBeenCalledWith('penpot result');
+    expect(result).toBe('penpot result');
   });
 });
