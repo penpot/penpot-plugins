@@ -19,6 +19,12 @@ vi.mock('./create-plugin', () => ({
   createPlugin: vi.fn(),
 }));
 
+vi.mock('./ses.js', () => ({
+  ses: {
+    harden: vi.fn().mockImplementation((obj) => obj),
+  },
+}));
+
 describe('plugin-loader', () => {
   let mockContext: Context;
   let manifest: Manifest;

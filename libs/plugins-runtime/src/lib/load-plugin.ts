@@ -3,6 +3,7 @@ import type { Context } from '@penpot/plugin-types';
 import { loadManifest } from './parse-manifest.js';
 import { Manifest } from './models/manifest.model.js';
 import { createPlugin } from './create-plugin.js';
+import { ses } from './ses.js';
 
 let plugins: Awaited<ReturnType<typeof createPlugin>>[] = [];
 
@@ -44,9 +45,13 @@ export const loadPlugin = async function (manifest: Manifest) {
 
     closeAllPlugins();
 
-    const plugin = await createPlugin(context, manifest, () => {
-      plugins = plugins.filter((api) => api !== plugin);
-    });
+    const plugin = await createPlugin(
+      ses.harden(context) as Context,
+      manifest,
+      () => {
+        plugins = plugins.filter((api) => api !== plugin);
+      }
+    );
 
     plugins.push(plugin);
   } catch (error) {

@@ -8,6 +8,16 @@ export async function createPlugin(
   manifest: Manifest,
   onCloseCallback: () => void
 ) {
+  const evaluateSandbox = async () => {
+    try {
+      sandbox.evaluate();
+    } catch (error) {
+      console.error(error);
+
+      plugin.close();
+    }
+  };
+
   const plugin = await createPluginManager(
     context,
     manifest,
@@ -16,12 +26,13 @@ export async function createPlugin(
       onCloseCallback();
     },
     function onReloadModal() {
-      sandbox.evaluate();
+      evaluateSandbox();
     }
   );
 
   const sandbox = createSandbox(plugin);
-  sandbox.evaluate();
+
+  evaluateSandbox();
 
   return {
     plugin,

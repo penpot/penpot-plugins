@@ -106,4 +106,14 @@ describe('createPlugin', () => {
 
     expect(mockSandbox.evaluate).toHaveBeenCalled();
   });
+
+  it('should call plugin.close when there is an exception during sandbox evaluation', async () => {
+    vi.mocked(mockSandbox.evaluate).mockImplementation(() => {
+      throw new Error('Evaluation error');
+    });
+
+    await createPlugin(mockContext, manifest, onCloseCallback);
+
+    expect(mockPluginManager.close).toHaveBeenCalled();
+  });
 });
