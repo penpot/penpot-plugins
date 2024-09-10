@@ -301,6 +301,37 @@ export function createApi(
       checkPermission('content:read');
       plugin.context.openPage(page);
     },
+
+    alignHorizontal(
+      shapes: Shape[],
+      direction: 'left' | 'center' | 'right'
+    ): void {
+      checkPermission('content:write');
+      plugin.context.alignHorizontal(shapes, direction);
+    },
+
+    alignVertical(
+      shapes: Shape[],
+      direction: 'top' | 'center' | 'bottom'
+    ): void {
+      checkPermission('content:write');
+      plugin.context.alignVertical(shapes, direction);
+    },
+
+    distributeHorizontal(shapes: Shape[]): void {
+      checkPermission('content:write');
+      plugin.context.distributeHorizontal(shapes);
+    },
+
+    distributeVertical(shapes: Shape[]): void {
+      checkPermission('content:write');
+      plugin.context.distributeVertical(shapes);
+    },
+
+    flatten(shapes: Shape[]): Path[] {
+      checkPermission('content:write');
+      return plugin.context.flatten(shapes);
+    },
   };
 
   return {
