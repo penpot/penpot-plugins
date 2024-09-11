@@ -16,7 +16,7 @@
 
 .color-box {
   block-size: 66px;
-  border: 1px solid var(--background-quaternary);
+  border: 1px solid var(--db-quaternary);
   border-radius: var(--spacing-8);
   background: linear-gradient(
     to right,
@@ -89,5 +89,9 @@
       background-color: var(--error-200);
       border-color: var(--error-500);
     }
+  }
+
+  .color-box {
+    border: 1px solid #d0d3d6;
   }
 }
