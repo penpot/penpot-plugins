@@ -107,616 +107,47 @@ export interface Penpot
 }
 
 /**
- * Provides methods for managing plugin-specific data associated with a Penpot shape.
+ * Type for all the possible types of actions in an interaction.
  */
-export interface PluginData {
+export type Action =
+  | NavigateTo
+  | OpenOverlay
+  | ToggleOverlay
+  | CloseOverlay
+  | PreviousScreen
+  | OpenUrl;
+
+/**
+ * Represents an active user in Penpot, extending the `User` interface.
+ * This interface includes additional properties specific to active users.
+ */
+export interface ActiveUser extends User {
   /**
-   * Retrieves the data for our own plugin, given a specific key.
-   *
-   * @param key The key for which to retrieve the data.
-   * @return Returns the data associated with the key as a string.
+   * The position of the active user.
    *
    * @example
    * ```js
-   * const data = shape.getPluginData('exampleKey');
-   * console.log(data);
+   * const userPosition = activeUser.position;
+   * console.log(userPosition);
    * ```
    */
-  getPluginData(key: string): string;
-
+  position?: { x: number; y: number };
   /**
-   * Sets the plugin-specific data for the given key.
-   *
-   * @param key The key for which to set the data.
-   * @param value The data to set for the key.
+   * The zoom level of the active user.
    *
    * @example
    * ```js
-   * shape.setPluginData('exampleKey', 'exampleValue');
+   * const userZoom = activeUser.zoom;
+   * console.log(userZoom);
    * ```
    */
-  setPluginData(key: string, value: string): void;
-
-  /**
-   * Retrieves all the keys for the plugin-specific data.
-   *
-   * @return Returns an array of strings representing all the keys.
-   *
-   * @example
-   * ```js
-   * const keys = shape.getPluginDataKeys();
-   * console.log(keys);
-   * ```
-   */
-  getPluginDataKeys(): string[];
-
-  /**
-   * If we know the namespace of an external plugin, this is the way to get their data.
-   *
-   * @param namespace The namespace for the shared data.
-   * @param key The key for which to retrieve the data.
-   * @return Returns the shared data associated with the key as a string.
-   *
-   * @example
-   * ```js
-   * const sharedData = shape.getSharedPluginData('exampleNamespace', 'exampleKey');
-   * console.log(sharedData);
-   * ```
-   */
-  getSharedPluginData(namespace: string, key: string): string;
-
-  /**
-   * Sets the shared plugin-specific data for the given namespace and key.
-   *
-   * @param namespace The namespace for the shared data.
-   * @param key The key for which to set the data.
-   * @param value The data to set for the key.
-   *
-   * @example
-   * ```js
-   * shape.setSharedPluginData('exampleNamespace', 'exampleKey', 'exampleValue');
-   * ```
-   */
-  setSharedPluginData(namespace: string, key: string, value: string): void;
-
-  /**
-   * Retrieves all the keys for the shared plugin-specific data in the given namespace.
-   *
-   * @param namespace The namespace for the shared data.
-   * @return Returns an array of strings representing all the keys in the namespace.
-   *
-   * @example
-   * ```js
-   * const sharedKeys = shape.getSharedPluginDataKeys('exampleNamespace');
-   * console.log(sharedKeys);
-   * ```
-   */
-  getSharedPluginDataKeys(namespace: string): string[];
+  readonly zoom?: number;
 }
 
 /**
- * Comments allow the team to have one priceless conversation getting and
- * providing feedback right over the designs and prototypes.
+ * Type of all the animations that can be added to an interaction.
  */
-export interface Comment {
-  /**
-   * The `user` that has created the comment.
-   */
-  readonly user: User;
-
-  /**
-   * The `date` the comment has been created.
-   */
-  readonly date: Date;
-
-  /**
-   * The `text` for the commentary. The owner can modify the comment.
-   */
-  text: string;
-
-  /**
-   * Remove the current comment from its comment thread. Only the owner can remove their comments.
-   */
-  delete(): void;
-}
-
-/**
- * Represents a list of comments one after the other. Usually this threads
- * are conversations the users have in Penpot.
- */
-export interface CommentThread {
-  /**
-   * If the thread is attached to a `board` this will have that board
-   * reference.
-   */
-  board?: Board;
-
-  /**
-   * The `position` in absolute coordinates in the canvas.
-   */
-  position: Point;
-
-  /**
-   * List of `comments` ordered by creation date.
-   */
-  comments: Comment[];
-
-  /**
-   * Whether the thread has been marked as `resolved` or not.
-   */
-  resolved: boolean;
-
-  /**
-   * Creates a new comment after the last one in the thread. The current user will
-   * be used as the creation user.
-   */
-  reply(text: string): Comment;
-
-  /**
-   * Removes the current comment thread. Only the user that created the thread can
-   * delete it.
-   */
-  delete(): void;
-}
-
-/**
- * File represents a file in the Penpot application.
- * It includes properties for the file's identifier, name, and revision number.
- */
-export interface File extends PluginData {
-  /**
-   * The `id` property is a unique identifier for the file.
-   */
-  readonly id: string;
-
-  /**
-   * The `name` for the file
-   */
-  name: string;
-
-  /**
-   * The `revn` will change for every document update
-   */
-  revn: number;
-
-  /**
-   * List all the pages for the current file
-   */
-  pages: Page[];
-
-  /*
-   * Export the current file to an archive.
-   * @param `exportType` indicates the type of file to generate.
-   * - `'penpot'` will create a *.penpot file with a binary representation of the file
-   * - `'zip'` will create a *.zip with the file exported in several SVG files with some JSON metadata
-   * @param `libraryExportType` indicates what to do with the linked libraries of the file when
-   * exporting it. Defaults to `all` if not sent.
-   * - `'all'` will include the libraries as external files that will be exported in a single bundle
-   * - `'merge'` will add all the assets into the main file and only one file will be imported
-   * - `'detach'` will unlink all the external assets and no libraries will be imported
-   * @param `progressCallback` for `zip` export can be pass this callback so a progress report is sent.
-   *
-   * @example
-   * ```js
-   * const exportedData = await file.export('penpot', 'all');
-   * ```
-   */
-  export(
-    exportType: 'penpot' | 'zip',
-    libraryExportType?: 'all' | 'merge' | 'detach'
-  ): Promise<Uint8Array>;
-}
-
-/**
- * Page represents a page in the Penpot application.
- * It includes properties for the page's identifier and name, as well as methods for managing shapes on the page.
- */
-export interface Page extends PluginData {
-  /**
-   * The `id` property is a unique identifier for the page.
-   */
-  readonly id: string;
-  /**
-   * The `name` property is the name of the page.
-   */
-  name: string;
-
-  /**
-   * The ruler guides attached to the board
-   */
-  readonly rulerGuides: RulerGuide[];
-
-  /**
-   * The comment threads that are in the page.
-   */
-  readonly commentThreads: CommentThread[];
-
-  /**
-   * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
-   * Requires `content:read` permission.
-   */
-  root: Shape;
-
-  /**
-   * Retrieves a shape by its unique identifier.
-   * @param id The unique identifier of the shape.
-   *
-   * @example
-   * ```js
-   * const shape = penpot.getPage().getShapeById('shapeId');
-   * ```
-   */
-  getShapeById(id: string): Shape | null;
-
-  /**
-   * Finds all shapes on the page.
-   * Optionaly it gets a criteria object to search for specific criteria
-   * @param criteria
-   * @example
-   * ```js
-   * const shapes = penpot.getPage().findShapes({ name: 'exampleName' });
-   * ```
-   */
-  findShapes(criteria?: {
-    name?: string;
-    nameLike?: string;
-    type?:
-      | 'board'
-      | 'group'
-      | 'boolean'
-      | 'rectangle'
-      | 'path'
-      | 'text'
-      | 'ellipse'
-      | 'svg-raw'
-      | 'image';
-  }): Shape[];
-
-  /**
-   * The interaction flows defined for the page.
-   */
-  readonly flows: Flow[];
-
-  /**
-   * Creates a new flow in the page.
-   * @param name the name identifying the flow
-   * @param board the starting board for the current flow
-   *
-   * @example
-   * ```js
-   * const flow = penpot.getPage().createFlow('exampleFlow', board);
-   * ```
-   */
-  createFlow(name: string, board: Board): Flow;
-
-  /**
-   * Removes the flow from the page
-   * @param flow the flow to be removed from the page
-   */
-  removeFlow(flow: Flow): void;
-
-  /**
-   * Creates a new ruler guide.
-   */
-  addRulerGuide(
-    orientation: RulerGuideOrientation,
-    value: number,
-    board?: Board
-  ): RulerGuide;
-
-  /**
-   * Removes the `guide` from the current page.
-   */
-  removeRulerGuide(guide: RulerGuide): void;
-
-  /**
-   * Creates a new comment thread in the `position`. Optionaly adds
-   * it into the `board`.
-   * Returns the thread created.
-   */
-  addCommentThread(position: Point, board?: Board): CommentThread;
-
-  /**
-   * Removes the comment thread.
-   */
-  removeCommentThread(commentThread: CommentThread): void;
-
-  /**
-   * Find all the comments that match the criteria.
-   * - `onlyYours`: if true will return the threads where the current
-   *                user has engaged.
-   * - `showResolved`: by default resolved comments will be hidden. If `true`
-   *                   the resolved will be returned.
-   */
-  findComments(criteria: {
-    onlyYours: boolean;
-    showResolved: boolean;
-  }): CommentThread[];
-}
-
-/**
- * Represents a gradient configuration in Penpot.
- * A gradient can be either linear or radial and includes properties to define its shape, position, and color stops.
- */
-export type Gradient = {
-  /**
-   * Specifies the type of gradient.
-   * - 'linear': A gradient that transitions colors along a straight line.
-   * - 'radial': A gradient that transitions colors radiating outward from a central point.
-   *
-   * @example
-   * ```js
-   * const gradient: Gradient = { type: 'linear', startX: 0, startY: 0, endX: 100, endY: 100, width: 100, stops: [{ color: '#FF5733', offset: 0 }] };
-   * ```
-   */
-  type: 'linear' | 'radial';
-  /**
-   * The X-coordinate of the starting point of the gradient.
-   */
-  startX: number;
-  /**
-   * The Y-coordinate of the starting point of the gradient.
-   */
-  startY: number;
-  /**
-   * The X-coordinate of the ending point of the gradient.
-   */
-  endX: number;
-  /**
-   * The Y-coordinate of the ending point of the gradient.
-   */
-  endY: number;
-  /**
-   * The width of the gradient. For radial gradients, this could be interpreted as the radius.
-   */
-  width: number;
-  /**
-   * An array of color stops that define the gradient.
-   */
-  stops: Array<{ color: string; opacity?: number; offset: number }>;
-};
-
-/**
- * Represents image data in Penpot.
- * This includes properties for defining the image's dimensions, metadata, and aspect ratio handling.
- */
-export type ImageData = {
-  /**
-   * The optional name of the image.
-   */
-  name?: string;
-  /**
-   * The width of the image.
-   */
-  width: number;
-  /**
-   * The height of the image.
-   */
-  height: number;
-  /**
-   * The optional media type of the image (e.g., 'image/png', 'image/jpeg').
-   */
-  mtype?: string;
-  /**
-   * The unique identifier for the image.
-   */
-  id: string;
-  /**
-   * Whether to keep the aspect ratio of the image when resizing.
-   * Defaults to false if omitted.
-   */
-  keepApectRatio?: boolean;
-};
-
-/**
- * Represents fill properties in Penpot. You can add a fill to any shape except for groups.
- * This interface includes properties for defining solid color fills, gradient fills, and image fills.
- */
-export interface Fill {
-  /**
-   * The optional solid fill color, represented as a string (e.g., '#FF5733').
-   */
-  fillColor?: string;
-  /**
-   * The optional opacity level of the solid fill color, ranging from 0 (fully transparent) to 1 (fully opaque).
-   * Defaults to 1 if omitted.
-   */
-  fillOpacity?: number;
-  /**
-   * The optional gradient fill defined by a Gradient object.
-   */
-  fillColorGradient?: Gradient;
-  /**
-   * The optional reference to an external file for the fill color.
-   */
-  fillColorRefFile?: string;
-  /**
-   * The optional reference ID within the external file for the fill color.
-   */
-  fillColorRefId?: string;
-  /**
-   * The optional image fill defined by a ImageData object.
-   */
-  fillImage?: ImageData;
-}
-
-/**
- * Represents the cap style of a stroke in Penpot.
- * This type defines various styles for the ends of a stroke.
- */
-export type StrokeCap =
-  | 'round'
-  | 'square'
-  | 'line-arrow'
-  | 'triangle-arrow'
-  | 'square-marker'
-  | 'circle-marker'
-  | 'diamond-marker';
-
-/**
- * Represents stroke properties in Penpot. You can add a stroke to any shape except for groups.
- * This interface includes properties for defining the color, style, width, alignment, and caps of a stroke.
- */
-export interface Stroke {
-  /**
-   * The optional color of the stroke, represented as a string (e.g., '#FF5733').
-   */
-  strokeColor?: string;
-  /**
-   * The optional reference to an external file for the stroke color.
-   */
-  strokeColorRefFile?: string;
-  /**
-   * The optional reference ID within the external file for the stroke color.
-   */
-  strokeColorRefId?: string;
-  /**
-   * The optional opacity level of the stroke color, ranging from 0 (fully transparent) to 1 (fully opaque).
-   * Defaults to 1 if omitted.
-   */
-  strokeOpacity?: number;
-  /**
-   * The optional style of the stroke.
-   */
-  strokeStyle?: 'solid' | 'dotted' | 'dashed' | 'mixed' | 'none' | 'svg';
-  /**
-   * The optional width of the stroke.
-   */
-  strokeWidth?: number;
-  /**
-   * The optional alignment of the stroke relative to the shape's boundary.
-   */
-  strokeAlignment?: 'center' | 'inner' | 'outer';
-  /**
-   * The optional cap style for the start of the stroke.
-   */
-  strokeCapStart?: StrokeCap;
-  /**
-   * The optional cap style for the end of the stroke.
-   */
-  strokeCapEnd?: StrokeCap;
-  /**
-   * The optional gradient stroke defined by a Gradient object.
-   */
-  strokeColorGradient?: Gradient;
-}
-
-/**
- * Represents color properties in Penpot.
- * This interface includes properties for defining solid colors, gradients, and image fills, along with metadata.
- */
-export interface Color {
-  /**
-   * The optional unique identifier for the color.
-   */
-  id?: string;
-  /**
-   * The optional name of the color.
-   */
-  name?: string;
-  /**
-   * The optional path or category to which this color belongs.
-   */
-  path?: string;
-  /**
-   * The optional solid color, represented as a string (e.g., '#FF5733').
-   */
-  color?: string;
-  /**
-   * The optional opacity level of the color, ranging from 0 (fully transparent) to 1 (fully opaque).
-   * Defaults to 1 if omitted.
-   */
-  opacity?: number;
-  /**
-   * The optional reference ID for an external color definition.
-   */
-  refId?: string;
-  /**
-   * The optional reference to an external file for the color definition.
-   */
-  refFile?: string;
-  /**
-   * The optional gradient fill defined by a Gradient object.
-   */
-  gradient?: Gradient;
-  /**
-   * The optional image fill defined by a ImageData object.
-   */
-  image?: ImageData;
-}
-
-/**
- * Entry for the color shape additional information.
- */
-export interface ColorShapeInfoEntry {
-  /**
-   * Property that has the color (example: fill, stroke...)
-   */
-  readonly property: string;
-
-  /**
-   * For properties that are indexes (such as fill) represent the index
-   * of the color inside that property.
-   */
-  readonly index?: number;
-
-  /**
-   * Identifier of the shape that contains the color
-   */
-  readonly shapeId: string;
-}
-
-/**
- * Additional color information for the methods to extract colors from a list of shapes.
- */
-export interface ColorShapeInfo {
-  /**
-   * List of shapes with additional information
-   */
-  readonly shapesInfo: ColorShapeInfoEntry[];
-}
-
-/**
- * Represents shadow properties in Penpot.
- * This interface includes properties for defining drop shadows and inner shadows, along with their visual attributes.
- */
-export interface Shadow {
-  /**
-   * The optional unique identifier for the shadow.
-   */
-  id?: string;
-  /**
-   * The optional style of the shadow.
-   * - 'drop-shadow': A shadow cast outside the element.
-   * - 'inner-shadow': A shadow cast inside the element.
-   */
-  style?: 'drop-shadow' | 'inner-shadow';
-  /**
-   * The optional X-axis offset of the shadow.
-   */
-  offsetX?: number;
-  /**
-   * The optional Y-axis offset of the shadow.
-   */
-  offsetY?: number;
-  /**
-   * The optional blur radius of the shadow.
-   */
-  blur?: number;
-  /**
-   * The optional spread radius of the shadow.
-   */
-  spread?: number;
-  /**
-   * Specifies whether the shadow is hidden.
-   * Defaults to false if omitted.
-   */
-  hidden?: boolean;
-  /**
-   * The optional color of the shadow, defined by a Color object.
-   */
-  color?: Color;
-}
+export type Animation = Dissolve | Slide | Push;
 
 /**
  * Represents blur properties in Penpot.
@@ -741,1062 +172,6 @@ export interface Blur {
    * Defaults to false if omitted.
    */
   hidden?: boolean;
-}
-
-/**
- * Represents parameters for board guide columns in Penpot.
- * This interface includes properties for defining the appearance and layout of column guides within a board.
- */
-export interface GuideColumnParams {
-  /**
-   * The color configuration for the column guides.
-   */
-  color: { color: string; opacity: number };
-  /**
-   * The optional alignment type of the column guides.
-   * - 'stretch': Columns stretch to fit the available space.
-   * - 'left': Columns align to the left.
-   * - 'center': Columns align to the center.
-   * - 'right': Columns align to the right.
-   */
-  type?: 'stretch' | 'left' | 'center' | 'right';
-  /**
-   * The optional size of each column.
-   */
-  size?: number;
-  /**
-   * The optional margin between the columns and the board edges.
-   */
-  margin?: number;
-  /**
-   * The optional length of each item within the columns.
-   */
-  itemLength?: number;
-  /**
-   * The optional gutter width between columns.
-   */
-  gutter?: number;
-}
-
-/**
- * Represents parameters for board guide squares in Penpot.
- * This interface includes properties for defining the appearance and size of square guides within a board.
- */
-export interface GuideSquareParams {
-  /**
-   * The color configuration for the square guides.
-   */
-  color: { color: string; opacity: number };
-  /**
-   * The optional size of each square guide.
-   */
-  size?: number;
-}
-
-/**
- * Represents a goard guide for columns in Penpot.
- * This interface includes properties for defining the type, visibility, and parameters of column guides within a board.
- */
-export interface GuideColumn {
-  /**
-   * The type of the guide, which is always 'column' for column guides.
-   */
-  type: 'column';
-  /**
-   * Specifies whether the column guide is displayed.
-   */
-  display: boolean;
-  /**
-   * The parameters defining the appearance and layout of the column guides.
-   */
-  params: GuideColumnParams;
-}
-
-/**
- * Represents a board guide for rows in Penpot.
- * This interface includes properties for defining the type, visibility, and parameters of row guides within a board.
- */
-export interface GuideRow {
-  /**
-   * The type of the guide, which is always 'row' for row guides.
-   */
-  type: 'row';
-  /**
-   * Specifies whether the row guide is displayed.
-   */
-  display: boolean;
-  /**
-   * The parameters defining the appearance and layout of the row guides.
-   * Note: This reuses the same parameter structure as column guides.
-   */
-  params: GuideColumnParams;
-}
-
-/**
- * Represents a board guide for squares in Penpot.
- * This interface includes properties for defining the type, visibility, and parameters of square guides within a board.
- */
-export interface GuideSquare {
-  /**
-   * The type of the guide, which is always 'square' for square guides.
-   */
-  type: 'square';
-  /**
-   * Specifies whether the square guide is displayed.
-   */
-  display: boolean;
-  /**
-   * The parameters defining the appearance and layout of the square guides.
-   */
-  params: GuideSquareParams;
-}
-
-/**
- * Represents a board guide in Penpot.
- * This type can be one of several specific board guide types: column, row, or square.
- */
-export type Guide = GuideColumn | GuideRow | GuideSquare;
-
-/**
- *
- */
-export type RulerGuideOrientation = 'horizontal' | 'vertical';
-
-/**
- * Represents a ruler guide. These are horizontal or vertical lines that can be
- * used to position elements in the UI.
- */
-export interface RulerGuide {
-  /**
-   * `orientation` indicates whether the ruler is either `horizontal` or `vertical`
-   */
-  readonly orientation: RulerGuideOrientation;
-
-  /**
-   * `position` is the position in the axis in absolute positioning. If this is a frame
-   * guide will return the positioning relative to the board.
-   */
-  position: number;
-
-  /**
-   * If the guide is attached to a board this will retrieve the board shape
-   */
-  board?: Board;
-}
-
-/**
- * Represents export settings in Penpot.
- * This interface includes properties for defining export configurations.
- */
-export interface Export {
-  /**
-   * Type of the file to export. Can be one of the following values: png, jpeg, svg, pdf
-   */
-  type: 'png' | 'jpeg' | 'svg' | 'pdf';
-  /**
-   * For bitmap formats represent the scale of the original size to resize the export
-   */
-  scale?: number;
-  /**
-   * Suffix that will be appended to the resulting exported file
-   */
-  suffix?: string;
-}
-
-/**
- * Represents the type of track in Penpot.
- * This type defines various track types that can be used in layout configurations.
- */
-export type TrackType = 'flex' | 'fixed' | 'percent' | 'auto';
-
-/**
- * Represents a track configuration in Penpot.
- * This interface includes properties for defining the type and value of a track used in layout configurations.
- */
-export interface Track {
-  /**
-   * The type of the track.
-   * This can be one of the following values:
-   * - 'flex': A flexible track type.
-   * - 'fixed': A fixed track type.
-   * - 'percent': A track type defined by a percentage.
-   * - 'auto': An automatic track type.
-   */
-  type: TrackType;
-  /**
-   * The value of the track.
-   * This can be a number representing the size of the track, or null if not applicable.
-   */
-  value: number | null;
-}
-
-/**
- * CommonLayout represents a common layout interface in the Penpot application.
- * It includes various properties for alignment, spacing, padding, and sizing, as well as a method to remove the layout.
- */
-export interface CommonLayout {
-  /**
-   * The `alignItems` property specifies the default alignment for items inside the container.
-   * It can be one of the following values:
-   * - 'start': Items are aligned at the start.
-   * - 'end': Items are aligned at the end.
-   * - 'center': Items are centered.
-   * - 'stretch': Items are stretched to fill the container.
-   */
-  alignItems?: 'start' | 'end' | 'center' | 'stretch';
-  /**
-   * The `alignContent` property specifies how the content is aligned within the container when there is extra space.
-   * It can be one of the following values:
-   * - 'start': Content is aligned at the start.
-   * - 'end': Content is aligned at the end.
-   * - 'center': Content is centered.
-   * - 'space-between': Content is distributed with space between.
-   * - 'space-around': Content is distributed with space around.
-   * - 'space-evenly': Content is distributed with even space around.
-   * - 'stretch': Content is stretched to fill the container.
-   */
-  alignContent?:
-    | 'start'
-    | 'end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'stretch';
-  /**
-   * The `justifyItems` property specifies the default justification for items inside the container.
-   * It can be one of the following values:
-   * - 'start': Items are justified at the start.
-   * - 'end': Items are justified at the end.
-   * - 'center': Items are centered.
-   * - 'stretch': Items are stretched to fill the container.
-   */
-  justifyItems?: 'start' | 'end' | 'center' | 'stretch';
-  /**
-   * The `justifyContent` property specifies how the content is justified within the container when there is extra space.
-   * It can be one of the following values:
-   * - 'start': Content is justified at the start.
-   * - 'center': Content is centered.
-   * - 'end': Content is justified at the end.
-   * - 'space-between': Content is distributed with space between.
-   * - 'space-around': Content is distributed with space around.
-   * - 'space-evenly': Content is distributed with even space around.
-   * - 'stretch': Content is stretched to fill the container.
-   */
-  justifyContent?:
-    | 'start'
-    | 'center'
-    | 'end'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'stretch';
-
-  /**
-   * The `rowGap` property specifies the gap between rows in the layout.
-   */
-  rowGap: number;
-  /**
-   * The `columnGap` property specifies the gap between columns in the layout.
-   */
-  columnGap: number;
-
-  /**
-   * The `verticalPadding` property specifies the vertical padding inside the container.
-   */
-  verticalPadding: number;
-  /**
-   * The `horizontalPadding` property specifies the horizontal padding inside the container.
-   */
-  horizontalPadding: number;
-
-  /**
-   * The `topPadding` property specifies the padding at the top of the container.
-   */
-  topPadding: number;
-  /**
-   * The `rightPadding` property specifies the padding at the right of the container.
-   */
-  rightPadding: number;
-  /**
-   * The `bottomPadding` property specifies the padding at the bottom of the container.
-   */
-  bottomPadding: number;
-  /**
-   * The `leftPadding` property specifies the padding at the left of the container.
-   */
-  leftPadding: number;
-
-  /**
-   * The `horizontalSizing` property specifies the horizontal sizing behavior of the container.
-   * It can be one of the following values:
-   * - 'fit-content': The container fits the content.
-   * - 'fill': The container fills the available space.
-   * - 'auto': The container size is determined automatically.
-   */
-  horizontalSizing: 'fit-content' | 'fill' | 'auto';
-  /**
-   * The `verticalSizing` property specifies the vertical sizing behavior of the container.
-   * It can be one of the following values:
-   * - 'fit-content': The container fits the content.
-   * - 'fill': The container fills the available space.
-   * - 'auto': The container size is determined automatically.
-   */
-  verticalSizing: 'fit-content' | 'fill' | 'auto';
-
-  /**
-   * The `remove` method removes the layout.
-   */
-  remove(): void;
-}
-
-/**
- * GridLayout represents a grid layout in the Penpot application, extending the common layout interface.
- * It includes properties and methods to manage rows, columns, and child elements within the grid.
- */
-export interface GridLayout extends CommonLayout {
-  /**
-   * The `dir` property specifies the primary direction of the grid layout.
-   * It can be either 'column' or 'row'.
-   */
-  dir: 'column' | 'row';
-  /**
-   * The `rows` property represents the collection of rows in the grid.
-   * This property is read-only.
-   */
-  readonly rows: Track[];
-  /**
-   * The `columns` property represents the collection of columns in the grid.
-   * This property is read-only.
-   */
-  readonly columns: Track[];
-
-  /**
-   * Adds a new row to the grid.
-   * @param type The type of the row to add.
-   * @param value The value associated with the row type (optional).
-   *
-   * @example
-   * ```js
-   * const board = penpot.createBoard();
-   * const grid = board.addGridLayout();
-   * grid.addRow("flex", 1);
-   * ```
-   */
-  addRow(type: TrackType, value?: number): void;
-  /**
-   * Adds a new row to the grid at the specified index.
-   * @param index The index at which to add the row.
-   * @param type The type of the row to add.
-   * @param value The value associated with the row type (optional).
-   *
-   * @example
-   * ```js
-   * gridLayout.addRowAtIndex(0, 'fixed', 100);
-   * ```
-   */
-  addRowAtIndex(index: number, type: TrackType, value?: number): void;
-  /**
-   * Adds a new column to the grid.
-   * @param type The type of the column to add.
-   * @param value The value associated with the column type (optional).
-   *
-   * @example
-   * ```js
-   * const board = penpot.createBoard();
-   * const grid = board.addGridLayout();
-   * grid.addColumn('percent', 50);
-   * ```
-   */
-  addColumn(type: TrackType, value?: number): void;
-  /**
-   * Adds a new column to the grid at the specified index.
-   * @param index The index at which to add the column.
-   * @param type The type of the column to add.
-   * @param value The value associated with the column type.
-   *
-   * @example
-   * ```js
-   * gridLayout.addColumnAtIndex(1, 'auto');
-   * ```
-   */
-  addColumnAtIndex(index: number, type: TrackType, value: number): void;
-  /**
-   * Removes a row from the grid at the specified index.
-   * @param index The index of the row to remove.
-   *
-   * @example
-   * ```js
-   * gridLayout.removeRow(2);
-   * ```
-   */
-  removeRow(index: number): void;
-  /**
-   * Removes a column from the grid at the specified index.
-   * @param index The index of the column to remove.
-   *
-   * @example
-   * ```js
-   * gridLayout.removeColumn(3);
-   * ```
-   */
-  removeColumn(index: number): void;
-  /**
-   * Sets the properties of a column at the specified index.
-   * @param index The index of the column to set.
-   * @param type The type of the column.
-   * @param value The value associated with the column type (optional).
-   *
-   * @example
-   * ```js
-   * gridLayout.setColumn(0, 'fixed', 200);
-   * ```
-   */
-  setColumn(index: number, type: TrackType, value?: number): void;
-  /**
-   * Sets the properties of a row at the specified index.
-   * @param index The index of the row to set.
-   * @param type The type of the row.
-   * @param value The value associated with the row type (optional).
-   *
-   * @example
-   * ```js
-   * gridLayout.setRow(1, 'flex');
-   * ```
-   */
-  setRow(index: number, type: TrackType, value?: number): void;
-
-  /**
-   * Appends a child element to the grid at the specified row and column.
-   * @param child The child element to append.
-   * @param row The row index where the child will be placed.
-   * @param column The column index where the child will be placed.
-   *
-   * @example
-   * ```js
-   * gridLayout.appendChild(childShape, 0, 1);
-   * ```
-   */
-  appendChild(child: Shape, row: number, column: number): void;
-}
-
-/**
- * Represents a flexible layout configuration in Penpot.
- * This interface extends `CommonLayout` and includes properties for defining the direction,
- * wrapping behavior, and child management of a flex layout.
- */
-export interface FlexLayout extends CommonLayout {
-  /**
-   * The direction of the flex layout.
-   * - 'row': Main axis is horizontal, from left to right.
-   * - 'row-reverse': Main axis is horizontal, from right to left.
-   * - 'column': Main axis is vertical, from top to bottom.
-   * - 'column-reverse': Main axis is vertical, from bottom to top.
-   */
-  dir: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-  /**
-   * The optional wrapping behavior of the flex layout.
-   * - 'wrap': Child elements will wrap onto multiple lines.
-   * - 'nowrap': Child elements will not wrap.
-   */
-  wrap?: 'wrap' | 'nowrap';
-  /**
-   * Appends a child element to the flex layout.
-   * @param child The child element to be appended, of type `Shape`.
-   *
-   * @example
-   * ```js
-   * flexLayout.appendChild(childShape);
-   * ```
-   */
-  appendChild(child: Shape): void;
-}
-
-/**
- * Represents a path command in Penpot.
- * This interface includes a property for defining the type of command.
- */
-interface PathCommand {
-  /**
-   * The type of path command.
-   * Possible values include:
-   * - 'M' or 'move-to': Move to a new point.
-   * - 'Z' or 'close-path': Close the current path.
-   * - 'L' or 'line-to': Draw a straight line to a new point.
-   * - 'H' or 'line-to-horizontal': Draw a horizontal line to a new point.
-   * - 'V' or 'line-to-vertical': Draw a vertical line to a new point.
-   * - 'C' or 'curve-to': Draw a cubic Bezier curve to a new point.
-   * - 'S' or 'smooth-curve-to': Draw a smooth cubic Bezier curve to a new point.
-   * - 'Q' or 'quadratic-bezier-curve-to': Draw a quadratic Bezier curve to a new point.
-   * - 'T' or 'smooth-quadratic-bezier-curve-to': Draw a smooth quadratic Bezier curve to a new point.
-   * - 'A' or 'elliptical-arc': Draw an elliptical arc to a new point.
-   *
-   * @example
-   * ```js
-   * const pathCommand: PathCommand = { command: 'M', params: { x: 0, y: 0 } };
-   * ```
-   */
-  command:
-    | 'M'
-    | 'move-to'
-    | 'Z'
-    | 'close-path'
-    | 'L'
-    | 'line-to'
-    | 'H'
-    | 'line-to-horizontal'
-    | 'V'
-    | 'line-to-vertical'
-    | 'C'
-    | 'curve-to'
-    | 'S'
-    | 'smooth-curve-to'
-    | 'Q'
-    | 'quadratic-bezier-curve-to'
-    | 'T'
-    | 'smooth-quadratic-bezier-curve-to'
-    | 'A'
-    | 'elliptical-arc';
-
-  /**
-   * Optional parameters associated with the path command.
-   */
-  params?: {
-    /**
-     * The x-coordinate of the point (or endpoint).
-     */
-    x?: number;
-
-    /**
-     * The y-coordinate of the point (or endpoint).
-     */
-    y?: number;
-
-    /**
-     * The x-coordinate of the first control point for curves.
-     */
-    c1x?: number;
-
-    /**
-     * The y-coordinate of the first control point for curves.
-     */
-    c1y?: number;
-
-    /**
-     * The x-coordinate of the second control point for curves.
-     */
-    c2x?: number;
-
-    /**
-     * The y-coordinate of the second control point for curves.
-     */
-    c2y?: number;
-
-    /**
-     * The radius of the ellipse's x-axis.
-     */
-    rx?: number;
-
-    /**
-     * The radius of the ellipse's y-axis.
-     */
-    ry?: number;
-
-    /**
-     * The rotation angle of the ellipse's x-axis.
-     */
-    xAxisRotation?: number;
-
-    /**
-     * A flag indicating whether to use the larger arc.
-     */
-    largeArcFlag?: boolean;
-
-    /**
-     * A flag indicating the direction of the arc.
-     */
-    sweepFlag?: boolean;
-  };
-}
-
-/**
- * Properties for defining the layout of a child element in Penpot.
- */
-export interface LayoutChildProperties {
-  /**
-   * Specifies whether the child element is positioned absolutely.
-   * When set to true, the element is taken out of the normal document flow and positioned relative to its nearest positioned ancestor.
-   */
-  absolute: boolean;
-
-  /**
-   * Defines the stack order of the child element
-   * Elements with a higher zIndex will be displayed in front of those with a lower zIndex.
-   */
-  zIndex: number;
-
-  /**
-   * Determines the horizontal sizing behavior of the child element
-   * - 'auto': The width is determined by the content.
-   * - 'fill': The element takes up the available width.
-   * - 'fix': The width is fixed.
-   */
-  horizontalSizing: 'auto' | 'fill' | 'fix';
-
-  /**
-   * Determines the vertical sizing behavior of the child element.
-   * - 'auto': The height is determined by the content.
-   * - 'fill': The element takes up the available height.
-   * - 'fix': The height is fixed.
-   */
-  verticalSizing: 'auto' | 'fill' | 'fix';
-
-  /**
-   * Aligns the child element within its container.
-   * - 'auto': Default alignment.
-   * - 'start': Aligns the element at the start of the container.
-   * - 'center': Centers the element within the container.
-   * - 'end': Aligns the element at the end of the container.
-   * - 'stretch': Stretches the element to fill the container.
-   */
-  alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
-
-  /**
-   * Sets the horizontal margin of the child element.
-   * This is the space on the left and right sides of the element.
-   */
-  horizontalMargin: number;
-
-  /**
-   * Sets the vertical margin of the child element.
-   * This is the space on the top and bottom sides of the element.
-   */
-  verticalMargin: number;
-
-  /**
-   * Sets the top margin of the child element.
-   * This is the space above the element.
-   */
-  topMargin: number;
-
-  /**
-   * Sets the right margin of the child element.
-   * This is the space to the right of the element.
-   */
-  rightMargin: number;
-
-  /**
-   * Sets the bottom margin of the child element.
-   * This is the space below the element.
-   */
-  bottomMargin: number;
-
-  /**
-   * Sets the left margin of the child element.
-   * This is the space to the left of the element.
-   */
-  leftMargin: number;
-
-  /**
-   * Defines the maximum width of the child element.
-   * If set to null, there is no maximum width constraint.
-   */
-  maxWidth: number | null;
-
-  /**
-   * Defines the maximum height of the child element.
-   * If set to null, there is no maximum height constraint.
-   */
-  maxHeight: number | null;
-  /**
-   * Defines the minimum width of the child element.
-   * If set to null, there is no minimum width constraint.
-   */
-  minWidth: number | null;
-
-  /**
-   * Defines the minimum height of the child element.
-   * If set to null, there is no minimum height constraint.
-   */
-  minHeight: number | null;
-}
-
-/**
- * Properties for defining the layout of a cell in Penpot.
- */
-export interface LayoutCellProperties {
-  /**
-   * The row index of the cell.
-   * This value is optional and indicates the starting row of the cell.
-   */
-  row?: number;
-
-  /**
-   * The number of rows the cell should span.
-   * This value is optional and determines the vertical span of the cell.
-   */
-  rowSpan?: number;
-
-  /**
-   * The column index of the cell.
-   * This value is optional and indicates the starting column of the cell.
-   */
-  column?: number;
-
-  /**
-   * The number of columns the cell should span.
-   * This value is optional and determines the horizontal span of the cell.
-   */
-  columnSpan?: number;
-
-  /**
-   * The name of the grid area that this cell belongs to.
-   * This value is optional and can be used to define named grid areas.
-   */
-  areaName?: string;
-
-  /**
-   * The positioning mode of the cell.
-   * This value can be 'auto', 'manual', or 'area' and determines how the cell is positioned within the layout.
-   */
-  position?: 'auto' | 'manual' | 'area';
-}
-
-/**
- * Represents the base properties and methods of a shape in Penpot.
- * This interface provides common properties and methods shared by all shapes.
- */
-export interface ShapeBase extends PluginData {
-  /**
-   * The unique identifier of the shape.
-   */
-  readonly id: string;
-
-  /**
-   * The name of the shape.
-   */
-  name: string;
-
-  /**
-   * The parent shape. If the shape is the first level the parent will be the root shape.
-   * For the root shape the parent is null
-   */
-  readonly parent: Shape | null;
-
-  /**
-   * The x-coordinate of the shape's position.
-   */
-  x: number;
-
-  /**
-   * The y-coordinate of the shape's position.
-   */
-  y: number;
-
-  /**
-   * The width of the shape.
-   */
-  readonly width: number;
-
-  /**
-   * The height of the shape.
-   */
-  readonly height: number;
-
-  /**
-   * @return Returns the bounding box surrounding the current shape
-   */
-  readonly bounds: Bounds;
-
-  /**
-   * @return Returns the geometric center of the shape
-   */
-  readonly center: Point;
-
-  /**
-   * Indicates whether the shape is blocked.
-   */
-  blocked: boolean;
-
-  /**
-   * Indicates whether the shape is hidden.
-   */
-  hidden: boolean;
-
-  /**
-   * Indicates whether the shape is visible.
-   */
-  visible: boolean;
-
-  /**
-   * Indicates whether the shape has proportion lock enabled.
-   */
-  proportionLock: boolean;
-
-  /**
-   * The horizontal constraints applied to the shape.
-   */
-  constraintsHorizontal: 'left' | 'right' | 'leftright' | 'center' | 'scale';
-
-  /**
-   * The vertical constraints applied to the shape.
-   */
-  constraintsVertical: 'top' | 'bottom' | 'topbottom' | 'center' | 'scale';
-
-  /**
-   * The border radius of the shape.
-   */
-  borderRadius: number;
-
-  /**
-   * The border radius of the top-left corner of the shape.
-   */
-  borderRadiusTopLeft: number;
-
-  /**
-   * The border radius of the top-right corner of the shape.
-   */
-  borderRadiusTopRight: number;
-
-  /**
-   * The border radius of the bottom-right corner of the shape.
-   */
-  borderRadiusBottomRight: number;
-
-  /**
-   * The border radius of the bottom-left corner of the shape.
-   */
-  borderRadiusBottomLeft: number;
-
-  /**
-   * The opacity of the shape.
-   */
-  opacity: number;
-
-  /**
-   * The blend mode applied to the shape.
-   */
-  blendMode:
-    | 'normal'
-    | 'darken'
-    | 'multiply'
-    | 'color-burn'
-    | 'lighten'
-    | 'screen'
-    | 'color-dodge'
-    | 'overlay'
-    | 'soft-light'
-    | 'hard-light'
-    | 'difference'
-    | 'exclusion'
-    | 'hue'
-    | 'saturation'
-    | 'color'
-    | 'luminosity';
-
-  /**
-   * The shadows applied to the shape.
-   */
-  shadows: Shadow[];
-
-  /**
-   * The blur effect applied to the shape.
-   */
-  blur?: Blur;
-
-  /**
-   * The export settings of the shape.
-   */
-  exports: Export[];
-
-  /**
-   * The x-coordinate of the shape relative to its board.
-   */
-  boardX: number;
-
-  /**
-   * The y-coordinate of the shape relative to its board.
-   */
-  boardY: number;
-
-  /**
-   * The x-coordinate of the shape relative to its parent.
-   */
-  parentX: number;
-
-  /**
-   * The y-coordinate of the shape relative to its parent.
-   */
-  parentY: number;
-
-  /**
-   * Indicates whether the shape is flipped horizontally.
-   */
-  flipX: boolean;
-
-  /**
-   * Indicates whether the shape is flipped vertically.
-   */
-  flipY: boolean;
-
-  /**
-   * @return Returns the rotation in degrees of the shape with respect to it's center.
-   */
-  rotation: number;
-
-  /**
-   * The fills applied to the shape.
-   */
-  fills: Fill[] | 'mixed';
-
-  /**
-   * The strokes applied to the shape.
-   */
-  strokes: Stroke[];
-
-  /**
-   * Layout properties for children of the shape.
-   */
-  readonly layoutChild?: LayoutChildProperties;
-
-  /**
-   * Layout properties for cells in a grid layout.
-   */
-  readonly layoutCell?: LayoutChildProperties;
-
-  /**
-   * @return Returns true if the current shape is inside a component instance
-   */
-  isComponentInstance(): boolean;
-
-  /**
-   * @return Returns true if the current shape is inside a component **main** instance
-   */
-  isComponentMainInstance(): boolean;
-
-  /**
-   * @return Returns true if the current shape is inside a component **copy** instance
-   */
-  isComponentCopyInstance(): boolean;
-
-  /**
-   * @return Returns true when the current shape is inside a **nested* component instance
-   */
-  isComponentNestedInstance(): boolean;
-
-  /**
-   * @return Returns true when the current shape is the root of a component tree
-   */
-  isComponentRoot(): boolean;
-
-  /**
-   * @return Returns true when the current shape is the head of a components tree nested structure
-   */
-  isComponentHead(): boolean;
-
-  /**
-   * @return Returns the equivalent shape in the component main instance. If the current shape is inside a
-   * main instance will return `null`;
-   */
-  componentRefShape(): Shape | null;
-
-  /**
-   * @return Returns the root of the component tree structure for the current shape. If the current shape
-   * is already a root will return itself.
-   */
-  componentRoot(): Shape | null;
-
-  /**
-   * @return Returns the head of the component tree structure for the current shape. If the current shape
-   * is already a head will return itself.
-   */
-  componentHead(): Shape | null;
-
-  /**
-   * @return If the shape is a component instance, returns the reference to the component associated
-   * otherwise will return null
-   */
-  component(): LibraryComponent | null;
-
-  /**
-   * If the current shape is a component it will remove the component information and leave the
-   * shape as a "basic shape"
-   */
-  detach(): void;
-
-  /**
-   * Resizes the shape to the specified width and height.
-   * @param width The new width of the shape.
-   * @param height The new height of the shape.
-   *
-   * @example
-   * ```js
-   * shape.resize(200, 100);
-   * ```
-   */
-  resize(width: number, height: number): void;
-
-  /**
-   * Rotates the shape in relation with the given center.
-   * @param angle Angle in degrees to rotate.
-   * @param center Center of the transform rotation. If not send will use the geometri center of the shapes.
-   *
-   * @example
-   * ```js
-   * shape.rotate(45);
-   * ```
-   */
-  rotate(angle: number, center?: { x: number; y: number } | null): void;
-
-  /**
-   * Generates an export from the current shape.
-   *
-   * @example
-   * ```js
-   * shape.export({ type: 'png', scale: 2 });
-   * ```
-   */
-  export(config: Export): Promise<Uint8Array>;
-
-  /**
-   * The interactions for the current shape.
-   */
-  readonly interactions: Interaction[];
-
-  /**
-   * Adds a new interaction to the shape.
-   * @param trigger defines the conditions under which the action will be triggered
-   * @param action defines what will be executed when the trigger happens
-   * @param delay for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
-   *
-   * @example
-   * ```js
-   * shape.addInteraction('click', { type: 'navigate-to', destination: anotherBoard });
-   * ```
-   */
-  addInteraction(trigger: Trigger, action: Action, delay?: number): Interaction;
-
-  /**
-   * Removes the interaction from the shape.
-   * @param interaction is the interaction to remove from the shape
-   *
-   * @example
-   * ```js
-   * shape.removeInteraction(interaction);
-   * ```
-   */
-  removeInteraction(interaction: Interaction): void;
-
-  /**
-   * Creates a clone of the shape.
-   * @return Returns a new instance of the shape with identical properties.
-   */
-  clone(): Shape;
-
-  /**
-   * Removes the shape from its parent.
-   */
-  remove(): void;
 }
 
 /**
@@ -1947,65 +322,6 @@ export interface Board extends ShapeBase {
 }
 
 /**
- * Represents a group of shapes in Penpot.
- * This interface extends `ShapeBase` and includes properties and methods specific to groups.
- */
-export interface Group extends ShapeBase {
-  /**
-   * The type of the shape, which is always 'group' for groups.
-   */
-  readonly type: 'group';
-
-  // Container Properties
-  /**
-   * The children shapes contained within the group.
-   */
-  readonly children: Shape[];
-  /**
-   * Appends a child shape to the group.
-   * @param child The child shape to append.
-   *
-   * @example
-   * ```js
-   * group.appendChild(childShape);
-   * ```
-   */
-  appendChild(child: Shape): void;
-  /**
-   * Inserts a child shape at the specified index within the group.
-   * @param index The index at which to insert the child shape.
-   * @param child The child shape to insert.
-   *
-   * @example
-   * ```js
-   * group.insertChild(0, childShape);
-   * ```
-   */
-  insertChild(index: number, child: Shape): void;
-
-  /**
-   * Checks if the group is currently a mask.
-   * A mask defines a clipping path for its child shapes.
-   */
-  isMask(): boolean;
-
-  /**
-   * Converts the group into a mask.
-   */
-  makeMask(): void;
-  /**
-   * Removes the mask from the group.
-   */
-  removeMask(): void;
-}
-
-/**
- * Represents the boolean operation types available in Penpot.
- * These types define how shapes can be combined or modified using boolean operations.
- */
-export type BooleanType = 'union' | 'difference' | 'exclude' | 'intersection';
-
-/**
  * Represents a boolean operation shape in Penpot.
  * This interface extends `ShapeBase` and includes properties and methods specific to boolean operations.
  */
@@ -2059,303 +375,10 @@ export interface Boolean extends ShapeBase {
 }
 
 /**
- * Represents a rectangle shape in Penpot.
- * This interface extends `ShapeBase` and includes properties specific to rectangles.
+ * Represents the boolean operation types available in Penpot.
+ * These types define how shapes can be combined or modified using boolean operations.
  */
-export interface Rectangle extends ShapeBase {
-  /**
-   * The type of the shape, which is always 'rect' for rectangle shapes.
-   */
-  readonly type: 'rectangle';
-
-  /**
-   * The fills applied to the shape.
-   */
-  fills: Fill[];
-}
-
-/**
- * Represents a path shape in Penpot.
- * This interface extends `ShapeBase` and includes properties and methods specific to paths.
- */
-export interface Path extends ShapeBase {
-  /**
-   * The type of the shape, which is always 'path' for path shapes.
-   */
-  readonly type: 'path';
-  /**
-   * Converts the path shape to its path data representation.
-   * @return Returns the path data (d attribute) as a string.
-   */
-  toD(): string;
-  /**
-   * The content of the path shape, defined as an array of path commands.
-   */
-  content: Array<PathCommand>;
-
-  /**
-   * The fills applied to the shape.
-   */
-  fills: Fill[];
-}
-
-/**
- * Represents a range of text within a Text shape.
- * This interface provides properties for styling and formatting text ranges.
- */
-export interface TextRange {
-  /**
-   * The Text shape to which this text range belongs.
-   */
-  readonly shape: Text;
-
-  /**
-   * The characters associated with the current text range.
-   */
-  readonly characters: string;
-
-  /**
-   * The font ID of the text range. It can be a specific font ID or 'mixed' if multiple fonts are used.
-   */
-  fontId: string | 'mixed';
-
-  /**
-   * The font family of the text range. It can be a specific font family or 'mixed' if multiple font families are used.
-   */
-  fontFamily: string | 'mixed';
-
-  /**
-   * The font variant ID of the text range. It can be a specific font variant ID or 'mixed' if multiple font variants are used.
-   */
-  fontVariantId: string | 'mixed';
-
-  /**
-   * The font size of the text range. It can be a specific font size or 'mixed' if multiple font sizes are used.
-   */
-  fontSize: string | 'mixed';
-
-  /**
-   * The font weight of the text range. It can be a specific font weight or 'mixed' if multiple font weights are used.
-   */
-  fontWeight: string | 'mixed';
-
-  /**
-   * The font style of the text range. It can be a specific font style or 'mixed' if multiple font styles are used.
-   */
-  fontStyle: 'normal' | 'italic' | 'mixed' | null;
-
-  /**
-   * The line height of the text range. It can be a specific line height or 'mixed' if multiple line heights are used.
-   */
-  lineHeight: string | 'mixed';
-
-  /**
-   * The letter spacing of the text range. It can be a specific letter spacing or 'mixed' if multiple letter spacings are used.
-   */
-  letterSpacing: string | 'mixed';
-
-  /**
-   * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
-   */
-  textTransform:
-    | 'uppercase'
-    | 'capitalize'
-    | 'lowercase'
-    | 'none'
-    | 'mixed'
-    | null;
-
-  /**
-   * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
-   */
-  textDecoration: 'underline' | 'line-through' | 'none' | 'mixed' | null;
-
-  /**
-   * The text direction for the text range. It can be a specific direction or 'mixed' if multiple directions are used.
-   */
-  direction: 'ltr' | 'rtl' | 'mixed' | null;
-
-  /**
-   * The fill styles applied to the text range.
-   */
-  fills: Fill[] | 'mixed';
-
-  /**
-   * The horizontal alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
-   */
-  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
-
-  /**
-   * The vertical alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
-   */
-  verticalAlign: 'top' | 'center' | 'bottom' | 'mixed' | null;
-
-  /**
-   * Applies a typography style to the text range.
-   * This method sets various typography properties for the text range according to the given typography style.
-   * @param typography - The typography style to apply.
-   *
-   * @example
-   * ```js
-   * textRange.applyTypography(typography);
-   * ```
-   */
-  applyTypography(typography: LibraryTypography): void;
-}
-
-/**
- * Text represents a text element in the Penpot application, extending the base shape interface.
- * It includes various properties to define the text content and its styling attributes.
- */
-export interface Text extends ShapeBase {
-  /**
-   * The type of the shape, which is always 'text' for text shapes.
-   */
-  readonly type: 'text';
-  /**
-   * The characters contained within the text shape.
-   */
-  characters: string;
-  /**
-   * The grow type of the text shape, defining how the text box adjusts its size.
-   * Possible values are:
-   * - 'fixed': Fixed size.
-   * - 'auto-width': Adjusts width automatically.
-   * - 'auto-height': Adjusts height automatically.
-   */
-  growType: 'fixed' | 'auto-width' | 'auto-height';
-
-  /**
-   * The font ID used in the text shape, or 'mixed' if multiple fonts are used.
-   */
-  fontId: string | 'mixed';
-
-  /**
-   * The font family used in the text shape, or 'mixed' if multiple font families are used.
-   */
-  fontFamily: string | 'mixed';
-
-  /**
-   * The font variant ID used in the text shape, or 'mixed' if multiple font variants are used.
-   */
-  fontVariantId: string | 'mixed';
-
-  /**
-   * The font size used in the text shape, or 'mixed' if multiple font sizes are used.
-   */
-  fontSize: string | 'mixed';
-
-  /**
-   * The font weight used in the text shape, or 'mixed' if multiple font weights are used.
-   */
-  fontWeight: string | 'mixed';
-
-  /**
-   * The font style used in the text shape, or 'mixed' if multiple font styles are used.
-   */
-  fontStyle: 'normal' | 'italic' | 'mixed' | null;
-
-  /**
-   * The line height used in the text shape, or 'mixed' if multiple line heights are used.
-   */
-  lineHeight: string | 'mixed';
-
-  /**
-   * The letter spacing used in the text shape, or 'mixed' if multiple letter spacings are used.
-   */
-  letterSpacing: string | 'mixed';
-
-  /**
-   * The text transform applied to the text shape, or 'mixed' if multiple text transforms are used.
-   */
-  textTransform: 'uppercase' | 'capitalize' | 'lowercase' | 'mixed' | null;
-
-  /**
-   * The text decoration applied to the text shape, or 'mixed' if multiple text decorations are used.
-   */
-  textDecoration: 'underline' | 'line-through' | 'mixed' | null;
-
-  /**
-   * The text direction for the text shape, or 'mixed' if multiple directions are used.
-   */
-  direction: 'ltr' | 'rtl' | 'mixed' | null;
-
-  /**
-   * The horizontal alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
-   */
-  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
-
-  /**
-   * The vertical alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
-   */
-  verticalAlign: 'top' | 'center' | 'bottom' | null;
-
-  /**
-   * Gets a text range within the text shape.
-   * @param start - The start index of the text range.
-   * @param end - The end index of the text range.
-   * @return Returns a TextRange object representing the specified text range.
-   *
-   * @example
-   * ```js
-   * const textRange = textShape.getRange(0, 10);
-   * console.log(textRange.characters);
-   * ```
-   */
-  getRange(start: number, end: number): TextRange;
-
-  /**
-   * Applies a typography style to the text shape.
-   * @param typography - The typography style to apply.
-   * @remarks
-   * This method sets various typography properties for the text shape according to the given typography style.
-   *
-   * @example
-   * ```js
-   * textShape.applyTypography(typography);
-   * ```
-   */
-  applyTypography(typography: LibraryTypography): void;
-}
-
-/**
- * Represents an ellipse shape in Penpot.
- * This interface extends `ShapeBase` and includes properties specific to ellipses.
- */
-export interface Ellipse extends ShapeBase {
-  type: 'ellipse';
-
-  /**
-   * The fills applied to the shape.
-   */
-  fills: Fill[];
-}
-
-/**
- * Represents an SVG raw shape in Penpot.
- * This interface extends `ShapeBase` and includes properties specific to raw SVG shapes.
- */
-export interface SvgRaw extends ShapeBase {
-  type: 'svg-raw';
-}
-
-/**
- * Represents an image shape in Penpot.
- * This interface extends `ShapeBase` and includes properties specific to image shapes.
- */
-export interface Image extends ShapeBase {
-  type: 'image';
-
-  /**
-   * The fills applied to the shape.
-   */
-  fills: Fill[];
-}
-
-/**
- * Point represents a point in 2D space, typically with x and y coordinates.
- */
-export type Point = { x: number; y: number };
+export type BooleanType = 'union' | 'difference' | 'exclude' | 'intersection';
 
 /**
  * Bounds represents the boundaries of a rectangular area,
@@ -2387,692 +410,283 @@ export type Bounds = {
 };
 
 /**
- * Viewport represents the viewport in the Penpot application.
- * It includes the center point, zoom level, and the bounds of the viewport.
+ * This action will close a targeted board that is opened as an overlay.
  */
-export interface Viewport {
+export interface CloseOverlay {
   /**
-   * the `center` point of the current viewport. If changed will change the
-   * viewport position.
+   * The action type
    */
-  center: Point;
+  readonly type: 'close-overlay';
 
   /**
-   * the `zoom` level as a number where `1` represents 100%.
+   * The overlay to be closed with this action.
    */
-  zoom: number;
+  readonly destination?: Board;
 
   /**
-   * the `bounds` are the current coordinates of the viewport.
+   * Animation displayed with this interaction.
    */
-  readonly bounds: Bounds;
-
-  /**
-   * Resets the zoom level.
-   */
-  zoomReset(): void;
-
-  /**
-   * Changes the viewport and zoom so can fit all the current shapes in the page.
-   */
-  zoomToFitAll(): void;
-
-  /**
-   * Changes the viewport and zoom so all the `shapes` in the argument are
-   * visible.
-   */
-  zoomIntoView(shapes: Shape[]): void;
+  readonly animation: Animation;
 }
 
 /**
- * Shape represents a union of various shape types used in the Penpot project.
- * This type allows for different shapes to be handled under a single type umbrella.
- *
- * @example
- * ```js
- * let shape: Shape;
- * if (penpot.utils.types.isRectangle(shape)) {
- *   console.log(shape.type);
- * }
- * ```
+ * Represents color properties in Penpot.
+ * This interface includes properties for defining solid colors, gradients, and image fills, along with metadata.
  */
-export type Shape =
-  | Board
-  | Group
-  | Boolean
-  | Rectangle
-  | Path
-  | Text
-  | Ellipse
-  | SvgRaw
-  | Image;
-
-/**
- * Represents a mapping of events to their corresponding types in Penpot.
- * This interface provides information about various events that can be triggered in the application.
- *
- * @example
- * ```js
- * penpot.on('pagechange', (event) => {
- *   console.log(event);
- * });
- * ```
- */
-export interface EventsMap {
+export interface Color {
   /**
-   * The `pagechange` event is triggered when the active page in the project is changed.
+   * The optional unique identifier for the color.
    */
-  pagechange: Page;
+  id?: string;
   /**
-   * The `filechange` event is triggered when there are changes in the current file.
+   * The optional name of the color.
    */
-  filechange: File;
+  name?: string;
   /**
-   * The `selectionchange` event is triggered when the selection of elements changes.
-   * This event passes a list of identifiers of the selected elements.
+   * The optional path or category to which this color belongs.
    */
-  selectionchange: string[];
+  path?: string;
   /**
-   * The `themechange` event is triggered when the application theme is changed.
-   */
-  themechange: Theme;
-  /**
-   * The `finish` event is triggered when some operation is finished.
-   */
-  finish: string;
-
-  /**
-   * This event will triger whenever the shape in the props change. It's mandatory to send
-   * with the props an object like `{ shapeId: '<id>' }`
-   */
-  shapechange: Shape;
-
-  /**
-   * The `contentsave` event will trigger when the content file changes.
-   */
-  contentsave: void;
-}
-
-/**
- * This type specifies the possible themes: 'light' or 'dark'.
- */
-export type Theme = 'light' | 'dark';
-
-/**
- * Represents an element in a Penpot library.
- * This interface provides information about a specific element in a library.
- */
-export interface LibraryElement extends PluginData {
-  /**
-   * The unique identifier of the library element.
-   */
-  readonly id: string;
-
-  /**
-   * The unique identifier of the library to which the element belongs.
-   */
-  readonly libraryId: string;
-
-  /**
-   * The name of the library element.
-   */
-  name: string;
-
-  /**
-   * The path of the library element.
-   */
-  path: string;
-}
-
-/**
- * Represents a color element from a library in Penpot.
- * This interface extends `LibraryElement` and includes properties specific to color elements.
- */
-export interface LibraryColor extends LibraryElement {
-  /**
-   * The color value of the library color.
+   * The optional solid color, represented as a string (e.g., '#FF5733').
    */
   color?: string;
-
   /**
-   * The opacity value of the library color.
+   * The optional opacity level of the color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
    */
   opacity?: number;
-
   /**
-   * The gradient value of the library color, if it's a gradient.
+   * The optional reference ID for an external color definition.
+   */
+  refId?: string;
+  /**
+   * The optional reference to an external file for the color definition.
+   */
+  refFile?: string;
+  /**
+   * The optional gradient fill defined by a Gradient object.
    */
   gradient?: Gradient;
-
   /**
-   * The image data of the library color, if it's an image fill.
+   * The optional image fill defined by a ImageData object.
    */
   image?: ImageData;
-
-  /**
-   * Converts the library color into a fill object.
-   * @return Returns a `Fill` object representing the color as a fill.
-   *
-   * @example
-   * ```js
-   * const fill = libraryColor.asFill();
-   * ```
-   */
-  asFill(): Fill;
-  /**
-   * Converts the library color into a stroke object.
-   * @return Returns a `Stroke` object representing the color as a stroke.
-   *
-   * @example
-   * ```js
-   * const stroke = libraryColor.asStroke();
-   * ```
-   */
-  asStroke(): Stroke;
 }
 
 /**
- * Represents a typography element from a library in Penpot.
- * This interface extends `LibraryElement` and includes properties specific to typography elements.
+ * Additional color information for the methods to extract colors from a list of shapes.
  */
-export interface LibraryTypography extends LibraryElement {
+export interface ColorShapeInfo {
   /**
-   * The unique identifier of the font used in the typography element.
+   * List of shapes with additional information
    */
-  fontId: string;
-
-  /**
-   * The font family of the typography element.
-   */
-  fontFamily: string;
-
-  /**
-   * The unique identifier of the font variant used in the typography element.
-   */
-  fontVariantId: string;
-
-  /**
-   * The font size of the typography element.
-   */
-  fontSize: string;
-
-  /**
-   * The font weight of the typography element.
-   */
-  fontWeight: string;
-
-  /**
-   * The font style of the typography element.
-   */
-  fontStyle?: 'normal' | 'italic' | null;
-
-  /**
-   * The line height of the typography element.
-   */
-  lineHeight: string;
-
-  /**
-   * The letter spacing of the typography element.
-   */
-  letterSpacing: string;
-
-  /**
-   * The text transform applied to the typography element.
-   */
-  textTransform?: 'uppercase' | 'capitalize' | 'lowercase' | null;
-
-  /**
-   * Applies the typography styles to a text shape.
-   * @param shape The text shape to apply the typography styles to.
-   *
-   * @example
-   * ```js
-   * typographyElement.applyToText(textShape);
-   * ```
-   */
-  applyToText(shape: Shape): void;
-
-  /**
-   * Applies the typography styles to a range of text within a text shape.
-   * @param range Represents a range of text within a Text shape. This interface provides properties for styling and formatting text ranges.
-   *
-   * @example
-   * ```js
-   * typographyElement.applyToTextRange(textShape);
-   * ```
-   */
-  applyToTextRange(range: TextRange): void;
-
-  /**
-   * Sets the font and optionally its variant for the typography element.
-   * @param font - The font to set.
-   * @param variant - The font variant to set (optional).
-   *
-   * @example
-   * ```js
-   * typographyElement.setFont(newFont, newVariant);
-   * ```
-   */
-  setFont(font: Font, variant?: FontVariant): void;
+  readonly shapesInfo: ColorShapeInfoEntry[];
 }
 
 /**
- * Represents a component element from a library in Penpot.
- * This interface extends `LibraryElement` and includes properties specific to component elements.
+ * Entry for the color shape additional information.
  */
-export interface LibraryComponent extends LibraryElement {
+export interface ColorShapeInfoEntry {
   /**
-   * Creates an instance of the component.
-   * @return Returns a `Shape` object representing the instance of the component.
-   *
-   * @example
-   * ```js
-   * const componentInstance = libraryComponent.instance();
-   * ```
+   * Property that has the color (example: fill, stroke...)
    */
-  instance(): Shape;
+  readonly property: string;
 
   /**
-   * @return Returns the reference to the main component shape.
+   * For properties that are indexes (such as fill) represent the index
+   * of the color inside that property.
    */
-  mainInstance(): Shape;
+  readonly index?: number;
+
+  /**
+   * Identifier of the shape that contains the color
+   */
+  readonly shapeId: string;
 }
 
 /**
- * Represents a summary of a Penpot library.
- * This interface provides properties for summarizing various aspects of a Penpot library.
+ * Comments allow the team to have one priceless conversation getting and
+ * providing feedback right over the designs and prototypes.
  */
-export interface LibrarySummary {
+export interface Comment {
   /**
-   * The unique identifier of the library.
+   * The `user` that has created the comment.
    */
-  readonly id: string;
+  readonly user: User;
 
   /**
-   * The name of the library.
+   * The `date` the comment has been created.
    */
-  readonly name: string;
+  readonly date: Date;
 
   /**
-   * The number of colors in the library.
+   * The `text` for the commentary. The owner can modify the comment.
    */
-  readonly numColors: number;
+  text: string;
 
   /**
-   * The number of components in the library.
+   * Remove the current comment from its comment thread. Only the owner can remove their comments.
    */
-  readonly numComponents: number;
-
-  /**
-   * The number of typographies in the library.
-   */
-  readonly numTypographies: number;
+  delete(): void;
 }
 
 /**
- * Represents a library in Penpot, containing colors, typographies, and components.
+ * Represents a list of comments one after the other. Usually this threads
+ * are conversations the users have in Penpot.
  */
-export interface Library extends PluginData {
+export interface CommentThread {
   /**
-   * The unique identifier of the library.
+   * If the thread is attached to a `board` this will have that board
+   * reference.
    */
-  readonly id: string;
+  board?: Board;
 
   /**
-   * The name of the library.
+   * The `position` in absolute coordinates in the canvas.
    */
-  readonly name: string;
+  position: Point;
 
   /**
-   * An array of color elements in the library.
-   * @example
-   * ```js
-   * console.log(penpot.library.local.colors);
-   * ```
+   * List of `comments` ordered by creation date.
    */
-  colors: LibraryColor[];
+  comments: Comment[];
 
   /**
-   * An array of typography elements in the library.
+   * Whether the thread has been marked as `resolved` or not.
    */
-  typographies: LibraryTypography[];
+  resolved: boolean;
 
   /**
-   * An array of component elements in the library.
-   * @example
-   * ```js
-   * console.log(penpot.library.local.components);
+   * Creates a new comment after the last one in the thread. The current user will
+   * be used as the creation user.
    */
-  components: LibraryComponent[];
+  reply(text: string): Comment;
 
   /**
-   * Creates a new color element in the library.
-   * @return Returns a new `LibraryColor` object representing the created color element.
-   *
-   * @example
-   * ```js
-   * const newColor = penpot.library.local.createColor();
-   * console.log(newColor);
-   * ```
+   * Removes the current comment thread. Only the user that created the thread can
+   * delete it.
    */
-  createColor(): LibraryColor;
-
-  /**
-   * Creates a new typography element in the library.
-   * @return Returns a new `LibraryTypography` object representing the created typography element.
-   *
-   * @example
-   * ```js
-   * const newTypography = library.createTypography();
-   * ```
-   */
-  createTypography(): LibraryTypography;
-
-  /**
-   * Creates a new component element in the library using the provided shapes.
-   * @param shapes An array of `Shape` objects representing the shapes to be included in the component.
-   * @return Returns a new `LibraryComponent` object representing the created component element.
-   *
-   * @example
-   * ```js
-   * const newComponent = penpot.library.local.createComponent([shape1, shape2]);
-   * ```
-   */
-  createComponent(shapes: Shape[]): LibraryComponent;
+  delete(): void;
 }
 
 /**
- * Represents the context of Penpot libraries, including both local and connected libraries.
- * This type contains references to the local library and an array of connected libraries.
+ * CommonLayout represents a common layout interface in the Penpot application.
+ * It includes various properties for alignment, spacing, padding, and sizing, as well as a method to remove the layout.
  */
-export type LibraryContext = {
+export interface CommonLayout {
   /**
-   * The local library in the Penpot context.
-   *
-   * @example
-   * ```js
-   * const localLibrary = libraryContext.local;
-   * ```
+   * The `alignItems` property specifies the default alignment for items inside the container.
+   * It can be one of the following values:
+   * - 'start': Items are aligned at the start.
+   * - 'end': Items are aligned at the end.
+   * - 'center': Items are centered.
+   * - 'stretch': Items are stretched to fill the container.
    */
-  readonly local: Library;
+  alignItems?: 'start' | 'end' | 'center' | 'stretch';
+  /**
+   * The `alignContent` property specifies how the content is aligned within the container when there is extra space.
+   * It can be one of the following values:
+   * - 'start': Content is aligned at the start.
+   * - 'end': Content is aligned at the end.
+   * - 'center': Content is centered.
+   * - 'space-between': Content is distributed with space between.
+   * - 'space-around': Content is distributed with space around.
+   * - 'space-evenly': Content is distributed with even space around.
+   * - 'stretch': Content is stretched to fill the container.
+   */
+  alignContent?:
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
+  /**
+   * The `justifyItems` property specifies the default justification for items inside the container.
+   * It can be one of the following values:
+   * - 'start': Items are justified at the start.
+   * - 'end': Items are justified at the end.
+   * - 'center': Items are centered.
+   * - 'stretch': Items are stretched to fill the container.
+   */
+  justifyItems?: 'start' | 'end' | 'center' | 'stretch';
+  /**
+   * The `justifyContent` property specifies how the content is justified within the container when there is extra space.
+   * It can be one of the following values:
+   * - 'start': Content is justified at the start.
+   * - 'center': Content is centered.
+   * - 'end': Content is justified at the end.
+   * - 'space-between': Content is distributed with space between.
+   * - 'space-around': Content is distributed with space around.
+   * - 'space-evenly': Content is distributed with even space around.
+   * - 'stretch': Content is stretched to fill the container.
+   */
+  justifyContent?:
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
 
   /**
-   * An array of connected libraries in the Penpot context.
-   *
-   * @example
-   * ```js
-   * const connectedLibraries = libraryContext.connected;
-   * ```
+   * The `rowGap` property specifies the gap between rows in the layout.
    */
-  readonly connected: Library[];
+  rowGap: number;
+  /**
+   * The `columnGap` property specifies the gap between columns in the layout.
+   */
+  columnGap: number;
 
   /**
-   * Retrieves a summary of available libraries that can be connected to.
-   * @return Returns a promise that resolves to an array of `LibrarySummary` objects representing available libraries.
-   *
-   * @example
-   * ```js
-   * const availableLibraries = await libraryContext.availableLibraries();
-   * ```
+   * The `verticalPadding` property specifies the vertical padding inside the container.
    */
-  availableLibraries(): Promise<LibrarySummary[]>;
+  verticalPadding: number;
+  /**
+   * The `horizontalPadding` property specifies the horizontal padding inside the container.
+   */
+  horizontalPadding: number;
 
   /**
-   * Connects to a specific library identified by its ID.
-   * @return Returns a promise that resolves to the `Library` object representing the connected library.
-   * @param libraryId - The ID of the library to connect to.
-   *
-   * @example
-   * ```js
-   * const connectedLibrary = await libraryContext.connectLibrary('library-id');
-   * ```
+   * The `topPadding` property specifies the padding at the top of the container.
    */
-  connectLibrary(libraryId: string): Promise<Library>;
-};
-
-/**
- * Represents a font variant in Penpot, which defines a specific style variation of a font.
- * This interface provides properties for describing the characteristics of a font variant.
- */
-export interface FontVariant {
+  topPadding: number;
   /**
-   * The name of the font variant.
+   * The `rightPadding` property specifies the padding at the right of the container.
    */
-  name: string;
+  rightPadding: number;
+  /**
+   * The `bottomPadding` property specifies the padding at the bottom of the container.
+   */
+  bottomPadding: number;
+  /**
+   * The `leftPadding` property specifies the padding at the left of the container.
+   */
+  leftPadding: number;
 
   /**
-   * The unique identifier of the font variant.
+   * The `horizontalSizing` property specifies the horizontal sizing behavior of the container.
+   * It can be one of the following values:
+   * - 'fit-content': The container fits the content.
+   * - 'fill': The container fills the available space.
+   * - 'auto': The container size is determined automatically.
    */
-  fontVariantId: string;
+  horizontalSizing: 'fit-content' | 'fill' | 'auto';
+  /**
+   * The `verticalSizing` property specifies the vertical sizing behavior of the container.
+   * It can be one of the following values:
+   * - 'fit-content': The container fits the content.
+   * - 'fill': The container fills the available space.
+   * - 'auto': The container size is determined automatically.
+   */
+  verticalSizing: 'fit-content' | 'fill' | 'auto';
 
   /**
-   * The font weight of the font variant.
+   * The `remove` method removes the layout.
    */
-  fontWeight: string;
-
-  /**
-   * The font style of the font variant.
-   */
-  fontStyle: 'normal' | 'italic';
-}
-
-/**
- * Represents a font in Penpot, which includes details about the font family, variants, and styling options.
- * This interface provides properties and methods for describing and applying fonts within Penpot.
- */
-export interface Font {
-  /**
-   * This property holds the human-readable name of the font.
-   */
-  name: string;
-
-  /**
-   * The unique identifier of the font.
-   */
-  fontId: string;
-
-  /**
-   * The font family of the font.
-   */
-  fontFamily: string;
-
-  /**
-   * The default font style of the font.
-   */
-  fontStyle?: 'normal' | 'italic' | null;
-
-  /**
-   * The default font variant ID of the font.
-   */
-  fontVariantId: string;
-
-  /**
-   * The default font weight of the font.
-   */
-  fontWeight: string;
-
-  /**
-   * An array of font variants available for the font.
-   */
-  variants: FontVariant[];
-
-  /**
-   * Applies the font styles to a text shape.
-   * @param text - The text shape to apply the font styles to.
-   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
-   *
-   * @example
-   * ```js
-   * font.applyToText(textShape, fontVariant);
-   * ```
-   */
-  applyToText(text: Text, variant?: FontVariant): void;
-
-  /**
-   * Applies the font styles to a text range within a text shape.
-   * @param range - The text range to apply the font styles to.
-   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
-   *
-   * @example
-   * ```js
-   * font.applyToRange(textRange, fontVariant);
-   * ```
-   */
-  applyToRange(range: TextRange, variant?: FontVariant): void;
-}
-
-/**
- * Represents the context for managing fonts in Penpot.
- * This interface provides methods to interact with fonts, such as retrieving fonts by ID or name.
- */
-export interface FontsContext {
-  /**
-   * An array containing all available fonts.
-   */
-  all: Font[];
-
-  /**
-   * Finds a font by its unique identifier.
-   * @param id - The ID of the font to find.
-   * @return Returns the `Font` object if found, otherwise `null`.
-   *
-   * @example
-   * ```js
-   * const font = fontsContext.findById('font-id');
-   * if (font) {
-   *   console.log(font.name);
-   * }
-   * ```
-   */
-  findById(id: string): Font | null;
-
-  /**
-   * Finds a font by its name.
-   * @param name - The name of the font to find.
-   * @return Returns the `Font` object if found, otherwise `null`.
-   *
-   * @example
-   * ```js
-   * const font = fontsContext.findByName('font-name');
-   * if (font) {
-   *   console.log(font.name);
-   * }
-   * ```
-   */
-  findByName(name: string): Font | null;
-
-  /**
-   * Finds all fonts matching a specific ID.
-   * @param id - The ID to match against.
-   * @return Returns an array of `Font` objects matching the provided ID.
-   *
-   * @example
-   * ```js
-   * const fonts = fontsContext.findAllById('font-id');
-   * console.log(fonts);
-   * ```
-   */
-  findAllById(id: string): Font[];
-
-  /**
-   * Finds all fonts matching a specific name.
-   * @param name - The name to match against.
-   * @return Returns an array of `Font` objects matching the provided name.
-   *
-   * @example
-   * ```js
-   * const fonts = fontsContext.findAllByName('font-name');
-   * console.log(fonts);
-   * ```
-   */
-  findAllByName(name: string): Font[];
-}
-
-/**
- * Represents a user in Penpot.
- */
-export interface User {
-  /**
-   * The unique identifier of the user.
-   *
-   * @example
-   * ```js
-   * const userId = user.id;
-   * console.log(userId);
-   * ```
-   */
-  readonly id: string;
-
-  /**
-   * The name of the user.
-   *
-   * @example
-   * ```js
-   * const userName = user.name;
-   * console.log(userName);
-   * ```
-   */
-  readonly name?: string;
-
-  /**
-   * The URL of the user's avatar image.
-   *
-   * @example
-   * ```js
-   * const avatarUrl = user.avatarUrl;
-   * console.log(avatarUrl);
-   * ```
-   */
-  readonly avatarUrl?: string;
-
-  /**
-   * The color associated with the user.
-   *
-   * @example
-   * ```js
-   * const userColor = user.color;
-   * console.log(userColor);
-   * ```
-   */
-  readonly color: string;
-
-  /**
-   * The session ID of the user.
-   *
-   * @example
-   * ```js
-   * const sessionId = user.sessionId;
-   * console.log(sessionId);
-   * ```
-   */
-  readonly sessionId?: string;
-}
-
-/**
- * Represents an active user in Penpot, extending the `User` interface.
- * This interface includes additional properties specific to active users.
- */
-export interface ActiveUser extends User {
-  /**
-   * The position of the active user.
-   *
-   * @example
-   * ```js
-   * const userPosition = activeUser.position;
-   * console.log(userPosition);
-   * ```
-   */
-  position?: { x: number; y: number };
-  /**
-   * The zoom level of the active user.
-   *
-   * @example
-   * ```js
-   * const userZoom = activeUser.zoom;
-   * console.log(userZoom);
-   * ```
-   */
-  readonly zoom?: number;
+  remove(): void;
 }
 
 /**
@@ -3614,329 +1228,6 @@ export interface Context {
 }
 
 /**
- * Defines an interaction flow inside penpot. A flow is defined by a starting board for an interaction.
- */
-export interface Flow {
-  /**
-   * The page in which the flow is defined
-   */
-  readonly page: Page;
-
-  /**
-   * The name for the current flow
-   */
-  name: string;
-
-  /**
-   * The starting board for this interaction flow
-   */
-  startingBoard: Board;
-
-  /**
-   * Remvoes the flow from the page
-   */
-  remove(): void;
-}
-
-/**
- * Penpot allows you to prototype interactions by connecting boards, which can act as screens.
- */
-export interface Interaction {
-  /**
-   * The shape that owns the interaction
-   */
-  readonly shape?: Shape;
-
-  /**
-   * The user action that will start the interaction.
-   */
-  trigger: Trigger;
-
-  /**
-   * Time in **milliseconds** after the action will happen. Only applies to `after-delay` triggers.
-   */
-  delay?: number | null;
-
-  /**
-   * The action that will execute after the trigger happens.
-   */
-  action: Action;
-
-  /**
-   * Removes the interaction
-   */
-  remove(): void;
-}
-
-/**
- * Types of triggers defined:
- * - `click` triggers when the user uses the mouse to click on a shape
- * - `mouse-enter` triggers when the user moves the mouse inside the shape (even if no mouse button is pressed)
- * - `mouse-leave` triggers when the user moves the mouse outside the shape.
- * - `after-delay` triggers after the `delay` time has passed even if no interaction from the user happens.
- */
-export type Trigger = 'click' | 'mouse-enter' | 'mouse-leave' | 'after-delay';
-
-/**
- * It takes the user from one board to the destination set in the interaction.
- */
-export interface NavigateTo {
-  /**
-   * Type of action
-   */
-  readonly type: 'navigate-to';
-
-  /**
-   * Board to which the action targets
-   */
-  readonly destination: Board;
-
-  /**
-   * When true the scroll will be preserved.
-   */
-  readonly preserveScrollPosition?: boolean;
-
-  /**
-   * Animation displayed with this interaction.
-   */
-  readonly animation?: Animation;
-}
-
-/**
- * Base type for the actions "open-overlay" and "toggle-overlay" that share most of their properties
- */
-export interface OverlayAction {
-  /**
-   * Overlay board that will be openned.
-   */
-  readonly destination: Board;
-
-  /**
-   * Base shape to which the overlay will be positioned taking constraints into account.
-   */
-  readonly relativeTo?: Shape;
-
-  /**
-   * Positioning of the overlay.
-   */
-  readonly position?:
-    | 'manual'
-    | 'center'
-    | 'top-left'
-    | 'top-right'
-    | 'top-center'
-    | 'bottom-left'
-    | 'bottom-right'
-    | 'bottom-center';
-
-  /**
-   * For `position = 'manual'` the location of the overlay.
-   */
-  readonly manualPositionLocation?: Point;
-
-  /**
-   * When true the overlay will be closed when clicking outside
-   */
-  readonly closeWhenClickOutside?: boolean;
-
-  /**
-   * When true a background will be added to the overlay.
-   */
-  readonly addBackgroundOverlay?: boolean;
-
-  /**
-   * Animation displayed with this interaction.
-   */
-  readonly animation?: Animation;
-}
-
-/**
- * It opens a board right over the current board.
- */
-export interface OpenOverlay extends OverlayAction {
-  /**
-   * The action type
-   */
-  readonly type: 'open-overlay';
-}
-
-/**
- * It opens an overlay if it is not already opened or closes it if it is already opened.
- */
-export interface ToggleOverlay extends OverlayAction {
-  /**
-   * The action type
-   */
-  readonly type: 'toggle-overlay';
-}
-
-/**
- * This action will close a targeted board that is opened as an overlay.
- */
-export interface CloseOverlay {
-  /**
-   * The action type
-   */
-  readonly type: 'close-overlay';
-
-  /**
-   * The overlay to be closed with this action.
-   */
-  readonly destination?: Board;
-
-  /**
-   * Animation displayed with this interaction.
-   */
-  readonly animation: Animation;
-}
-
-/**
- * It takes back to the last board shown.
- */
-export interface PreviousScreen {
-  /**
-   * The action type
-   */
-  readonly type: 'previous-screen';
-}
-
-/**
- * This action opens an URL in a new tab.
- */
-export interface OpenUrl {
-  /**
-   * The action type
-   */
-  readonly type: 'open-url';
-  /**
-   * The URL to open when the action is executed
-   */
-  readonly url: string;
-}
-
-/**
- * Type for all the possible types of actions in an interaction.
- */
-export type Action =
-  | NavigateTo
-  | OpenOverlay
-  | ToggleOverlay
-  | CloseOverlay
-  | PreviousScreen
-  | OpenUrl;
-
-/**
- * Dissolve animation
- */
-export interface Dissolve {
-  /**
-   * Type of the animation
-   */
-  readonly type: 'dissolve';
-
-  /**
-   * Duration of the animation effect
-   */
-  readonly duration: number;
-
-  /**
-   * Function that the dissolve effect will follow for the interpolation.
-   * Defaults to `linear`
-   */
-  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
-}
-
-/**
- * Slide animation
- */
-export interface Slide {
-  /**
-   * Type of the animation.
-   */
-  readonly type: 'slide';
-
-  /**
-   * Indicate if the slide will be either in-to-out `in` or out-to-in `out`.
-   */
-  readonly way: 'in' | 'out';
-
-  /**
-   * Direction for the slide animaton.
-   */
-  readonly direction: 'right' | 'left' | 'up' | 'down';
-
-  /**
-   * Duration of the animation effect.
-   */
-  readonly duration: number;
-
-  /**
-   * If `true` the offset effect will be used.
-   */
-  readonly offsetEffect?: boolean;
-
-  /**
-   * Function that the dissolve effect will follow for the interpolation.
-   * Defaults to `linear`
-   */
-  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
-}
-
-/**
- * Push animation
- */
-export interface Push {
-  /**
-   * Type of the animation
-   */
-  readonly type: 'push';
-
-  /**
-   * Direction for the push animaton
-   */
-  readonly direction: 'right' | 'left' | 'up' | 'down';
-
-  /**
-   * Duration of the animation effect
-   */
-  readonly duration: number;
-
-  /**
-   * Function that the dissolve effect will follow for the interpolation.
-   * Defaults to `linear`
-   */
-  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
-}
-
-/**
- * Type of all the animations that can be added to an interaction.
- */
-export type Animation = Dissolve | Slide | Push;
-
-/**
- * This object allows to access to some history functions
- */
-export interface HistoryContext {
-  /**
-   * Starts an undo block. All operations done inside this block will be undone together until
-   * a call to `undoBlockFinish` is called.
-   * @returns the block identifier
-   */
-  undoBlockBegin(): Symbol;
-
-  /**
-   * Ends the undo block started with `undoBlockBegin`
-   * @param blockId is the id returned by `undoBlockBegin`
-   *
-   * @example
-   * ```js
-   * historyContext.undoBlockFinish(blockId);
-   * ```
-   */
-  undoBlockFinish(blockId: Symbol): void;
-}
-
-/**
  * Utility methods for geometric calculations in Penpot.
  *
  * @example
@@ -4061,6 +1352,2715 @@ export interface ContextUtils {
    * ```
    */
   readonly types: ContextTypesUtils;
+}
+
+/**
+ * Dissolve animation
+ */
+export interface Dissolve {
+  /**
+   * Type of the animation
+   */
+  readonly type: 'dissolve';
+
+  /**
+   * Duration of the animation effect
+   */
+  readonly duration: number;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Represents an ellipse shape in Penpot.
+ * This interface extends `ShapeBase` and includes properties specific to ellipses.
+ */
+export interface Ellipse extends ShapeBase {
+  type: 'ellipse';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: Fill[];
+}
+
+/**
+ * Represents a mapping of events to their corresponding types in Penpot.
+ * This interface provides information about various events that can be triggered in the application.
+ *
+ * @example
+ * ```js
+ * penpot.on('pagechange', (event) => {
+ *   console.log(event);
+ * });
+ * ```
+ */
+export interface EventsMap {
+  /**
+   * The `pagechange` event is triggered when the active page in the project is changed.
+   */
+  pagechange: Page;
+  /**
+   * The `filechange` event is triggered when there are changes in the current file.
+   */
+  filechange: File;
+  /**
+   * The `selectionchange` event is triggered when the selection of elements changes.
+   * This event passes a list of identifiers of the selected elements.
+   */
+  selectionchange: string[];
+  /**
+   * The `themechange` event is triggered when the application theme is changed.
+   */
+  themechange: Theme;
+  /**
+   * The `finish` event is triggered when some operation is finished.
+   */
+  finish: string;
+
+  /**
+   * This event will triger whenever the shape in the props change. It's mandatory to send
+   * with the props an object like `{ shapeId: '<id>' }`
+   */
+  shapechange: Shape;
+
+  /**
+   * The `contentsave` event will trigger when the content file changes.
+   */
+  contentsave: void;
+}
+
+/**
+ * Represents export settings in Penpot.
+ * This interface includes properties for defining export configurations.
+ */
+export interface Export {
+  /**
+   * Type of the file to export. Can be one of the following values: png, jpeg, svg, pdf
+   */
+  type: 'png' | 'jpeg' | 'svg' | 'pdf';
+  /**
+   * For bitmap formats represent the scale of the original size to resize the export
+   */
+  scale?: number;
+  /**
+   * Suffix that will be appended to the resulting exported file
+   */
+  suffix?: string;
+}
+
+/**
+ * File represents a file in the Penpot application.
+ * It includes properties for the file's identifier, name, and revision number.
+ */
+export interface File extends PluginData {
+  /**
+   * The `id` property is a unique identifier for the file.
+   */
+  readonly id: string;
+
+  /**
+   * The `name` for the file
+   */
+  name: string;
+
+  /**
+   * The `revn` will change for every document update
+   */
+  revn: number;
+
+  /**
+   * List all the pages for the current file
+   */
+  pages: Page[];
+
+  /*
+   * Export the current file to an archive.
+   * @param `exportType` indicates the type of file to generate.
+   * - `'penpot'` will create a *.penpot file with a binary representation of the file
+   * - `'zip'` will create a *.zip with the file exported in several SVG files with some JSON metadata
+   * @param `libraryExportType` indicates what to do with the linked libraries of the file when
+   * exporting it. Defaults to `all` if not sent.
+   * - `'all'` will include the libraries as external files that will be exported in a single bundle
+   * - `'merge'` will add all the assets into the main file and only one file will be imported
+   * - `'detach'` will unlink all the external assets and no libraries will be imported
+   * @param `progressCallback` for `zip` export can be pass this callback so a progress report is sent.
+   *
+   * @example
+   * ```js
+   * const exportedData = await file.export('penpot', 'all');
+   * ```
+   */
+  export(
+    exportType: 'penpot' | 'zip',
+    libraryExportType?: 'all' | 'merge' | 'detach'
+  ): Promise<Uint8Array>;
+}
+
+/**
+ * Represents fill properties in Penpot. You can add a fill to any shape except for groups.
+ * This interface includes properties for defining solid color fills, gradient fills, and image fills.
+ */
+export interface Fill {
+  /**
+   * The optional solid fill color, represented as a string (e.g., '#FF5733').
+   */
+  fillColor?: string;
+  /**
+   * The optional opacity level of the solid fill color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
+   */
+  fillOpacity?: number;
+  /**
+   * The optional gradient fill defined by a Gradient object.
+   */
+  fillColorGradient?: Gradient;
+  /**
+   * The optional reference to an external file for the fill color.
+   */
+  fillColorRefFile?: string;
+  /**
+   * The optional reference ID within the external file for the fill color.
+   */
+  fillColorRefId?: string;
+  /**
+   * The optional image fill defined by a ImageData object.
+   */
+  fillImage?: ImageData;
+}
+
+/**
+ * Represents a flexible layout configuration in Penpot.
+ * This interface extends `CommonLayout` and includes properties for defining the direction,
+ * wrapping behavior, and child management of a flex layout.
+ */
+export interface FlexLayout extends CommonLayout {
+  /**
+   * The direction of the flex layout.
+   * - 'row': Main axis is horizontal, from left to right.
+   * - 'row-reverse': Main axis is horizontal, from right to left.
+   * - 'column': Main axis is vertical, from top to bottom.
+   * - 'column-reverse': Main axis is vertical, from bottom to top.
+   */
+  dir: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+  /**
+   * The optional wrapping behavior of the flex layout.
+   * - 'wrap': Child elements will wrap onto multiple lines.
+   * - 'nowrap': Child elements will not wrap.
+   */
+  wrap?: 'wrap' | 'nowrap';
+  /**
+   * Appends a child element to the flex layout.
+   * @param child The child element to be appended, of type `Shape`.
+   *
+   * @example
+   * ```js
+   * flexLayout.appendChild(childShape);
+   * ```
+   */
+  appendChild(child: Shape): void;
+}
+
+/**
+ * Defines an interaction flow inside penpot. A flow is defined by a starting board for an interaction.
+ */
+export interface Flow {
+  /**
+   * The page in which the flow is defined
+   */
+  readonly page: Page;
+
+  /**
+   * The name for the current flow
+   */
+  name: string;
+
+  /**
+   * The starting board for this interaction flow
+   */
+  startingBoard: Board;
+
+  /**
+   * Remvoes the flow from the page
+   */
+  remove(): void;
+}
+
+/**
+ * Represents a font in Penpot, which includes details about the font family, variants, and styling options.
+ * This interface provides properties and methods for describing and applying fonts within Penpot.
+ */
+export interface Font {
+  /**
+   * This property holds the human-readable name of the font.
+   */
+  name: string;
+
+  /**
+   * The unique identifier of the font.
+   */
+  fontId: string;
+
+  /**
+   * The font family of the font.
+   */
+  fontFamily: string;
+
+  /**
+   * The default font style of the font.
+   */
+  fontStyle?: 'normal' | 'italic' | null;
+
+  /**
+   * The default font variant ID of the font.
+   */
+  fontVariantId: string;
+
+  /**
+   * The default font weight of the font.
+   */
+  fontWeight: string;
+
+  /**
+   * An array of font variants available for the font.
+   */
+  variants: FontVariant[];
+
+  /**
+   * Applies the font styles to a text shape.
+   * @param text - The text shape to apply the font styles to.
+   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
+   *
+   * @example
+   * ```js
+   * font.applyToText(textShape, fontVariant);
+   * ```
+   */
+  applyToText(text: Text, variant?: FontVariant): void;
+
+  /**
+   * Applies the font styles to a text range within a text shape.
+   * @param range - The text range to apply the font styles to.
+   * @param variant - Optional. The specific font variant to apply. If not provided, applies the default variant.
+   *
+   * @example
+   * ```js
+   * font.applyToRange(textRange, fontVariant);
+   * ```
+   */
+  applyToRange(range: TextRange, variant?: FontVariant): void;
+}
+
+/**
+ * Represents a font variant in Penpot, which defines a specific style variation of a font.
+ * This interface provides properties for describing the characteristics of a font variant.
+ */
+export interface FontVariant {
+  /**
+   * The name of the font variant.
+   */
+  name: string;
+
+  /**
+   * The unique identifier of the font variant.
+   */
+  fontVariantId: string;
+
+  /**
+   * The font weight of the font variant.
+   */
+  fontWeight: string;
+
+  /**
+   * The font style of the font variant.
+   */
+  fontStyle: 'normal' | 'italic';
+}
+
+/**
+ * Represents the context for managing fonts in Penpot.
+ * This interface provides methods to interact with fonts, such as retrieving fonts by ID or name.
+ */
+export interface FontsContext {
+  /**
+   * An array containing all available fonts.
+   */
+  all: Font[];
+
+  /**
+   * Finds a font by its unique identifier.
+   * @param id - The ID of the font to find.
+   * @return Returns the `Font` object if found, otherwise `null`.
+   *
+   * @example
+   * ```js
+   * const font = fontsContext.findById('font-id');
+   * if (font) {
+   *   console.log(font.name);
+   * }
+   * ```
+   */
+  findById(id: string): Font | null;
+
+  /**
+   * Finds a font by its name.
+   * @param name - The name of the font to find.
+   * @return Returns the `Font` object if found, otherwise `null`.
+   *
+   * @example
+   * ```js
+   * const font = fontsContext.findByName('font-name');
+   * if (font) {
+   *   console.log(font.name);
+   * }
+   * ```
+   */
+  findByName(name: string): Font | null;
+
+  /**
+   * Finds all fonts matching a specific ID.
+   * @param id - The ID to match against.
+   * @return Returns an array of `Font` objects matching the provided ID.
+   *
+   * @example
+   * ```js
+   * const fonts = fontsContext.findAllById('font-id');
+   * console.log(fonts);
+   * ```
+   */
+  findAllById(id: string): Font[];
+
+  /**
+   * Finds all fonts matching a specific name.
+   * @param name - The name to match against.
+   * @return Returns an array of `Font` objects matching the provided name.
+   *
+   * @example
+   * ```js
+   * const fonts = fontsContext.findAllByName('font-name');
+   * console.log(fonts);
+   * ```
+   */
+  findAllByName(name: string): Font[];
+}
+
+/**
+ * Represents a gradient configuration in Penpot.
+ * A gradient can be either linear or radial and includes properties to define its shape, position, and color stops.
+ */
+export type Gradient = {
+  /**
+   * Specifies the type of gradient.
+   * - 'linear': A gradient that transitions colors along a straight line.
+   * - 'radial': A gradient that transitions colors radiating outward from a central point.
+   *
+   * @example
+   * ```js
+   * const gradient: Gradient = { type: 'linear', startX: 0, startY: 0, endX: 100, endY: 100, width: 100, stops: [{ color: '#FF5733', offset: 0 }] };
+   * ```
+   */
+  type: 'linear' | 'radial';
+  /**
+   * The X-coordinate of the starting point of the gradient.
+   */
+  startX: number;
+  /**
+   * The Y-coordinate of the starting point of the gradient.
+   */
+  startY: number;
+  /**
+   * The X-coordinate of the ending point of the gradient.
+   */
+  endX: number;
+  /**
+   * The Y-coordinate of the ending point of the gradient.
+   */
+  endY: number;
+  /**
+   * The width of the gradient. For radial gradients, this could be interpreted as the radius.
+   */
+  width: number;
+  /**
+   * An array of color stops that define the gradient.
+   */
+  stops: Array<{ color: string; opacity?: number; offset: number }>;
+};
+
+/**
+ * GridLayout represents a grid layout in the Penpot application, extending the common layout interface.
+ * It includes properties and methods to manage rows, columns, and child elements within the grid.
+ */
+export interface GridLayout extends CommonLayout {
+  /**
+   * The `dir` property specifies the primary direction of the grid layout.
+   * It can be either 'column' or 'row'.
+   */
+  dir: 'column' | 'row';
+  /**
+   * The `rows` property represents the collection of rows in the grid.
+   * This property is read-only.
+   */
+  readonly rows: Track[];
+  /**
+   * The `columns` property represents the collection of columns in the grid.
+   * This property is read-only.
+   */
+  readonly columns: Track[];
+
+  /**
+   * Adds a new row to the grid.
+   * @param type The type of the row to add.
+   * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * const board = penpot.createBoard();
+   * const grid = board.addGridLayout();
+   * grid.addRow("flex", 1);
+   * ```
+   */
+  addRow(type: TrackType, value?: number): void;
+  /**
+   * Adds a new row to the grid at the specified index.
+   * @param index The index at which to add the row.
+   * @param type The type of the row to add.
+   * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.addRowAtIndex(0, 'fixed', 100);
+   * ```
+   */
+  addRowAtIndex(index: number, type: TrackType, value?: number): void;
+  /**
+   * Adds a new column to the grid.
+   * @param type The type of the column to add.
+   * @param value The value associated with the column type (optional).
+   *
+   * @example
+   * ```js
+   * const board = penpot.createBoard();
+   * const grid = board.addGridLayout();
+   * grid.addColumn('percent', 50);
+   * ```
+   */
+  addColumn(type: TrackType, value?: number): void;
+  /**
+   * Adds a new column to the grid at the specified index.
+   * @param index The index at which to add the column.
+   * @param type The type of the column to add.
+   * @param value The value associated with the column type.
+   *
+   * @example
+   * ```js
+   * gridLayout.addColumnAtIndex(1, 'auto');
+   * ```
+   */
+  addColumnAtIndex(index: number, type: TrackType, value: number): void;
+  /**
+   * Removes a row from the grid at the specified index.
+   * @param index The index of the row to remove.
+   *
+   * @example
+   * ```js
+   * gridLayout.removeRow(2);
+   * ```
+   */
+  removeRow(index: number): void;
+  /**
+   * Removes a column from the grid at the specified index.
+   * @param index The index of the column to remove.
+   *
+   * @example
+   * ```js
+   * gridLayout.removeColumn(3);
+   * ```
+   */
+  removeColumn(index: number): void;
+  /**
+   * Sets the properties of a column at the specified index.
+   * @param index The index of the column to set.
+   * @param type The type of the column.
+   * @param value The value associated with the column type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.setColumn(0, 'fixed', 200);
+   * ```
+   */
+  setColumn(index: number, type: TrackType, value?: number): void;
+  /**
+   * Sets the properties of a row at the specified index.
+   * @param index The index of the row to set.
+   * @param type The type of the row.
+   * @param value The value associated with the row type (optional).
+   *
+   * @example
+   * ```js
+   * gridLayout.setRow(1, 'flex');
+   * ```
+   */
+  setRow(index: number, type: TrackType, value?: number): void;
+
+  /**
+   * Appends a child element to the grid at the specified row and column.
+   * @param child The child element to append.
+   * @param row The row index where the child will be placed.
+   * @param column The column index where the child will be placed.
+   *
+   * @example
+   * ```js
+   * gridLayout.appendChild(childShape, 0, 1);
+   * ```
+   */
+  appendChild(child: Shape, row: number, column: number): void;
+}
+
+/**
+ * Represents a group of shapes in Penpot.
+ * This interface extends `ShapeBase` and includes properties and methods specific to groups.
+ */
+export interface Group extends ShapeBase {
+  /**
+   * The type of the shape, which is always 'group' for groups.
+   */
+  readonly type: 'group';
+
+  // Container Properties
+  /**
+   * The children shapes contained within the group.
+   */
+  readonly children: Shape[];
+  /**
+   * Appends a child shape to the group.
+   * @param child The child shape to append.
+   *
+   * @example
+   * ```js
+   * group.appendChild(childShape);
+   * ```
+   */
+  appendChild(child: Shape): void;
+  /**
+   * Inserts a child shape at the specified index within the group.
+   * @param index The index at which to insert the child shape.
+   * @param child The child shape to insert.
+   *
+   * @example
+   * ```js
+   * group.insertChild(0, childShape);
+   * ```
+   */
+  insertChild(index: number, child: Shape): void;
+
+  /**
+   * Checks if the group is currently a mask.
+   * A mask defines a clipping path for its child shapes.
+   */
+  isMask(): boolean;
+
+  /**
+   * Converts the group into a mask.
+   */
+  makeMask(): void;
+  /**
+   * Removes the mask from the group.
+   */
+  removeMask(): void;
+}
+
+/**
+ * Represents a board guide in Penpot.
+ * This type can be one of several specific board guide types: column, row, or square.
+ */
+export type Guide = GuideColumn | GuideRow | GuideSquare;
+
+/**
+ * Represents a goard guide for columns in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of column guides within a board.
+ */
+export interface GuideColumn {
+  /**
+   * The type of the guide, which is always 'column' for column guides.
+   */
+  type: 'column';
+  /**
+   * Specifies whether the column guide is displayed.
+   */
+  display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the column guides.
+   */
+  params: GuideColumnParams;
+}
+
+/**
+ * Represents parameters for board guide columns in Penpot.
+ * This interface includes properties for defining the appearance and layout of column guides within a board.
+ */
+export interface GuideColumnParams {
+  /**
+   * The color configuration for the column guides.
+   */
+  color: { color: string; opacity: number };
+  /**
+   * The optional alignment type of the column guides.
+   * - 'stretch': Columns stretch to fit the available space.
+   * - 'left': Columns align to the left.
+   * - 'center': Columns align to the center.
+   * - 'right': Columns align to the right.
+   */
+  type?: 'stretch' | 'left' | 'center' | 'right';
+  /**
+   * The optional size of each column.
+   */
+  size?: number;
+  /**
+   * The optional margin between the columns and the board edges.
+   */
+  margin?: number;
+  /**
+   * The optional length of each item within the columns.
+   */
+  itemLength?: number;
+  /**
+   * The optional gutter width between columns.
+   */
+  gutter?: number;
+}
+
+/**
+ * Represents a board guide for rows in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of row guides within a board.
+ */
+export interface GuideRow {
+  /**
+   * The type of the guide, which is always 'row' for row guides.
+   */
+  type: 'row';
+  /**
+   * Specifies whether the row guide is displayed.
+   */
+  display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the row guides.
+   * Note: This reuses the same parameter structure as column guides.
+   */
+  params: GuideColumnParams;
+}
+
+/**
+ * Represents a board guide for squares in Penpot.
+ * This interface includes properties for defining the type, visibility, and parameters of square guides within a board.
+ */
+export interface GuideSquare {
+  /**
+   * The type of the guide, which is always 'square' for square guides.
+   */
+  type: 'square';
+  /**
+   * Specifies whether the square guide is displayed.
+   */
+  display: boolean;
+  /**
+   * The parameters defining the appearance and layout of the square guides.
+   */
+  params: GuideSquareParams;
+}
+
+/**
+ * Represents parameters for board guide squares in Penpot.
+ * This interface includes properties for defining the appearance and size of square guides within a board.
+ */
+export interface GuideSquareParams {
+  /**
+   * The color configuration for the square guides.
+   */
+  color: { color: string; opacity: number };
+  /**
+   * The optional size of each square guide.
+   */
+  size?: number;
+}
+
+/**
+ * This object allows to access to some history functions
+ */
+export interface HistoryContext {
+  /**
+   * Starts an undo block. All operations done inside this block will be undone together until
+   * a call to `undoBlockFinish` is called.
+   * @returns the block identifier
+   */
+  undoBlockBegin(): Symbol;
+
+  /**
+   * Ends the undo block started with `undoBlockBegin`
+   * @param blockId is the id returned by `undoBlockBegin`
+   *
+   * @example
+   * ```js
+   * historyContext.undoBlockFinish(blockId);
+   * ```
+   */
+  undoBlockFinish(blockId: Symbol): void;
+}
+
+/**
+ * Represents an image shape in Penpot.
+ * This interface extends `ShapeBase` and includes properties specific to image shapes.
+ */
+export interface Image extends ShapeBase {
+  type: 'image';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: Fill[];
+}
+
+/**
+ * Represents image data in Penpot.
+ * This includes properties for defining the image's dimensions, metadata, and aspect ratio handling.
+ */
+export type ImageData = {
+  /**
+   * The optional name of the image.
+   */
+  name?: string;
+  /**
+   * The width of the image.
+   */
+  width: number;
+  /**
+   * The height of the image.
+   */
+  height: number;
+  /**
+   * The optional media type of the image (e.g., 'image/png', 'image/jpeg').
+   */
+  mtype?: string;
+  /**
+   * The unique identifier for the image.
+   */
+  id: string;
+  /**
+   * Whether to keep the aspect ratio of the image when resizing.
+   * Defaults to false if omitted.
+   */
+  keepApectRatio?: boolean;
+};
+
+/**
+ * Penpot allows you to prototype interactions by connecting boards, which can act as screens.
+ */
+export interface Interaction {
+  /**
+   * The shape that owns the interaction
+   */
+  readonly shape?: Shape;
+
+  /**
+   * The user action that will start the interaction.
+   */
+  trigger: Trigger;
+
+  /**
+   * Time in **milliseconds** after the action will happen. Only applies to `after-delay` triggers.
+   */
+  delay?: number | null;
+
+  /**
+   * The action that will execute after the trigger happens.
+   */
+  action: Action;
+
+  /**
+   * Removes the interaction
+   */
+  remove(): void;
+}
+
+/**
+ * Properties for defining the layout of a cell in Penpot.
+ */
+export interface LayoutCellProperties {
+  /**
+   * The row index of the cell.
+   * This value is optional and indicates the starting row of the cell.
+   */
+  row?: number;
+
+  /**
+   * The number of rows the cell should span.
+   * This value is optional and determines the vertical span of the cell.
+   */
+  rowSpan?: number;
+
+  /**
+   * The column index of the cell.
+   * This value is optional and indicates the starting column of the cell.
+   */
+  column?: number;
+
+  /**
+   * The number of columns the cell should span.
+   * This value is optional and determines the horizontal span of the cell.
+   */
+  columnSpan?: number;
+
+  /**
+   * The name of the grid area that this cell belongs to.
+   * This value is optional and can be used to define named grid areas.
+   */
+  areaName?: string;
+
+  /**
+   * The positioning mode of the cell.
+   * This value can be 'auto', 'manual', or 'area' and determines how the cell is positioned within the layout.
+   */
+  position?: 'auto' | 'manual' | 'area';
+}
+
+/**
+ * Properties for defining the layout of a child element in Penpot.
+ */
+export interface LayoutChildProperties {
+  /**
+   * Specifies whether the child element is positioned absolutely.
+   * When set to true, the element is taken out of the normal document flow and positioned relative to its nearest positioned ancestor.
+   */
+  absolute: boolean;
+
+  /**
+   * Defines the stack order of the child element
+   * Elements with a higher zIndex will be displayed in front of those with a lower zIndex.
+   */
+  zIndex: number;
+
+  /**
+   * Determines the horizontal sizing behavior of the child element
+   * - 'auto': The width is determined by the content.
+   * - 'fill': The element takes up the available width.
+   * - 'fix': The width is fixed.
+   */
+  horizontalSizing: 'auto' | 'fill' | 'fix';
+
+  /**
+   * Determines the vertical sizing behavior of the child element.
+   * - 'auto': The height is determined by the content.
+   * - 'fill': The element takes up the available height.
+   * - 'fix': The height is fixed.
+   */
+  verticalSizing: 'auto' | 'fill' | 'fix';
+
+  /**
+   * Aligns the child element within its container.
+   * - 'auto': Default alignment.
+   * - 'start': Aligns the element at the start of the container.
+   * - 'center': Centers the element within the container.
+   * - 'end': Aligns the element at the end of the container.
+   * - 'stretch': Stretches the element to fill the container.
+   */
+  alignSelf: 'auto' | 'start' | 'center' | 'end' | 'stretch';
+
+  /**
+   * Sets the horizontal margin of the child element.
+   * This is the space on the left and right sides of the element.
+   */
+  horizontalMargin: number;
+
+  /**
+   * Sets the vertical margin of the child element.
+   * This is the space on the top and bottom sides of the element.
+   */
+  verticalMargin: number;
+
+  /**
+   * Sets the top margin of the child element.
+   * This is the space above the element.
+   */
+  topMargin: number;
+
+  /**
+   * Sets the right margin of the child element.
+   * This is the space to the right of the element.
+   */
+  rightMargin: number;
+
+  /**
+   * Sets the bottom margin of the child element.
+   * This is the space below the element.
+   */
+  bottomMargin: number;
+
+  /**
+   * Sets the left margin of the child element.
+   * This is the space to the left of the element.
+   */
+  leftMargin: number;
+
+  /**
+   * Defines the maximum width of the child element.
+   * If set to null, there is no maximum width constraint.
+   */
+  maxWidth: number | null;
+
+  /**
+   * Defines the maximum height of the child element.
+   * If set to null, there is no maximum height constraint.
+   */
+  maxHeight: number | null;
+  /**
+   * Defines the minimum width of the child element.
+   * If set to null, there is no minimum width constraint.
+   */
+  minWidth: number | null;
+
+  /**
+   * Defines the minimum height of the child element.
+   * If set to null, there is no minimum height constraint.
+   */
+  minHeight: number | null;
+}
+
+/**
+ * Represents a library in Penpot, containing colors, typographies, and components.
+ */
+export interface Library extends PluginData {
+  /**
+   * The unique identifier of the library.
+   */
+  readonly id: string;
+
+  /**
+   * The name of the library.
+   */
+  readonly name: string;
+
+  /**
+   * An array of color elements in the library.
+   * @example
+   * ```js
+   * console.log(penpot.library.local.colors);
+   * ```
+   */
+  colors: LibraryColor[];
+
+  /**
+   * An array of typography elements in the library.
+   */
+  typographies: LibraryTypography[];
+
+  /**
+   * An array of component elements in the library.
+   * @example
+   * ```js
+   * console.log(penpot.library.local.components);
+   */
+  components: LibraryComponent[];
+
+  /**
+   * Creates a new color element in the library.
+   * @return Returns a new `LibraryColor` object representing the created color element.
+   *
+   * @example
+   * ```js
+   * const newColor = penpot.library.local.createColor();
+   * console.log(newColor);
+   * ```
+   */
+  createColor(): LibraryColor;
+
+  /**
+   * Creates a new typography element in the library.
+   * @return Returns a new `LibraryTypography` object representing the created typography element.
+   *
+   * @example
+   * ```js
+   * const newTypography = library.createTypography();
+   * ```
+   */
+  createTypography(): LibraryTypography;
+
+  /**
+   * Creates a new component element in the library using the provided shapes.
+   * @param shapes An array of `Shape` objects representing the shapes to be included in the component.
+   * @return Returns a new `LibraryComponent` object representing the created component element.
+   *
+   * @example
+   * ```js
+   * const newComponent = penpot.library.local.createComponent([shape1, shape2]);
+   * ```
+   */
+  createComponent(shapes: Shape[]): LibraryComponent;
+}
+
+/**
+ * Represents a color element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to color elements.
+ */
+export interface LibraryColor extends LibraryElement {
+  /**
+   * The color value of the library color.
+   */
+  color?: string;
+
+  /**
+   * The opacity value of the library color.
+   */
+  opacity?: number;
+
+  /**
+   * The gradient value of the library color, if it's a gradient.
+   */
+  gradient?: Gradient;
+
+  /**
+   * The image data of the library color, if it's an image fill.
+   */
+  image?: ImageData;
+
+  /**
+   * Converts the library color into a fill object.
+   * @return Returns a `Fill` object representing the color as a fill.
+   *
+   * @example
+   * ```js
+   * const fill = libraryColor.asFill();
+   * ```
+   */
+  asFill(): Fill;
+  /**
+   * Converts the library color into a stroke object.
+   * @return Returns a `Stroke` object representing the color as a stroke.
+   *
+   * @example
+   * ```js
+   * const stroke = libraryColor.asStroke();
+   * ```
+   */
+  asStroke(): Stroke;
+}
+
+/**
+ * Represents a component element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to component elements.
+ */
+export interface LibraryComponent extends LibraryElement {
+  /**
+   * Creates an instance of the component.
+   * @return Returns a `Shape` object representing the instance of the component.
+   *
+   * @example
+   * ```js
+   * const componentInstance = libraryComponent.instance();
+   * ```
+   */
+  instance(): Shape;
+
+  /**
+   * @return Returns the reference to the main component shape.
+   */
+  mainInstance(): Shape;
+}
+
+/**
+ * Represents the context of Penpot libraries, including both local and connected libraries.
+ * This type contains references to the local library and an array of connected libraries.
+ */
+export type LibraryContext = {
+  /**
+   * The local library in the Penpot context.
+   *
+   * @example
+   * ```js
+   * const localLibrary = libraryContext.local;
+   * ```
+   */
+  readonly local: Library;
+
+  /**
+   * An array of connected libraries in the Penpot context.
+   *
+   * @example
+   * ```js
+   * const connectedLibraries = libraryContext.connected;
+   * ```
+   */
+  readonly connected: Library[];
+
+  /**
+   * Retrieves a summary of available libraries that can be connected to.
+   * @return Returns a promise that resolves to an array of `LibrarySummary` objects representing available libraries.
+   *
+   * @example
+   * ```js
+   * const availableLibraries = await libraryContext.availableLibraries();
+   * ```
+   */
+  availableLibraries(): Promise<LibrarySummary[]>;
+
+  /**
+   * Connects to a specific library identified by its ID.
+   * @return Returns a promise that resolves to the `Library` object representing the connected library.
+   * @param libraryId - The ID of the library to connect to.
+   *
+   * @example
+   * ```js
+   * const connectedLibrary = await libraryContext.connectLibrary('library-id');
+   * ```
+   */
+  connectLibrary(libraryId: string): Promise<Library>;
+};
+
+/**
+ * Represents an element in a Penpot library.
+ * This interface provides information about a specific element in a library.
+ */
+export interface LibraryElement extends PluginData {
+  /**
+   * The unique identifier of the library element.
+   */
+  readonly id: string;
+
+  /**
+   * The unique identifier of the library to which the element belongs.
+   */
+  readonly libraryId: string;
+
+  /**
+   * The name of the library element.
+   */
+  name: string;
+
+  /**
+   * The path of the library element.
+   */
+  path: string;
+}
+
+/**
+ * Represents a summary of a Penpot library.
+ * This interface provides properties for summarizing various aspects of a Penpot library.
+ */
+export interface LibrarySummary {
+  /**
+   * The unique identifier of the library.
+   */
+  readonly id: string;
+
+  /**
+   * The name of the library.
+   */
+  readonly name: string;
+
+  /**
+   * The number of colors in the library.
+   */
+  readonly numColors: number;
+
+  /**
+   * The number of components in the library.
+   */
+  readonly numComponents: number;
+
+  /**
+   * The number of typographies in the library.
+   */
+  readonly numTypographies: number;
+}
+
+/**
+ * Represents a typography element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to typography elements.
+ */
+export interface LibraryTypography extends LibraryElement {
+  /**
+   * The unique identifier of the font used in the typography element.
+   */
+  fontId: string;
+
+  /**
+   * The font family of the typography element.
+   */
+  fontFamily: string;
+
+  /**
+   * The unique identifier of the font variant used in the typography element.
+   */
+  fontVariantId: string;
+
+  /**
+   * The font size of the typography element.
+   */
+  fontSize: string;
+
+  /**
+   * The font weight of the typography element.
+   */
+  fontWeight: string;
+
+  /**
+   * The font style of the typography element.
+   */
+  fontStyle?: 'normal' | 'italic' | null;
+
+  /**
+   * The line height of the typography element.
+   */
+  lineHeight: string;
+
+  /**
+   * The letter spacing of the typography element.
+   */
+  letterSpacing: string;
+
+  /**
+   * The text transform applied to the typography element.
+   */
+  textTransform?: 'uppercase' | 'capitalize' | 'lowercase' | null;
+
+  /**
+   * Applies the typography styles to a text shape.
+   * @param shape The text shape to apply the typography styles to.
+   *
+   * @example
+   * ```js
+   * typographyElement.applyToText(textShape);
+   * ```
+   */
+  applyToText(shape: Shape): void;
+
+  /**
+   * Applies the typography styles to a range of text within a text shape.
+   * @param range Represents a range of text within a Text shape. This interface provides properties for styling and formatting text ranges.
+   *
+   * @example
+   * ```js
+   * typographyElement.applyToTextRange(textShape);
+   * ```
+   */
+  applyToTextRange(range: TextRange): void;
+
+  /**
+   * Sets the font and optionally its variant for the typography element.
+   * @param font - The font to set.
+   * @param variant - The font variant to set (optional).
+   *
+   * @example
+   * ```js
+   * typographyElement.setFont(newFont, newVariant);
+   * ```
+   */
+  setFont(font: Font, variant?: FontVariant): void;
+}
+
+/**
+ * It takes the user from one board to the destination set in the interaction.
+ */
+export interface NavigateTo {
+  /**
+   * Type of action
+   */
+  readonly type: 'navigate-to';
+
+  /**
+   * Board to which the action targets
+   */
+  readonly destination: Board;
+
+  /**
+   * When true the scroll will be preserved.
+   */
+  readonly preserveScrollPosition?: boolean;
+
+  /**
+   * Animation displayed with this interaction.
+   */
+  readonly animation?: Animation;
+}
+
+/**
+ * It opens a board right over the current board.
+ */
+export interface OpenOverlay extends OverlayAction {
+  /**
+   * The action type
+   */
+  readonly type: 'open-overlay';
+}
+
+/**
+ * This action opens an URL in a new tab.
+ */
+export interface OpenUrl {
+  /**
+   * The action type
+   */
+  readonly type: 'open-url';
+  /**
+   * The URL to open when the action is executed
+   */
+  readonly url: string;
+}
+
+/**
+ * Base type for the actions "open-overlay" and "toggle-overlay" that share most of their properties
+ */
+export interface OverlayAction {
+  /**
+   * Overlay board that will be openned.
+   */
+  readonly destination: Board;
+
+  /**
+   * Base shape to which the overlay will be positioned taking constraints into account.
+   */
+  readonly relativeTo?: Shape;
+
+  /**
+   * Positioning of the overlay.
+   */
+  readonly position?:
+    | 'manual'
+    | 'center'
+    | 'top-left'
+    | 'top-right'
+    | 'top-center'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'bottom-center';
+
+  /**
+   * For `position = 'manual'` the location of the overlay.
+   */
+  readonly manualPositionLocation?: Point;
+
+  /**
+   * When true the overlay will be closed when clicking outside
+   */
+  readonly closeWhenClickOutside?: boolean;
+
+  /**
+   * When true a background will be added to the overlay.
+   */
+  readonly addBackgroundOverlay?: boolean;
+
+  /**
+   * Animation displayed with this interaction.
+   */
+  readonly animation?: Animation;
+}
+
+/**
+ * Page represents a page in the Penpot application.
+ * It includes properties for the page's identifier and name, as well as methods for managing shapes on the page.
+ */
+export interface Page extends PluginData {
+  /**
+   * The `id` property is a unique identifier for the page.
+   */
+  readonly id: string;
+  /**
+   * The `name` property is the name of the page.
+   */
+  name: string;
+
+  /**
+   * The ruler guides attached to the board
+   */
+  readonly rulerGuides: RulerGuide[];
+
+  /**
+   * The comment threads that are in the page.
+   */
+  readonly commentThreads: CommentThread[];
+
+  /**
+   * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
+   * Requires `content:read` permission.
+   */
+  root: Shape;
+
+  /**
+   * Retrieves a shape by its unique identifier.
+   * @param id The unique identifier of the shape.
+   *
+   * @example
+   * ```js
+   * const shape = penpot.getPage().getShapeById('shapeId');
+   * ```
+   */
+  getShapeById(id: string): Shape | null;
+
+  /**
+   * Finds all shapes on the page.
+   * Optionaly it gets a criteria object to search for specific criteria
+   * @param criteria
+   * @example
+   * ```js
+   * const shapes = penpot.getPage().findShapes({ name: 'exampleName' });
+   * ```
+   */
+  findShapes(criteria?: {
+    name?: string;
+    nameLike?: string;
+    type?:
+      | 'board'
+      | 'group'
+      | 'boolean'
+      | 'rectangle'
+      | 'path'
+      | 'text'
+      | 'ellipse'
+      | 'svg-raw'
+      | 'image';
+  }): Shape[];
+
+  /**
+   * The interaction flows defined for the page.
+   */
+  readonly flows: Flow[];
+
+  /**
+   * Creates a new flow in the page.
+   * @param name the name identifying the flow
+   * @param board the starting board for the current flow
+   *
+   * @example
+   * ```js
+   * const flow = penpot.getPage().createFlow('exampleFlow', board);
+   * ```
+   */
+  createFlow(name: string, board: Board): Flow;
+
+  /**
+   * Removes the flow from the page
+   * @param flow the flow to be removed from the page
+   */
+  removeFlow(flow: Flow): void;
+
+  /**
+   * Creates a new ruler guide.
+   */
+  addRulerGuide(
+    orientation: RulerGuideOrientation,
+    value: number,
+    board?: Board
+  ): RulerGuide;
+
+  /**
+   * Removes the `guide` from the current page.
+   */
+  removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * Creates a new comment thread in the `position`. Optionaly adds
+   * it into the `board`.
+   * Returns the thread created.
+   */
+  addCommentThread(position: Point, board?: Board): CommentThread;
+
+  /**
+   * Removes the comment thread.
+   */
+  removeCommentThread(commentThread: CommentThread): void;
+
+  /**
+   * Find all the comments that match the criteria.
+   * - `onlyYours`: if true will return the threads where the current
+   *                user has engaged.
+   * - `showResolved`: by default resolved comments will be hidden. If `true`
+   *                   the resolved will be returned.
+   */
+  findComments(criteria: {
+    onlyYours: boolean;
+    showResolved: boolean;
+  }): CommentThread[];
+}
+
+/**
+ * Represents a path shape in Penpot.
+ * This interface extends `ShapeBase` and includes properties and methods specific to paths.
+ */
+export interface Path extends ShapeBase {
+  /**
+   * The type of the shape, which is always 'path' for path shapes.
+   */
+  readonly type: 'path';
+  /**
+   * Converts the path shape to its path data representation.
+   * @return Returns the path data (d attribute) as a string.
+   */
+  toD(): string;
+  /**
+   * The content of the path shape, defined as an array of path commands.
+   */
+  content: Array<PathCommand>;
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: Fill[];
+}
+
+/**
+ * Represents a path command in Penpot.
+ * This interface includes a property for defining the type of command.
+ */
+interface PathCommand {
+  /**
+   * The type of path command.
+   * Possible values include:
+   * - 'M' or 'move-to': Move to a new point.
+   * - 'Z' or 'close-path': Close the current path.
+   * - 'L' or 'line-to': Draw a straight line to a new point.
+   * - 'H' or 'line-to-horizontal': Draw a horizontal line to a new point.
+   * - 'V' or 'line-to-vertical': Draw a vertical line to a new point.
+   * - 'C' or 'curve-to': Draw a cubic Bezier curve to a new point.
+   * - 'S' or 'smooth-curve-to': Draw a smooth cubic Bezier curve to a new point.
+   * - 'Q' or 'quadratic-bezier-curve-to': Draw a quadratic Bezier curve to a new point.
+   * - 'T' or 'smooth-quadratic-bezier-curve-to': Draw a smooth quadratic Bezier curve to a new point.
+   * - 'A' or 'elliptical-arc': Draw an elliptical arc to a new point.
+   *
+   * @example
+   * ```js
+   * const pathCommand: PathCommand = { command: 'M', params: { x: 0, y: 0 } };
+   * ```
+   */
+  command:
+    | 'M'
+    | 'move-to'
+    | 'Z'
+    | 'close-path'
+    | 'L'
+    | 'line-to'
+    | 'H'
+    | 'line-to-horizontal'
+    | 'V'
+    | 'line-to-vertical'
+    | 'C'
+    | 'curve-to'
+    | 'S'
+    | 'smooth-curve-to'
+    | 'Q'
+    | 'quadratic-bezier-curve-to'
+    | 'T'
+    | 'smooth-quadratic-bezier-curve-to'
+    | 'A'
+    | 'elliptical-arc';
+
+  /**
+   * Optional parameters associated with the path command.
+   */
+  params?: {
+    /**
+     * The x-coordinate of the point (or endpoint).
+     */
+    x?: number;
+
+    /**
+     * The y-coordinate of the point (or endpoint).
+     */
+    y?: number;
+
+    /**
+     * The x-coordinate of the first control point for curves.
+     */
+    c1x?: number;
+
+    /**
+     * The y-coordinate of the first control point for curves.
+     */
+    c1y?: number;
+
+    /**
+     * The x-coordinate of the second control point for curves.
+     */
+    c2x?: number;
+
+    /**
+     * The y-coordinate of the second control point for curves.
+     */
+    c2y?: number;
+
+    /**
+     * The radius of the ellipse's x-axis.
+     */
+    rx?: number;
+
+    /**
+     * The radius of the ellipse's y-axis.
+     */
+    ry?: number;
+
+    /**
+     * The rotation angle of the ellipse's x-axis.
+     */
+    xAxisRotation?: number;
+
+    /**
+     * A flag indicating whether to use the larger arc.
+     */
+    largeArcFlag?: boolean;
+
+    /**
+     * A flag indicating the direction of the arc.
+     */
+    sweepFlag?: boolean;
+  };
+}
+
+/**
+ * Provides methods for managing plugin-specific data associated with a Penpot shape.
+ */
+export interface PluginData {
+  /**
+   * Retrieves the data for our own plugin, given a specific key.
+   *
+   * @param key The key for which to retrieve the data.
+   * @return Returns the data associated with the key as a string.
+   *
+   * @example
+   * ```js
+   * const data = shape.getPluginData('exampleKey');
+   * console.log(data);
+   * ```
+   */
+  getPluginData(key: string): string;
+
+  /**
+   * Sets the plugin-specific data for the given key.
+   *
+   * @param key The key for which to set the data.
+   * @param value The data to set for the key.
+   *
+   * @example
+   * ```js
+   * shape.setPluginData('exampleKey', 'exampleValue');
+   * ```
+   */
+  setPluginData(key: string, value: string): void;
+
+  /**
+   * Retrieves all the keys for the plugin-specific data.
+   *
+   * @return Returns an array of strings representing all the keys.
+   *
+   * @example
+   * ```js
+   * const keys = shape.getPluginDataKeys();
+   * console.log(keys);
+   * ```
+   */
+  getPluginDataKeys(): string[];
+
+  /**
+   * If we know the namespace of an external plugin, this is the way to get their data.
+   *
+   * @param namespace The namespace for the shared data.
+   * @param key The key for which to retrieve the data.
+   * @return Returns the shared data associated with the key as a string.
+   *
+   * @example
+   * ```js
+   * const sharedData = shape.getSharedPluginData('exampleNamespace', 'exampleKey');
+   * console.log(sharedData);
+   * ```
+   */
+  getSharedPluginData(namespace: string, key: string): string;
+
+  /**
+   * Sets the shared plugin-specific data for the given namespace and key.
+   *
+   * @param namespace The namespace for the shared data.
+   * @param key The key for which to set the data.
+   * @param value The data to set for the key.
+   *
+   * @example
+   * ```js
+   * shape.setSharedPluginData('exampleNamespace', 'exampleKey', 'exampleValue');
+   * ```
+   */
+  setSharedPluginData(namespace: string, key: string, value: string): void;
+
+  /**
+   * Retrieves all the keys for the shared plugin-specific data in the given namespace.
+   *
+   * @param namespace The namespace for the shared data.
+   * @return Returns an array of strings representing all the keys in the namespace.
+   *
+   * @example
+   * ```js
+   * const sharedKeys = shape.getSharedPluginDataKeys('exampleNamespace');
+   * console.log(sharedKeys);
+   * ```
+   */
+  getSharedPluginDataKeys(namespace: string): string[];
+}
+
+/**
+ * Point represents a point in 2D space, typically with x and y coordinates.
+ */
+export type Point = { x: number; y: number };
+
+/**
+ * It takes back to the last board shown.
+ */
+export interface PreviousScreen {
+  /**
+   * The action type
+   */
+  readonly type: 'previous-screen';
+}
+
+/**
+ * Push animation
+ */
+export interface Push {
+  /**
+   * Type of the animation
+   */
+  readonly type: 'push';
+
+  /**
+   * Direction for the push animaton
+   */
+  readonly direction: 'right' | 'left' | 'up' | 'down';
+
+  /**
+   * Duration of the animation effect
+   */
+  readonly duration: number;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Represents a rectangle shape in Penpot.
+ * This interface extends `ShapeBase` and includes properties specific to rectangles.
+ */
+export interface Rectangle extends ShapeBase {
+  /**
+   * The type of the shape, which is always 'rect' for rectangle shapes.
+   */
+  readonly type: 'rectangle';
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: Fill[];
+}
+
+/**
+ * Represents a ruler guide. These are horizontal or vertical lines that can be
+ * used to position elements in the UI.
+ */
+export interface RulerGuide {
+  /**
+   * `orientation` indicates whether the ruler is either `horizontal` or `vertical`
+   */
+  readonly orientation: RulerGuideOrientation;
+
+  /**
+   * `position` is the position in the axis in absolute positioning. If this is a frame
+   * guide will return the positioning relative to the board.
+   */
+  position: number;
+
+  /**
+   * If the guide is attached to a board this will retrieve the board shape
+   */
+  board?: Board;
+}
+
+/**
+ *
+ */
+export type RulerGuideOrientation = 'horizontal' | 'vertical';
+
+/**
+ * Represents shadow properties in Penpot.
+ * This interface includes properties for defining drop shadows and inner shadows, along with their visual attributes.
+ */
+export interface Shadow {
+  /**
+   * The optional unique identifier for the shadow.
+   */
+  id?: string;
+  /**
+   * The optional style of the shadow.
+   * - 'drop-shadow': A shadow cast outside the element.
+   * - 'inner-shadow': A shadow cast inside the element.
+   */
+  style?: 'drop-shadow' | 'inner-shadow';
+  /**
+   * The optional X-axis offset of the shadow.
+   */
+  offsetX?: number;
+  /**
+   * The optional Y-axis offset of the shadow.
+   */
+  offsetY?: number;
+  /**
+   * The optional blur radius of the shadow.
+   */
+  blur?: number;
+  /**
+   * The optional spread radius of the shadow.
+   */
+  spread?: number;
+  /**
+   * Specifies whether the shadow is hidden.
+   * Defaults to false if omitted.
+   */
+  hidden?: boolean;
+  /**
+   * The optional color of the shadow, defined by a Color object.
+   */
+  color?: Color;
+}
+
+/**
+ * Shape represents a union of various shape types used in the Penpot project.
+ * This type allows for different shapes to be handled under a single type umbrella.
+ *
+ * @example
+ * ```js
+ * let shape: Shape;
+ * if (penpot.utils.types.isRectangle(shape)) {
+ *   console.log(shape.type);
+ * }
+ * ```
+ */
+export type Shape =
+  | Board
+  | Group
+  | Boolean
+  | Rectangle
+  | Path
+  | Text
+  | Ellipse
+  | SvgRaw
+  | Image;
+
+/**
+ * Represents the base properties and methods of a shape in Penpot.
+ * This interface provides common properties and methods shared by all shapes.
+ */
+export interface ShapeBase extends PluginData {
+  /**
+   * The unique identifier of the shape.
+   */
+  readonly id: string;
+
+  /**
+   * The name of the shape.
+   */
+  name: string;
+
+  /**
+   * The parent shape. If the shape is the first level the parent will be the root shape.
+   * For the root shape the parent is null
+   */
+  readonly parent: Shape | null;
+
+  /**
+   * The x-coordinate of the shape's position.
+   */
+  x: number;
+
+  /**
+   * The y-coordinate of the shape's position.
+   */
+  y: number;
+
+  /**
+   * The width of the shape.
+   */
+  readonly width: number;
+
+  /**
+   * The height of the shape.
+   */
+  readonly height: number;
+
+  /**
+   * @return Returns the bounding box surrounding the current shape
+   */
+  readonly bounds: Bounds;
+
+  /**
+   * @return Returns the geometric center of the shape
+   */
+  readonly center: Point;
+
+  /**
+   * Indicates whether the shape is blocked.
+   */
+  blocked: boolean;
+
+  /**
+   * Indicates whether the shape is hidden.
+   */
+  hidden: boolean;
+
+  /**
+   * Indicates whether the shape is visible.
+   */
+  visible: boolean;
+
+  /**
+   * Indicates whether the shape has proportion lock enabled.
+   */
+  proportionLock: boolean;
+
+  /**
+   * The horizontal constraints applied to the shape.
+   */
+  constraintsHorizontal: 'left' | 'right' | 'leftright' | 'center' | 'scale';
+
+  /**
+   * The vertical constraints applied to the shape.
+   */
+  constraintsVertical: 'top' | 'bottom' | 'topbottom' | 'center' | 'scale';
+
+  /**
+   * The border radius of the shape.
+   */
+  borderRadius: number;
+
+  /**
+   * The border radius of the top-left corner of the shape.
+   */
+  borderRadiusTopLeft: number;
+
+  /**
+   * The border radius of the top-right corner of the shape.
+   */
+  borderRadiusTopRight: number;
+
+  /**
+   * The border radius of the bottom-right corner of the shape.
+   */
+  borderRadiusBottomRight: number;
+
+  /**
+   * The border radius of the bottom-left corner of the shape.
+   */
+  borderRadiusBottomLeft: number;
+
+  /**
+   * The opacity of the shape.
+   */
+  opacity: number;
+
+  /**
+   * The blend mode applied to the shape.
+   */
+  blendMode:
+    | 'normal'
+    | 'darken'
+    | 'multiply'
+    | 'color-burn'
+    | 'lighten'
+    | 'screen'
+    | 'color-dodge'
+    | 'overlay'
+    | 'soft-light'
+    | 'hard-light'
+    | 'difference'
+    | 'exclusion'
+    | 'hue'
+    | 'saturation'
+    | 'color'
+    | 'luminosity';
+
+  /**
+   * The shadows applied to the shape.
+   */
+  shadows: Shadow[];
+
+  /**
+   * The blur effect applied to the shape.
+   */
+  blur?: Blur;
+
+  /**
+   * The export settings of the shape.
+   */
+  exports: Export[];
+
+  /**
+   * The x-coordinate of the shape relative to its board.
+   */
+  boardX: number;
+
+  /**
+   * The y-coordinate of the shape relative to its board.
+   */
+  boardY: number;
+
+  /**
+   * The x-coordinate of the shape relative to its parent.
+   */
+  parentX: number;
+
+  /**
+   * The y-coordinate of the shape relative to its parent.
+   */
+  parentY: number;
+
+  /**
+   * Indicates whether the shape is flipped horizontally.
+   */
+  flipX: boolean;
+
+  /**
+   * Indicates whether the shape is flipped vertically.
+   */
+  flipY: boolean;
+
+  /**
+   * @return Returns the rotation in degrees of the shape with respect to it's center.
+   */
+  rotation: number;
+
+  /**
+   * The fills applied to the shape.
+   */
+  fills: Fill[] | 'mixed';
+
+  /**
+   * The strokes applied to the shape.
+   */
+  strokes: Stroke[];
+
+  /**
+   * Layout properties for children of the shape.
+   */
+  readonly layoutChild?: LayoutChildProperties;
+
+  /**
+   * Layout properties for cells in a grid layout.
+   */
+  readonly layoutCell?: LayoutChildProperties;
+
+  /**
+   * @return Returns true if the current shape is inside a component instance
+   */
+  isComponentInstance(): boolean;
+
+  /**
+   * @return Returns true if the current shape is inside a component **main** instance
+   */
+  isComponentMainInstance(): boolean;
+
+  /**
+   * @return Returns true if the current shape is inside a component **copy** instance
+   */
+  isComponentCopyInstance(): boolean;
+
+  /**
+   * @return Returns true when the current shape is inside a **nested* component instance
+   */
+  isComponentNestedInstance(): boolean;
+
+  /**
+   * @return Returns true when the current shape is the root of a component tree
+   */
+  isComponentRoot(): boolean;
+
+  /**
+   * @return Returns true when the current shape is the head of a components tree nested structure
+   */
+  isComponentHead(): boolean;
+
+  /**
+   * @return Returns the equivalent shape in the component main instance. If the current shape is inside a
+   * main instance will return `null`;
+   */
+  componentRefShape(): Shape | null;
+
+  /**
+   * @return Returns the root of the component tree structure for the current shape. If the current shape
+   * is already a root will return itself.
+   */
+  componentRoot(): Shape | null;
+
+  /**
+   * @return Returns the head of the component tree structure for the current shape. If the current shape
+   * is already a head will return itself.
+   */
+  componentHead(): Shape | null;
+
+  /**
+   * @return If the shape is a component instance, returns the reference to the component associated
+   * otherwise will return null
+   */
+  component(): LibraryComponent | null;
+
+  /**
+   * If the current shape is a component it will remove the component information and leave the
+   * shape as a "basic shape"
+   */
+  detach(): void;
+
+  /**
+   * Resizes the shape to the specified width and height.
+   * @param width The new width of the shape.
+   * @param height The new height of the shape.
+   *
+   * @example
+   * ```js
+   * shape.resize(200, 100);
+   * ```
+   */
+  resize(width: number, height: number): void;
+
+  /**
+   * Rotates the shape in relation with the given center.
+   * @param angle Angle in degrees to rotate.
+   * @param center Center of the transform rotation. If not send will use the geometri center of the shapes.
+   *
+   * @example
+   * ```js
+   * shape.rotate(45);
+   * ```
+   */
+  rotate(angle: number, center?: { x: number; y: number } | null): void;
+
+  /**
+   * Generates an export from the current shape.
+   *
+   * @example
+   * ```js
+   * shape.export({ type: 'png', scale: 2 });
+   * ```
+   */
+  export(config: Export): Promise<Uint8Array>;
+
+  /**
+   * The interactions for the current shape.
+   */
+  readonly interactions: Interaction[];
+
+  /**
+   * Adds a new interaction to the shape.
+   * @param trigger defines the conditions under which the action will be triggered
+   * @param action defines what will be executed when the trigger happens
+   * @param delay for the type of trigger `after-delay` will specify the time after triggered. Ignored otherwise.
+   *
+   * @example
+   * ```js
+   * shape.addInteraction('click', { type: 'navigate-to', destination: anotherBoard });
+   * ```
+   */
+  addInteraction(trigger: Trigger, action: Action, delay?: number): Interaction;
+
+  /**
+   * Removes the interaction from the shape.
+   * @param interaction is the interaction to remove from the shape
+   *
+   * @example
+   * ```js
+   * shape.removeInteraction(interaction);
+   * ```
+   */
+  removeInteraction(interaction: Interaction): void;
+
+  /**
+   * Creates a clone of the shape.
+   * @return Returns a new instance of the shape with identical properties.
+   */
+  clone(): Shape;
+
+  /**
+   * Removes the shape from its parent.
+   */
+  remove(): void;
+}
+
+/**
+ * Slide animation
+ */
+export interface Slide {
+  /**
+   * Type of the animation.
+   */
+  readonly type: 'slide';
+
+  /**
+   * Indicate if the slide will be either in-to-out `in` or out-to-in `out`.
+   */
+  readonly way: 'in' | 'out';
+
+  /**
+   * Direction for the slide animaton.
+   */
+  readonly direction: 'right' | 'left' | 'up' | 'down';
+
+  /**
+   * Duration of the animation effect.
+   */
+  readonly duration: number;
+
+  /**
+   * If `true` the offset effect will be used.
+   */
+  readonly offsetEffect?: boolean;
+
+  /**
+   * Function that the dissolve effect will follow for the interpolation.
+   * Defaults to `linear`
+   */
+  readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+}
+
+/**
+ * Represents stroke properties in Penpot. You can add a stroke to any shape except for groups.
+ * This interface includes properties for defining the color, style, width, alignment, and caps of a stroke.
+ */
+export interface Stroke {
+  /**
+   * The optional color of the stroke, represented as a string (e.g., '#FF5733').
+   */
+  strokeColor?: string;
+  /**
+   * The optional reference to an external file for the stroke color.
+   */
+  strokeColorRefFile?: string;
+  /**
+   * The optional reference ID within the external file for the stroke color.
+   */
+  strokeColorRefId?: string;
+  /**
+   * The optional opacity level of the stroke color, ranging from 0 (fully transparent) to 1 (fully opaque).
+   * Defaults to 1 if omitted.
+   */
+  strokeOpacity?: number;
+  /**
+   * The optional style of the stroke.
+   */
+  strokeStyle?: 'solid' | 'dotted' | 'dashed' | 'mixed' | 'none' | 'svg';
+  /**
+   * The optional width of the stroke.
+   */
+  strokeWidth?: number;
+  /**
+   * The optional alignment of the stroke relative to the shape's boundary.
+   */
+  strokeAlignment?: 'center' | 'inner' | 'outer';
+  /**
+   * The optional cap style for the start of the stroke.
+   */
+  strokeCapStart?: StrokeCap;
+  /**
+   * The optional cap style for the end of the stroke.
+   */
+  strokeCapEnd?: StrokeCap;
+  /**
+   * The optional gradient stroke defined by a Gradient object.
+   */
+  strokeColorGradient?: Gradient;
+}
+
+/**
+ * Represents the cap style of a stroke in Penpot.
+ * This type defines various styles for the ends of a stroke.
+ */
+export type StrokeCap =
+  | 'round'
+  | 'square'
+  | 'line-arrow'
+  | 'triangle-arrow'
+  | 'square-marker'
+  | 'circle-marker'
+  | 'diamond-marker';
+
+/**
+ * Represents an SVG raw shape in Penpot.
+ * This interface extends `ShapeBase` and includes properties specific to raw SVG shapes.
+ */
+export interface SvgRaw extends ShapeBase {
+  type: 'svg-raw';
+}
+
+/**
+ * Text represents a text element in the Penpot application, extending the base shape interface.
+ * It includes various properties to define the text content and its styling attributes.
+ */
+export interface Text extends ShapeBase {
+  /**
+   * The type of the shape, which is always 'text' for text shapes.
+   */
+  readonly type: 'text';
+  /**
+   * The characters contained within the text shape.
+   */
+  characters: string;
+  /**
+   * The grow type of the text shape, defining how the text box adjusts its size.
+   * Possible values are:
+   * - 'fixed': Fixed size.
+   * - 'auto-width': Adjusts width automatically.
+   * - 'auto-height': Adjusts height automatically.
+   */
+  growType: 'fixed' | 'auto-width' | 'auto-height';
+
+  /**
+   * The font ID used in the text shape, or 'mixed' if multiple fonts are used.
+   */
+  fontId: string | 'mixed';
+
+  /**
+   * The font family used in the text shape, or 'mixed' if multiple font families are used.
+   */
+  fontFamily: string | 'mixed';
+
+  /**
+   * The font variant ID used in the text shape, or 'mixed' if multiple font variants are used.
+   */
+  fontVariantId: string | 'mixed';
+
+  /**
+   * The font size used in the text shape, or 'mixed' if multiple font sizes are used.
+   */
+  fontSize: string | 'mixed';
+
+  /**
+   * The font weight used in the text shape, or 'mixed' if multiple font weights are used.
+   */
+  fontWeight: string | 'mixed';
+
+  /**
+   * The font style used in the text shape, or 'mixed' if multiple font styles are used.
+   */
+  fontStyle: 'normal' | 'italic' | 'mixed' | null;
+
+  /**
+   * The line height used in the text shape, or 'mixed' if multiple line heights are used.
+   */
+  lineHeight: string | 'mixed';
+
+  /**
+   * The letter spacing used in the text shape, or 'mixed' if multiple letter spacings are used.
+   */
+  letterSpacing: string | 'mixed';
+
+  /**
+   * The text transform applied to the text shape, or 'mixed' if multiple text transforms are used.
+   */
+  textTransform: 'uppercase' | 'capitalize' | 'lowercase' | 'mixed' | null;
+
+  /**
+   * The text decoration applied to the text shape, or 'mixed' if multiple text decorations are used.
+   */
+  textDecoration: 'underline' | 'line-through' | 'mixed' | null;
+
+  /**
+   * The text direction for the text shape, or 'mixed' if multiple directions are used.
+   */
+  direction: 'ltr' | 'rtl' | 'mixed' | null;
+
+  /**
+   * The horizontal alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
+   */
+  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
+
+  /**
+   * The vertical alignment of the text shape. It can be a specific alignment or 'mixed' if multiple alignments are used.
+   */
+  verticalAlign: 'top' | 'center' | 'bottom' | null;
+
+  /**
+   * Gets a text range within the text shape.
+   * @param start - The start index of the text range.
+   * @param end - The end index of the text range.
+   * @return Returns a TextRange object representing the specified text range.
+   *
+   * @example
+   * ```js
+   * const textRange = textShape.getRange(0, 10);
+   * console.log(textRange.characters);
+   * ```
+   */
+  getRange(start: number, end: number): TextRange;
+
+  /**
+   * Applies a typography style to the text shape.
+   * @param typography - The typography style to apply.
+   * @remarks
+   * This method sets various typography properties for the text shape according to the given typography style.
+   *
+   * @example
+   * ```js
+   * textShape.applyTypography(typography);
+   * ```
+   */
+  applyTypography(typography: LibraryTypography): void;
+}
+
+/**
+ * Represents a range of text within a Text shape.
+ * This interface provides properties for styling and formatting text ranges.
+ */
+export interface TextRange {
+  /**
+   * The Text shape to which this text range belongs.
+   */
+  readonly shape: Text;
+
+  /**
+   * The characters associated with the current text range.
+   */
+  readonly characters: string;
+
+  /**
+   * The font ID of the text range. It can be a specific font ID or 'mixed' if multiple fonts are used.
+   */
+  fontId: string | 'mixed';
+
+  /**
+   * The font family of the text range. It can be a specific font family or 'mixed' if multiple font families are used.
+   */
+  fontFamily: string | 'mixed';
+
+  /**
+   * The font variant ID of the text range. It can be a specific font variant ID or 'mixed' if multiple font variants are used.
+   */
+  fontVariantId: string | 'mixed';
+
+  /**
+   * The font size of the text range. It can be a specific font size or 'mixed' if multiple font sizes are used.
+   */
+  fontSize: string | 'mixed';
+
+  /**
+   * The font weight of the text range. It can be a specific font weight or 'mixed' if multiple font weights are used.
+   */
+  fontWeight: string | 'mixed';
+
+  /**
+   * The font style of the text range. It can be a specific font style or 'mixed' if multiple font styles are used.
+   */
+  fontStyle: 'normal' | 'italic' | 'mixed' | null;
+
+  /**
+   * The line height of the text range. It can be a specific line height or 'mixed' if multiple line heights are used.
+   */
+  lineHeight: string | 'mixed';
+
+  /**
+   * The letter spacing of the text range. It can be a specific letter spacing or 'mixed' if multiple letter spacings are used.
+   */
+  letterSpacing: string | 'mixed';
+
+  /**
+   * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
+   */
+  textTransform:
+    | 'uppercase'
+    | 'capitalize'
+    | 'lowercase'
+    | 'none'
+    | 'mixed'
+    | null;
+
+  /**
+   * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
+   */
+  textDecoration: 'underline' | 'line-through' | 'none' | 'mixed' | null;
+
+  /**
+   * The text direction for the text range. It can be a specific direction or 'mixed' if multiple directions are used.
+   */
+  direction: 'ltr' | 'rtl' | 'mixed' | null;
+
+  /**
+   * The fill styles applied to the text range.
+   */
+  fills: Fill[] | 'mixed';
+
+  /**
+   * The horizontal alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
+   */
+  align: 'left' | 'center' | 'right' | 'justify' | 'mixed' | null;
+
+  /**
+   * The vertical alignment of the text range. It can be a specific alignment or 'mixed' if multiple alignments are used.
+   */
+  verticalAlign: 'top' | 'center' | 'bottom' | 'mixed' | null;
+
+  /**
+   * Applies a typography style to the text range.
+   * This method sets various typography properties for the text range according to the given typography style.
+   * @param typography - The typography style to apply.
+   *
+   * @example
+   * ```js
+   * textRange.applyTypography(typography);
+   * ```
+   */
+  applyTypography(typography: LibraryTypography): void;
+}
+
+/**
+ * This type specifies the possible themes: 'light' or 'dark'.
+ */
+export type Theme = 'light' | 'dark';
+
+/**
+ * It opens an overlay if it is not already opened or closes it if it is already opened.
+ */
+export interface ToggleOverlay extends OverlayAction {
+  /**
+   * The action type
+   */
+  readonly type: 'toggle-overlay';
+}
+
+/**
+ * Represents a track configuration in Penpot.
+ * This interface includes properties for defining the type and value of a track used in layout configurations.
+ */
+export interface Track {
+  /**
+   * The type of the track.
+   * This can be one of the following values:
+   * - 'flex': A flexible track type.
+   * - 'fixed': A fixed track type.
+   * - 'percent': A track type defined by a percentage.
+   * - 'auto': An automatic track type.
+   */
+  type: TrackType;
+  /**
+   * The value of the track.
+   * This can be a number representing the size of the track, or null if not applicable.
+   */
+  value: number | null;
+}
+
+/**
+ * Represents the type of track in Penpot.
+ * This type defines various track types that can be used in layout configurations.
+ */
+export type TrackType = 'flex' | 'fixed' | 'percent' | 'auto';
+
+/**
+ * Types of triggers defined:
+ * - `click` triggers when the user uses the mouse to click on a shape
+ * - `mouse-enter` triggers when the user moves the mouse inside the shape (even if no mouse button is pressed)
+ * - `mouse-leave` triggers when the user moves the mouse outside the shape.
+ * - `after-delay` triggers after the `delay` time has passed even if no interaction from the user happens.
+ */
+export type Trigger = 'click' | 'mouse-enter' | 'mouse-leave' | 'after-delay';
+
+/**
+ * Represents a user in Penpot.
+ */
+export interface User {
+  /**
+   * The unique identifier of the user.
+   *
+   * @example
+   * ```js
+   * const userId = user.id;
+   * console.log(userId);
+   * ```
+   */
+  readonly id: string;
+
+  /**
+   * The name of the user.
+   *
+   * @example
+   * ```js
+   * const userName = user.name;
+   * console.log(userName);
+   * ```
+   */
+  readonly name?: string;
+
+  /**
+   * The URL of the user's avatar image.
+   *
+   * @example
+   * ```js
+   * const avatarUrl = user.avatarUrl;
+   * console.log(avatarUrl);
+   * ```
+   */
+  readonly avatarUrl?: string;
+
+  /**
+   * The color associated with the user.
+   *
+   * @example
+   * ```js
+   * const userColor = user.color;
+   * console.log(userColor);
+   * ```
+   */
+  readonly color: string;
+
+  /**
+   * The session ID of the user.
+   *
+   * @example
+   * ```js
+   * const sessionId = user.sessionId;
+   * console.log(sessionId);
+   * ```
+   */
+  readonly sessionId?: string;
+}
+
+/**
+ * Viewport represents the viewport in the Penpot application.
+ * It includes the center point, zoom level, and the bounds of the viewport.
+ */
+export interface Viewport {
+  /**
+   * the `center` point of the current viewport. If changed will change the
+   * viewport position.
+   */
+  center: Point;
+
+  /**
+   * the `zoom` level as a number where `1` represents 100%.
+   */
+  zoom: number;
+
+  /**
+   * the `bounds` are the current coordinates of the viewport.
+   */
+  readonly bounds: Bounds;
+
+  /**
+   * Resets the zoom level.
+   */
+  zoomReset(): void;
+
+  /**
+   * Changes the viewport and zoom so can fit all the current shapes in the page.
+   */
+  zoomToFitAll(): void;
+
+  /**
+   * Changes the viewport and zoom so all the `shapes` in the argument are
+   * visible.
+   */
+  zoomIntoView(shapes: Shape[]): void;
 }
 
 declare global {
