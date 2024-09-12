@@ -1,29 +1,23 @@
 ### Plugins API Documentation
 
-This document explains how the API documentation hosted at [Penpot Help - Plugins Technical Guide](https://help.penpot.app/technical-guide/plugins/) is created.
+This document shows you how to create API documentation.
 
-The process is automated using GitHub Actions, specifically the workflow defined in `.github/workflows/api-doc.yml`.
+#### On your local
 
-#### Steps to Generate the API Documentation
+If you want to see what the document will look like (the HTML that's generated), you can run the following command:
 
-1. **Create Typedocs**
+```shell
+npm run create:api-docs
+```
 
-   The first step is to generate the typedocs. This is done using the following command:
+Once you've done that, you'll find the result in `./dist/apps/api-doc`
 
-   ```shell
-   npm run create:api-docs
-   ```
+#### Deploy the API Documentation
 
-2. **Generate Markdown**
+Just move to the `stable` branch in this repository and rebase it with the latest changes from the `main` branch. This will trigger the deployment at Cloudfare if the `/libs/plugin-types/index.d.ts` or the `/tools/typedoc.css` files have been updated.
 
-   After the typedocs are created, the next step is to generate the markdown file that will be hosted on the [Penpot Help site](https://github.com/penpot/penpot-docs). This is done using the following script:
+Take a look at the [Penpot plugins API](https://penpot-plugins-api-doc.pages.dev/) to see what's new.
 
-   ```shell
-   npm run .github/scripts/create-doc-md.js
-   ```
+#### Styles
 
-   This script creates an `api.md` file.
-
-3. **Push to Repository**
-
-   Finally, the generated `api.md` file is pushed to the `penpot-docs/technical-guide/plugins` directory in the repository.
+If you want to make some style changes you can do it in `/tools/typedoc.css`.
