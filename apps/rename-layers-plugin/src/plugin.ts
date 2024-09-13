@@ -9,7 +9,7 @@ penpot.on('themechange', (theme) => {
   penpot.ui.sendMessage({ type: 'theme', content: theme });
 });
 
-penpot.on('selectionchange', () => {
+penpot.on('shapechange', () => {
   resetSelection();
 });
 
@@ -17,6 +17,8 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
   if (message.type === 'ready') {
     resetSelection();
   } else if (message.type === 'replace-text') {
+    const blockId = penpot.history.undoBlockBegin();
+
     const shapes = getShapes();
     const shapesToUpdate = shapes?.filter((shape) => {
       return shape.name.includes(message.content.search);
@@ -29,9 +31,13 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
       );
     });
     updateReplaceTextPreview(message.content.search);
+
+    penpot.history.undoBlockFinish(blockId);
   } else if (message.type === 'preview-replace-text') {
     updateReplaceTextPreview(message.content.search);
   } else if (message.type === 'add-text') {
+    const blockId = penpot.history.undoBlockBegin();
+
     const currentNames = message.content.map((shape) => shape.current);
     const shapes = getShapes();
     const shapesToUpdate = shapes?.filter((shape) =>
@@ -41,6 +47,9 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
       const newText = message.content.find((it) => it.current === shape.name);
       return (shape.name = newText?.new ?? shape.name);
     });
+
+    penpot.history.undoBlockFinish(blockId);
+
     resetSelection();
   }
 });
