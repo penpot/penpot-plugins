@@ -6,6 +6,7 @@ import group from './plugins/group';
 import insertSvg from './plugins/insert-svg';
 import pluginData from './plugins/plugin-data';
 import componentLibrary from './plugins/component-library';
+import createText from './plugins/create-text';
 
 describe('Plugins', () => {
   it('create frame - text - rectable', async () => {
@@ -47,6 +48,12 @@ describe('Plugins', () => {
   it('component library', async () => {
     const agent = await Agent();
     const result = await agent.runCode(componentLibrary.toString());
+    expect(result).toMatchSnapshot();
+  });
+
+  it('text and textrange', async () => {
+    const agent = await Agent();
+    const result = await agent.runCode(createText.toString());
     expect(result).toMatchSnapshot();
   });
 });
