@@ -204,11 +204,6 @@ export interface Board extends ShapeBase {
   readonly rulerGuides: RulerGuide[];
 
   /**
-   * The comment threads that are in the board.
-   */
-  readonly commentThreads: CommentThread[];
-
-  /**
    * The horizontal sizing behavior of the board.
    */
   horizontalSizing?: 'auto' | 'fix';
@@ -295,30 +290,6 @@ export interface Board extends ShapeBase {
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
-
-  /**
-   * Creates a new comment thread in the `position`. Optionaly adds
-   * it into the `board`.
-   * Returns the thread created.
-   */
-  addCommentThread(position: Point): CommentThread;
-
-  /**
-   * Removes the comment thread.
-   */
-  removeCommentThread(commentThread: CommentThread): void;
-
-  /**
-   * Find all the comments that match the criteria.
-   * - `onlyYours`: if true will return the threads where the current
-   *                user has engaged.
-   * - `showResolved`: by default resolved comments will be hidden. If `true`
-   *                   the resolved will be returned.
-   */
-  findComments(criteria: {
-    onlyYours: boolean;
-    showResolved: boolean;
-  }): CommentThread[];
 }
 
 /**
@@ -520,14 +491,14 @@ export interface Comment {
   readonly date: Date;
 
   /**
-   * The `text` for the commentary. The owner can modify the comment.
+   * The `content` for the commentary. The owner can modify the comment.
    */
-  text: string;
+  content: string;
 
   /**
    * Remove the current comment from its comment thread. Only the owner can remove their comments.
    */
-  delete(): void;
+  remove(): void;
 }
 
 /**
@@ -536,10 +507,21 @@ export interface Comment {
  */
 export interface CommentThread {
   /**
+   * This is the number that is displayed on the workspace. Is an increasing
+   * sequence for each comment.
+   */
+  readonly seqNumber: number;
+
+  /**
    * If the thread is attached to a `board` this will have that board
    * reference.
    */
-  board?: Board;
+  readonly board?: Board;
+
+  /**
+   * Owner of the comment thread
+   */
+  readonly owner?: User;
 
   /**
    * The `position` in absolute coordinates in the canvas.
@@ -547,26 +529,26 @@ export interface CommentThread {
   position: Point;
 
   /**
-   * List of `comments` ordered by creation date.
-   */
-  comments: Comment[];
-
-  /**
    * Whether the thread has been marked as `resolved` or not.
    */
   resolved: boolean;
 
   /**
+   * List of `comments` ordered by creation date.
+   */
+  findComments(): Promise<Comment[]>;
+
+  /**
    * Creates a new comment after the last one in the thread. The current user will
    * be used as the creation user.
    */
-  reply(text: string): Comment;
+  reply(content: string): Promise<Comment>;
 
   /**
    * Removes the current comment thread. Only the user that created the thread can
-   * delete it.
+   * remove it.
    */
-  delete(): void;
+  remove(): void;
 }
 
 /**
@@ -2777,11 +2759,6 @@ export interface Page extends PluginData {
   readonly rulerGuides: RulerGuide[];
 
   /**
-   * The comment threads that are in the page.
-   */
-  readonly commentThreads: CommentThread[];
-
-  /**
    * The root shape of the current page. Will be the parent shape of all the shapes inside the document.
    * Requires `content:read` permission.
    */
@@ -2864,24 +2841,24 @@ export interface Page extends PluginData {
    * it into the `board`.
    * Returns the thread created.
    */
-  addCommentThread(position: Point, board?: Board): CommentThread;
+  addCommentThread(content: string, position: Point): Promise<CommentThread>;
 
   /**
    * Removes the comment thread.
    */
-  removeCommentThread(commentThread: CommentThread): void;
+  removeCommentThread(commentThread: CommentThread): Promise<void>;
 
   /**
    * Find all the comments that match the criteria.
-   * - `onlyYours`: if true will return the threads where the current
+   * - `onlyYours`: if `true` will return the threads where the current
    *                user has engaged.
    * - `showResolved`: by default resolved comments will be hidden. If `true`
    *                   the resolved will be returned.
    */
-  findComments(criteria: {
+  findCommentThreads(criteria: {
     onlyYours: boolean;
     showResolved: boolean;
-  }): CommentThread[];
+  }): Promise<CommentThread[]>;
 }
 
 /**
