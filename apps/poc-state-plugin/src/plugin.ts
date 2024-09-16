@@ -221,16 +221,16 @@ function addIcon() {
 }
 
 function createGrid() {
-  const frame = penpot.createBoard();
-  frame.name = 'Frame Grid';
+  const board = penpot.createBoard();
+  board.name = 'Board Grid';
 
   const viewport = penpot.viewport;
-  frame.x = viewport.center.x - 150;
-  frame.y = viewport.center.y - 200;
-  frame.resize(300, 400);
+  board.x = viewport.center.x - 150;
+  board.y = viewport.center.y - 200;
+  board.resize(300, 400);
 
   // create grid
-  const grid = frame.addGridLayout();
+  const grid = board.addGridLayout();
   const [numRows, numCols] = GRID;
 
   for (let i = 0; i < numRows; i++) {
@@ -263,12 +263,12 @@ function createGrid() {
 }
 
 function createColors() {
-  const frame = penpot.createBoard();
-  frame.name = 'Palette';
+  const board = penpot.createBoard();
+  board.name = 'Palette';
 
   const viewport = penpot.viewport;
-  frame.x = viewport.center.x - 150;
-  frame.y = viewport.center.y - 200;
+  board.x = viewport.center.x - 150;
+  board.y = viewport.center.y - 200;
 
   const colors = penpot.library.local.colors.sort((a, b) =>
     a.name.toLowerCase() > b.name.toLowerCase()
@@ -289,11 +289,11 @@ function createColors() {
   const width = cols * 150 + Math.max(0, cols - 1) * 10 + 20;
   const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
-  frame.resize(width, height);
-  frame.borderRadius = 8;
+  board.resize(width, height);
+  board.borderRadius = 8;
 
   // create grid
-  const grid = frame.addGridLayout();
+  const grid = board.addGridLayout();
 
   for (let i = 0; i < rows; i++) {
     grid.addRow('auto');
@@ -313,7 +313,7 @@ function createColors() {
   grid.horizontalPadding = 10;
 
   // These properties are not mandatory, if not defined will apply the default values
-  frame.shadows = [
+  board.shadows = [
     {
       style: 'drop-shadow',
       offsetX: 5,

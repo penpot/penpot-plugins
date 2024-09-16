@@ -3149,7 +3149,7 @@ export interface RulerGuide {
   readonly orientation: RulerGuideOrientation;
 
   /**
-   * `position` is the position in the axis in absolute positioning. If this is a frame
+   * `position` is the position in the axis in absolute positioning. If this is a board
    * guide will return the positioning relative to the board.
    */
   position: number;

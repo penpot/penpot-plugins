@@ -20,23 +20,23 @@ function createPalette() {
   const width = cols * 200 + Math.max(0, cols - 1) * 10 + 20;
   const height = rows * 100 + Math.max(0, rows - 1) * 10 + 20;
 
-  const frame = penpot.createBoard();
-  frame.name = 'Palette';
+  const board = penpot.createBoard();
+  board.name = 'Palette';
 
   const viewport = penpot.viewport;
-  frame.x = viewport.center.x - width / 2;
-  frame.y = viewport.center.y - height / 2;
+  board.x = viewport.center.x - width / 2;
+  board.y = viewport.center.y - height / 2;
 
   if (colors.length === 0) {
     // NO colors return
     return;
   }
 
-  frame.resize(width, height);
-  frame.borderRadius = 8;
+  board.resize(width, height);
+  board.borderRadius = 8;
 
   // create grid
-  const grid = frame.addGridLayout();
+  const grid = board.addGridLayout();
 
   for (let i = 0; i < rows; i++) {
     grid.addRow('flex', 1);
