@@ -1,10 +1,10 @@
 export default function () {
   function createFlexLayout(): void {
-    const frame = penpot.createBoard();
-    frame.horizontalSizing = 'auto';
-    frame.verticalSizing = 'auto';
+    const board = penpot.createBoard();
+    board.horizontalSizing = 'auto';
+    board.verticalSizing = 'auto';
 
-    const flex = frame.addFlexLayout();
+    const flex = board.addFlexLayout();
 
     flex.dir = 'column';
     flex.wrap = 'wrap';
@@ -15,8 +15,8 @@ export default function () {
     flex.horizontalSizing = 'fill';
     flex.verticalSizing = 'fill';
 
-    frame.appendChild(penpot.createRectangle());
-    frame.appendChild(penpot.createEllipse());
+    board.appendChild(penpot.createRectangle());
+    board.appendChild(penpot.createEllipse());
   }
 
   createFlexLayout();

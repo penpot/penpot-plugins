@@ -20,17 +20,17 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
       numCols = message.content.new.column;
     }
 
-    const frame = penpot.createBoard();
-    frame.name = 'Table';
+    const board = penpot.createBoard();
+    board.name = 'Table';
 
     const viewport = penpot.viewport;
-    frame.x = viewport.center.x - 150;
-    frame.y = viewport.center.y - 200;
-    frame.resize(numCols * 160, numRows * 50);
-    frame.borderRadius = 8;
+    board.x = viewport.center.x - 150;
+    board.y = viewport.center.y - 200;
+    board.resize(numCols * 160, numRows * 50);
+    board.borderRadius = 8;
 
     // create grid
-    const grid = frame.addGridLayout();
+    const grid = board.addGridLayout();
 
     for (let i = 0; i < numRows; i++) {
       grid.addRow('flex', 1);

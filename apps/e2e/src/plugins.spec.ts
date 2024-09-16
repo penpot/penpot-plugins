@@ -1,15 +1,15 @@
-import { Agent } from './utils/agent';
-import testingPlugin from './plugins/create-frame-text-rect';
+import componentLibrary from './plugins/component-library';
+import testingPlugin from './plugins/create-board-text-rect';
 import flex from './plugins/create-flexlayout';
 import grid from './plugins/create-gridlayout';
+import createText from './plugins/create-text';
 import group from './plugins/group';
 import insertSvg from './plugins/insert-svg';
 import pluginData from './plugins/plugin-data';
-import componentLibrary from './plugins/component-library';
-import createText from './plugins/create-text';
+import { Agent } from './utils/agent';
 
 describe('Plugins', () => {
-  it('create frame - text - rectable', async () => {
+  it('create board - text - rectable', async () => {
     const agent = await Agent();
     const result = await agent.runCode(testingPlugin.toString());
     expect(result).toMatchSnapshot();

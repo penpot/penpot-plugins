@@ -26,11 +26,11 @@
    Place your test files in the `/apps/e2e/src/**/*.spec.ts` directory. Below is an example of a test file:
 
    ```ts
-   import testingPlugin from './plugins/create-frame-text-rect';
+   import testingPlugin from './plugins/create-board-text-rect';
    import { Agent } from './utils/agent';
 
    describe('Plugins', () => {
-     it('create frame - text - rectangle', async () => {
+     it('create board - text - rectangle', async () => {
        const agent = await Agent();
        const result = await agent.runCode(testingPlugin.toString());
 

@@ -41,7 +41,7 @@ export default function () {
 
     board.resize(300, 300);
 
-    const text = penpot.createText('Hello from frame');
+    const text = penpot.createText('Hello from board');
 
     if (!text) {
       throw new Error('Could not create text');
