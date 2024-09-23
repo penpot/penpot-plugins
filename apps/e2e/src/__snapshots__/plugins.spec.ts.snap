@@ -3,9 +3,6 @@
 exports[`Plugins > component library 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -14,12 +11,12 @@ exports[`Plugins > component library 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -52,7 +49,7 @@ exports[`Plugins > component library 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "bf867970-a428-8013-8004-f5d116d5102e",
+      "2",
     ],
     "strokes": [],
     "transform": {
@@ -77,9 +74,6 @@ exports[`Plugins > component library 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#B1B2B5",
@@ -88,11 +82,11 @@ exports[`Plugins > component library 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "bf867970-a428-8013-8004-f5d116d5102e",
+    "id": "2",
     "name": "Rectangle",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -151,12 +145,9 @@ exports[`Plugins > component library 1`] = `
 ]
 `;
 
-exports[`Plugins > create flex layout 1`] = `
+exports[`Plugins > create board - text - rectable 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -165,12 +156,12 @@ exports[`Plugins > create flex layout 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -203,7 +194,9 @@ exports[`Plugins > create flex layout 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
+      "2",
+      "3",
+      "4",
     ],
     "strokes": [],
     "transform": {
@@ -228,332 +221,6 @@ exports[`Plugins > create flex layout 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
-    "fills": [
-      {
-        "fillColor": "#FFFFFF",
-        "fillOpacity": 1,
-      },
-    ],
-    "flipX": null,
-    "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
-    "height": 110.00000000000001,
-    "hideFillOnExport": false,
-    "id": "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
-    "layout": "flex",
-    "layoutAlignContent": "stretch",
-    "layoutAlignItems": "center",
-    "layoutFlexDir": "row",
-    "layoutGap": {
-      "columnGap": 0,
-      "rowGap": 0,
-    },
-    "layoutGapType": "multiple",
-    "layoutGridDir": "column",
-    "layoutItemHSizing": "auto",
-    "layoutItemVSizing": "auto",
-    "layoutJustifyContent": "center",
-    "layoutPadding": {
-      "p1": 5,
-      "p2": 5,
-      "p3": 5,
-      "p4": 5,
-    },
-    "layoutPaddingType": "simple",
-    "layoutWrapType": "nowrap",
-    "name": "Board",
-    "parentId": "00000000-0000-0000-0000-000000000000",
-    "points": [
-      {
-        "x": 0,
-        "y": 0,
-      },
-      {
-        "x": 210,
-        "y": 0,
-      },
-      {
-        "x": 210,
-        "y": 110.00000000000001,
-      },
-      {
-        "x": 0,
-        "y": 110.00000000000001,
-      },
-    ],
-    "proportion": 1,
-    "proportionLock": false,
-    "rotation": 0,
-    "selrect": {
-      "height": 110.00000000000001,
-      "width": 210,
-      "x": 0,
-      "x1": 0,
-      "x2": 210,
-      "y": 0,
-      "y1": 0,
-      "y2": 110.00000000000001,
-    },
-    "shapes": [
-      "779d2f8b-aebc-8090-8004-f5d0fc728c2f",
-      "779d2f8b-aebc-8090-8004-f5d0fc7164ef",
-    ],
-    "strokes": [],
-    "transform": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "transformInverse": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "type": "frame",
-    "width": 210,
-    "x": 0,
-    "y": 0,
-  },
-  {
-    ":frame-id": "1",
-    ":id": "3",
-    ":parent-id": "1",
-    "constraintsH": "left",
-    "constraintsV": "top",
-    "fills": [
-      {
-        "fillColor": "#B1B2B5",
-        "fillOpacity": 1,
-      },
-    ],
-    "flipX": null,
-    "flipY": null,
-    "frameId": "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
-    "height": 100,
-    "id": "779d2f8b-aebc-8090-8004-f5d0fc7164ef",
-    "name": "Rectangle",
-    "parentId": "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
-    "points": [
-      {
-        "x": 5,
-        "y": 5.000000000000007,
-      },
-      {
-        "x": 105,
-        "y": 5.000000000000007,
-      },
-      {
-        "x": 105,
-        "y": 105,
-      },
-      {
-        "x": 5,
-        "y": 105,
-      },
-    ],
-    "proportion": 1,
-    "proportionLock": false,
-    "rotation": 0,
-    "rx": 0,
-    "ry": 0,
-    "selrect": {
-      "height": 100,
-      "width": 100,
-      "x": 5,
-      "x1": 5,
-      "x2": 105,
-      "y": 5.000000000000007,
-      "y1": 5.000000000000007,
-      "y2": 105,
-    },
-    "strokes": [],
-    "transform": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "transformInverse": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "type": "rect",
-    "width": 100,
-    "x": 5,
-    "y": 5.000000000000007,
-  },
-  {
-    ":frame-id": "1",
-    ":id": "4",
-    ":parent-id": "1",
-    "constraintsH": "left",
-    "constraintsV": "top",
-    "fills": [
-      {
-        "fillColor": "#B1B2B5",
-        "fillOpacity": 1,
-      },
-    ],
-    "flipX": null,
-    "flipY": null,
-    "frameId": "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
-    "height": 100,
-    "id": "779d2f8b-aebc-8090-8004-f5d0fc728c2f",
-    "name": "Ellipse",
-    "parentId": "779d2f8b-aebc-8090-8004-f5d0fc658b7b",
-    "points": [
-      {
-        "x": 105,
-        "y": 5.000000000000007,
-      },
-      {
-        "x": 205,
-        "y": 5.000000000000007,
-      },
-      {
-        "x": 205,
-        "y": 105,
-      },
-      {
-        "x": 105,
-        "y": 105,
-      },
-    ],
-    "proportion": 1,
-    "proportionLock": false,
-    "rotation": 0,
-    "selrect": {
-      "height": 100,
-      "width": 100,
-      "x": 105,
-      "x1": 105,
-      "x2": 205,
-      "y": 5.000000000000007,
-      "y1": 5.000000000000007,
-      "y2": 105,
-    },
-    "strokes": [],
-    "transform": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "transformInverse": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "type": "circle",
-    "width": 100,
-    "x": 105,
-    "y": 5.000000000000007,
-  },
-]
-`;
-
-exports[`Plugins > create frame - text - rectable 1`] = `
-[
-  {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
-    "fills": [
-      {
-        "fillColor": "#FFFFFF",
-        "fillOpacity": 1,
-      },
-    ],
-    "flipX": null,
-    "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
-    "height": 0.01,
-    "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
-    "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
-    "points": [
-      {
-        "x": 0,
-        "y": 0,
-      },
-      {
-        "x": 0.01,
-        "y": 0,
-      },
-      {
-        "x": 0.01,
-        "y": 0.01,
-      },
-      {
-        "x": 0,
-        "y": 0.01,
-      },
-    ],
-    "proportion": 1,
-    "proportionLock": false,
-    "rotation": 0,
-    "selrect": {
-      "height": 0.01,
-      "width": 0.01,
-      "x": 0,
-      "x1": 0,
-      "x2": 0.01,
-      "y": 0,
-      "y1": 0,
-      "y2": 0.01,
-    },
-    "shapes": [
-      "76961b59-7aaa-8044-8004-f5d0f6f23434",
-      "76961b59-7aaa-8044-8004-f5d0f6f9b0f6",
-      "76961b59-7aaa-8044-8004-f5d0f6fdb4d0",
-    ],
-    "strokes": [],
-    "transform": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "transformInverse": {
-      "a": 1,
-      "b": 0,
-      "c": 0,
-      "d": 1,
-      "e": 0,
-      "f": 0,
-    },
-    "type": "frame",
-    "width": 0.01,
-    "x": 0,
-    "y": 0,
-  },
-  {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "content": {
       "children": [
         {
@@ -612,12 +279,12 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     },
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "growType": "auto-width",
     "height": 17,
-    "id": "76961b59-7aaa-8044-8004-f5d0f6f23434",
+    "id": "2",
     "name": "Text",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 684,
@@ -696,9 +363,6 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     "y": 540,
   },
   {
-    ":frame-id": "1",
-    ":id": "3",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#B1B2B5",
@@ -707,11 +371,11 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 200,
-    "id": "76961b59-7aaa-8044-8004-f5d0f6f9b0f6",
+    "id": "3",
     "name": "Rectangle",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "pluginData": {
       "TEST": {
         "customKey": "customValue",
@@ -773,9 +437,6 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     "y": 540,
   },
   {
-    ":frame-id": "1",
-    ":id": "4",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -784,12 +445,12 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 300,
     "hideFillOnExport": false,
-    "id": "76961b59-7aaa-8044-8004-f5d0f6fdb4d0",
+    "id": "4",
     "name": "Board name",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 684,
@@ -824,7 +485,7 @@ exports[`Plugins > create frame - text - rectable 1`] = `
       "y2": 840,
     },
     "shapes": [
-      "76961b59-7aaa-8044-8004-f5d0f7022e51",
+      "5",
     ],
     "strokes": [],
     "transform": {
@@ -849,9 +510,6 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     "y": 540,
   },
   {
-    ":frame-id": "1",
-    ":id": "5",
-    ":parent-id": "1",
     "constraintsH": "left",
     "constraintsV": "top",
     "content": {
@@ -875,7 +533,7 @@ exports[`Plugins > create frame - text - rectable 1`] = `
                   "fontWeight": "400",
                   "letterSpacing": "0",
                   "lineHeight": "1.2",
-                  "text": "Hello from frame",
+                  "text": "Hello from board",
                   "textAlign": "left",
                   "textDecoration": "none",
                   "textTransform": "none",
@@ -912,23 +570,23 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     },
     "flipX": null,
     "flipY": null,
-    "frameId": "76961b59-7aaa-8044-8004-f5d0f6fdb4d0",
+    "frameId": "4",
     "growType": "auto-width",
     "height": 17,
-    "id": "76961b59-7aaa-8044-8004-f5d0f7022e51",
+    "id": "5",
     "name": "Text",
-    "parentId": "76961b59-7aaa-8044-8004-f5d0f6fdb4d0",
+    "parentId": "4",
     "points": [
       {
         "x": 10,
         "y": 10,
       },
       {
-        "x": 109,
+        "x": 110,
         "y": 10,
       },
       {
-        "x": 109,
+        "x": 110,
         "y": 27,
       },
       {
@@ -951,13 +609,13 @@ exports[`Plugins > create frame - text - rectable 1`] = `
         "fontWeight": "400",
         "height": 18,
         "letterSpacing": "normal",
-        "text": "Hello from frame",
+        "text": "Hello from board",
         "textDecoration": "none solid rgb(0, 0, 0)",
         "textTransform": "none",
-        "width": 98.734375,
+        "width": 99.234375,
         "x": 10,
         "x1": 0,
-        "x2": 98.734375,
+        "x2": 99.234375,
         "y": 27,
         "y1": -1,
         "y2": 17,
@@ -966,10 +624,10 @@ exports[`Plugins > create frame - text - rectable 1`] = `
     "rotation": 0,
     "selrect": {
       "height": 17,
-      "width": 99,
+      "width": 100,
       "x": 10,
       "x1": 10,
-      "x2": 109,
+      "x2": 110,
       "y": 10,
       "y1": 10,
       "y2": 27,
@@ -991,19 +649,16 @@ exports[`Plugins > create frame - text - rectable 1`] = `
       "f": 0,
     },
     "type": "text",
-    "width": 99,
+    "width": 100,
     "x": 10,
     "y": 10,
   },
 ]
 `;
 
-exports[`Plugins > create grid layout 1`] = `
+exports[`Plugins > create flex layout 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -1012,12 +667,12 @@ exports[`Plugins > create grid layout 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1050,7 +705,7 @@ exports[`Plugins > create grid layout 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "e2446c28-add3-8080-8004-f5d101af8fc7",
+      "2",
     ],
     "strokes": [],
     "transform": {
@@ -1075,9 +730,6 @@ exports[`Plugins > create grid layout 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -1086,10 +738,319 @@ exports[`Plugins > create grid layout 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
+    "height": 110.00000000000001,
+    "hideFillOnExport": false,
+    "id": "2",
+    "layout": "flex",
+    "layoutAlignContent": "stretch",
+    "layoutAlignItems": "center",
+    "layoutFlexDir": "row",
+    "layoutGap": {
+      "columnGap": 0,
+      "rowGap": 0,
+    },
+    "layoutGapType": "multiple",
+    "layoutGridDir": "column",
+    "layoutItemHSizing": "auto",
+    "layoutItemVSizing": "auto",
+    "layoutJustifyContent": "center",
+    "layoutPadding": {
+      "p1": 5,
+      "p2": 5,
+      "p3": 5,
+      "p4": 5,
+    },
+    "layoutPaddingType": "simple",
+    "layoutWrapType": "nowrap",
+    "name": "Board",
+    "parentId": "1",
+    "points": [
+      {
+        "x": 0,
+        "y": 0,
+      },
+      {
+        "x": 210,
+        "y": 0,
+      },
+      {
+        "x": 210,
+        "y": 110.00000000000001,
+      },
+      {
+        "x": 0,
+        "y": 110.00000000000001,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "selrect": {
+      "height": 110.00000000000001,
+      "width": 210,
+      "x": 0,
+      "x1": 0,
+      "x2": 210,
+      "y": 0,
+      "y1": 0,
+      "y2": 110.00000000000001,
+    },
+    "shapes": [
+      "4",
+      "3",
+    ],
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "frame",
+    "width": 210,
+    "x": 0,
+    "y": 0,
+  },
+  {
+    "constraintsH": "left",
+    "constraintsV": "top",
+    "fills": [
+      {
+        "fillColor": "#B1B2B5",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "2",
+    "height": 100,
+    "id": "3",
+    "name": "Rectangle",
+    "parentId": "2",
+    "points": [
+      {
+        "x": 5,
+        "y": 5.000000000000007,
+      },
+      {
+        "x": 105,
+        "y": 5.000000000000007,
+      },
+      {
+        "x": 105,
+        "y": 105,
+      },
+      {
+        "x": 5,
+        "y": 105,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "rx": 0,
+    "ry": 0,
+    "selrect": {
+      "height": 100,
+      "width": 100,
+      "x": 5,
+      "x1": 5,
+      "x2": 105,
+      "y": 5.000000000000007,
+      "y1": 5.000000000000007,
+      "y2": 105,
+    },
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "rect",
+    "width": 100,
+    "x": 5,
+    "y": 5.000000000000007,
+  },
+  {
+    "constraintsH": "left",
+    "constraintsV": "top",
+    "fills": [
+      {
+        "fillColor": "#B1B2B5",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "2",
+    "height": 100,
+    "id": "4",
+    "name": "Ellipse",
+    "parentId": "2",
+    "points": [
+      {
+        "x": 105,
+        "y": 5.000000000000007,
+      },
+      {
+        "x": 205,
+        "y": 5.000000000000007,
+      },
+      {
+        "x": 205,
+        "y": 105,
+      },
+      {
+        "x": 105,
+        "y": 105,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "selrect": {
+      "height": 100,
+      "width": 100,
+      "x": 105,
+      "x1": 105,
+      "x2": 205,
+      "y": 5.000000000000007,
+      "y1": 5.000000000000007,
+      "y2": 105,
+    },
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "circle",
+    "width": 100,
+    "x": 105,
+    "y": 5.000000000000007,
+  },
+]
+`;
+
+exports[`Plugins > create grid layout 1`] = `
+[
+  {
+    "fills": [
+      {
+        "fillColor": "#FFFFFF",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "1",
+    "height": 0.01,
+    "hideFillOnExport": false,
+    "id": "1",
+    "name": "Root Frame",
+    "parentId": "1",
+    "points": [
+      {
+        "x": 0,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0.01,
+      },
+      {
+        "x": 0,
+        "y": 0.01,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "selrect": {
+      "height": 0.01,
+      "width": 0.01,
+      "x": 0,
+      "x1": 0,
+      "x2": 0.01,
+      "y": 0,
+      "y1": 0,
+      "y2": 0.01,
+    },
+    "shapes": [
+      "2",
+    ],
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "frame",
+    "width": 0.01,
+    "x": 0,
+    "y": 0,
+  },
+  {
+    "fills": [
+      {
+        "fillColor": "#FFFFFF",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "1",
     "height": 100,
     "hideFillOnExport": false,
-    "id": "e2446c28-add3-8080-8004-f5d101af8fc7",
+    "id": "2",
     "layout": "grid",
     "layoutAlignContent": "stretch",
     "layoutAlignItems": "center",
@@ -1098,52 +1059,52 @@ exports[`Plugins > create grid layout 1`] = `
       "rowGap": 10,
     },
     "layoutGapType": "multiple",
-    "layoutGridCells": {
-      "e2446c28-add3-8080-8004-f5d101b7eae8": {
+    "layoutGridCells": [
+      {
         "alignSelf": "auto",
         "column": 1,
         "columnSpan": 1,
-        "id": "e2446c28-add3-8080-8004-f5d101b7eae8",
+        "id": "2",
         "justifySelf": "auto",
         "position": "auto",
         "row": 1,
         "rowSpan": 1,
         "shapes": [],
       },
-      "e2446c28-add3-8080-8004-f5d101b7eae9": {
+      {
         "alignSelf": "auto",
         "column": 1,
         "columnSpan": 1,
-        "id": "e2446c28-add3-8080-8004-f5d101b7eae9",
+        "id": "2",
         "justifySelf": "auto",
         "position": "auto",
         "row": 2,
         "rowSpan": 1,
         "shapes": [],
       },
-      "e2446c28-add3-8080-8004-f5d101b8ef63": {
+      {
         "alignSelf": "auto",
         "column": 2,
         "columnSpan": 1,
-        "id": "e2446c28-add3-8080-8004-f5d101b8ef63",
+        "id": "2",
         "justifySelf": "auto",
         "position": "auto",
         "row": 1,
         "rowSpan": 1,
         "shapes": [],
       },
-      "e2446c28-add3-8080-8004-f5d101b8ef64": {
+      {
         "alignSelf": "auto",
         "column": 2,
         "columnSpan": 1,
-        "id": "e2446c28-add3-8080-8004-f5d101b8ef64",
+        "id": "2",
         "justifySelf": "auto",
         "position": "auto",
         "row": 2,
         "rowSpan": 1,
         "shapes": [],
       },
-    },
+    ],
     "layoutGridColumns": [
       {
         "type": "flex",
@@ -1175,7 +1136,7 @@ exports[`Plugins > create grid layout 1`] = `
     },
     "layoutPaddingType": "simple",
     "name": "Board",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1236,9 +1197,6 @@ exports[`Plugins > create grid layout 1`] = `
 exports[`Plugins > group and ungroup 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -1247,12 +1205,12 @@ exports[`Plugins > group and ungroup 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1285,7 +1243,7 @@ exports[`Plugins > group and ungroup 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "d93e51ed-0b43-8077-8004-f5d1070691ce",
+      "4",
     ],
     "strokes": [],
     "transform": {
@@ -1310,9 +1268,6 @@ exports[`Plugins > group and ungroup 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#B1B2B5",
@@ -1321,11 +1276,11 @@ exports[`Plugins > group and ungroup 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "d93e51ed-0b43-8077-8004-f5d106ffe16b",
+    "id": "2",
     "name": "Rectangle",
-    "parentId": "d93e51ed-0b43-8077-8004-f5d1070691ce",
+    "parentId": "4",
     "points": [
       {
         "x": 0,
@@ -1382,9 +1337,6 @@ exports[`Plugins > group and ungroup 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "3",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#B1B2B5",
@@ -1393,11 +1345,11 @@ exports[`Plugins > group and ungroup 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "d93e51ed-0b43-8077-8004-f5d10705af65",
+    "id": "3",
     "name": "Rectangle",
-    "parentId": "d93e51ed-0b43-8077-8004-f5d1070691ce",
+    "parentId": "4",
     "points": [
       {
         "x": 0,
@@ -1454,18 +1406,15 @@ exports[`Plugins > group and ungroup 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "4",
-    ":parent-id": "1",
     "fills": [],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "d93e51ed-0b43-8077-8004-f5d1070691ce",
+    "id": "4",
     "index": 2,
     "name": "Group",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1498,8 +1447,8 @@ exports[`Plugins > group and ungroup 1`] = `
       "y2": 100,
     },
     "shapes": [
-      "d93e51ed-0b43-8077-8004-f5d106ffe16b",
-      "d93e51ed-0b43-8077-8004-f5d10705af65",
+      "2",
+      "3",
     ],
     "strokes": [],
     "transform": {
@@ -1529,9 +1478,6 @@ exports[`Plugins > group and ungroup 1`] = `
 exports[`Plugins > insert svg 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -1540,12 +1486,12 @@ exports[`Plugins > insert svg 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1578,7 +1524,7 @@ exports[`Plugins > insert svg 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "9bf6fbc5-040c-80f0-8004-f5d10c5820ec",
+      "2",
     ],
     "strokes": [],
     "transform": {
@@ -1603,17 +1549,14 @@ exports[`Plugins > insert svg 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "fills": [],
     "flipX": false,
     "flipY": false,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 130,
-    "id": "9bf6fbc5-040c-80f0-8004-f5d10c5820ec",
+    "id": "2",
     "name": "Test icon",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 684,
@@ -1646,9 +1589,9 @@ exports[`Plugins > insert svg 1`] = `
       "y2": 670,
     },
     "shapes": [
-      "9bf6fbc5-040c-80f0-8004-f5d10c590e5e",
-      "9bf6fbc5-040c-80f0-8004-f5d10c590e5f",
-      "9bf6fbc5-040c-80f0-8004-f5d10c5942ab",
+      "3",
+      "4",
+      "5",
     ],
     "strokes": [],
     "svgAttrs": {
@@ -1677,18 +1620,15 @@ exports[`Plugins > insert svg 1`] = `
     "y": 540,
   },
   {
-    ":frame-id": "1",
-    ":id": "3",
-    ":parent-id": "1",
     "fills": [],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 130,
     "hidden": true,
-    "id": "9bf6fbc5-040c-80f0-8004-f5d10c590e5e",
+    "id": "3",
     "name": "base-background",
-    "parentId": "9bf6fbc5-040c-80f0-8004-f5d10c5820ec",
+    "parentId": "2",
     "points": [
       {
         "x": 684,
@@ -1760,9 +1700,6 @@ exports[`Plugins > insert svg 1`] = `
     "y": 540,
   },
   {
-    ":frame-id": "1",
-    ":id": "4",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#0000ff",
@@ -1770,11 +1707,11 @@ exports[`Plugins > insert svg 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "9bf6fbc5-040c-80f0-8004-f5d10c590e5f",
+    "id": "4",
     "name": "svg-rect",
-    "parentId": "9bf6fbc5-040c-80f0-8004-f5d10c5820ec",
+    "parentId": "2",
     "points": [
       {
         "x": 694,
@@ -1843,18 +1780,15 @@ exports[`Plugins > insert svg 1`] = `
     "y": 550,
   },
   {
-    ":frame-id": "1",
-    ":id": "5",
-    ":parent-id": "1",
     "content": "Sorry, your browser does not support inline SVG.",
     "fills": [],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 130,
-    "id": "9bf6fbc5-040c-80f0-8004-f5d10c5942ab",
+    "id": "5",
     "name": "svg-node",
-    "parentId": "9bf6fbc5-040c-80f0-8004-f5d10c5820ec",
+    "parentId": "2",
     "points": [
       {
         "x": 684,
@@ -1926,9 +1860,6 @@ exports[`Plugins > insert svg 1`] = `
 exports[`Plugins > plugin data 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -1937,12 +1868,12 @@ exports[`Plugins > plugin data 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -1975,7 +1906,7 @@ exports[`Plugins > plugin data 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "537105f7-8fcb-8055-8004-f5d11193332a",
+      "2",
     ],
     "strokes": [],
     "transform": {
@@ -2000,9 +1931,6 @@ exports[`Plugins > plugin data 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#B1B2B5",
@@ -2011,11 +1939,11 @@ exports[`Plugins > plugin data 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 100,
-    "id": "537105f7-8fcb-8055-8004-f5d11193332a",
+    "id": "2",
     "name": "Rectangle",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "pluginData": {
       "TEST": {
         "testData": "test",
@@ -2082,9 +2010,6 @@ exports[`Plugins > plugin data 1`] = `
 exports[`Plugins > text and textrange 1`] = `
 [
   {
-    ":frame-id": "1",
-    ":id": "1",
-    ":parent-id": "1",
     "fills": [
       {
         "fillColor": "#FFFFFF",
@@ -2093,12 +2018,12 @@ exports[`Plugins > text and textrange 1`] = `
     ],
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "height": 0.01,
     "hideFillOnExport": false,
-    "id": "00000000-0000-0000-0000-000000000000",
+    "id": "1",
     "name": "Root Frame",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
@@ -2131,7 +2056,7 @@ exports[`Plugins > text and textrange 1`] = `
       "y2": 0.01,
     },
     "shapes": [
-      "59413672-fad9-806e-8004-f5d11c17da60",
+      "2",
     ],
     "strokes": [],
     "transform": {
@@ -2156,9 +2081,6 @@ exports[`Plugins > text and textrange 1`] = `
     "y": 0,
   },
   {
-    ":frame-id": "1",
-    ":id": "2",
-    ":parent-id": "1",
     "content": {
       "children": [
         {
@@ -2239,12 +2161,12 @@ exports[`Plugins > text and textrange 1`] = `
     },
     "flipX": null,
     "flipY": null,
-    "frameId": "00000000-0000-0000-0000-000000000000",
+    "frameId": "1",
     "growType": "auto-width",
     "height": 48,
-    "id": "59413672-fad9-806e-8004-f5d11c17da60",
+    "id": "2",
     "name": "Text",
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "1",
     "points": [
       {
         "x": 0,
