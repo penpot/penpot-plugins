@@ -47,3 +47,6 @@ Thumbs.db
 **/assets/plugin.js
 
 docs/api
+
+
+apps/e2e/screenshots/*.png

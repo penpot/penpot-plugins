@@ -4,6 +4,9 @@ export default function () {
     board.horizontalSizing = 'auto';
     board.verticalSizing = 'auto';
 
+    board.x = penpot.viewport.center.x;
+    board.y = penpot.viewport.center.y;
+
     const flex = board.addFlexLayout();
 
     flex.dir = 'column';

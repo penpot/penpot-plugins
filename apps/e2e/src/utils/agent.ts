@@ -4,6 +4,8 @@ import { getFileUrl } from './get-file-url';
 import { idObjectToArray } from './clean-id';
 import { Shape } from '../models/shape.model';
 
+const screenshotsEnable = process.env['E2E_SCREENSHOTS'] === 'true';
+
 function replaceIds(shapes: Shape[]) {
   let id = 1;
 
@@ -96,6 +98,8 @@ export async function Agent() {
         autoFinish: true,
       }
     ) {
+      const autoFinish = options.autoFinish ?? true;
+
       console.log('Running plugin code...');
       await page.evaluate((testingPlugin) => {
         (globalThis as any).ɵloadPlugin({
@@ -119,9 +123,11 @@ export async function Agent() {
       );
       console.log('Save status found.');
 
-      if (options.screenshot) {
+      if (options.screenshot && screenshotsEnable) {
         console.log('Taking screenshot:', options.screenshot);
-        await page.screenshot({ path: options.screenshot });
+        await page.screenshot({
+          path: 'screenshots/' + options.screenshot + '.png',
+        });
       }
 
       return new Promise((resolve) => {
@@ -137,7 +143,7 @@ export async function Agent() {
 
           resolve(result);
 
-          if (options.autoFinish) {
+          if (autoFinish) {
             console.log('Auto finish enabled. Cleaning up...');
             finish();
           }
