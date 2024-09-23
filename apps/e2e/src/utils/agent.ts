@@ -2,14 +2,7 @@ import puppeteer from 'puppeteer';
 import { PenpotApi } from './api';
 import { getFileUrl } from './get-file-url';
 import { idObjectToArray } from './clean-id';
-
-interface Shape {
-  ':id': string;
-  ':frame-id'?: string;
-  ':parent-id'?: string;
-  ':shapes'?: string[];
-  ':layout-grid-cells'?: string[];
-}
+import { Shape } from '../models/shape.model';
 
 function replaceIds(shapes: Shape[]) {
   let id = 1;
@@ -20,35 +13,32 @@ function replaceIds(shapes: Shape[]) {
 
   function replaceChildrenId(id: string, newId: string) {
     for (const node of shapes) {
-      if (node[':parent-id'] === id) {
-        node[':parent-id'] = newId;
+      if (node.parentId === id) {
+        node.parentId = newId;
       }
 
-      if (node[':frame-id'] === id) {
-        node[':frame-id'] = newId;
+      if (node.frameId === id) {
+        node.frameId = newId;
       }
 
-      if (node[':shapes']) {
-        node[':shapes'] = node[':shapes']?.map((shapeId) => {
+      if (node.shapes) {
+        node.shapes = node.shapes?.map((shapeId) => {
           return shapeId === id ? newId : shapeId;
         });
       }
 
-      if (node[':layout-grid-cells']) {
-        node[':layout-grid-cells'] = idObjectToArray(
-          node[':layout-grid-cells'],
-          newId
-        );
+      if (node.layoutGridCells) {
+        node.layoutGridCells = idObjectToArray(node.layoutGridCells, newId);
       }
     }
   }
 
   for (const node of shapes) {
-    const previousId = node[':id'] as string;
+    const previousId = node.id;
 
-    node[':id'] = getId();
+    node.id = getId();
 
-    replaceChildrenId(previousId, node[':id']);
+    replaceChildrenId(previousId, node.id);
   }
 }
 
