@@ -2,10 +2,12 @@ import componentLibrary from './plugins/component-library';
 import testingPlugin from './plugins/create-board-text-rect';
 import flex from './plugins/create-flexlayout';
 import grid from './plugins/create-gridlayout';
+import rulerGuides from './plugins/create-ruler-guides';
 import createText from './plugins/create-text';
 import group from './plugins/group';
 import insertSvg from './plugins/insert-svg';
 import pluginData from './plugins/plugin-data';
+import comments from './plugins/create-comments';
 import { Agent } from './utils/agent';
 
 describe('Plugins', () => {
@@ -67,6 +69,23 @@ describe('Plugins', () => {
     const agent = await Agent();
     const result = await agent.runCode(createText.toString(), {
       screenshot: 'create-text',
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('ruler guides', async () => {
+    const agent = await Agent();
+    const result = await agent.runCode(rulerGuides.toString(), {
+      screenshot: 'create-ruler-guides',
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  it('comments', async () => {
+    const agent = await Agent();
+    const result = await agent.runCode(comments.toString(), {
+      screenshot: 'create-comments',
+      avoidSavedStatus: true,
     });
     expect(result).toMatchSnapshot();
   });

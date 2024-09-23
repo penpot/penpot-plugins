@@ -1,5 +1,79 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Plugins > comments 1`] = `
+[
+  {
+    "fills": [
+      {
+        "fillColor": "#FFFFFF",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "1",
+    "height": 0.01,
+    "hideFillOnExport": false,
+    "id": "1",
+    "name": "Root Frame",
+    "parentId": "1",
+    "points": [
+      {
+        "x": 0,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0.01,
+      },
+      {
+        "x": 0,
+        "y": 0.01,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "selrect": {
+      "height": 0.01,
+      "width": 0.01,
+      "x": 0,
+      "x1": 0,
+      "x2": 0.01,
+      "y": 0,
+      "y1": 0,
+      "y2": 0.01,
+    },
+    "shapes": [],
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "frame",
+    "width": 0.01,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
 exports[`Plugins > component library 1`] = `
 [
   {
@@ -2001,6 +2075,80 @@ exports[`Plugins > plugin data 1`] = `
     },
     "type": "rect",
     "width": 100,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Plugins > ruler guides 1`] = `
+[
+  {
+    "fills": [
+      {
+        "fillColor": "#FFFFFF",
+        "fillOpacity": 1,
+      },
+    ],
+    "flipX": null,
+    "flipY": null,
+    "frameId": "1",
+    "height": 0.01,
+    "hideFillOnExport": false,
+    "id": "1",
+    "name": "Root Frame",
+    "parentId": "1",
+    "points": [
+      {
+        "x": 0,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0,
+      },
+      {
+        "x": 0.01,
+        "y": 0.01,
+      },
+      {
+        "x": 0,
+        "y": 0.01,
+      },
+    ],
+    "proportion": 1,
+    "proportionLock": false,
+    "rotation": 0,
+    "selrect": {
+      "height": 0.01,
+      "width": 0.01,
+      "x": 0,
+      "x1": 0,
+      "x2": 0.01,
+      "y": 0,
+      "y1": 0,
+      "y2": 0.01,
+    },
+    "shapes": [],
+    "strokes": [],
+    "transform": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transformInverse": {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "type": "frame",
+    "width": 0.01,
     "x": 0,
     "y": 0,
   },
