@@ -1,6 +1,8 @@
 export default function () {
   function createGridLayout(): void {
     const board = penpot.createBoard();
+    board.x = penpot.viewport.center.x;
+    board.y = penpot.viewport.center.y;
 
     const grid = board.addGridLayout();
 

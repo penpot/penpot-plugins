@@ -16,7 +16,11 @@ export default function () {
   }
 
   const rectangle = penpot.createRectangle();
+  rectangle.x = penpot.viewport.center.x;
+  rectangle.y = penpot.viewport.center.y;
   const rectangle2 = penpot.createRectangle();
+  rectangle2.x = penpot.viewport.center.x + 100;
+  rectangle2.y = penpot.viewport.center.y + 100;
 
   penpot.selection = [rectangle, rectangle2];
 

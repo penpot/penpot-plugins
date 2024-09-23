@@ -9,6 +9,7 @@
    ```env
    E2E_LOGIN_EMAIL="test@penpot.app"
    E2E_LOGIN_PASSWORD="123123123"
+   E2E_SCREENSHOTS= "true"
    ```
 
 2. **Run E2E Tests**
@@ -57,7 +58,7 @@
    ```ts
    const result = await agent.runCode(testingPlugin.toString(), {
      autoFinish: false, // default: true
-     screenshot: 'capture.png', // default: ''
+     screenshot: 'test-name', // default: ''
    });
 
    // Finish will close the browser & delete the file

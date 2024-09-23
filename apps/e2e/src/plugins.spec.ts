@@ -11,31 +11,41 @@ import { Agent } from './utils/agent';
 describe('Plugins', () => {
   it('create board - text - rectable', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(testingPlugin.toString());
+    const result = await agent.runCode(testingPlugin.toString(), {
+      screenshot: 'create-board-text-rect',
+    });
     expect(result).toMatchSnapshot();
   });
 
   it('create flex layout', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(flex.toString());
+    const result = await agent.runCode(flex.toString(), {
+      screenshot: 'create-flexlayout',
+    });
     expect(result).toMatchSnapshot();
   });
 
   it('create grid layout', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(grid.toString());
+    const result = await agent.runCode(grid.toString(), {
+      screenshot: 'create-gridlayout',
+    });
     expect(result).toMatchSnapshot();
   });
 
   it('group and ungroup', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(group.toString());
+    const result = await agent.runCode(group.toString(), {
+      screenshot: 'group-ungroup',
+    });
     expect(result).toMatchSnapshot();
   });
 
   it('insert svg', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(insertSvg.toString());
+    const result = await agent.runCode(insertSvg.toString(), {
+      screenshot: 'insert-svg',
+    });
     expect(result).toMatchSnapshot();
   });
 
@@ -47,13 +57,17 @@ describe('Plugins', () => {
 
   it('component library', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(componentLibrary.toString());
+    const result = await agent.runCode(componentLibrary.toString(), {
+      screenshot: 'component-library',
+    });
     expect(result).toMatchSnapshot();
   });
 
   it('text and textrange', async () => {
     const agent = await Agent();
-    const result = await agent.runCode(createText.toString());
+    const result = await agent.runCode(createText.toString(), {
+      screenshot: 'create-text',
+    });
     expect(result).toMatchSnapshot();
   });
 });

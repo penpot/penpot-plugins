@@ -32,8 +32,6 @@ export default function () {
 
     board.name = 'Board name';
 
-    console.log(penpot.viewport.center.x);
-
     board.x = penpot.viewport.center.x;
     board.y = penpot.viewport.center.y;
 
@@ -54,7 +52,7 @@ export default function () {
     return board;
   }
 
-  createText('Hello from plugin');
-  createRectangle();
   createBoard();
+  createRectangle();
+  createText('Hello from plugin');
 }
