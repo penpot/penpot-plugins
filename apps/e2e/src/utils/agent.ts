@@ -93,9 +93,10 @@ export async function Agent() {
   return {
     async runCode(
       code: string,
-      options: { screenshot?: string; autoFinish?: boolean } = {
+      options: { screenshot?: string; autoFinish?: boolean, avoidSavedStatus?: boolean, } = {
         screenshot: '',
         autoFinish: true,
+        avoidSavedStatus: false
       }
     ) {
       const autoFinish = options.autoFinish ?? true;
@@ -113,15 +114,17 @@ export async function Agent() {
           permissions: ['content:read', 'content:write'],
         });
       }, code);
-
-      console.log('Waiting for save status...');
-      await page.waitForSelector(
-        '.main_ui_workspace_right_header__saved-status',
-        {
-          timeout: 10000,
-        }
-      );
-      console.log('Save status found.');
+      
+      if (!options.avoidSavedStatus) {
+        console.log('Waiting for save status...');
+        await page.waitForSelector(
+          '.main_ui_workspace_right_header__saved-status',
+          {
+            timeout: 10000,
+          }
+        );
+        console.log('Save status found.');
+      }
 
       if (options.screenshot && screenshotsEnable) {
         console.log('Taking screenshot:', options.screenshot);
