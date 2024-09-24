@@ -497,6 +497,7 @@ export interface Comment {
 
   /**
    * Remove the current comment from its comment thread. Only the owner can remove their comments.
+   * Requires the `comment:write` permission.
    */
   remove(): void;
 }
@@ -535,18 +536,21 @@ export interface CommentThread {
 
   /**
    * List of `comments` ordered by creation date.
+   * Requires the `comment:read` o `comment:write` permission.
    */
   findComments(): Promise<Comment[]>;
 
   /**
    * Creates a new comment after the last one in the thread. The current user will
    * be used as the creation user.
+   * Requires the `comment:write` permission.
    */
   reply(content: string): Promise<Comment>;
 
   /**
    * Removes the current comment thread. Only the user that created the thread can
    * remove it.
+   * Requires the `comment:write` permission.
    */
   remove(): void;
 }
@@ -2840,11 +2844,13 @@ export interface Page extends PluginData {
    * Creates a new comment thread in the `position`. Optionaly adds
    * it into the `board`.
    * Returns the thread created.
+   * Requires the `comment:write` permission.
    */
   addCommentThread(content: string, position: Point): Promise<CommentThread>;
 
   /**
    * Removes the comment thread.
+   * Requires the `comment:read` or `comment:write` permission.
    */
   removeCommentThread(commentThread: CommentThread): Promise<void>;
 
@@ -2854,8 +2860,9 @@ export interface Page extends PluginData {
    *                user has engaged.
    * - `showResolved`: by default resolved comments will be hidden. If `true`
    *                   the resolved will be returned.
+   * Requires the `comment:read` or `comment:write` permission.
    */
-  findCommentThreads(criteria: {
+  findCommentThreads(criteria?: {
     onlyYours: boolean;
     showResolved: boolean;
   }): Promise<CommentThread[]>;
