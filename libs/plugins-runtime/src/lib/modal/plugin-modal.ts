@@ -43,6 +43,7 @@ export class PluginModalElement extends HTMLElement {
     const iframeSrc = this.getAttribute('iframe-src');
     const width = Number(this.getAttribute('width') || '300');
     const height = Number(this.getAttribute('height') || '400');
+    const allowDownloads = this.getAttribute('allow-downloads') || false;
 
     if (!title || !iframeSrc) {
       throw new Error('title and iframe-src attributes are required');
@@ -99,6 +100,10 @@ export class PluginModalElement extends HTMLElement {
       'allow-popups-to-escape-sandbox',
       'allow-storage-access-by-user-activation'
     );
+
+    if (allowDownloads) {
+      iframe.sandbox.add('allow-downloads');
+    }
 
     iframe.addEventListener('load', () => {
       this.shadowRoot?.dispatchEvent(

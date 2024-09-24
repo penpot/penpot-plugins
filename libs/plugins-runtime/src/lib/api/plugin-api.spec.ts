@@ -18,6 +18,9 @@ describe('Plugin api', () => {
           'library:read',
           'library:write',
           'user:read',
+          'comment:read',
+          'comment:write',
+          'allow:downloads',
         ],
       },
       openModal: vi.fn(),
@@ -107,7 +110,7 @@ describe('Plugin api', () => {
         name: 'test',
         id: '123',
         revn: 0,
-    } as File;
+      } as File;
 
       pluginManager.context.getFile.mockImplementation(() => exampleFile);
 

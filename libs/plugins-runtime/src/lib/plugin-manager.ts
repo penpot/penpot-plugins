@@ -21,6 +21,10 @@ export async function createPluginManager(
   let uiMessagesCallbacks: ((message: unknown) => void)[] = [];
   const timeouts = new Set<ReturnType<typeof setTimeout>>();
 
+  const allowDownloads = !!manifest.permissions.find(
+    (s) => s === 'allow:downloads'
+  );
+
   const themeChangeId = context.addListener('themechange', (theme: Theme) => {
     modal?.setTheme(theme);
   });
@@ -83,7 +87,7 @@ export async function createPluginManager(
       return;
     }
 
-    modal = openUIApi(name, modalUrl, theme, options);
+    modal = openUIApi(name, modalUrl, theme, options, allowDownloads);
 
     modal.setTheme(theme);
 

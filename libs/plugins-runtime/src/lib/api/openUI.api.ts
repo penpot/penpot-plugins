@@ -8,8 +8,9 @@ export const openUIApi = z
     z.string(),
     z.string(),
     z.enum(['dark', 'light']),
-    openUISchema.optional()
+    openUISchema.optional(),
+    z.boolean().optional()
   )
-  .implement((title, url, theme, options) => {
-    return createModal(title, url, theme, options);
+  .implement((title, url, theme, options, allowDownloads) => {
+    return createModal(title, url, theme, options, allowDownloads);
   });

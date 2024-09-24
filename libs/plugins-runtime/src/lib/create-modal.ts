@@ -6,7 +6,8 @@ export function createModal(
   name: string,
   url: string,
   theme: Theme,
-  options?: OpenUIOptions
+  options?: OpenUIOptions,
+  allowDownloads?: boolean
 ) {
   const modal = document.createElement('plugin-modal') as PluginModalElement;
 
@@ -43,6 +44,10 @@ export function createModal(
   modal.setAttribute('iframe-src', url);
   modal.setAttribute('width', String(width));
   modal.setAttribute('height', String(height));
+
+  if (allowDownloads) {
+    modal.setAttribute('allow-downloads', 'true');
+  }
 
   document.body.appendChild(modal);
 

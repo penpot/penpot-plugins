@@ -55,6 +55,7 @@ export function createSandbox(
     penpot: proxyApi,
     fetch: ses.harden(safeFetch),
     console: ses.harden(window.console),
+    Date: ses.harden(Date),
     Math: ses.harden(Math),
     setTimeout: ses.harden(
       (...[handler, timeout]: Parameters<typeof setTimeout>) => {
