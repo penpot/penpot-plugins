@@ -90,6 +90,28 @@ import type { Shape } from '@penpot/plugin-types';
         >
           Rotate
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="createMargins()"
+        >
+          Add Margins
+        </button>
+
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="addComment()"
+        >
+          Add comment
+        </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="exportFile()"
+        >
+          Export File
+        </button>
 
         <input type="file" class="file-upload" (change)="uploadImage($event)" />
       </div>
@@ -146,6 +168,8 @@ export class AppComponent {
         this.theme.set(event.data.content);
       } else if (event.data.type === 'update-counter') {
         this.counter.set(event.data.content.counter);
+      } else if (event.data.type === 'start-download') {
+        this.#startDownload(event.data.content);
       }
     });
 
@@ -218,6 +242,18 @@ export class AppComponent {
     this.#sendMessage({ content: 'rotate-selection' });
   }
 
+  createMargins() {
+    this.#sendMessage({ content: 'create-margins' });
+  }
+
+  addComment() {
+    this.#sendMessage({ content: 'add-comment' });
+  }
+
+  exportFile() {
+    this.#sendMessage({ content: 'export-file' });
+  }
+
   async uploadImage(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input?.files?.length) {
@@ -252,5 +288,23 @@ export class AppComponent {
     } else {
       this.form.get('name')?.setValue('');
     }
+  }
+
+  #startDownload(data: Uint8Array) {
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+
+    // We need to start a download with this URL
+    const downloadURL = URL.createObjectURL(blob);
+
+    // Download
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = downloadURL;
+    a.download = 'Export.penpot';
+    a.click();
+
+    // Remove temporary
+    URL.revokeObjectURL(a.href);
+    a.remove();
   }
 }

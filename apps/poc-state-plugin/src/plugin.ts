@@ -5,7 +5,7 @@ penpot.ui.open('Plugin name', '', {
   height: 600,
 });
 
-penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
+penpot.ui.onMessage<{ content: string; data: unknown }>(async (message) => {
   if (message.content === 'close') {
     penpot.closePlugin();
   } else if (message.content === 'ready') {
@@ -42,6 +42,12 @@ penpot.ui.onMessage<{ content: string; data: unknown }>((message) => {
       mimeType: string;
     };
     createImage(data, mimeType);
+  } else if (message.content === 'create-margins') {
+    createMargins();
+  } else if (message.content === 'add-comment') {
+    addComment();
+  } else if (message.content === 'export-file') {
+    exportFile();
   }
 });
 
@@ -431,4 +437,57 @@ function createImage(data: Uint8Array, mimeType: string) {
       shape.fills = [{ fillOpacity: 1, fillImage: data }];
     })
     .catch((err) => console.error(err));
+}
+
+function createMargins() {
+  const page = penpot.currentPage;
+  const selected = penpot.selection && penpot.selection[0];
+
+  if (selected && penpot.utils.types.isBoard(selected)) {
+    const { width, height } = selected;
+    selected.addRulerGuide('vertical', 10);
+    selected.addRulerGuide('vertical', width - 10);
+    selected.addRulerGuide('horizontal', 10);
+    selected.addRulerGuide('horizontal', height - 10);
+  } else {
+    console.log('bound', penpot.viewport.bounds);
+    const { x, y, width, height } = penpot.viewport.bounds;
+    page.addRulerGuide('vertical', x + 100);
+    page.addRulerGuide('vertical', x + width - 50);
+    page.addRulerGuide('horizontal', y + 100);
+    page.addRulerGuide('horizontal', y + height - 50);
+  }
+}
+
+async function addComment() {
+  const shape = penpot.selection[0];
+
+  if (shape) {
+    const content = shape.name + ' - ' + Date.now();
+    const cthr = await penpot.currentPage.findCommentThreads();
+    const th = cthr && cthr[0];
+
+    if (th) {
+      const comms = await th.findComments();
+      const first = comms && comms[0];
+      if (first) {
+        console.log('Reply to thread', content);
+        th.reply(content);
+      }
+    } else {
+      console.log('Create new thread', content);
+      await penpot.currentPage.addCommentThread(content, shape.center);
+    }
+  }
+}
+
+async function exportFile() {
+  const data = await penpot.getFile()?.export('penpot');
+
+  if (data) {
+    penpot.ui.sendMessage({
+      type: 'start-download',
+      content: data,
+    });
+  }
 }

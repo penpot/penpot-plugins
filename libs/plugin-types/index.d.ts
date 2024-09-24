@@ -2850,7 +2850,7 @@ export interface Page extends PluginData {
 
   /**
    * Removes the comment thread.
-   * Requires the `comment:read` or `comment:write` permission.
+   * Requires the `comment:write` permission.
    */
   removeCommentThread(commentThread: CommentThread): Promise<void>;
 
