@@ -114,7 +114,8 @@ describe('createPluginManager', () => {
       'Test Modal',
       'https://example.com/plugin',
       'light',
-      { width: 400, height: 300 }
+      { width: 400, height: 300 },
+      true
     );
     expect(mockModal.setTheme).toHaveBeenCalledWith('light');
     expect(mockModal.addEventListener).toHaveBeenCalledWith(
