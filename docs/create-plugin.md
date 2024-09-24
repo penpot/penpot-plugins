@@ -31,11 +31,11 @@ Next, create a `manifest.json` file inside the `/public` directory. This file is
   "code": "/plugin.js",
   "icon": "/icon.png",
   "permissions": [
-    "content:read",
     "content:write",
-    "library:read",
     "library:write",
-    "user:read"
+    "user:read",
+    "comment:read",
+    "allow:downloads"
   ]
 }
 ```

@@ -27,11 +27,11 @@ Next, create a `manifest.json` file inside the `/src/assets` directory. This fil
   "code": "/assets/plugin.js",
   "icon": "/assets/icon.png",
   "permissions": [
-    "content:read",
     "content:write",
-    "library:read",
     "library:write",
-    "user:read"
+    "user:read",
+    "comment:read",
+    "allow:downloads"
   ]
 }
 ```
