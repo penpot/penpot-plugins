@@ -14,6 +14,9 @@ export const manifestSchema = z.object({
       'library:read',
       'library:write',
       'user:read',
+      'comment:read',
+      'comment:write',
+      'allow:downloads',
     ])
   ),
 });

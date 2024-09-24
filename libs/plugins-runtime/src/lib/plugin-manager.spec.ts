@@ -40,6 +40,9 @@ describe('createPluginManager', () => {
         'library:read',
         'library:write',
         'user:read',
+        'comment:read',
+        'comment:write',
+        'allow:downloads',
       ],
     };
 
