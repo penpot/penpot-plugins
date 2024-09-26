@@ -3,7 +3,7 @@ export default function () {
   rectangle.x = penpot.viewport.center.x;
   rectangle.y = penpot.viewport.center.y;
 
-  const shape = penpot.getPage()?.getShapeById(rectangle.id);
+  const shape = penpot.currentPage?.getShapeById(rectangle.id);
   if (shape) {
     penpot.library.local.createComponent([shape]);
   }

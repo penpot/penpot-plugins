@@ -52,7 +52,7 @@ penpot.ui.onMessage<{ content: string; data: unknown }>(async (message) => {
 });
 
 penpot.on('pagechange', () => {
-  const page = penpot.getPage();
+  const page = penpot.currentPage;
   const shapes = page?.findShapes();
 
   penpot.ui.sendMessage({
@@ -62,7 +62,7 @@ penpot.on('pagechange', () => {
 });
 
 penpot.on('filechange', () => {
-  const file = penpot.getFile();
+  const file = penpot.currentFile;
 
   if (!file) {
     return;
@@ -77,7 +77,7 @@ penpot.on('filechange', () => {
 });
 
 penpot.on('selectionchange', () => {
-  const selection = penpot.getSelectedShapes();
+  const selection = penpot.selection;
   const data: string | null =
     selection.length === 1 ? selection[0].getPluginData('counter') : null;
   const counter = data ? parseInt(data, 10) : 0;
@@ -89,8 +89,8 @@ penpot.on('themechange', (theme) => {
 });
 
 function init() {
-  const page = penpot.getPage();
-  const file = penpot.getFile();
+  const page = penpot.currentPage;
+  const file = penpot.currentFile;
 
   if (!page || !file) {
     return;
@@ -108,7 +108,7 @@ function init() {
       pageId: page.id,
       fileId: file.id,
       revn: file.revn,
-      theme: penpot.getTheme(),
+      theme: penpot.theme,
       selection,
       counter,
     },
@@ -116,7 +116,7 @@ function init() {
 }
 
 function changeName(data: { id: string; name: string }) {
-  const shape = penpot.getPage()?.getShapeById('' + data.id);
+  const shape = penpot.currentPage?.getShapeById('' + data.id);
   if (shape) {
     shape.name = data.name;
   }
@@ -140,28 +140,28 @@ function createRect() {
 }
 
 function moveX(data: { id: string }) {
-  const shape = penpot.getPage()?.getShapeById('' + data.id);
+  const shape = penpot.currentPage?.getShapeById('' + data.id);
   if (shape) {
     shape.x += 100;
   }
 }
 
 function moveY(data: { id: string }) {
-  const shape = penpot.getPage()?.getShapeById('' + data.id);
+  const shape = penpot.currentPage?.getShapeById('' + data.id);
   if (shape) {
     shape.y += 100;
   }
 }
 
 function resizeW(data: { id: string }) {
-  const shape = penpot.getPage()?.getShapeById('' + data.id);
+  const shape = penpot.currentPage?.getShapeById('' + data.id);
   if (shape) {
     shape.resize(shape.width * 2, shape.height);
   }
 }
 
 function resizeH(data: { id: string }) {
-  const shape = penpot.getPage()?.getShapeById('' + data.id);
+  const shape = penpot.currentPage?.getShapeById('' + data.id);
   if (shape) {
     shape.resize(shape.width, shape.height * 2);
   }
@@ -449,7 +449,7 @@ function createMargins() {
     selected.addRulerGuide('vertical', width - 10);
     selected.addRulerGuide('horizontal', 10);
     selected.addRulerGuide('horizontal', height - 10);
-  } else {
+  } else if (page) {
     console.log('bound', penpot.viewport.bounds);
     const { x, y, width, height } = penpot.viewport.bounds;
     page.addRulerGuide('vertical', x + 100);
@@ -464,7 +464,7 @@ async function addComment() {
 
   if (shape) {
     const content = shape.name + ' - ' + Date.now();
-    const cthr = await penpot.currentPage.findCommentThreads();
+    const cthr = await penpot.currentPage?.findCommentThreads();
     const th = cthr && cthr[0];
 
     if (th) {
@@ -476,13 +476,13 @@ async function addComment() {
       }
     } else {
       console.log('Create new thread', content);
-      await penpot.currentPage.addCommentThread(content, shape.center);
+      await penpot.currentPage?.addCommentThread(content, shape.center);
     }
   }
 }
 
 async function exportFile() {
-  const data = await penpot.getFile()?.export('penpot');
+  const data = await penpot.currentFile?.export('penpot');
 
   if (data) {
     penpot.ui.sendMessage({

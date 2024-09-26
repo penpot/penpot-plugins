@@ -59,9 +59,9 @@ describe('createPluginManager', () => {
     );
 
     mockContext = {
+      theme: 'light',
       addListener: vi.fn().mockReturnValue(Symbol()),
       removeListener: vi.fn(),
-      getTheme: vi.fn().mockReturnValue('light'),
     } as unknown as Context;
 
     onCloseCallback = vi.fn();

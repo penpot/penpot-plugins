@@ -130,12 +130,17 @@ export function createApi(
 
     // Penpot State API
 
-    get root(): Shape {
+    get root(): Shape | null {
       checkPermission('content:read');
       return plugin.context.root;
     },
 
-    get currentPage(): Page {
+    get currentFile(): File | null {
+      checkPermission('content:read');
+      return plugin.context.currentFile;
+    },
+
+    get currentPage(): Page | null {
       checkPermission('content:read');
       return plugin.context.currentPage;
     },
@@ -178,26 +183,6 @@ export function createApi(
       return plugin.context.activeUsers;
     },
 
-    getFile(): File | null {
-      checkPermission('content:read');
-      return plugin.context.getFile();
-    },
-
-    getPage(): Page | null {
-      checkPermission('content:read');
-      return plugin.context.getPage();
-    },
-
-    getSelected(): string[] {
-      checkPermission('content:read');
-      return plugin.context.getSelected();
-    },
-
-    getSelectedShapes(): Shape[] {
-      checkPermission('content:read');
-      return plugin.context.getSelectedShapes();
-    },
-
     shapesColors(shapes: Shape[]): (Color & ColorShapeInfo)[] {
       checkPermission('content:read');
       return plugin.context.shapesColors(shapes);
@@ -208,8 +193,8 @@ export function createApi(
       return plugin.context.replaceColor(shapes, oldColor, newColor);
     },
 
-    getTheme(): Theme {
-      return plugin.context.getTheme();
+    get theme(): Theme {
+      return plugin.context.theme;
     },
 
     createBoard(): Board {

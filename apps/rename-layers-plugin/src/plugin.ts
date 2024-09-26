@@ -1,6 +1,6 @@
 import { PluginMessageEvent } from './app/model';
 
-penpot.ui.open('RENAME LAYER PLUGIN', `?theme=${penpot.getTheme()}`, {
+penpot.ui.open('RENAME LAYER PLUGIN', `?theme=${penpot.theme}`, {
   width: 290,
   height: 550,
 });
@@ -55,9 +55,9 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
 });
 
 function getShapes() {
-  return penpot.getSelectedShapes().length
-    ? penpot.getSelectedShapes()
-    : penpot.getPage()?.findShapes();
+  return penpot.selection.length
+    ? penpot.selection
+    : penpot.currentPage?.findShapes();
 }
 
 function resetSelection() {

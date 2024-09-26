@@ -1,7 +1,7 @@
 import { GridLayout } from '@penpot/plugin-types';
 import { PluginMessageEvent, TablePluginEvent } from './app/model';
 
-penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.getTheme()}`, {
+penpot.ui.open('TABLE PLUGIN', `?theme=${penpot.theme}`, {
   width: 280,
   height: 610,
 });
@@ -219,7 +219,7 @@ function createFlexCell(
 function pluginData(message: PluginMessageEvent) {
   if (message.type === 'tableconfig') {
     const { type, options } = message.content;
-    const page = penpot.getPage();
+    const page = penpot.currentPage;
 
     if (type === 'save') {
       page?.setPluginData('table-plugin', JSON.stringify(options));

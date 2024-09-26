@@ -79,7 +79,7 @@ export async function createPluginManager(
   };
 
   const openModal = (name: string, url: string, options?: OpenUIOptions) => {
-    const theme = context.getTheme() as 'light' | 'dark';
+    const theme = context.theme as 'light' | 'dark';
 
     const modalUrl = getValidUrl(manifest.host, url);
 

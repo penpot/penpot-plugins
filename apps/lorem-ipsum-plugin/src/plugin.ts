@@ -11,7 +11,7 @@ import {
   generateCharacters,
 } from './generator.js';
 
-penpot.ui.open('LOREM IPSUM PLUGIN', `?theme=${penpot.getTheme()}`);
+penpot.ui.open('LOREM IPSUM PLUGIN', `?theme=${penpot.theme}`);
 
 penpot.on('themechange', (theme) => {
   sendMessage({ type: 'theme', content: theme });
