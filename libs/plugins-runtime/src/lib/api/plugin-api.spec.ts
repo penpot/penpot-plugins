@@ -1,6 +1,6 @@
 import { expect, describe, vi } from 'vitest';
 import { createApi } from './index.js';
-import type { File } from '@penpot/plugin-types';
+import type { File, Page, Shape } from '@penpot/plugin-types';
 
 const mockUrl = 'http://fake.fake/';
 
@@ -30,11 +30,10 @@ describe('Plugin api', () => {
       registerListener: vi.fn(),
       destroyListener: vi.fn(),
       context: {
-        getFile: vi.fn(),
-        getPage: vi.fn(),
-        getSelected: vi.fn(),
-        getSelectedShapes: vi.fn(),
-        getTheme: vi.fn(() => 'dark'),
+        currentFile: null as File | null,
+        currentPage: null as Page | null,
+        selection: [] as Shape[],
+        theme: 'dark',
         addListener: vi.fn().mockReturnValueOnce(Symbol()),
         removeListener: vi.fn(),
       },
@@ -76,31 +75,17 @@ describe('Plugin api', () => {
           api.penpot.on('selectionchange', callback);
         }).toThrow();
       });
-
-      it('get states', () => {
-        expect(() => {
-          api.penpot.getFile();
-        }).toThrow();
-
-        expect(() => {
-          api.penpot.getPage();
-        }).toThrow();
-
-        expect(() => {
-          api.penpot.getSelected();
-        }).toThrow();
-      });
     });
 
     it('get file state', () => {
       const examplePage = {
         name: 'test',
         id: '123',
-      };
+      } as Page;
 
-      pluginManager.context.getPage.mockImplementation(() => examplePage);
+      pluginManager.context.currentPage = examplePage;
 
-      const pageState = api.penpot.getPage();
+      const pageState = api.penpot.currentPage;
 
       expect(pageState).toEqual(examplePage);
     });
@@ -112,19 +97,22 @@ describe('Plugin api', () => {
         revn: 0,
       } as File;
 
-      pluginManager.context.getFile.mockImplementation(() => exampleFile);
+      pluginManager.context.currentFile = exampleFile;
 
-      const fileState = api.penpot.getFile();
+      const fileState = api.penpot.currentFile;
 
       expect(fileState).toEqual(exampleFile);
     });
 
     it('get selection', () => {
-      const selection = ['123'];
+      const selection = [
+        { id: '123', name: 'test' },
+        { id: 'abc', name: 'test2' },
+      ] as Shape[];
 
-      pluginManager.context.getSelected.mockImplementation(() => selection);
+      pluginManager.context.selection = selection;
 
-      const currentSelection = api.penpot.getSelected();
+      const currentSelection = api.penpot.selection;
 
       expect(currentSelection).toEqual(selection);
     });

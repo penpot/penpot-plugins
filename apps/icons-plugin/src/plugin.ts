@@ -1,6 +1,6 @@
 import type { PluginMessageEvent, PluginUIEvent } from './model.js';
 
-penpot.ui.open('FEATHER ICONS PLUGIN', `?theme=${penpot.getTheme()}`, {
+penpot.ui.open('FEATHER ICONS PLUGIN', `?theme=${penpot.theme}`, {
   width: 292,
   height: 540,
 });

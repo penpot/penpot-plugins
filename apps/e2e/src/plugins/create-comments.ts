@@ -1,6 +1,6 @@
 export default function () {
   async function createComment() {
-    const page = penpot.getPage();
+    const page = penpot.currentPage;
 
     if (page) {
       await page.addCommentThread('Hello world!', {
@@ -11,7 +11,7 @@ export default function () {
   }
 
   async function replyComment() {
-    const page = penpot.getPage();
+    const page = penpot.currentPage;
 
     if (page) {
       const comments = await page.findCommentThreads({
@@ -23,7 +23,7 @@ export default function () {
   }
 
   async function deleteComment() {
-    const page = penpot.getPage();
+    const page = penpot.currentPage;
 
     if (page) {
       const commentThreads = await page.findCommentThreads({

@@ -1,6 +1,6 @@
 import type { PluginMessageEvent, PluginUIEvent } from './model.js';
 
-penpot.ui.open('CONTRAST PLUGIN', `?theme=${penpot.getTheme()}`, {
+penpot.ui.open('CONTRAST PLUGIN', `?theme=${penpot.theme}`, {
   width: 285,
   height: 525,
 });
@@ -10,8 +10,8 @@ penpot.ui.onMessage<PluginUIEvent>((message) => {
     sendMessage({
       type: 'init',
       content: {
-        theme: penpot.getTheme(),
-        selection: penpot.getSelectedShapes(),
+        theme: penpot.theme,
+        selection: penpot.selection,
       },
     });
 
@@ -20,7 +20,7 @@ penpot.ui.onMessage<PluginUIEvent>((message) => {
 });
 
 penpot.on('selectionchange', () => {
-  const shapes = penpot.getSelectedShapes();
+  const shapes = penpot.selection;
   sendMessage({ type: 'selection', content: shapes });
 
   initEvents();
@@ -37,7 +37,7 @@ function initEvents() {
     return penpot.on(
       'shapechange',
       () => {
-        const shapes = penpot.getSelectedShapes();
+        const shapes = penpot.selection;
         sendMessage({ type: 'selection', content: shapes });
       },
       { shapeId: shape.id }
@@ -46,7 +46,7 @@ function initEvents() {
 }
 
 penpot.on('themechange', () => {
-  const theme = penpot.getTheme();
+  const theme = penpot.theme;
   sendMessage({ type: 'theme', content: theme });
 });
 

@@ -688,7 +688,18 @@ export interface Context {
    * console.log(rootShape);
    * ```
    */
-  readonly root: Shape;
+  readonly root: Shape | null;
+  /**
+   * Retrieves file data from the current Penpot context. Requires `content:read` permission.
+   * @return Returns the file data or `null` if no file is available.
+   *
+   * @example
+   * ```js
+   * const fileData = context.currentFile;
+   * console.log(fileData);
+   * ```
+   */
+  readonly currentFile: File | null;
   /**
    * The current page in the Penpot context. Requires `content:read` permission.
    *
@@ -698,7 +709,7 @@ export interface Context {
    * console.log(currentPage);
    * ```
    */
-  readonly currentPage: Page;
+  readonly currentPage: Page | null;
   /**
    * The viewport settings in the Penpot context.
    *
@@ -763,6 +774,17 @@ export interface Context {
   readonly activeUsers: ActiveUser[];
 
   /**
+   * The current theme (light or dark) in Penpot.
+   *
+   * @example
+   * ```js
+   * const currentTheme = context.theme;
+   * console.log(currentTheme);
+   * ```
+   */
+  readonly theme: Theme;
+
+  /**
    * The currently selected shapes in Penpot. Requires `content:read` permission.
    *
    * @example
@@ -772,51 +794,6 @@ export interface Context {
    * ```
    */
   selection: Shape[];
-
-  /**
-   * Retrieves file data from the current Penpot context. Requires `content:read` permission.
-   * @return Returns the file data or `null` if no file is available.
-   *
-   * @example
-   * ```js
-   * const fileData = context.getFile();
-   * console.log(fileData);
-   * ```
-   */
-  getFile(): File | null;
-  /**
-   * Retrieves page data from the current Penpot context. Requires `content:read` permission.
-   * @return Returns the page data or `null` if no page is available.
-   *
-   * @example
-   * ```js
-   * const pageData = context.getPage();
-   * console.log(pageData);
-   * ```
-   */
-  getPage(): Page | null;
-  /**
-   * Retrieves the IDs of the currently selected elements in Penpot. Requires `content:read` permission.
-   * @return Returns an array of IDs representing the selected elements.
-   *
-   * @example
-   * ```js
-   * const selectedIds = context.getSelected();
-   * console.log(selectedIds);
-   * ```
-   */
-  getSelected(): string[];
-  /**
-   * Retrieves the shapes of the currently selected elements in Penpot. Requires `content:read` permission.
-   * @return Returns an array of shapes representing the selected elements.
-   *
-   * @example
-   * ```js
-   * const selectedShapes = context.getSelectedShapes();
-   * console.log(selectedShapes);
-   * ```
-   */
-  getSelectedShapes(): Shape[];
 
   /**
    * Retrieves colors applied to the given shapes in Penpot. Requires `content:read` permission.
@@ -839,18 +816,6 @@ export interface Context {
    * ```
    */
   replaceColor(shapes: Shape[], oldColor: Color, newColor: Color): void;
-
-  /**
-   * Retrieves the current theme (light or dark) in Penpot.
-   * @return Returns the current theme.
-   *
-   * @example
-   * ```js
-   * const currentTheme = context.getTheme();
-   * console.log(currentTheme);
-   * ```
-   */
-  getTheme(): Theme;
 
   /**
    * Uploads media to Penpot and retrieves its image data. Requires `content:write` permission.
@@ -2774,7 +2739,7 @@ export interface Page extends PluginData {
    *
    * @example
    * ```js
-   * const shape = penpot.getPage().getShapeById('shapeId');
+   * const shape = penpot.currentPage.getShapeById('shapeId');
    * ```
    */
   getShapeById(id: string): Shape | null;
@@ -2785,7 +2750,7 @@ export interface Page extends PluginData {
    * @param criteria
    * @example
    * ```js
-   * const shapes = penpot.getPage().findShapes({ name: 'exampleName' });
+   * const shapes = penpot.currentPage.findShapes({ name: 'exampleName' });
    * ```
    */
   findShapes(criteria?: {
@@ -2815,7 +2780,7 @@ export interface Page extends PluginData {
    *
    * @example
    * ```js
-   * const flow = penpot.getPage().createFlow('exampleFlow', board);
+   * const flow = penpot.currentPage.createFlow('exampleFlow', board);
    * ```
    */
   createFlow(name: string, board: Board): Flow;
