@@ -54,9 +54,6 @@ export function createSandbox(
   const publicPluginApi = {
     penpot: proxyApi,
     fetch: ses.harden(safeFetch),
-    console: ses.harden(window.console),
-    Date: ses.harden(Date),
-    Math: ses.harden(Math),
     setTimeout: ses.harden(
       (...[handler, timeout]: Parameters<typeof setTimeout>) => {
         const timeoutId = setTimeout(() => {
@@ -73,6 +70,57 @@ export function createSandbox(
 
       plugin.timeouts.delete(id);
     }),
+
+    /**
+     * GLOBAL FUNCTIONS ACCESIBLE TO PLUGINS
+     **/
+    isFinite: ses.harden(isFinite),
+    isNaN: ses.harden(isNaN),
+    parseFloat: ses.harden(parseFloat),
+    parseInt: ses.harden(parseInt),
+    decodeURI: ses.harden(decodeURI),
+    decodeURIComponent: ses.harden(decodeURIComponent),
+    encodeURI: ses.harden(encodeURI),
+    encodeURIComponent: ses.harden(encodeURIComponent),
+    Object: ses.harden(Object),
+    Boolean: ses.harden(Boolean),
+    Symbol: ses.harden(Symbol),
+    Number: ses.harden(Number),
+    BigInt: ses.harden(BigInt),
+    Math: ses.harden(Math),
+    Date: ses.harden(Date),
+    String: ses.harden(String),
+    RegExp: ses.harden(RegExp),
+    Array: ses.harden(Array),
+    Int8Array: ses.harden(Int8Array),
+    Uint8Array: ses.harden(Uint8Array),
+    Uint8ClampedArray: ses.harden(Uint8ClampedArray),
+    Int16Array: ses.harden(Int16Array),
+    Uint16Array: ses.harden(Uint16Array),
+    Int32Array: ses.harden(Int32Array),
+    Uint32Array: ses.harden(Uint32Array),
+    BigInt64Array: ses.harden(BigInt64Array),
+    BigUint64Array: ses.harden(BigUint64Array),
+    Float32Array: ses.harden(Float32Array),
+    Float64Array: ses.harden(Float64Array),
+    Map: ses.harden(Map),
+    Set: ses.harden(Set),
+    WeakMap: ses.harden(WeakMap),
+    WeakSet: ses.harden(WeakSet),
+    ArrayBuffer: ses.harden(ArrayBuffer),
+    DataView: ses.harden(DataView),
+    Atomics: ses.harden(Atomics),
+    JSON: ses.harden(JSON),
+    Promise: ses.harden(Promise),
+    Proxy: ses.harden(Proxy),
+    Intl: ses.harden(Intl),
+
+    // Window properties
+    console: ses.harden(window.console),
+    devicePixelRatio: ses.harden(window.devicePixelRatio),
+    atob: ses.harden(window.atob),
+    btoa: ses.harden(window.btoa),
+    structuredClone: ses.harden(window.structuredClone),
   };
 
   const compartment = ses.createCompartment(publicPluginApi);
