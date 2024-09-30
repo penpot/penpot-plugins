@@ -1,4 +1,4 @@
-export const dragHandler = (el: HTMLElement, move?: () => void) => {
+export const dragHandler = (el: HTMLElement, target: HTMLElement = el, move?: () => void) => {
   let currentTranslate = { x: 0, y: 0 };
   let initialTranslate = { x: 0, y: 0 };
   let initialClientPosition = { x: 0, y: 0 };
@@ -10,7 +10,7 @@ export const dragHandler = (el: HTMLElement, move?: () => void) => {
 
     currentTranslate = { x: deltaX, y: deltaY };
 
-    el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    target.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 
     move?.();
   };

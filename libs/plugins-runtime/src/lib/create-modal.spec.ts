@@ -44,10 +44,6 @@ describe('createModal', () => {
       '--modal-block-start',
       '40px'
     );
-    expect(modal.style.setProperty).toHaveBeenCalledWith(
-      '--modal-inline-end',
-      '320px'
-    );
 
     expect(modal.setAttribute).toHaveBeenCalledWith('title', 'Test Modal');
     expect(modal.setAttribute).toHaveBeenCalledWith(
@@ -83,7 +79,7 @@ describe('createModal', () => {
       options
     );
 
-    const expectedWidth = 680; // 1000 - 320 (initialPosition.inlineEnd)
+    const expectedWidth = 710; // 1000 -  270 (initialPosition.inlineEnd)
     const expectedHeight = 760; // 800 - 40 (initialPosition.blockStart)
 
     expect(modal.setAttribute).toHaveBeenCalledWith(

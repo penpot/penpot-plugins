@@ -12,6 +12,7 @@ export class PluginModalElement extends HTMLElement {
   }
 
   #wrapper: HTMLElement | null = null;
+  #inner: HTMLElement | null = null;
   #dragEvents: ReturnType<typeof dragHandler> | null = null;
 
   setTheme(theme: Theme) {
@@ -54,12 +55,20 @@ export class PluginModalElement extends HTMLElement {
     }
 
     this.#wrapper = document.createElement('div');
+    this.#inner = document.createElement('div');
+
+    this.#inner.classList.add('inner');
+
     this.#wrapper.classList.add('wrapper');
     this.#wrapper.style.inlineSize = `${width}px`;
+    this.#wrapper.style.minInlineSize = `${width}px`;
     this.#wrapper.style.blockSize = `${height}px`;
+    this.#wrapper.style.minBlockSize = `${height}px`;
+    this.#wrapper.style.maxInlineSize = '90vw';
+    this.#wrapper.style.maxBlockSize = '90vh';
 
     // move modal to the top
-    this.#dragEvents = dragHandler(this.#wrapper, () => {
+    this.#dragEvents = dragHandler(this.#inner, this.#wrapper, () => {
       this.calculateZIndex();
     });
 
@@ -124,8 +133,9 @@ export class PluginModalElement extends HTMLElement {
 
     this.shadowRoot.appendChild(this.#wrapper);
 
-    this.#wrapper.appendChild(header);
-    this.#wrapper.appendChild(iframe);
+    this.#wrapper.appendChild(this.#inner);
+    this.#inner.appendChild(header);
+    this.#inner.appendChild(iframe);
 
     const style = document.createElement('style');
     style.textContent = modalCss;
