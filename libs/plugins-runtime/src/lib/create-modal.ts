@@ -18,9 +18,16 @@ export function createModal(
   const defaultWidth = 335;
   const defaultHeight = 590;
 
+  const maxWidth =
+    (options?.width ?? defaultWidth) > window.innerWidth
+      ? window.innerWidth - 290
+      : options?.width ?? defaultWidth;
+
   const initialPosition = {
     blockStart: 40,
-    inlineEnd: 320,
+    // To be able to resize the element as expected the position must be absolute from the right.
+    // This value is the length of the window minus the width of the element plus the width of the design tab.
+    inlineStart: window.innerWidth - maxWidth - 290,
   };
 
   modal.style.setProperty(
@@ -28,11 +35,10 @@ export function createModal(
     `${initialPosition.blockStart}px`
   );
   modal.style.setProperty(
-    '--modal-inline-end',
-    `${initialPosition.inlineEnd}px`
+    '--modal-inline-start',
+    `${initialPosition.inlineStart}px`
   );
 
-  const maxWidth = window.innerWidth - initialPosition.inlineEnd;
   const maxHeight = window.innerHeight - initialPosition.blockStart;
   let width = Math.min(options?.width || defaultWidth, maxWidth);
   let height = Math.min(options?.height || defaultHeight, maxHeight);
