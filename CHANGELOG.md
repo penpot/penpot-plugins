@@ -1,3 +1,42 @@
+## 0.12.0 (2024-10-04)
+
+
+### 🚀 Features
+
+- e2e tests ([1371af9](https://github.com/penpot/penpot-plugins/commit/1371af9))
+- add build to CI ([a434209](https://github.com/penpot/penpot-plugins/commit/a434209))
+- **api-doc:** update readme ([99ff81d](https://github.com/penpot/penpot-plugins/commit/99ff81d))
+- **docs:** add examples for new permissions ([2f0f7a6](https://github.com/penpot/penpot-plugins/commit/2f0f7a6))
+- **e2e:** add screenshots ENV variable ([9292bf2](https://github.com/penpot/penpot-plugins/commit/9292bf2))
+- **plugin-types:** add ruler guides and new zoom methods ([c8066be](https://github.com/penpot/penpot-plugins/commit/c8066be))
+- **plugin-types:** add apis for comments ([e34e56c](https://github.com/penpot/penpot-plugins/commit/e34e56c))
+- **plugin-types:** update comment related methods ([50bc7ba](https://github.com/penpot/penpot-plugins/commit/50bc7ba))
+- **plugin-types:** removed old method and replaced with attributes ([1866299](https://github.com/penpot/penpot-plugins/commit/1866299))
+- **plugins-runtime:** plugin live reload ([bbc77e4](https://github.com/penpot/penpot-plugins/commit/bbc77e4))
+- **plugins-runtime:** adds new permissions `comment:read`, `comment:write` and `allow:downloads` ([5adbee2](https://github.com/penpot/penpot-plugins/commit/5adbee2))
+- **plugins-runtime:** expose some public JS APIs to the plugins code ([22dfa92](https://github.com/penpot/penpot-plugins/commit/22dfa92))
+- **poc-state-plugin:** add new functions to the plugin to test comments and rulers ([6adee11](https://github.com/penpot/penpot-plugins/commit/6adee11))
+- **rename-layers:** final review - undo group ([2909bcc](https://github.com/penpot/penpot-plugins/commit/2909bcc))
+- **runtime:** refactor plugin state ([16595c2](https://github.com/penpot/penpot-plugins/commit/16595c2))
+- **runtime:** remove deprecated  method ([ccc5f78](https://github.com/penpot/penpot-plugins/commit/ccc5f78))
+- **table-plugin:** enhancement save config ([07af57d](https://github.com/penpot/penpot-plugins/commit/07af57d))
+
+### 🩹 Fixes
+
+- **e2e:** update dump params to shape model ([ade39ee](https://github.com/penpot/penpot-plugins/commit/ade39ee))
+- **plugin-types:** optional path curves ([0ea57f1](https://github.com/penpot/penpot-plugins/commit/0ea57f1))
+- **plugins-runtime:** clean pending timeouts ([8870dda](https://github.com/penpot/penpot-plugins/commit/8870dda))
+- **plugins-runtime:** prevent plugin execution after close ([b65492a](https://github.com/penpot/penpot-plugins/commit/b65492a))
+- **plugins-styles:** import svg inline ([567b0b5](https://github.com/penpot/penpot-plugins/commit/567b0b5))
+- **runtime:** ses errorTrapping interferes with penpot error handler ([8c0e36d](https://github.com/penpot/penpot-plugins/commit/8c0e36d))
+- **runtime:** prevent override Penpot objects ([120e9e5](https://github.com/penpot/penpot-plugins/commit/120e9e5))
+
+### ❤️  Thank You
+
+- alonso.torres
+- Juanfran @juanfran
+- María Valderrama @mavalroot
+
 ## 0.10.0 (2024-07-31)
 
 
