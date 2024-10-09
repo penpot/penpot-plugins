@@ -36,6 +36,7 @@ export async function createPlugin(
 
   return {
     plugin,
+    manifest,
     compartment: sandbox,
   };
 }

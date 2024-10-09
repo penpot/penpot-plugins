@@ -68,3 +68,11 @@ export const ɵloadPluginByUrl = async function (manifestUrl: string) {
   const manifest = await loadManifest(manifestUrl);
   ɵloadPlugin(manifest);
 };
+
+export const ɵunloadPlugin = function (id: Manifest['pluginId']) {
+  const plugin = plugins.find((plugin) => plugin.manifest.pluginId === id);
+
+  if (plugin) {
+    plugin.plugin.close();
+  }
+};
