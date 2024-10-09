@@ -87,6 +87,7 @@ describe('createPlugin', () => {
     expect(result).toEqual({
       plugin: mockPluginManager,
       compartment: mockSandbox,
+      manifest,
     });
   });
 

@@ -5,6 +5,7 @@ import {
   ɵloadPlugin,
   setContextBuilder,
   ɵloadPluginByUrl,
+  ɵunloadPlugin,
 } from './lib/load-plugin.js';
 
 import type { Context } from '@penpot/plugin-types';
@@ -30,6 +31,7 @@ globalThisAny$.initPluginsRuntime = (
     globalThisAny$.ɵcontext = contextBuilder('TEST');
     globalThis.ɵloadPlugin = ɵloadPlugin;
     globalThis.ɵloadPluginByUrl = ɵloadPluginByUrl;
+    globalThis.ɵunloadPlugin = ɵunloadPlugin;
   } catch (err) {
     console.error(err);
   }
