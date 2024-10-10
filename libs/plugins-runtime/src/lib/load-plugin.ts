@@ -35,7 +35,10 @@ window.addEventListener('message', (event) => {
   }
 });
 
-export const loadPlugin = async function (manifest: Manifest) {
+export const loadPlugin = async function (
+  manifest: Manifest,
+  closeCallback?: () => void
+) {
   try {
     const context = contextBuilder && contextBuilder(manifest.pluginId);
 
@@ -50,6 +53,7 @@ export const loadPlugin = async function (manifest: Manifest) {
       manifest,
       () => {
         plugins = plugins.filter((api) => api !== plugin);
+        closeCallback && closeCallback();
       }
     );
 
@@ -60,8 +64,11 @@ export const loadPlugin = async function (manifest: Manifest) {
   }
 };
 
-export const ɵloadPlugin = async function (manifest: Manifest) {
-  loadPlugin(manifest);
+export const ɵloadPlugin = async function (
+  manifest: Manifest,
+  closeCallback?: () => void
+) {
+  loadPlugin(manifest, closeCallback);
 };
 
 export const ɵloadPluginByUrl = async function (manifestUrl: string) {
