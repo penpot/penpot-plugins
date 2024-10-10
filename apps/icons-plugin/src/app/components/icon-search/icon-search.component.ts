@@ -21,6 +21,6 @@ export class IconSearchComponent {
 
   public onSearchIcons(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.searchIcons.emit(target?.value || '');
+    this.searchIcons.emit(target?.value.toLowerCase()  || '');
   }
 }
