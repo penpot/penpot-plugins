@@ -61,9 +61,9 @@ export class PluginModalElement extends HTMLElement {
 
     this.#wrapper.classList.add('wrapper');
     this.#wrapper.style.inlineSize = `${width}px`;
-    this.#wrapper.style.minInlineSize = `${width}px`;
+    // this.#wrapper.style.minInlineSize = `${width}px`;
     this.#wrapper.style.blockSize = `${height}px`;
-    this.#wrapper.style.minBlockSize = `${height}px`;
+    // this.#wrapper.style.minBlockSize = `${height}px`;
     this.#wrapper.style.maxInlineSize = '90vw';
     this.#wrapper.style.maxBlockSize = '90vh';
 
@@ -99,6 +99,9 @@ export class PluginModalElement extends HTMLElement {
     header.appendChild(closeButton);
 
     const iframe = document.createElement('iframe');
+    iframe.style.minInlineSize = `${width}px`;
+    iframe.style.minBlockSize = `${height}px`;
+    iframe.style.overflow = 'hidden';
     iframe.src = iframeSrc;
     iframe.allow = '';
     iframe.sandbox.add(
