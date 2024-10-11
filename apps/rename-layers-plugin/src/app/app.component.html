@@ -52,6 +52,7 @@
         type="text"
         placeholder="[Original layer name]"
         id="addText"
+        (keydown.enter)="updateText()"
       />
     </div>
     <button
@@ -104,6 +105,7 @@
         type="text"
         placeholder="Write the new text"
         id="replace"
+        (keydown.enter)="updateText()"
       />
     </div>
     <button
