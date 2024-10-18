@@ -77,7 +77,7 @@ export class AppComponent {
           ?.split(/\r?\n|\r|\n/g)
           .map((it) => it.trim())
           .filter((it) => it !== '')
-          .map((it) => it.split(','));
+          .map((it) => it.split(',').map((it) => (!it ? ' ' : it.trim())));
 
         this.sendMessage({
           content: {
