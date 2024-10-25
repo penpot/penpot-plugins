@@ -1,3 +1,23 @@
+# 1.0.0 (2024-10-25)
+
+
+### 🚀 Features
+
+- **plugins-runtime:** add close callback to load api ([aeddab7](https://github.com/penpot/penpot-plugins/commit/aeddab7))
+- **runtime:** unload plugin ([b4d0463](https://github.com/penpot/penpot-plugins/commit/b4d0463))
+
+### 🩹 Fixes
+
+- search in icons plugin ([b4664a2](https://github.com/penpot/penpot-plugins/commit/b4664a2))
+- **table-plugin:** i#8965 empty cell values when importing csv files ([#8965](https://github.com/penpot/penpot-plugins/issues/8965))
+
+### ❤️  Thank You
+
+- alonso.torres
+- Juanfran @juanfran
+- María Valderrama @mavalroot
+- Marina López @cocotime
+
 ## 0.12.0 (2024-10-04)
 
 
