@@ -26,4 +26,4 @@ To ensure the typings work correctly in your project, update your tsconfig.json 
 
 ### Learn more
 
-For more information on how to build plugins using the Penpot PLugin API, refer to the <a href="https://penpot-docs-plugins.pages.dev/plugins/getting-started/" target="_blank">official documentation</a>. You can also explore practical examples in the <a href="https://github.com/penpot/penpot-plugins-samples" target="_blank">samples repository</a> to see real-world implementations.
+For more information on how to build plugins using the Penpot PLugin API, refer to the <a href="https://help.penpot.app/plugins/getting-started/" target="_blank">official documentation</a>. You can also explore practical examples in the <a href="https://github.com/penpot/penpot-plugins-samples" target="_blank">samples repository</a> to see real-world implementations.

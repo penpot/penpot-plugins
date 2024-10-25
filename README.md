@@ -31,8 +31,8 @@ This guide will help you launch a Penpot plugin from the penpot-plugins reposito
 In the terminal, navigate to the **penpot-plugins** repository and run `npm install` to install the required dependencies.
 Then, run `npm start` to launch the plugins wrapper.
 
-After installing the dependencies, choose a plugin to launch. You can either run one of the provided examples or create your own (see "Creating a plugin from scratch" below). 
-To launch a plugin, Open a new terminal tab and run the appropriate startup script for the chosen plugin. 
+After installing the dependencies, choose a plugin to launch. You can either run one of the provided examples or create your own (see "Creating a plugin from scratch" below).
+To launch a plugin, Open a new terminal tab and run the appropriate startup script for the chosen plugin.
 
 For instance, to launch the Contrast plugin, use the following command:
 

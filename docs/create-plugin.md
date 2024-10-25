@@ -4,7 +4,7 @@ This guide walks you through the steps to create a plugin for our platform. You'
 
 If you prefer to create the plugin with angular, there's also a [Creating a Plugin (angular)](./create-angular-plugin.md).
 
-Keep in mind that this guide is for creating a plugin **inside `penpot-plugins` monorepo**. If you want to create a plugin outside our environment you can check the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template) or the documentation at [Create a Plugin](https://help.penpot.app/technical-guide/plugins/create-a-plugin/).
+Keep in mind that this guide is for creating a plugin **inside `penpot-plugins` monorepo**. If you want to create a plugin outside our environment you can check the [Penpot Plugin Starter Template](https://github.com/penpot/penpot-plugin-starter-template) or the documentation at [Create a Plugin](https://help.penpot.app/plugins/create-a-plugin/).
 
 Let's dive in.
 
