@@ -59,6 +59,7 @@
       type="button"
       data-appearance="primary"
       [class.btn-feedback]="btnFeedback"
+      [disabled]="addText === '[Original layer name]' || !addText"
       (click)="updateText()"
     >
       <span *ngIf="!btnFeedback" class="text-btn">Add</span>
@@ -113,6 +114,7 @@
       data-appearance="primary"
       (click)="updateText()"
       [class.btn-feedback]="btnFeedback"
+      [disabled]="!textToReplace.search"
     >
       <span *ngIf="!btnFeedback" class="text-btn">Replace</span>
       <span *ngIf="btnFeedback" class="icon icon-btn icon-tick">
