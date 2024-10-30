@@ -1,3 +1,9 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .nav-tabs {
   background-color: var(--background-secondary);
   border-radius: var(--spacing-8);
@@ -23,6 +29,9 @@
   margin-block-end: var(--spacing-8);
 }
 .form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   padding-block-start: var(--spacing-8);
 }
 
@@ -59,15 +68,12 @@ button {
 .preview-list {
   background-color: var(--background-tertiary);
   border-radius: var(--spacing-8);
-  font-size: var(--font-size-xs);
+  block-size: 1px;
+  font-size: var(--font-size-s);
   margin-block-start: var(--spacing-8);
-  block-size: 215px;
   overflow: auto;
   padding: var(--spacing-8);
-
-  &.replace {
-    block-size: 175px;
-  }
+  flex-grow: 1;
 
   & .preview-item {
     align-items: center;
