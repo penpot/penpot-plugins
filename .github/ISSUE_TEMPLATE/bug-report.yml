@@ -1,6 +1,6 @@
 description: Create a report to help us improve
 labels: ["bug"]
-name: Plugin bug report
+name: Plugins bug report
 title: "bug: "
 body:
   - type: markdown
