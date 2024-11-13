@@ -1450,6 +1450,65 @@ export interface File extends PluginData {
     exportType: 'penpot' | 'zip',
     libraryExportType?: 'all' | 'merge' | 'detach'
   ): Promise<Uint8Array>;
+
+  /**
+   * Retrieves the versions for the file.
+   * @param `criteria.createdBy` retrieves only the versions created by the user `createdBy`.
+   * Requires the `content:read` permission.
+   */
+  findVersions(criteria?: { createdBy: User }): Promise<FileVersion[]>;
+
+  /**
+   * Saves the current version into the versions history.
+   * Requires the `content:write` permission.
+   */
+  saveVersion(label: string): Promise<FileVersion>;
+}
+
+/**
+ * Type defining the file version properties.
+ */
+export interface FileVersion {
+  /**
+   * The current label to identify the version.
+   */
+  label: string;
+
+  /**
+   * The user that created the version. If not present the
+   * version is an autosave.
+   */
+  readonly createdBy?: User;
+
+  /**
+   * The date when the version was created.
+   */
+  readonly createdAt: Date;
+
+  /**
+   * If the current version has been generated automatically.
+   */
+  readonly isAutosave: boolean;
+
+  /*
+   * Restores the current version and replaces the content of the active file
+   * for the contents of this version.
+   * Requires the `content:write` permission.
+   * Warning: Calling this will close the plugin because the workspace will reload
+   */
+  restore(): void;
+
+  /**
+   * Remove the current version.
+   * Requires the `content:write` permission.
+   */
+  remove(): Promise<void>;
+
+  /**
+   * Converts an autosave version into a permanent version.
+   * Requires the `content:write` permission.
+   */
+  pin(): Promise<FileVersion>;
 }
 
 /**
