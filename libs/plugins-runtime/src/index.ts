@@ -18,6 +18,7 @@ repairIntrinsics({
   errorTaming: 'unsafe',
   consoleTaming: 'unsafe',
   errorTrapping: 'none',
+  unhandledRejectionTrapping: 'none'
 });
 
 const globalThisAny$ = globalThis as any;
