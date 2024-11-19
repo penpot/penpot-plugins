@@ -64,7 +64,7 @@ export interface Penpot
    * Adds an event listener for the specified event type.
    * Subscribing to events requires `content:read` permission.
    *
-   * The following are the posible event types:
+   * The following are the possible event types:
    *  - pagechange: event emitted when the current page changes. The callback will receive the new page.
    *  - shapechange: event emitted when the shape changes. This event requires to send inside the `props` object the shape
    *  that will be observed. For example:
@@ -73,8 +73,8 @@ export interface Penpot
    *  penpot.on('shapechange', (shape) => console.log(shape.name), { shapeId: penpot.selection[0].id });
    *  ```
    *  - selectionchange: event emitted when the current selection changes. The callback will receive the list of ids for the new selection
-   *  - themechange: event emitted when the user changes its theme. The callback will receive the new theme (currentlly: either `dark` or `light`)
-   *  - documentsaved: event emitted afther the document is saved in the backend.
+   *  - themechange: event emitted when the user changes its theme. The callback will receive the new theme (currently: either `dark` or `light`)
+   *  - documentsaved: event emitted after the document is saved in the backend.
    *
    * @param type The event type to listen for.
    * @param callback The callback function to execute when the event is triggered.
@@ -439,7 +439,7 @@ export interface Color {
    */
   gradient?: Gradient;
   /**
-   * The optional image fill defined by a ImageData object.
+   * The optional image fill defined by an ImageData object.
    */
   image?: ImageData;
 }
@@ -503,7 +503,7 @@ export interface Comment {
 }
 
 /**
- * Represents a list of comments one after the other. Usually this threads
+ * Represents a list of comments one after the other. Usually these threads
  * are conversations the users have in Penpot.
  */
 export interface CommentThread {
@@ -536,7 +536,7 @@ export interface CommentThread {
 
   /**
    * List of `comments` ordered by creation date.
-   * Requires the `comment:read` o `comment:write` permission.
+   * Requires the `comment:read` or `comment:write` permission.
    */
   findComments(): Promise<Comment[]>;
 
@@ -953,7 +953,7 @@ export interface Context {
    */
   createBoard(): Board;
   /**
-   * Use this method to create the shape of a ellipse. Requires `content:write` permission.
+   * Use this method to create the shape of an ellipse. Requires `content:write` permission.
    *
    * @example
    * ```js
@@ -986,7 +986,7 @@ export interface Context {
    *    ]
    *  }
    *}];
-   * // for a image fill
+   * // for an image fill
    * const imageData = await context.uploadMediaUrl('example', 'https://example.com/image.jpg');
    * shape.fills = [{ fillOpacity: 1, fillImage: imageData }];
    *
@@ -1265,7 +1265,7 @@ export interface ContextTypesUtils {
   /**
    * Checks if the given shape is an ellipse.
    * @param shape - The shape to check.
-   * @return Returns true if the shape is a Ellipse, otherwise false.
+   * @return Returns true if the shape is an Ellipse, otherwise false.
    */
   isEllipse(shape: Shape): shape is Ellipse;
 
@@ -1321,7 +1321,7 @@ export interface Dissolve {
 
   /**
    * Function that the dissolve effect will follow for the interpolation.
-   * Defaults to `linear`
+   * Defaults to `linear`.
    */
   readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
 }
@@ -1374,7 +1374,7 @@ export interface EventsMap {
   finish: string;
 
   /**
-   * This event will triger whenever the shape in the props change. It's mandatory to send
+   * This event will trigger whenever the shape in the props change. It's mandatory to send
    * with the props an object like `{ shapeId: '<id>' }`
    */
   shapechange: Shape;
@@ -1475,7 +1475,7 @@ export interface FileVersion {
   label: string;
 
   /**
-   * The user that created the version. If not present the
+   * The user that created the version. If not present, the
    * version is an autosave.
    */
   readonly createdBy?: User;
@@ -1538,7 +1538,7 @@ export interface Fill {
    */
   fillColorRefId?: string;
   /**
-   * The optional image fill defined by a ImageData object.
+   * The optional image fill defined by an ImageData object.
    */
   fillImage?: ImageData;
 }
@@ -1595,7 +1595,7 @@ export interface Flow {
   startingBoard: Board;
 
   /**
-   * Remvoes the flow from the page
+   * Removes the flow from the page
    */
   remove(): void;
 }
@@ -2162,7 +2162,7 @@ export type ImageData = {
    * Whether to keep the aspect ratio of the image when resizing.
    * Defaults to false if omitted.
    */
-  keepApectRatio?: boolean;
+  keepAspectRatio?: boolean;
 };
 
 /**
@@ -2724,7 +2724,7 @@ export interface OpenUrl {
  */
 export interface OverlayAction {
   /**
-   * Overlay board that will be openned.
+   * Overlay board that will be opened.
    */
   readonly destination: Board;
 
@@ -3137,7 +3137,7 @@ export interface Push {
   readonly type: 'push';
 
   /**
-   * Direction for the push animaton
+   * Direction for the push animation
    */
   readonly direction: 'right' | 'left' | 'up' | 'down';
 
@@ -3613,7 +3613,7 @@ export interface Slide {
   readonly way: 'in' | 'out';
 
   /**
-   * Direction for the slide animaton.
+   * Direction for the slide animation.
    */
   readonly direction: 'right' | 'left' | 'up' | 'down';
 
@@ -3629,7 +3629,7 @@ export interface Slide {
 
   /**
    * Function that the dissolve effect will follow for the interpolation.
-   * Defaults to `linear`
+   * Defaults to `linear`.
    */
   readonly easing?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
 }
