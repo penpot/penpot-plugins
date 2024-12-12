@@ -1,3 +1,22 @@
+## 1.1.0 (2024-12-12)
+
+
+### 🚀 Features
+
+- updated doc links ([cb49dfb](https://github.com/penpot/penpot-plugins/commit/cb49dfb))
+- **plugin-types:** add support for file history versions ([eab57d7](https://github.com/penpot/penpot-plugins/commit/eab57d7))
+
+### 🩹 Fixes
+
+- styles rename layers ([40e08f8](https://github.com/penpot/penpot-plugins/commit/40e08f8))
+- **rename-layers:** i#8951 disable buttons when empty ([#8951](https://github.com/penpot/penpot-plugins/issues/8951))
+
+### ❤️  Thank You
+
+- alonso.torres
+- María Valderrama @mavalroot
+- Marina López @cocotime
+
 # 1.0.0 (2024-10-25)
 
 
