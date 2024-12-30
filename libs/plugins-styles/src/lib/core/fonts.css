@@ -13,13 +13,6 @@
   --font-size-l: 16px;
 }
 
-html,
-body {
-  font-family: 'Work Sans', sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-}
-
 code {
   font-family: 'Work Sans', sans-serif;
 }
