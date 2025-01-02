@@ -3479,11 +3479,6 @@ export interface ShapeBase extends PluginData {
   isComponentCopyInstance(): boolean;
 
   /**
-   * @return Returns true when the current shape is inside a **nested* component instance
-   */
-  isComponentNestedInstance(): boolean;
-
-  /**
    * @return Returns true when the current shape is the root of a component tree
    */
   isComponentRoot(): boolean;
