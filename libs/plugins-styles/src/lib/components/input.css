@@ -42,6 +42,10 @@
       color: var(--df-secondary);
     }
 
+    &:invalid {
+      background-color: var(--db-primary);
+    }
+
     &.success {
       background-color: var(--db-primary);
       border-color: var(--da-tertiary);
@@ -84,6 +88,10 @@
       color: var(--lf-secondary);
     }
 
+    &:invalid {
+      background-color: var(--lb-primary);
+    }
+
     &.success {
       background-color: var(--lb-primary);
       border-color: var(--la-tertiary);
@@ -106,6 +114,10 @@
   outline: none;
   padding-block: var(--spacing-8);
   padding-inline: var(--spacing-8);
+  
+  &:invalid {
+    border-color: var(--error-500);
+  }
 
   &.error {
     border-color: var(--error-500);
