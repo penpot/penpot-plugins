@@ -406,9 +406,13 @@ export interface CloseOverlay {
  */
 export interface Color {
   /**
-   * The optional unique identifier for the color.
+   * The optional reference ID for an external color definition.
    */
   id?: string;
+  /**
+   * The optional reference to an external file for the color definition.
+   */
+  fileId?: string;
   /**
    * The optional name of the color.
    */
@@ -428,10 +432,12 @@ export interface Color {
   opacity?: number;
   /**
    * The optional reference ID for an external color definition.
+   * @deprecated Use `id` instead
    */
   refId?: string;
   /**
    * The optional reference to an external file for the color definition.
+   * @deprecated Use `fileId`
    */
   refFile?: string;
   /**
