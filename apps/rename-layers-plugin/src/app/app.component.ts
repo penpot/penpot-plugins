@@ -12,14 +12,13 @@ import { FormsModule } from '@angular/forms';
 import { Shape } from '@penpot/plugin-types';
 
 @Component({
-  standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  host: {
-    '[attr.data-theme]': 'theme()',
-  },
+    imports: [RouterModule, CommonModule, FormsModule],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    host: {
+        '[attr.data-theme]': 'theme()',
+    }
 })
 export class AppComponent {
   @ViewChild('searchElement') public searchElement!: ElementRef;

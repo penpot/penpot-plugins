@@ -16,10 +16,9 @@ import { CommonModule } from '@angular/common';
 import { Shape } from '@penpot/plugin-types';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule],
-  selector: 'app-root',
-  template: `
+    imports: [CommonModule],
+    selector: 'app-root',
+    template: `
     <div class="wrapper body-s">
       @if (selection().length === 0) {
       <p class="empty-preview">
@@ -109,13 +108,13 @@ import { Shape } from '@penpot/plugin-types';
       }
     </div>
   `,
-  styleUrl: './app.component.css',
-  host: {
-    '[attr.data-theme]': 'theme()',
-    '[style.--color1]': 'color1()',
-    '[style.--color2]': 'color2()',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './app.component.css',
+    host: {
+        '[attr.data-theme]': 'theme()',
+        '[style.--color1]': 'color1()',
+        '[style.--color2]': 'color2()',
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   #route = inject(ActivatedRoute);
