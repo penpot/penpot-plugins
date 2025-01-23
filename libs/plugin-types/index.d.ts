@@ -21,8 +21,33 @@ export interface Penpot
     open: (
       name: string,
       url: string,
-      options?: { width: number; height: number }
+      options?: { width: number; height: number },
     ) => void;
+
+    size: {
+      /**
+       * Returns the size of the modal.
+       * @example
+       * ```js
+       * const size = penpot.ui.size;
+       * console.log(size);
+       * ```
+       */
+      width: number;
+      height: number;
+    } | null;
+
+    /**
+     * Resizes the plugin UI.
+     * @param width The width of the modal.
+     * @param height The height of the modal.
+     * @example
+     * ```js
+     * penpot.ui.resize(300, 400);
+     * ```
+     * */
+    resize: (width: number, height: number) => void;
+
     /**
      * Sends a message to the plugin UI.
      *
@@ -89,7 +114,7 @@ export interface Penpot
   on<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: { [key: string]: unknown }
+    props?: { [key: string]: unknown },
   ): symbol;
 
   /**
@@ -858,7 +883,7 @@ export interface Context {
   uploadMediaData(
     name: string,
     data: Uint8Array,
-    mimeType: string
+    mimeType: string,
   ): Promise<ImageData>;
 
   /**
@@ -1095,7 +1120,7 @@ export interface Context {
       type?: 'css';
       withPrelude?: boolean;
       includeChildren?: boolean;
-    }
+    },
   ): string;
 
   /**
@@ -1111,7 +1136,7 @@ export interface Context {
   addListener<T extends keyof EventsMap>(
     type: T,
     callback: (event: EventsMap[T]) => void,
-    props?: { [key: string]: unknown }
+    props?: { [key: string]: unknown },
   ): symbol;
 
   /**
@@ -1153,7 +1178,7 @@ export interface Context {
    */
   alignHorizontal(
     shapes: Shape[],
-    direction: 'left' | 'center' | 'right'
+    direction: 'left' | 'center' | 'right',
   ): void;
 
   /**
@@ -1454,7 +1479,7 @@ export interface File extends PluginData {
    */
   export(
     exportType: 'penpot' | 'zip',
-    libraryExportType?: 'all' | 'merge' | 'detach'
+    libraryExportType?: 'all' | 'merge' | 'detach',
   ): Promise<Uint8Array>;
 
   /**
@@ -2862,7 +2887,7 @@ export interface Page extends PluginData {
   addRulerGuide(
     orientation: RulerGuideOrientation,
     value: number,
-    board?: Board
+    board?: Board,
   ): RulerGuide;
 
   /**

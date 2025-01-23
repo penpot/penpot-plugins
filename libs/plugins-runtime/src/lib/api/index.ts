@@ -40,7 +40,7 @@ export const validEvents = [
 ] as const;
 
 export function createApi(
-  plugin: Awaited<ReturnType<typeof createPluginManager>>
+  plugin: Awaited<ReturnType<typeof createPluginManager>>,
 ) {
   const checkPermission = (permission: Permissions) => {
     if (!plugin.manifest.permissions.includes(permission)) {
@@ -52,6 +52,14 @@ export function createApi(
     ui: {
       open: (name: string, url: string, options?: OpenUIOptions) => {
         plugin.openModal(name, url, options);
+      },
+
+      get size() {
+        return plugin.getModal()?.size() || null;
+      },
+
+      resize: (width: number, height: number) => {
+        return plugin.resizeModal(width, height);
       },
 
       sendMessage(message: unknown) {
@@ -112,7 +120,7 @@ export function createApi(
     on<T extends keyof EventsMap>(
       type: T,
       callback: (event: EventsMap[T]) => void,
-      props?: { [key: string]: unknown }
+      props?: { [key: string]: unknown },
     ): symbol {
       // z.function alter fn, so can't use it here
       z.enum(validEvents).parse(type);
@@ -254,7 +262,7 @@ export function createApi(
 
     generateMarkup(
       shapes: Shape[],
-      options?: { type?: 'html' | 'svg' }
+      options?: { type?: 'html' | 'svg' },
     ): string {
       checkPermission('content:read');
       return plugin.context.generateMarkup(shapes, options);
@@ -266,7 +274,7 @@ export function createApi(
         type?: 'css';
         withPrelude?: boolean;
         includeChildren?: boolean;
-      }
+      },
     ): string {
       checkPermission('content:read');
       return plugin.context.generateStyle(shapes, options);
@@ -289,7 +297,7 @@ export function createApi(
 
     alignHorizontal(
       shapes: Shape[],
-      direction: 'left' | 'center' | 'right'
+      direction: 'left' | 'center' | 'right',
     ): void {
       checkPermission('content:write');
       plugin.context.alignHorizontal(shapes, direction);
@@ -297,7 +305,7 @@ export function createApi(
 
     alignVertical(
       shapes: Shape[],
-      direction: 'top' | 'center' | 'bottom'
+      direction: 'top' | 'center' | 'bottom',
     ): void {
       checkPermission('content:write');
       plugin.context.alignVertical(shapes, direction);
