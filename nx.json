@@ -77,5 +77,6 @@
       "unitTestRunner": "none",
       "projectNameAndRootFormat": "as-provided"
     }
-  }
+  },
+  "useLegacyCache": true
 }
