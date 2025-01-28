@@ -12,14 +12,13 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
 
 @Component({
-  standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  host: {
-    '[attr.data-theme]': 'theme()',
-  },
+    imports: [RouterModule, CommonModule, ReactiveFormsModule],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    host: {
+        '[attr.data-theme]': 'theme()',
+    }
 })
 export class AppComponent {
   private readonly fb = inject(FormBuilder);

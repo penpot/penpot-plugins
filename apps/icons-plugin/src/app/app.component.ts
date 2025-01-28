@@ -9,16 +9,15 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { PluginMessageEvent } from '../model';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterModule,
-    SafeHtmlPipe,
-    IconButtonComponent,
-    IconSearchComponent,
-  ],
-  styleUrl: './app.component.css',
-  template: `<div class="icons-plugin">
+    selector: 'app-root',
+    imports: [
+        RouterModule,
+        SafeHtmlPipe,
+        IconButtonComponent,
+        IconSearchComponent,
+    ],
+    styleUrl: './app.component.css',
+    template: `<div class="icons-plugin">
     <div class="icons-search">
       <app-icon-search
         (searchIcons)="this.searchIcons($event)"
@@ -38,9 +37,9 @@ import { PluginMessageEvent } from '../model';
     </div>
     }
   </div>`,
-  host: {
-    '[attr.data-theme]': 'theme()',
-  },
+    host: {
+        '[attr.data-theme]': 'theme()',
+    }
 })
 export class AppComponent {
   public route = inject(ActivatedRoute);

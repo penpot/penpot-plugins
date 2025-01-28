@@ -6,6 +6,7 @@ import { PluginModalElement } from './modal/plugin-modal.js';
 import { openUIApi } from './api/openUI.api.js';
 import { OpenUIOptions } from './models/open-ui-options.model.js';
 import { RegisterListener } from './models/plugin.model.js';
+import { openUISchema } from './models/open-ui-options.schema.js';
 
 export async function createPluginManager(
   context: Context,
@@ -129,6 +130,13 @@ export async function createPluginManager(
     close: closePlugin,
     destroyListener,
     openModal,
+    resizeModal: (width: number, height: number) => {
+      openUISchema.parse({ width, height });
+
+      if (modal) {
+        modal.resize(width, height);
+      }
+    },
     getModal: () => modal,
     registerListener,
     registerMessageCallback,

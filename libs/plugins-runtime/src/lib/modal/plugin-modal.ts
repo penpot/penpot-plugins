@@ -4,6 +4,7 @@ const closeSvg = `
 import type { Theme } from '@penpot/plugin-types';
 import { dragHandler } from '../drag-handler.js';
 import modalCss from './plugin.modal.css?inline';
+import { resizeModal } from '../create-modal.js';
 
 export class PluginModalElement extends HTMLElement {
   constructor() {
@@ -11,13 +12,19 @@ export class PluginModalElement extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  #wrapper: HTMLElement | null = null;
-  #inner: HTMLElement | null = null;
+  wrapper = document.createElement('div');
+  #inner = document.createElement('div');
   #dragEvents: ReturnType<typeof dragHandler> | null = null;
 
   setTheme(theme: Theme) {
-    if (this.#wrapper) {
-      this.#wrapper.setAttribute('data-theme', theme);
+    if (this.wrapper) {
+      this.wrapper.setAttribute('data-theme', theme);
+    }
+  }
+
+  resize(width: number, height: number) {
+    if (this.wrapper) {
+      resizeModal(this, width, height);
     }
   }
 
@@ -42,8 +49,6 @@ export class PluginModalElement extends HTMLElement {
   connectedCallback() {
     const title = this.getAttribute('title');
     const iframeSrc = this.getAttribute('iframe-src');
-    const width = Number(this.getAttribute('width') || '300');
-    const height = Number(this.getAttribute('height') || '400');
     const allowDownloads = this.getAttribute('allow-downloads') || false;
 
     if (!title || !iframeSrc) {
@@ -54,21 +59,14 @@ export class PluginModalElement extends HTMLElement {
       throw new Error('Error creating shadow root');
     }
 
-    this.#wrapper = document.createElement('div');
-    this.#inner = document.createElement('div');
-
     this.#inner.classList.add('inner');
 
-    this.#wrapper.classList.add('wrapper');
-    this.#wrapper.style.inlineSize = `${width}px`;
-    this.#wrapper.style.minInlineSize = `${width}px`;
-    this.#wrapper.style.blockSize = `${height}px`;
-    this.#wrapper.style.minBlockSize = `${height}px`;
-    this.#wrapper.style.maxInlineSize = '90vw';
-    this.#wrapper.style.maxBlockSize = '90vh';
+    this.wrapper.classList.add('wrapper');
+    this.wrapper.style.maxInlineSize = '90vw';
+    this.wrapper.style.maxBlockSize = '90vh';
 
     // move modal to the top
-    this.#dragEvents = dragHandler(this.#inner, this.#wrapper, () => {
+    this.#dragEvents = dragHandler(this.#inner, this.wrapper, () => {
       this.calculateZIndex();
     });
 
@@ -92,7 +90,7 @@ export class PluginModalElement extends HTMLElement {
         new CustomEvent('close', {
           composed: true,
           bubbles: true,
-        })
+        }),
       );
     });
 
@@ -107,7 +105,7 @@ export class PluginModalElement extends HTMLElement {
       'allow-modals',
       'allow-popups',
       'allow-popups-to-escape-sandbox',
-      'allow-storage-access-by-user-activation'
+      'allow-storage-access-by-user-activation',
     );
 
     if (allowDownloads) {
@@ -119,7 +117,7 @@ export class PluginModalElement extends HTMLElement {
         new CustomEvent('load', {
           composed: true,
           bubbles: true,
-        })
+        }),
       );
     });
 
@@ -131,9 +129,9 @@ export class PluginModalElement extends HTMLElement {
       iframe.contentWindow.postMessage((e as CustomEvent).detail, '*');
     });
 
-    this.shadowRoot.appendChild(this.#wrapper);
+    this.shadowRoot.appendChild(this.wrapper);
 
-    this.#wrapper.appendChild(this.#inner);
+    this.wrapper.appendChild(this.#inner);
     this.#inner.appendChild(header);
     this.#inner.appendChild(iframe);
 
@@ -143,6 +141,13 @@ export class PluginModalElement extends HTMLElement {
     this.shadowRoot.appendChild(style);
 
     this.calculateZIndex();
+  }
+
+  size() {
+    const width = Number(this.wrapper.style.width.replace('px', '') || '300');
+    const height = Number(this.wrapper.style.height.replace('px', '') || '400');
+
+    return { width, height };
   }
 }
 

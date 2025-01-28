@@ -2,18 +2,17 @@ import { Component, output, signal } from '@angular/core';
 import { icons } from 'feather-icons';
 
 @Component({
-  selector: 'app-icon-search',
-  standalone: true,
-  imports: [],
-  styleUrl: './icon-search.component.css',
-  template: `
+    selector: 'app-icon-search',
+    imports: [],
+    styleUrl: './icon-search.component.css',
+    template: `
     <input
       class="search-icon"
       type="search"
       placeholder="Search an icon"
       (input)="onSearchIcons($event)"
     />
-  `,
+  `
 })
 export class IconSearchComponent {
   public searchIcons = output<string>();

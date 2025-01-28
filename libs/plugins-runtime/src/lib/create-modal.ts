@@ -7,49 +7,32 @@ export function createModal(
   url: string,
   theme: Theme,
   options?: OpenUIOptions,
-  allowDownloads?: boolean
+  allowDownloads?: boolean,
 ) {
   const modal = document.createElement('plugin-modal') as PluginModalElement;
 
   modal.setTheme(theme);
-  const minPluginWidth = 200;
-  const minPluginHeight = 200;
 
-  const defaultWidth = 335;
-  const defaultHeight = 590;
-
-  const maxWidth =
-    (options?.width ?? defaultWidth) > window.innerWidth
-      ? window.innerWidth - 290
-      : options?.width ?? defaultWidth;
+  const { width } = resizeModal(modal, options?.width, options?.height);
 
   const initialPosition = {
     blockStart: 40,
     // To be able to resize the element as expected the position must be absolute from the right.
     // This value is the length of the window minus the width of the element plus the width of the design tab.
-    inlineStart: window.innerWidth - maxWidth - 290,
+    inlineStart: window.innerWidth - width - 290,
   };
 
   modal.style.setProperty(
     '--modal-block-start',
-    `${initialPosition.blockStart}px`
+    `${initialPosition.blockStart}px`,
   );
   modal.style.setProperty(
     '--modal-inline-start',
-    `${initialPosition.inlineStart}px`
+    `${initialPosition.inlineStart}px`,
   );
-
-  const maxHeight = window.innerHeight - initialPosition.blockStart;
-  let width = Math.min(options?.width || defaultWidth, maxWidth);
-  let height = Math.min(options?.height || defaultHeight, maxHeight);
-
-  width = Math.max(width, minPluginWidth);
-  height = Math.max(height, minPluginHeight);
 
   modal.setAttribute('title', name);
   modal.setAttribute('iframe-src', url);
-  modal.setAttribute('width', String(width));
-  modal.setAttribute('height', String(height));
 
   if (allowDownloads) {
     modal.setAttribute('allow-downloads', 'true');
@@ -58,4 +41,34 @@ export function createModal(
   document.body.appendChild(modal);
 
   return modal;
+}
+
+export function resizeModal(
+  modal: PluginModalElement,
+  width: number = 335,
+  height: number = 590,
+) {
+  const minPluginWidth = 200;
+  const minPluginHeight = 200;
+
+  const maxWidth = width > window.innerWidth ? window.innerWidth - 290 : width;
+
+  const blockStart = parseInt(
+    modal.style.getPropertyValue('--modal-block-start') || '40',
+    10,
+  );
+
+  const maxHeight = window.innerHeight - blockStart;
+  width = Math.min(width, maxWidth);
+  height = Math.min(height, maxHeight);
+
+  width = Math.max(width, minPluginWidth);
+  height = Math.max(height, minPluginHeight);
+
+  modal.wrapper.style.width = `${width}px`;
+  modal.wrapper.style.minWidth = `${width}px`;
+  modal.wrapper.style.height = `${height}px`;
+  modal.wrapper.style.minHeight = `${height}px`;
+
+  return { width, height };
 }

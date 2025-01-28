@@ -9,6 +9,10 @@ describe('createModal', () => {
     setTheme: vi.fn(),
     style: {
       setProperty: vi.fn(),
+      getPropertyValue: vi.fn(),
+    },
+    wrapper: {
+      style: {},
     },
     setAttribute: vi.fn(),
   } as unknown as PluginModalElement;
@@ -34,7 +38,7 @@ describe('createModal', () => {
       'Test Modal',
       'https://example.com',
       theme,
-      options
+      options,
     );
 
     expect(createElementSpy).toHaveBeenCalledWith('plugin-modal');
@@ -42,16 +46,16 @@ describe('createModal', () => {
 
     expect(modal.style.setProperty).toHaveBeenCalledWith(
       '--modal-block-start',
-      '40px'
+      '40px',
     );
 
     expect(modal.setAttribute).toHaveBeenCalledWith('title', 'Test Modal');
     expect(modal.setAttribute).toHaveBeenCalledWith(
       'iframe-src',
-      'https://example.com'
+      'https://example.com',
     );
-    expect(modal.setAttribute).toHaveBeenCalledWith('width', '400');
-    expect(modal.setAttribute).toHaveBeenCalledWith('height', '600');
+    expect(modal.wrapper.style.width).toEqual('400px');
+    expect(modal.wrapper.style.height).toEqual('600px');
 
     expect(appendChildSpy).toHaveBeenCalledWith(modal);
   });
@@ -61,8 +65,8 @@ describe('createModal', () => {
 
     const modal = createModal('Test Modal', 'https://example.com', theme);
 
-    expect(modal.setAttribute).toHaveBeenCalledWith('width', '335');
-    expect(modal.setAttribute).toHaveBeenCalledWith('height', '590');
+    expect(modal.wrapper.style.width).toEqual('335px');
+    expect(modal.wrapper.style.height).toEqual('590px');
   });
 
   it('should limit modal dimensions to the window size', () => {
@@ -76,20 +80,14 @@ describe('createModal', () => {
       'Test Modal',
       'https://example.com',
       theme,
-      options
+      options,
     );
 
     const expectedWidth = 710; // 1000 -  270 (initialPosition.inlineEnd)
     const expectedHeight = 760; // 800 - 40 (initialPosition.blockStart)
 
-    expect(modal.setAttribute).toHaveBeenCalledWith(
-      'width',
-      String(expectedWidth)
-    );
-    expect(modal.setAttribute).toHaveBeenCalledWith(
-      'height',
-      String(expectedHeight)
-    );
+    expect(modal.wrapper.style.width).toEqual(`${expectedWidth}px`);
+    expect(modal.wrapper.style.height).toEqual(`${expectedHeight}px`);
   });
 
   it('should apply minimum dimensions to the modal', () => {
@@ -100,10 +98,10 @@ describe('createModal', () => {
       'Test Modal',
       'https://example.com',
       theme,
-      options
+      options,
     );
 
-    expect(modal.setAttribute).toHaveBeenCalledWith('width', '200');
-    expect(modal.setAttribute).toHaveBeenCalledWith('height', '200');
+    expect(modal.wrapper.style.width).toEqual('200px');
+    expect(modal.wrapper.style.height).toEqual('200px');
   });
 });

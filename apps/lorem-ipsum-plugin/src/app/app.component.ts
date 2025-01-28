@@ -10,10 +10,9 @@ import type {
 import { filter, fromEvent, map, merge, take } from 'rxjs';
 
 @Component({
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  selector: 'app-root',
-  template: `
+    imports: [ReactiveFormsModule],
+    selector: 'app-root',
+    template: `
     <form [formGroup]="form" class="sections-wrapper" (ngSubmit)="generate()">
       <section class="regular-generate">
         <p class="body-s">
@@ -62,10 +61,10 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
       </section>
     </form>
   `,
-  styleUrl: './app.component.css',
-  host: {
-    '[attr.data-theme]': 'theme()',
-  },
+    styleUrl: './app.component.css',
+    host: {
+        '[attr.data-theme]': 'theme()',
+    }
 })
 export class AppComponent {
   route = inject(ActivatedRoute);
