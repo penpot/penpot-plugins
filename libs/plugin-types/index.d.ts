@@ -1070,6 +1070,20 @@ export interface Context {
    */
   createShapeFromSvg(svgString: string): Group | null;
   /**
+   * Creates a Group from an SVG string. The SVG can have images and the method returns
+   * a Promise because the shape will be available after all images are uploaded.
+   * Requires `content:write` permission.
+   * @param svgString The SVG string representing the shapes to be converted into a group.
+   * @return Returns a promise with the newly created Group containing the shapes from the SVG.
+   *
+   * @example
+   * ```js
+   * const svgGroup = await context.createShapeFromSvgWithImages('<svg>...</svg>');
+   * ```
+   */
+  createShapeFromSvgWithImages(svgString: string): Promise<Group | null>;
+
+  /**
    * Creates a Text shape with the specified text content. Requires `content:write` permission.
    * @param text The text content for the Text shape.
    * @return Returns the new created shape, if the shape wasn't created can return null.

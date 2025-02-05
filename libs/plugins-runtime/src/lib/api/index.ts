@@ -240,6 +240,11 @@ export function createApi(
       return plugin.context.createShapeFromSvg(svgString);
     },
 
+    createShapeFromSvgWithImages(svgString: string): Promise<Group | null> {
+      checkPermission('content:write');
+      return plugin.context.createShapeFromSvgWithImages(svgString);
+    },
+
     group(shapes: Shape[]): Group | null {
       checkPermission('content:write');
       return plugin.context.group(shapes);
