@@ -6,121 +6,121 @@ exports[`transform colors to tokens 1`] = `
     "blue": {
       "050": {
         "$type": "color",
-        "$value": "rgba(235, 248, 255, 1)",
+        "$value": "#ebf8ff",
       },
       "100": {
         "$type": "color",
-        "$value": "rgba(190, 227, 248, 1)",
+        "$value": "#bee3f8",
       },
       "650": {
         "$type": "color",
-        "$value": "rgba(42, 67, 101, 1)",
+        "$value": "#2a4365",
       },
       "700": {
         "$type": "color",
-        "$value": "rgba(44, 82, 130, 1)",
+        "$value": "#2c5282",
       },
       "900": {
         "$type": "color",
-        "$value": "rgba(26, 54, 93, 1)",
+        "$value": "#1a365d",
       },
     },
     "gray": {
       "100": {
         "$type": "color",
-        "$value": "rgba(237, 242, 247, 1)",
+        "$value": "#edf2f7",
       },
       "200": {
         "$type": "color",
-        "$value": "rgba(226, 232, 240, 1)",
+        "$value": "#e2e8f0",
       },
       "400": {
         "$type": "color",
-        "$value": "rgba(160, 174, 192, 1)",
+        "$value": "#a0aec0",
       },
       "600": {
         "$type": "color",
-        "$value": "rgba(74, 85, 104, 1)",
+        "$value": "#4a5568",
       },
       "700": {
         "$type": "color",
-        "$value": "rgba(45, 55, 72, 1)",
+        "$value": "#2d3748",
       },
       "800": {
         "$type": "color",
-        "$value": "rgba(26, 32, 44, 1)",
+        "$value": "#1a202c",
       },
     },
     "green": {
       "050": {
         "$type": "color",
-        "$value": "rgba(240, 255, 244, 1)",
+        "$value": "#f0fff4",
       },
       "100": {
         "$type": "color",
-        "$value": "rgba(198, 246, 213, 1)",
+        "$value": "#c6f6d5",
       },
       "300": {
         "$type": "color",
-        "$value": "rgba(104, 211, 145, 1)",
+        "$value": "#68d391",
       },
       "500": {
         "$type": "color",
-        "$value": "rgba(56, 161, 105, 1)",
+        "$value": "#38a169",
       },
       "600": {
         "$type": "color",
-        "$value": "rgba(47, 133, 90, 1)",
+        "$value": "#2f855a",
       },
       "700": {
         "$type": "color",
-        "$value": "rgba(39, 103, 73, 1)",
+        "$value": "#276749",
       },
       "800": {
         "$type": "color",
-        "$value": "rgba(34, 84, 61, 1)",
+        "$value": "#22543d",
       },
     },
     "pink": {
       "100": {
         "$type": "color",
-        "$value": "rgba(254, 215, 226, 1)",
+        "$value": "#fed7e2",
       },
     },
     "purple": {
       "100": {
         "$type": "color",
-        "$value": "rgba(233, 216, 253, 1)",
+        "$value": "#e9d8fd",
       },
       "300": {
         "$type": "color",
-        "$value": "rgba(183, 148, 244, 1)",
+        "$value": "#b794f4",
       },
       "500": {
         "$type": "color",
-        "$value": "rgba(128, 90, 213, 1)",
+        "$value": "#805ad5",
       },
     },
     "red": {
       "100": {
         "$type": "color",
-        "$value": "rgba(254, 215, 215, 1)",
+        "$value": "#FED7D7",
       },
       "300": {
         "$type": "color",
-        "$value": "rgba(252, 129, 129, 1)",
+        "$value": "#FC8181",
       },
       "500": {
         "$type": "color",
-        "$value": "rgba(229, 62, 62, 1)",
+        "$value": "#e53e3e",
       },
       "600": {
         "$type": "color",
-        "$value": "rgba(197, 48, 48, 1)",
+        "$value": "#c53030",
       },
       "800": {
         "$type": "color",
-        "$value": "rgba(130, 39, 39, 1)",
+        "$value": "#822727",
       },
     },
     "shadow": {
@@ -139,28 +139,28 @@ exports[`transform colors to tokens 1`] = `
     },
     "white": {
       "$type": "color",
-      "$value": "rgba(255, 255, 255, 1)",
+      "$value": "#ffffff",
     },
     "yellow": {
       "050": {
         "$type": "color",
-        "$value": "rgba(255, 255, 240, 1)",
+        "$value": "#fffff0",
       },
       "100": {
         "$type": "color",
-        "$value": "rgba(254, 252, 191, 1)",
+        "$value": "#fefcbf",
       },
       "200": {
         "$type": "color",
-        "$value": "rgba(250, 240, 137, 1)",
+        "$value": "#faf089",
       },
       "700": {
         "$type": "color",
-        "$value": "rgba(151, 90, 22, 1)",
+        "$value": "#975a16",
       },
       "800": {
         "$type": "color",
-        "$value": "rgba(116, 66, 16, 1)",
+        "$value": "#744210",
       },
     },
   },
@@ -169,139 +169,139 @@ exports[`transform colors to tokens 1`] = `
       "background": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(26, 54, 93, 1)",
+          "$value": "#1a365d",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(28, 69, 50, 1)",
+          "$value": "#1c4532",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(95, 55, 14, 1)",
+          "$value": "#5f370e",
         },
       },
       "button": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(43, 108, 176, 1)",
+          "$value": "#2b6cb0",
         },
         "default": {
           "$type": "color",
-          "$value": "rgba(74, 85, 104, 1)",
+          "$value": "#4a5568",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(47, 133, 90, 1)",
+          "$value": "#2f855a",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(151, 90, 22, 1)",
+          "$value": "#975a16",
         },
         "yellow[DONTUSE]": {
           "$type": "color",
-          "$value": "rgba(254, 252, 191, 1)",
+          "$value": "#fefcbf",
         },
       },
       "card": {
         "background": {
           "$type": "color",
-          "$value": "rgba(45, 55, 72, 1)",
+          "$value": "#2d3748",
         },
       },
       "chart": {
         "accent": {
           "$type": "color",
-          "$value": "rgba(159, 122, 234, 1)",
+          "$value": "#9f7aea",
           "alt": {
             "$type": "color",
-            "$value": "rgba(236, 201, 75, 1)",
+            "$value": "#ecc94b",
           },
         },
         "background": {
           "$type": "color",
-          "$value": "rgba(74, 85, 104, 1)",
+          "$value": "#4a5568",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(56, 161, 105, 1)",
+          "$value": "#38a169",
         },
         "red": {
           "$type": "color",
-          "$value": "rgba(229, 62, 62, 1)",
+          "$value": "#e53e3e",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(236, 201, 75, 1)",
+          "$value": "#ecc94b",
         },
       },
       "dashboard": {
         "background": {
           "$type": "color",
-          "$value": "rgba(26, 32, 44, 1)",
+          "$value": "#1a202c",
         },
       },
       "footer": {
         "$type": "color",
-        "$value": "rgba(26, 32, 44, 1)",
+        "$value": "#1a202c",
       },
       "icon": {
         "default": {
           "$type": "color",
-          "$value": "rgba(226, 232, 240, 1)",
+          "$value": "#e2e8f0",
         },
         "secondary": {
           "$type": "color",
-          "$value": "rgba(113, 128, 150, 1)",
+          "$value": "#718096",
         },
       },
       "input": {
         "$type": "color",
-        "$value": "rgba(74, 85, 104, 1)",
+        "$value": "#4a5568",
       },
       "label": {
         "$type": "color",
-        "$value": "rgba(160, 174, 192, 1)",
+        "$value": "#a0aec0",
       },
       "sidebar": {
         "$type": "color",
-        "$value": "rgba(23, 25, 35, 1)",
+        "$value": "#171923",
       },
       "text": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(99, 179, 237, 1)",
+          "$value": "#63b3ed",
         },
         "default": {
           "$type": "color",
-          "$value": "rgba(160, 174, 192, 1)",
+          "$value": "#a0aec0",
         },
         "emphasis": {
           "$type": "color",
-          "$value": "rgba(237, 242, 247, 1)",
+          "$value": "#edf2f7",
         },
         "green": {
           "default": {
             "$type": "color",
-            "$value": "rgba(104, 211, 145, 1)",
+            "$value": "#68d391",
           },
           "emphasis": {
             "$type": "color",
-            "$value": "rgba(154, 230, 180, 1)",
+            "$value": "#9ae6b4",
           },
         },
         "red": {
           "default": {
             "$type": "color",
-            "$value": "rgba(245, 101, 101, 1)",
+            "$value": "#f56565",
           },
           "emphasis": {
             "$type": "color",
-            "$value": "rgba(252, 129, 129, 1)",
+            "$value": "#FC8181",
           },
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(250, 240, 137, 1)",
+          "$value": "#faf089",
         },
       },
     },
@@ -311,21 +311,21 @@ exports[`transform colors to tokens 1`] = `
       "axis": {
         "line": {
           "$type": "color",
-          "$value": "rgba(160, 174, 192, 1)",
+          "$value": "#a0aec0",
         },
       },
       "background": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(235, 248, 255, 1)",
+          "$value": "#ebf8ff",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(240, 255, 244, 1)",
+          "$value": "#f0fff4",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(255, 255, 240, 1)",
+          "$value": "#fffff0",
         },
       },
       "bar": {
@@ -336,111 +336,111 @@ exports[`transform colors to tokens 1`] = `
       },
       "button": {
         "$type": "color",
-        "$value": "rgba(226, 232, 240, 1)",
+        "$value": "#E2E8F0",
         "active": {
           "$type": "color",
-          "$value": "rgba(160, 174, 192, 1)",
+          "$value": "#a0aec0",
         },
         "blue": {
           "$type": "color",
-          "$value": "rgba(190, 227, 248, 1)",
+          "$value": "#bee3f8",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(198, 246, 213, 1)",
+          "$value": "#c6f6d5",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(254, 252, 191, 1)",
+          "$value": "#fefcbf",
         },
       },
       "card": {
         "background": {
           "$type": "color",
-          "$value": "rgba(255, 255, 255, 1)",
+          "$value": "#ffffff",
         },
       },
       "chart": {
         "accent": {
           "$type": "color",
-          "$value": "rgba(183, 148, 244, 1)",
+          "$value": "#b794f4",
           "alt": {
             "$type": "color",
-            "$value": "rgba(250, 240, 137, 1)",
+            "$value": "#faf089",
           },
         },
         "background": {
           "$type": "color",
-          "$value": "rgba(226, 232, 240, 1)",
+          "$value": "#E2E8F0",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(104, 211, 145, 1)",
+          "$value": "#68d391",
         },
         "red": {
           "$type": "color",
-          "$value": "rgba(252, 129, 129, 1)",
+          "$value": "#FC8181",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(250, 240, 137, 1)",
+          "$value": "#faf089",
         },
       },
       "dashboard": {
         "background": {
           "$type": "color",
-          "$value": "rgba(237, 242, 247, 1)",
+          "$value": "#EDF2F7",
         },
       },
       "footer": {
         "$type": "color",
-        "$value": "rgba(226, 232, 240, 1)",
+        "$value": "#e2e8f0",
       },
       "icon": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(42, 67, 101, 1)",
+          "$value": "#2a4365",
         },
         "blue1": {
           "$type": "color",
-          "$value": "rgba(190, 227, 248, 1)",
+          "$value": "#bee3f8",
         },
         "blue2": {
           "$type": "color",
-          "$value": "rgba(0, 0, 255, 1)",
+          "$value": "#0000ff",
         },
         "default": {
           "$type": "color",
-          "$value": "rgba(160, 174, 192, 1)",
+          "$value": "#A0AEC0",
         },
         "green": {
           "$type": "color",
-          "$value": "rgba(39, 103, 73, 1)",
+          "$value": "#276749",
         },
         "red": {
           "$type": "color",
-          "$value": "rgba(197, 48, 48, 1)",
+          "$value": "#c53030",
         },
         "secondary": {
           "$type": "color",
-          "$value": "rgba(226, 232, 240, 1)",
+          "$value": "#e2e8f0",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(116, 66, 16, 1)",
+          "$value": "#744210",
         },
       },
       "input": {
         "$type": "color",
-        "$value": "rgba(237, 242, 247, 1)",
+        "$value": "#EDF2F7",
       },
       "label": {
         "$type": "color",
-        "$value": "rgba(74, 85, 104, 1)",
+        "$value": "#4a5568",
       },
       "placeholder": {
         "$type": "color",
-        "$value": "rgba(113, 128, 150, 1)",
+        "$value": "#718096",
       },
       "shadow": {
         "$type": "color",
@@ -448,48 +448,48 @@ exports[`transform colors to tokens 1`] = `
       },
       "sidebar": {
         "$type": "color",
-        "$value": "rgba(26, 32, 44, 1)",
+        "$value": "#1a202c",
       },
       "text": {
         "blue": {
           "$type": "color",
-          "$value": "rgba(42, 67, 101, 1)",
+          "$value": "#2a4365",
         },
         "default": {
           "$type": "color",
-          "$value": "rgba(45, 55, 72, 1)",
+          "$value": "#2d3748",
         },
         "emphasis": {
           "$type": "color",
-          "$value": "rgba(0, 0, 0, 1)",
+          "$value": "#000000",
         },
         "green": {
           "default": {
             "$type": "color",
-            "$value": "rgba(34, 84, 61, 1)",
+            "$value": "#22543d",
           },
           "emphasis": {
             "$type": "color",
-            "$value": "rgba(56, 161, 105, 1)",
+            "$value": "#38a169",
           },
         },
         "red": {
           "default": {
             "$type": "color",
-            "$value": "rgba(130, 39, 39, 1)",
+            "$value": "#822727",
           },
           "emphasis": {
             "$type": "color",
-            "$value": "rgba(229, 62, 62, 1)",
+            "$value": "#e53e3e",
           },
         },
         "secondary": {
           "$type": "color",
-          "$value": "rgba(113, 128, 150, 1)",
+          "$value": "#718096",
         },
         "yellow": {
           "$type": "color",
-          "$value": "rgba(116, 66, 16, 1)",
+          "$value": "#744210",
         },
       },
     },
