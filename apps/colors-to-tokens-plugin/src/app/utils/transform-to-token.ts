@@ -25,10 +25,13 @@ export function transformToToken(colors: LibraryColor[]) {
     .filter((data): data is Color => !!data.color)
     .forEach((data) => {
       const currentOpacity = data.opacity ?? 1;
-      const value = transformToRgba({
-        opacity: currentOpacity,
-        color: data.color,
-      });
+      const value =
+        currentOpacity === 1
+          ? data.color
+          : transformToRgba({
+              opacity: currentOpacity,
+              color: data.color,
+            });
       const names: string[] = data.name.split(' ');
       const key: string = data.path.replace(' \\/ ', '/').replace(/ /g, '');
 
