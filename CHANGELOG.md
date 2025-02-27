@@ -1,3 +1,27 @@
+## 1.2.0 (2025-02-27)
+
+### 🚀 Features
+
+- upgrade nx & angular & prettier ([32de075](https://github.com/penpot/penpot-plugins/commit/32de075))
+- add ui.resize & ui.size api ([815181d](https://github.com/penpot/penpot-plugins/commit/815181d))
+- colors to tokens export plugin ([7f8a011](https://github.com/penpot/penpot-plugins/commit/7f8a011))
+- transform color & opacity to rgba ([9a3e6e0](https://github.com/penpot/penpot-plugins/commit/9a3e6e0))
+- **plugin-colors-to-tokens:** only rgba when the opacity is not 1 ([e922cf9](https://github.com/penpot/penpot-plugins/commit/e922cf9))
+- **plugin-types:** deprecated fields in colors ([6adcc4c](https://github.com/penpot/penpot-plugins/commit/6adcc4c))
+- **plugins-runtime:** add upload svg with images ([df925b5](https://github.com/penpot/penpot-plugins/commit/df925b5))
+
+### 🩹 Fixes
+
+- duplicated css ([19ca648](https://github.com/penpot/penpot-plugins/commit/19ca648))
+- add error styles on invalid input ([1c29c34](https://github.com/penpot/penpot-plugins/commit/1c29c34))
+- remove nonexistent api ([3837f1c](https://github.com/penpot/penpot-plugins/commit/3837f1c))
+
+### ❤️ Thank You
+
+- alonso.torres
+- Juanfran @juanfran
+- Michał Korczak
+
 ## 1.1.0 (2024-12-12)
 
 
