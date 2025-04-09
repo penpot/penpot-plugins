@@ -5,6 +5,17 @@ export interface Token {
   $type: string;
 }
 
+export interface TokenFileExtraData {
+  $themes: [];
+  $metadata: TokenFileMetada;
+}
+
+export interface TokenFileMetada {
+  activeThemes: [],
+  tokenSetOrder: [],
+  activeSets: []
+}
+
 export type TokenStructure = {
   [key: string]: Token | TokenStructure;
 };

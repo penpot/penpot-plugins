@@ -33,7 +33,7 @@ export function transformToToken(colors: LibraryColor[]) {
               color: data.color,
             });
       const names: string[] = data.name.split(' ');
-      const key: string = data.path.replace(' \\/ ', '/').replace(/ /g, '');
+      const key: string = data.path.replace(' \\/ ', '/').replace(/ /g, '') || 'global';
 
       if (!result[key]) {
         result[key] = {};

@@ -6,6 +6,7 @@ import type {
   PluginUIEvent,
   ThemePluginEvent,
   SetColorsPluginEvent,
+  TokenFileExtraData,
 } from '../model';
 import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { transformToToken } from './utils/transform-to-token';
@@ -153,7 +154,21 @@ export class AppComponent {
     const fileTokens = this.#result();
     if (!fileTokens) return;
 
-    const blob = new Blob([JSON.stringify(fileTokens.tokens)], {
+    const extraData: TokenFileExtraData = {
+      $themes: [],
+      $metadata: {
+          activeThemes: [],
+          tokenSetOrder: [],
+          activeSets: []
+      }
+    }
+
+    const tokensStructure = {
+      ...fileTokens.tokens,
+      ...extraData
+    }
+
+    const blob = new Blob([JSON.stringify(tokensStructure)], {
       type: 'text/json',
     });
     const url = URL.createObjectURL(blob);
