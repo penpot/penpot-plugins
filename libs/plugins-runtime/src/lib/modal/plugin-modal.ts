@@ -106,6 +106,7 @@ export class PluginModalElement extends HTMLElement {
       'allow-popups',
       'allow-popups-to-escape-sandbox',
       'allow-storage-access-by-user-activation',
+      'allow-same-origin',
     );
 
     if (allowDownloads) {
