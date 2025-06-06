@@ -1458,6 +1458,10 @@ export interface Export {
    * Suffix that will be appended to the resulting exported file
    */
   suffix?: string;
+  /**
+   * If true will ignore the children when exporting the shape
+   */
+  skipChildren?: boolean;
 }
 
 /**
