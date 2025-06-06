@@ -111,6 +111,20 @@ import type { Shape } from '@penpot/plugin-types';
         >
           Export File
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="exportSelected()"
+        >
+          Export Selected
+        </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="resizeModal()"
+        >
+          Resize
+        </button>
 
         <input type="file" class="file-upload" (change)="uploadImage($event)" />
       </div>
@@ -168,7 +182,7 @@ export class AppComponent {
       } else if (event.data.type === 'update-counter') {
         this.counter.set(event.data.content.counter);
       } else if (event.data.type === 'start-download') {
-        this.#startDownload(event.data.content);
+        this.#startDownload(event.data.name, event.data.content);
       }
     });
 
@@ -253,6 +267,10 @@ export class AppComponent {
     this.#sendMessage({ content: 'export-file' });
   }
 
+  exportSelected() {
+    this.#sendMessage({ content: 'export-selected' });
+  }
+
   async uploadImage(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input?.files?.length) {
@@ -269,6 +287,10 @@ export class AppComponent {
         input.value = '';
       }
     }
+  }
+
+  resizeModal() {
+    this.#sendMessage({ content: 'resize-modal' });
   }
 
   #sendMessage(message: unknown) {
@@ -289,7 +311,7 @@ export class AppComponent {
     }
   }
 
-  #startDownload(data: Uint8Array) {
+  #startDownload(name: string, data: Uint8Array) {
     const blob = new Blob([data], { type: 'application/octet-stream' });
 
     // We need to start a download with this URL
@@ -299,7 +321,7 @@ export class AppComponent {
     var a = document.createElement('a');
     document.body.appendChild(a);
     a.href = downloadURL;
-    a.download = 'Export.penpot';
+    a.download = name;
     a.click();
 
     // Remove temporary

@@ -48,6 +48,10 @@ penpot.ui.onMessage<{ content: string; data: unknown }>(async (message) => {
     addComment();
   } else if (message.content === 'export-file') {
     exportFile();
+  } else if (message.content === 'export-selected') {
+    exportSelected();
+  } else if (message.content === 'resize-modal') {
+    resizeModal();
   }
 });
 
@@ -487,7 +491,25 @@ async function exportFile() {
   if (data) {
     penpot.ui.sendMessage({
       type: 'start-download',
+      name: 'Export.penpot',
       content: data,
     });
   }
+}
+
+async function exportSelected() {
+  const selection = await penpot.selection[0];
+
+  if (selection) {
+    let data = await selection.export({type: 'png', skipChildren: true});
+    penpot.ui.sendMessage({
+      type: 'start-download',
+      name: 'export.png',
+      content: data,
+    });
+  }
+}
+
+async function resizeModal() {
+  penpot.ui.resize(1920, 1080);
 }
