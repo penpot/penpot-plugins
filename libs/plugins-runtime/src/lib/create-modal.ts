@@ -51,14 +51,17 @@ export function resizeModal(
   const minPluginWidth = 200;
   const minPluginHeight = 200;
 
-  const maxWidth = width > window.innerWidth ? window.innerWidth - 290 : width;
+  let wrapper = modal.shadowRoot.querySelector('.wrapper');
+  let curX = 0;
+  let curY = 0;
+  if (wrapper) {
+    let rect = wrapper.getBoundingClientRect();
+    curX = rect.x;
+    curY = rect.y;
+  }
 
-  const blockStart = parseInt(
-    modal.style.getPropertyValue('--modal-block-start') || '40',
-    10,
-  );
-
-  const maxHeight = window.innerHeight - blockStart;
+  const maxWidth = window.innerWidth - curX - 40;
+  const maxHeight = window.innerHeight - curY - 40;
   width = Math.min(width, maxWidth);
   height = Math.min(height, maxHeight);
 

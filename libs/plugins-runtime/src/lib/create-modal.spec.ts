@@ -83,8 +83,8 @@ describe('createModal', () => {
       options,
     );
 
-    const expectedWidth = 710; // 1000 -  270 (initialPosition.inlineEnd)
-    const expectedHeight = 760; // 800 - 40 (initialPosition.blockStart)
+    const expectedWidth = 960;
+    const expectedHeight = 760;
 
     expect(modal.wrapper.style.width).toEqual(`${expectedWidth}px`);
     expect(modal.wrapper.style.height).toEqual(`${expectedHeight}px`);
