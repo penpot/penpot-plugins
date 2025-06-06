@@ -6,6 +6,8 @@ import { dragHandler } from '../drag-handler.js';
 import modalCss from './plugin.modal.css?inline';
 import { resizeModal } from '../create-modal.js';
 
+const MIN_Z_INDEX = 3;
+
 export class PluginModalElement extends HTMLElement {
   constructor() {
     super();
@@ -41,7 +43,7 @@ export class PluginModalElement extends HTMLElement {
         return Number(modal.style.zIndex);
       });
 
-    const maxZIndex = Math.max(...zIndexModals, 0);
+    const maxZIndex = Math.max(...zIndexModals, MIN_Z_INDEX);
 
     this.style.zIndex = (maxZIndex + 1).toString();
   }
