@@ -208,6 +208,17 @@ export interface Board extends ShapeBase {
    * The type of the shape, which is always 'board' for boards.
    */
   readonly type: 'board';
+
+  /**
+   * When true the board will clip the children inside
+   */
+  clipContent: boolean;
+
+  /**
+   * WHen true the board will be displayed in the view mode
+   */
+  showInViewMode: boolean;
+
   /**
    * The grid layout configuration of the board, if applicable.
    */
