@@ -46,6 +46,7 @@ describe('plugin-loader', () => {
         'comment:read',
         'comment:write',
         'allow:downloads',
+        'allow:localstorage',
       ],
     };
 

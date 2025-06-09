@@ -43,6 +43,7 @@ describe('createPluginManager', () => {
         'comment:read',
         'comment:write',
         'allow:downloads',
+        'allow:localstorage'
       ],
     };
 

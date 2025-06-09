@@ -35,6 +35,7 @@ describe('createPlugin', () => {
         'comment:read',
         'comment:write',
         'allow:downloads',
+        'allow:localstorage',
       ],
     };
 
