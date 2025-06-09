@@ -51,7 +51,7 @@ export function resizeModal(
   const minPluginWidth = 200;
   const minPluginHeight = 200;
 
-  let wrapper = modal.shadowRoot.querySelector('.wrapper');
+  let wrapper = modal.shadowRoot?.querySelector('.wrapper');
   let curX = 0;
   let curY = 0;
   if (wrapper) {
