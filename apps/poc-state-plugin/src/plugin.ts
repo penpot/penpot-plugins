@@ -52,6 +52,8 @@ penpot.ui.onMessage<{ content: string; data: unknown }>(async (message) => {
     exportSelected();
   } else if (message.content === 'resize-modal') {
     resizeModal();
+  } else if (message.content === 'save-localstorage') {
+    saveLocalStorage();
   }
 });
 
@@ -512,4 +514,11 @@ async function exportSelected() {
 
 async function resizeModal() {
   penpot.ui.resize(1920, 1080);
+}
+
+async function saveLocalStorage() {
+  let oldvalue = penpot.localStorage.getItem('test');
+  let newvalue = oldvalue ? parseInt(oldvalue, 10) + 1 : 1;
+  console.log(newvalue);
+  penpot.localStorage.setItem('test', newvalue);
 }

@@ -7,6 +7,7 @@
     "library:write",
     "comment:write",
     "user:read",
-    "allow:downloads"
+    "allow:downloads",
+    "allow:localstorage"
   ]
 }

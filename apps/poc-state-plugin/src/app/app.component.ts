@@ -125,6 +125,13 @@ import type { Shape } from '@penpot/plugin-types';
         >
           Resize
         </button>
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="testLocalStorage()"
+        >
+          Test local storage
+        </button>
 
         <input type="file" class="file-upload" (change)="uploadImage($event)" />
       </div>
@@ -291,6 +298,10 @@ export class AppComponent {
 
   resizeModal() {
     this.#sendMessage({ content: 'resize-modal' });
+  }
+
+  testLocalStorage() {
+    this.#sendMessage({ content: 'save-localstorage' });
   }
 
   #sendMessage(message: unknown) {
