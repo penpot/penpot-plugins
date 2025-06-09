@@ -2753,7 +2753,7 @@ export interface LocalStorage {
    * will be overriden. The value will be stored in a string representation.
    * Requires the `allow:localstorage` permission.
    */
-  setItem(key: string, value: object): void;
+  setItem(key: string, value: unknown): void;
 
   /**
    * Remove the value stored in the key.
