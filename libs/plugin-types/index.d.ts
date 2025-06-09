@@ -827,6 +827,11 @@ export interface Context {
   readonly theme: Theme;
 
   /**
+   * Access to the localStorage proxy
+   */
+  readonly localStorage: LocalStorage;
+
+  /**
    * The currently selected shapes in Penpot. Requires `content:read` permission.
    *
    * @example
@@ -2728,6 +2733,39 @@ export interface LibraryTypography extends LibraryElement {
    * ```
    */
   setFont(font: Font, variant?: FontVariant): void;
+}
+
+/**
+ * Proxy for the local storage. Only elements owned by the plugin
+ * can be stored and accessed.
+ * Warning: other plugins won't be able to access this information but
+ * the user could potentialy access the data through the browser information.
+ */
+export interface LocalStorage {
+  /**
+   * Retrieve the element with the given key
+   * Requires the `allow:localstorage` permission.
+   */
+  getItem(key: string): string;
+
+  /**
+   * Set the data given the key. If the value already existed it
+   * will be overriden. The value will be stored in a string representation.
+   * Requires the `allow:localstorage` permission.
+   */
+  setItem(key: string, value: object): void;
+
+  /**
+   * Remove the value stored in the key.
+   * Requires the `allow:localstorage` permission.
+   */
+  removeItem(key: string): void;
+
+  /**
+   * Return all the keys for the data stored by the plugin.
+   * Requires the `allow:localstorage` permission.
+   */
+  getKeys(): string[];
 }
 
 /**

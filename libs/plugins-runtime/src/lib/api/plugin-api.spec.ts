@@ -21,6 +21,7 @@ describe('Plugin api', () => {
           'comment:read',
           'comment:write',
           'allow:downloads',
+          'allow:localstorage',
         ],
       },
       openModal: vi.fn(),

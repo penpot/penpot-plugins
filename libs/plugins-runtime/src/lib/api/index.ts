@@ -22,6 +22,7 @@ import type {
   Color,
   ColorShapeInfo,
   HistoryContext,
+  LocalStorage
 } from '@penpot/plugin-types';
 
 import { Permissions } from '../models/manifest.model.js';
@@ -203,6 +204,11 @@ export function createApi(
 
     get theme(): Theme {
       return plugin.context.theme;
+    },
+
+    get localStorage(): LocalStorage {
+      checkPermission('allow:localstorage');
+      return plugin.context.localStorage;
     },
 
     createBoard(): Board {
