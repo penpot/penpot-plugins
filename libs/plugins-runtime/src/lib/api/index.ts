@@ -291,6 +291,11 @@ export function createApi(
       return plugin.context.generateStyle(shapes, options);
     },
 
+    generateFontFaces(shapes: Shape[]): Promise<string> {
+      checkPermission('content:read');
+      return plugin.context.generateFontFaces(shapes);
+    },
+
     openViewer(): void {
       checkPermission('content:read');
       plugin.context.openViewer();
