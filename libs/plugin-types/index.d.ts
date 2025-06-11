@@ -1154,6 +1154,19 @@ export interface Context {
   ): string;
 
   /**
+   * Generates the fontfaces styles necessaries to render the shapes.
+   * Requires `content:read` permission
+   * @param shapes
+   *
+   * @example
+   * ```js
+   * const fontfaces = context.generateFontFaces(penpot.selection);
+   * console.log(fontfaces);
+   * ```
+   */
+  generateFontFaces(shapes: Shape[]): Promise<string>;
+
+  /**
    * Adds the current callback as an event listener
    *
    * @example
