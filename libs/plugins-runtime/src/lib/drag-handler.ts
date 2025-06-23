@@ -1,5 +1,6 @@
+import { parseTranslate } from './parse-translate';
+
 export const dragHandler = (el: HTMLElement, target: HTMLElement = el, move?: () => void) => {
-  let currentTranslate = { x: 0, y: 0 };
   let initialTranslate = { x: 0, y: 0 };
   let initialClientPosition = { x: 0, y: 0 };
 
@@ -7,8 +8,6 @@ export const dragHandler = (el: HTMLElement, target: HTMLElement = el, move?: ()
     const { clientX: moveX, clientY: moveY } = moveEvent;
     const deltaX = moveX - initialClientPosition.x + initialTranslate.x;
     const deltaY = moveY - initialClientPosition.y + initialTranslate.y;
-
-    currentTranslate = { x: deltaX, y: deltaY };
 
     target.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 
@@ -22,8 +21,7 @@ export const dragHandler = (el: HTMLElement, target: HTMLElement = el, move?: ()
 
   const handleMouseDown = (e: MouseEvent) => {
     initialClientPosition = { x: e.clientX, y: e.clientY };
-    initialTranslate = { x: currentTranslate.x, y: currentTranslate.y };
-
+    initialTranslate = parseTranslate(target);
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };

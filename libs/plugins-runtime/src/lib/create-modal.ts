@@ -2,6 +2,8 @@ import type { OpenUIOptions } from './models/open-ui-options.model.js';
 import type { Theme } from '@penpot/plugin-types';
 import type { PluginModalElement } from './modal/plugin-modal.js';
 
+import { parseTranslate } from './parse-translate';
+
 export function createModal(
   name: string,
   url: string,
@@ -60,18 +62,31 @@ export function resizeModal(
     curY = rect.y;
   }
 
-  const maxWidth = window.innerWidth - curX - 40;
-  const maxHeight = window.innerHeight - curY - 40;
+  const maxWidth = window.innerWidth - 40;
+  const maxHeight = window.innerHeight - 40;
   width = Math.min(width, maxWidth);
   height = Math.min(height, maxHeight);
 
   width = Math.max(width, minPluginWidth);
   height = Math.max(height, minPluginHeight);
 
+  let deltax = 0;
+  if ((curX + width) > maxWidth) {
+    deltax = maxWidth - (curX + width);
+  }
+
+  let deltay = 0;
+  if ((curY + height) > maxHeight) {
+    deltay = maxHeight - (curY + height);
+  }
+
+  let {x, y} = parseTranslate(modal.wrapper);
+  x = x + deltax;
+  y = y + deltay;
+
+  modal.wrapper.style.transform = `translate(${x}px, ${y}px)`;
   modal.wrapper.style.width = `${width}px`;
-  modal.wrapper.style.minWidth = `${width}px`;
   modal.wrapper.style.height = `${height}px`;
-  modal.wrapper.style.minHeight = `${height}px`;
 
   return { width, height };
 }
