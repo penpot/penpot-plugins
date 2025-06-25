@@ -1,3 +1,32 @@
+## 1.3.0 (2025-06-25)
+
+### 🚀 Features
+
+- **plugin-types:** add skipChildren to exports ([b3373ba](https://github.com/penpot/penpot-plugins/commit/b3373ba))
+- **plugins-runtime:** change plugins modal z-index ([c6a4a7d](https://github.com/penpot/penpot-plugins/commit/c6a4a7d))
+- **plugins-runtime:** adds max resize to the screen size ([f2fe501](https://github.com/penpot/penpot-plugins/commit/f2fe501))
+- **plugins-runtime:** adds localstorage wrapper API for plugins ([0006ca9](https://github.com/penpot/penpot-plugins/commit/0006ca9))
+- **plugins-runtime:** add generateFontFaces method ([30e1d02](https://github.com/penpot/penpot-plugins/commit/30e1d02))
+- **poc-state-plugins:** add some methods to the example ([b95961a](https://github.com/penpot/penpot-plugins/commit/b95961a))
+- **poc-state-plugins:** example using the localstorage api ([b101523](https://github.com/penpot/penpot-plugins/commit/b101523))
+
+### 🩹 Fixes
+
+- **plugin-colors-to-tokens:** adapt to Penpot tokens metadata format ([3a1ff00](https://github.com/penpot/penpot-plugins/commit/3a1ff00))
+- **plugin-colors-to-tokens:** avoid unvalid character in names ([dd0fd1a](https://github.com/penpot/penpot-plugins/commit/dd0fd1a))
+- **plugin-types:** add missing board properties ([de4a2a0](https://github.com/penpot/penpot-plugins/commit/de4a2a0))
+- **plugin-types:** fix problem with type ([9759964](https://github.com/penpot/penpot-plugins/commit/9759964))
+- **plugins-runtime:** add allow-same-origin to iframe ([65d5351](https://github.com/penpot/penpot-plugins/commit/65d5351))
+- **plugins-runtime:** fixes null checking issue ([6b5b562](https://github.com/penpot/penpot-plugins/commit/6b5b562))
+- **plugins-runtime:** fix problem with resize modal position ([45dc41d](https://github.com/penpot/penpot-plugins/commit/45dc41d))
+- **plugins-styles:** migrate to fonts css api v2 ([45a9ee9](https://github.com/penpot/penpot-plugins/commit/45a9ee9))
+
+### ❤️ Thank You
+
+- alonso.torres
+- Martynas Barzda
+- Xavier Julian
+
 ## 1.2.0 (2025-02-27)
 
 ### 🚀 Features
