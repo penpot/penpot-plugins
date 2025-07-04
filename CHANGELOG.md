@@ -1,3 +1,13 @@
+## 1.3.2 (2025-07-04)
+
+### 🩹 Fixes
+
+- plugins-runtime public package.json ([70fd69f](https://github.com/penpot/penpot-plugins/commit/70fd69f))
+
+### ❤️ Thank You
+
+- Juanfran @juanfran
+
 ## 1.3.1 (2025-07-04)
 
 ### 🚀 Features
