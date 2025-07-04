@@ -1,3 +1,17 @@
+## 1.3.1 (2025-07-04)
+
+### 🚀 Features
+
+- plugins-runtime as npm library ([41c56b1](https://github.com/penpot/penpot-plugins/commit/41c56b1))
+
+### 🩹 Fixes
+
+- package-lock.json ([16b29f8](https://github.com/penpot/penpot-plugins/commit/16b29f8))
+
+### ❤️ Thank You
+
+- Juanfran @juanfran
+
 ## 1.3.0 (2025-06-25)
 
 ### 🚀 Features
