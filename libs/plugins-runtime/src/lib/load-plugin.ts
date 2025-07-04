@@ -37,7 +37,7 @@ window.addEventListener('message', (event) => {
 
 export const loadPlugin = async function (
   manifest: Manifest,
-  closeCallback?: () => void
+  closeCallback?: () => void,
 ) {
   try {
     const context = contextBuilder && contextBuilder(manifest.pluginId);
@@ -54,7 +54,7 @@ export const loadPlugin = async function (
       () => {
         plugins = plugins.filter((api) => api !== plugin);
         closeCallback && closeCallback();
-      }
+      },
     );
 
     plugins.push(plugin);
@@ -66,7 +66,7 @@ export const loadPlugin = async function (
 
 export const ɵloadPlugin = async function (
   manifest: Manifest,
-  closeCallback?: () => void
+  closeCallback?: () => void,
 ) {
   loadPlugin(manifest, closeCallback);
 };

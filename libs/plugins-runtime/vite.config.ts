@@ -1,6 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import * as path from 'path';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import checker from 'vite-plugin-checker';
@@ -21,6 +22,14 @@ export default defineConfig({
         buildMode: true,
       },
     }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'README.md',
+          dest: '.',
+        },
+      ],
+    }),
   ],
 
   // Uncomment this if you are using workers.
@@ -31,7 +40,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: '../../dist/libs/plugins-runtime',
+    outDir: '../../dist/plugins-runtime',
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,

@@ -77,7 +77,7 @@ describe('plugin-loader', () => {
     expect(createPlugin).toHaveBeenCalledWith(
       mockContext,
       manifest,
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(mockPluginApi.plugin.close).not.toHaveBeenCalled();
     expect(getPlugins()).toHaveLength(1);
@@ -104,7 +104,7 @@ describe('plugin-loader', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     vi.mocked(createPlugin).mockRejectedValue(
-      new Error('Plugin creation failed')
+      new Error('Plugin creation failed'),
     );
 
     await loadPlugin(manifest);
@@ -119,7 +119,7 @@ describe('plugin-loader', () => {
     window.dispatchEvent(new MessageEvent('message', { data: 'test-message' }));
 
     expect(mockPluginApi.plugin.sendMessage).toHaveBeenCalledWith(
-      'test-message'
+      'test-message',
     );
   });
 
@@ -129,7 +129,7 @@ describe('plugin-loader', () => {
     expect(createPlugin).toHaveBeenCalledWith(
       mockContext,
       manifest,
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -143,7 +143,7 @@ describe('plugin-loader', () => {
     expect(createPlugin).toHaveBeenCalledWith(
       mockContext,
       manifest,
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This guide details the process of publishing `plugin-types` and `plugins-styles` packages, which are essential for plugin development. Below is a walkthrough for publishing these packages and managing releases.
+This guide details the process of publishing `plugin-types`, `plugins-styles` and `plugins-runtime` packages, which are essential for plugin development. Below is a walkthrough for publishing these packages and managing releases.
 
 ## Publishing Libraries
 
