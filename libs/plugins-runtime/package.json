@@ -8,6 +8,5 @@
   },
   "module": "./index.mjs",
   "typings": "./index.d.ts",
-  "private": true,
   "type": "module"
 }
