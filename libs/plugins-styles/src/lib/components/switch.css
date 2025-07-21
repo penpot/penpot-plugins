@@ -5,8 +5,8 @@
   height: 26px;
   outline: none;
 
-  input:focus + .slider,
-  input:active + .slider {
+  input:focus + .switch-slider,
+  input:active + .switch-slider {
     background-color: var(--background-primary);
     border-color: var(--accent-primary);
   }
