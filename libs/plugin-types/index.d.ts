@@ -2514,6 +2514,13 @@ export interface Library extends PluginData {
   readonly components: LibraryComponent[];
 
   /**
+   * A catalog of Design Tokens in the library.
+   *
+   * See `TokenCatalog` type to see usage.
+   */
+  readonly tokens: TokenCatalog;
+
+  /**
    * Creates a new color element in the library.
    * @return Returns a new `LibraryColor` object representing the created color element.
    *
@@ -3709,6 +3716,17 @@ export interface ShapeBase extends PluginData {
   setParentIndex(index: number): void;
 
   /**
+   * The design tokens applied to this shape.
+   * It's a map property name -> token name.
+   *
+   * NOTE that the tokens application is by name and not by id. If there exist
+   * several tokens with the same name in different sets, the actual token applied
+   * and the value set to the attributes will depend on which sets are active
+   * (and will change if different sets or themes are activated later).
+   */
+  readonly tokens: { [property: string]: string };
+
+  /**
    * @return Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
@@ -3871,6 +3889,19 @@ export interface ShapeBase extends PluginData {
    * ```
    */
   removeInteraction(interaction: Interaction): void;
+
+  /**
+   * Applies one design token to one or more properties of the shape.
+   * @param token is the Token to apply
+   * @param properties an optional list of property names. If omitted, the
+   * default properties will be applied.
+   *
+   * NOTE that the tokens application is by name and not by id. If there exist
+   * several tokens with the same name in different sets, the actual token applied
+   * and the value set to the attributes will depend on which sets are active
+   * (and will change if different sets or themes are activated later).
+   */
+  applyToken(token: Token, properties: TokenProperty[] | undefined): void;
 
   /**
    * Creates a clone of the shape.
@@ -4258,6 +4289,790 @@ export type TrackType = 'flex' | 'fixed' | 'percent' | 'auto';
  * - `after-delay` triggers after the `delay` time has passed even if no interaction from the user happens.
  */
 export type Trigger = 'click' | 'mouse-enter' | 'mouse-leave' | 'after-delay';
+
+/**
+ * Represents the base properties and methods of a Design Token in Penpot, shared by
+ * all token types.
+ */
+export interface TokenBase {
+  /**
+   * The unique identifier for this token, used only internally inside Penpot.
+   * This one is not exported or synced with external Design Token sources.
+   */
+  readonly id: string;
+
+  /**
+   * The name of the token. It may include a group path separated by `.`.
+   */
+  name: string;
+
+  /**
+   * An optional description text.
+   */
+  description: string;
+
+  /**
+   * Adds to the set that contains this Token a new one equal to this one
+   * but with a new id.
+   */
+  duplicate(): Token;
+
+  /**
+   * Removes this token from the catalog.
+   *
+   * It will NOT be unapplied from any shape, since there may be other tokens
+   * with the same name.
+   */
+  remove(): void;
+
+  /**
+   * Applies this token to one or more properties of the given shapes.
+   * @param shapes is an array of shapes to apply it.
+   * @param properties an optional list of property names. If omitted, the
+   * default properties will be applied.
+   *
+   * NOTE that the tokens application is by name and not by id. If there exist
+   * several tokens with the same name in different sets, the actual token applied
+   * and the value set to the attributes will depend on which sets are active
+   * (and will change if different sets or themes are activated later).
+   */
+  applyToShapes(shapes: Shape[], properties: TokenProperty[] | undefined): void;
+
+  /**
+   * Applies this token to the currently selected shapes.
+   *
+   * Parameters and warnings are the same as above.
+   */
+  applyToSelected(properties: TokenProperty[] | undefined): void;
+}
+
+/**
+ * Represents a token of type BorderRadius.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenBorderRadius extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'border-radius';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a positive number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a positive number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type Color.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenColor extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'color';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a rgb color or a reference.
+   */
+  value: string;
+
+  /**
+   * The value as defined in the token itself.
+   * It's a rgb color or a reference.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * Represents a token of type Dimension.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenDimension extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'dimension';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a positive number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a positive number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type FontFamily.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenFontFamily extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'font-family';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a string with one or more font families, separated
+   * by commas, or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a string with one or more font families, separated
+   * by commas, of undefined if no set is active.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * Represents a token of type FontSize.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenFontSize extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'font-size';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a positive number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a positive number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type FontWeight.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenFontWeight extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'font-weight';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a weight string or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a weight string of undefined if no set is active.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * Represents a token of type FontLetterSpacing.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenFontLetterSpacing extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'letter-spacing';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number of undefined if no set is active.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * Represents a token of type Number.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenNumber extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'letter-number';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type Opacity.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenOpacity extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'opacity';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number between 0 and 1 or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number between 0 and 1 of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type Rotation.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenRotation extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'rotation';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number in degrees or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number in degrees of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type Sizing.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenSizing extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'sizing';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type Spacing.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenSpacing extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'spacing';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type StrokeWidth.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenStrokeWidth extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'stroke-width';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a positive number or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a positive number of undefined if no set is active.
+   */
+  readonly resolvedValue: number | undefined;
+}
+
+/**
+ * Represents a token of type TextCase.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenTextCase extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'text-case';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a case string or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a case string of undefined if no set is active.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * Represents a token of type Decoration.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenTextDecoration extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'text-decoration';
+
+  /**
+   * The value as defined in the token itself.
+   * It's a decoration string or a reference.
+   */
+  value: string;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a decoration string of undefined if no set is active.
+   */
+  readonly resolvedValue: string | undefined;
+}
+
+/**
+ * The supported Design Tokens in Penpot.
+ */
+export type Token =
+  | TokenBorderRadius
+  | TokenColor
+  | TokenDimension
+  | TokenFontSize
+  | TokenOpacity
+  | TokenRotation
+  | TokenSizing
+  | TokenSpacing
+  | TokenStrokeWidth;
+
+/**
+ * The collection of all tokens in a Penpot file's library.
+ *
+ * Tokens are contained in sets, that can be marked as active
+ * or inactive to control the resolved value of the tokens.
+ *
+ * The active status of sets can be handled by presets named
+ * Themes.
+ */
+export interface TokenCatalog {
+  /**
+   * The list of themes in this catalog, in creation order.
+   */
+  readonly themes: TokenTheme[];
+
+  /**
+   * The  list of sets in this catalog, in the order defined
+   * by the user. The order is important because then same token name
+   * exists in several active sets, the latter has precedence.
+   */
+  readonly sets: TokenSet[];
+
+  /**
+   * Creates a new TokenTheme and adds it to the catalog.
+   * @param group The group name of the theme (can be empty string).
+   * @param name The name of the theme (required)
+   * @return Returns the created TokenTheme.
+   */
+  addTheme(group: string, name: string): TokenTheme;
+
+  /**
+   * Creates a new TokenSet and adds it to the catalog.
+   * @param name The name of the set (required). It may contain
+   * a group path, separated by `/`.
+   * @return Returns the created TokenSet.
+   */
+  addSet(name: string): TokenSet;
+
+  /**
+   * Retrieves a theme.
+   * @param id the id of the theme.
+   * @returns Returns the theme or undefined if not found.
+   */
+  getThemeById(id: string): TokenTheme | undefined;
+
+  /**
+   * Retrieves a set.
+   * @param id the id of the set.
+   * @returns Returns the set or undefined if not found.
+   */
+  getSetById(id: string): TokenSet | undefined;
+}
+
+/**
+ * A collection of Design Tokens.
+ *
+ * Inside a set, tokens have an unique name, that will designate
+ * what token to use if the name is applied to a shape and this
+ * set is active.
+ */
+export interface TokenSet {
+  /**
+   * The unique identifier for this set, used only internally inside Penpot.
+   * This one is not exported or synced with external Design Token sources.
+   */
+  readonly id: string;
+
+  /**
+   * The name of the set. It may include a group path separated by `/`.
+   */
+  name: string;
+
+  /**
+   * Indicates if the set is currently active.
+   */
+  active: boolean;
+
+  /**
+   * The tokens contained in this set, in alphabetical order.
+   */
+  readonly tokens: Token[];
+
+  /**
+   * The tokens contained in this set, grouped by type.
+   */
+  readonly tokensByType: [string, Token[]][];
+
+  /**
+   * Toggles the active status of this set.
+   */
+  toggleActive(): void;
+
+  /**
+   * Retrieves a token.
+   * @param id the id of the token.
+   * @returns Returns the token or undefined if not found.
+   */
+  getTokenById(id: string): Token | undefined;
+
+  /**
+   * Creates a new Token and adds it to the set.
+   * @param type Thetype of token.
+   * @param name The name of the token (required). It may contain
+   * a group path, separated by `.`.
+   * @return Returns the created Token.
+   */
+  addToken(type: TokenType, name: string, value: unknown): Token;
+
+  /**
+   * Adds to the catalog a new TokenSet equal to this one but with a new id.
+   */
+  duplicate(): TokenSet;
+
+  /**
+   * Removes this set from the catalog.
+   */
+  remove(): void;
+}
+
+/**
+ * A preset of active TokenSets.
+ *
+ * A theme contains a list of references to TokenSets. When the theme
+ * is activated, it sets are activated too. This will not deactivate
+ * sets that are _not_ in this theme, because they may have been
+ * activated by other themes.
+ *
+ * Themes may be gruped. At any time only one of the themes in a group
+ * may be active. But there may be active themes in other groups. This
+ * allows to define multiple "axis" for theming (e.g. color scheme,
+ * density or brand).
+ *
+ * When a TokenSet is activated or deactivated directly, all themes
+ * are disabled (indicating that now there is a "custom" manual theme
+ * active).
+ */
+export interface TokenTheme {
+  /**
+   * The unique identifier for this theme, used only internally inside Penpot.
+   * This one is not exported or synced with external Design Token sources.
+   */
+  readonly id: string;
+
+  /**
+   * Optional identifier that may exists if the theme was imported from an
+   * external tool that uses ids in the json file.
+   */
+  readonly externalId: string | undefined;
+
+  /**
+   * The group name of the theme. Can be empt string.
+   */
+  group: string;
+
+  /**
+   * The name of the theme.
+   */
+  name: string;
+
+  /**
+   * Indicates if the theme is currently active.
+   */
+  active: boolean;
+
+  /**
+   * Toggles the active status of this theme.
+   */
+  toggleActive(): void;
+
+  /**
+   * The sets that will be activated if this theme is activated.
+   */
+  activeSets: TokenSet[];
+
+  /**
+   * Adds a set to the list of the theme.
+   */
+  addSet(tokenSet: TokenSet): void;
+
+  /**
+   * Removes a set from the list of the theme.
+   */
+  removeSet(tokenSet: TokenSet): void;
+
+  /**
+   * Adds to the catalog a new TokenTheme equal to this one but with a new id.
+   */
+  duplicate(): TokenTheme;
+
+  /**
+   * Removes this theme from the catalog.
+   */
+  remove(): void;
+}
+
+/**
+ * The properties that a BorderRadius token can be applied to.
+ */
+type TokenBorderRadiusProps = 'r1' | 'r2' | 'r3' | 'r4';
+
+/**
+ * The properties that a Color token can be applied to.
+ */
+type TokenColorProps = 'fill' | 'stroke';
+
+/**
+ * The properties that a Dimension token can be applied to.
+ */
+type TokenDimensionProps =
+  // Axis
+  | 'x'
+  | 'y'
+
+  // Stroke width
+  | 'stroke-width';
+
+/**
+ * The properties that a FontFamily token can be applied to.
+ */
+type TokenFontFamilyProps = 'font-family';
+
+/**
+ * The properties that a FontSize token can be applied to.
+ */
+type TokenFontSizeProps = 'font-size';
+
+/**
+ * The properties that a FontWeight token can be applied to.
+ */
+type TokenFontWeightProps = 'font-weight';
+
+/**
+ * The properties that a LetterSpacing token can be applied to.
+ */
+type TokenFontLetterSpacingProps = 'letter-spacing';
+
+/**
+ * The properties that a Number token can be applied to.
+ */
+type TokenNumberProps = 'rotation' | 'line-height';
+
+/**
+ * The properties that an Opacity token can be applied to.
+ */
+type TokenOpacityProps = 'opacity';
+
+/**
+ * The properties that a Sizing token can be applied to.
+ */
+type TokenSizingProps =
+  // Size
+  | 'width'
+  | 'height'
+
+  // Layout
+  | 'layout-item-min-w'
+  | 'layout-item-max-w'
+  | 'layout-item-min-h'
+  | 'layout-item-max-h';
+
+/**
+ * The properties that a Spacing token can be applied to.
+ */
+type TokenSpacingProps =
+  // Spacing / Gap
+  | 'row-gap'
+  | 'column-gap'
+
+  // Spacing / Padding
+  | 'p1'
+  | 'p2'
+  | 'p3'
+  | 'p4'
+
+  // Spacing / Margin
+  | 'm1'
+  | 'm2'
+  | 'm3'
+  | 'm4';
+
+/**
+ * The properties that a StrokeWidth token can be applied to.
+ */
+type TokenStrokeWidthProps = 'stroke-width';
+
+/**
+ * The properties that a TextCase token can be applied to.
+ */
+type TokenTextCaseProps = 'text-case';
+
+/**
+ * The properties that a TextDecoration token can be applied to.
+ */
+type TokenTextDecorationProps = 'text-decoration';
+
+/**
+ * All the properties that a token can be applied to.
+ * Not always correspond to Shape properties. For example,
+ * `fill` property applies to `fillColor` of the first fill
+ * of the shape.
+ *
+ */
+export type TokenProperty =
+  | 'all'
+  | TokenBorderRadiusProps
+  | TokenColorProps
+  | TokenDimensionProps
+  | TokenFontFamilyProps
+  | TokenFontSizeProps
+  | TokenFontWeightProps
+  | TokenFontLetterSpacingProps
+  | TokenNumberProps
+  | TokenOpacityProps
+  | TokenSizingProps
+  | TokenSpacingProps
+  | TokenStrokeWidthProps
+  | TokenTextCaseProps
+  | TokenTextDecorationProps;
+
+/**
+ * The supported types of Design Tokens in Penpot.
+ */
+export type TokenType =
+  | 'border-radius'
+  | 'color'
+  | 'dimension'
+  | 'font-family'
+  | 'font-size'
+  | 'font-weight'
+  | 'letter-spacing'
+  | 'letter-number'
+  | 'opacity'
+  | 'rotation'
+  | 'sizing'
+  | 'spacing'
+  | 'stroke-width'
+  | 'text-case'
+  | 'text-decoration';
 
 /**
  * Represents a user in Penpot.
