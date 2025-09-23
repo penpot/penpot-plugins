@@ -87,7 +87,16 @@ penpot.on('selectionchange', () => {
   const data: string | null =
     selection.length === 1 ? selection[0].getPluginData('counter') : null;
   const counter = data ? parseInt(data, 10) : 0;
+
+  selection.forEach((shape) => {
+    console.log(`== ${shape.name} ==`);
+    console.log(`Tokens: ${JSON.stringify(shape.tokens)}`);
+    console.log(`Variant props: ${JSON.stringify(shape.component()?.variantProps)}`);
+  });
+  
   penpot.ui.sendMessage({ type: 'selection', content: { selection, counter } });
+
+  console.log()
 });
 
 penpot.on('themechange', (theme) => {

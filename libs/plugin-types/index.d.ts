@@ -2437,12 +2437,12 @@ export interface Library extends PluginData {
    * console.log(penpot.library.local.colors);
    * ```
    */
-  colors: LibraryColor[];
+  readonly colors: LibraryColor[];
 
   /**
    * An array of typography elements in the library.
    */
-  typographies: LibraryTypography[];
+  readonly typographies: LibraryTypography[];
 
   /**
    * An array of component elements in the library.
@@ -2450,7 +2450,12 @@ export interface Library extends PluginData {
    * ```js
    * console.log(penpot.library.local.components);
    */
-  components: LibraryComponent[];
+  readonly components: LibraryComponent[];
+
+  /**
+   * TODO
+   */
+  readonly tokens: TokenContext;
 
   /**
    * Creates a new color element in the library.
@@ -2555,6 +2560,26 @@ export interface LibraryComponent extends LibraryElement {
    * @return Returns the reference to the main component shape.
    */
   mainInstance(): Shape;
+
+  /**
+   * TODO
+   */
+  variants: Variants | null;
+
+  /**
+   * TODO
+   */
+  readonly variantProps: { [property: string]: string };
+
+  /**
+   * TODO
+   */
+  variantErrors: VariantError[];
+
+  /**
+   * TODO
+   */
+  setVariantProperty(property: string): void;
 }
 
 /**
@@ -3575,6 +3600,11 @@ export interface ShapeBase extends PluginData {
   readonly layoutCell?: LayoutChildProperties;
 
   /**
+   * TODO
+   */
+  readonly tokens: { [property: string]: string };
+
+  /**
    * @return Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
@@ -3628,6 +3658,21 @@ export interface ShapeBase extends PluginData {
    * shape as a "basic shape"
    */
   detach(): void;
+
+  /**
+   * TODO
+   */
+  swapComponent(component: LibraryComponent): void;
+
+  /**
+   * TODO
+   */
+  isVariantCopy(): boolean;
+
+  /**
+   * TODO
+   */
+  switchVariant(property: string, value: string): void;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -3691,6 +3736,16 @@ export interface ShapeBase extends PluginData {
    * ```
    */
   removeInteraction(interaction: Interaction): void;
+
+  /**
+   * TODO
+   */
+  applyTokenName(tokenProperty: TokenProperty, token: Token): void;
+
+  /**
+   * TODO
+   */
+  applyTokenName(tokenProperty: TokenProperty, tokenType: TokenType, name: string): void;
 
   /**
    * Creates a clone of the shape.
@@ -4080,6 +4135,510 @@ export type TrackType = 'flex' | 'fixed' | 'percent' | 'auto';
 export type Trigger = 'click' | 'mouse-enter' | 'mouse-leave' | 'after-delay';
 
 /**
+ * TODO
+ */
+export interface TokenBase {
+  /**
+   * TODO
+   */
+  name: string;
+  /**
+   * TODO
+   */
+  description: string;
+  /**
+   * TODO
+   */
+  value: string;
+
+  /**
+   * TODO
+   */
+  applyToShape(property: TokenProperty, shape: Shape): void;
+}
+
+/**
+ * TODO
+ */
+export interface TokenBorderRadius extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'border-radius';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenColor extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'color';
+  /**
+   * TODO
+   */
+  readonly computedValue: string;
+}
+
+/**
+ * TODO
+ */
+export interface TokenDimension extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'dimension';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenFontFamily extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'font-family';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenFontSize extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'font-size';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenFontWeight extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'font-weight';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenFontLetterSpacing extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'letter-spacing';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenNumber extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'letter-number';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenOpacity extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'opacity';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenRotation extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'rotation';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenSizing extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'sizing';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenSpacing extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'spacing';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenStrokeWidth extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'stroke-width';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenTextCase extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'text-case';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export interface TokenTextDecoration extends TokenBase {
+  /**
+   * TODO
+   */
+  readonly type: 'text-decoration';
+  /**
+   * TODO
+   */
+  readonly computedValue: number;
+}
+
+/**
+ * TODO
+ */
+export type Token =
+  TokenBorderRadius |
+  TokenColor |
+  TokenDimension |
+  TokenFontSize |
+  TokenOpacity |
+  TokenRotation |
+  TokenSizing |
+  TokenSpacing |
+  TokenStrokeWidth;
+
+/**
+ * TODO
+ */
+export interface TokenContext {
+  /**
+   * TODO
+   */
+  readonly themes: TokenTheme[];
+  /**
+   * TODO
+   */
+  readonly sets: TokenSet[];
+
+  /**
+   * TODO
+   */
+  addTheme(): TokenTheme;
+  /**
+   * TODO
+   */
+  removeTheme(theme: TokenTheme): void;
+  /**
+   * TODO
+   */
+  addSet(): TokenSet;
+  /**
+   * TODO
+   */
+  removeSet(tokenSet: TokenSet): void;
+}
+
+/**
+ * TODO
+ */
+export interface TokenSet {
+  /**
+   * TODO
+   */
+  name: string;
+  /**
+   * TODO
+   */
+  path: string;
+  /**
+   * TODO
+   */
+  active: boolean;
+  /**
+   * TODO
+   */
+  readonly tokens: Token[];
+
+  /**
+   * TODO
+   */
+  addToken(): Token;
+  /**
+   * TODO
+   */
+  removeToken(token: Token): void;
+  /**
+   * TODO
+   */
+  remove(): void;
+}
+
+/**
+ * TODO
+ */
+export interface TokenTheme {
+  /**
+   * TODO
+   */
+  name: string;
+  /**
+   * TODO
+   */
+  group: string;
+  /**
+   * TODO
+   */
+  active: boolean;
+  /**
+   * TODO
+   */
+  activeSets: TokenSet[];
+
+  /**
+   * TODO
+   */
+  addSet(tokenSet: TokenSet): void;
+  /**
+   * TODO
+   */
+  removeSet(tokenSet: TokenSet): void;
+  /**
+   * TODO
+   */
+  remove(): void;
+}
+
+/**
+ * TODO
+ */
+type TokenBorderRadiusProps =
+  'r1' |
+  'r2' |
+  'r3' |
+  'r4';
+
+/**
+ * TODO
+ */
+type TokenColorProps =
+  'fill' |
+  'stroke';
+
+/**
+ * TODO
+ */
+type TokenDimensionProps =
+  // Axis
+  'x' |
+  'y' |
+
+  // Stroke width
+  'stroke-width';
+
+/**
+ * TODO
+ */
+type TokenFontFamilyProps =
+  'font-family';
+
+/**
+ * TODO
+ */
+type TokenFontSizeProps =
+  'font-size';
+
+/**
+ * TODO
+ */
+type TokenFontWeightProps =
+  'font-weight';
+
+/**
+ * TODO
+ */
+type TokenFontLetterSpacingProps =
+  'letter-spacing';
+
+/**
+ * TODO
+ */
+type TokenNumberProps =
+  'rotation' |
+  'line-height';
+
+/**
+ * TODO
+ */
+type TokenOpacityProps =
+  'opacity';
+
+/**
+ * TODO
+ */
+type TokenSizingProps =
+  // Size
+  'width' |
+  'height' |
+
+  // Layout
+  'layout-item-min-w' |
+  'layout-item-max-w' |
+  'layout-item-min-h' |
+  'layout-item-max-h' ;
+
+/**
+ * TODO
+ */
+type TokenSpacingProps =
+  // Spacing / Gap
+  'row-gap' |
+  'column-gap' |
+
+  // Spacing / Padding
+  'p1' |
+  'p2' |
+  'p3' |
+  'p4' |
+
+  // Spacing / Margin
+  'm1' |
+  'm2' |
+  'm3' |
+  'm4' ;
+
+/**
+ * TODO
+ */
+type TokenStrokeWidthProps =
+  'stroke-width';
+
+/**
+ * TODO
+ */
+type TokenTextCaseProps =
+  'text-case';
+
+/**
+ * TODO
+ */
+type TokenTextDecorationProps =
+  'text-decoration';
+
+/**
+ * TODO
+ */
+export type TokenProperty =
+  'all' |
+  TokenBorderRadiusProps |
+  TokenColorProps |
+  TokenDimensionProps |
+  TokenFontFamilyProps |
+  TokenFontSizeProps |
+  TokenFontWeightProps |
+  TokenFontLetterSpacingProps |
+  TokenNumberProps |
+  TokenOpacityProps |
+  TokenSizingProps |
+  TokenSpacingProps |
+  TokenStrokeWidthProps |
+  TokenTextCaseProps |
+  TokenTextDecoration;
+
+/**
+ * TODO
+ */
+export type TokenType =
+  'border-radius' |
+  'color' |
+  'dimension' |
+  'font-family' |
+  'font-size' |
+  'font-weight' |
+  'letter-spacing' |
+  'letter-number' |
+  'opacity' |
+  'rotation' |
+  'sizing' |
+  'spacing' |
+  'stroke-width' |
+  'text-case' |
+  'text-decoration';
+
+/**
  * Represents a user in Penpot.
  */
 export interface User {
@@ -4137,6 +4696,57 @@ export interface User {
    * ```
    */
   readonly sessionId?: string;
+}
+
+/**
+ * TODO
+ */
+export interface VariantError {
+  /**
+   * TODO
+   */
+  message: string;
+}
+
+/**
+ * TODO
+ */
+export interface Variants {
+  /**
+   * TODO
+   */
+  readonly id: string;
+  /**
+   * TODO
+   */
+  readonly libraryId: string;
+
+  /**
+   * TODO
+   */
+  properties: string[];
+
+  /**
+   * TODO
+   */
+  errors: VariantError[];
+
+  /**
+   * TODO
+   */
+  currentValues(property: string): string[];
+  /**
+   * TODO
+   */
+  deleteProperty(property: string): void;
+  /**
+   * TODO
+   */
+  findComponents(props: {[property: string]: string}): void;
+  /**
+   * TODO
+   */
+  addVariant(): void;
 }
 
 /**
