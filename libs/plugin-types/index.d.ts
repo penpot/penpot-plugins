@@ -326,6 +326,22 @@ export interface Board extends ShapeBase {
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * @return Returns true when the current board is a VariantContainer
+   */
+  isVariantContainer(): boolean;
+}
+
+/**
+ * Represents a VariantContainer in Penpot
+ * This interface extends `Board` and includes properties and methods specific to VariantContainer.
+ */
+export interface VariantContainer extends Board {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantContainer)
+   */
+  readonly variants: Variants | null;
 }
 
 /**
@@ -1349,6 +1365,22 @@ export interface ContextTypesUtils {
    * @return Returns true if the shape is a SvgRaw, otherwise false.
    */
   isSVG(shape: Shape): shape is SvgRaw;
+
+  /**
+   * Checks if the given shape is a variant container.
+   * @param shape - The shape to check.
+   * @return Returns true if the shape is a variant container, otherwise false.
+   */
+  isVariantContainer(shape: Shape): shape is VariantContainer;
+
+  /**
+   * Checks if the given component is a VariantComponent.
+   * @param component - The component to check.
+   * @return Returns true if the component is a VariantComponent, otherwise false.
+   */
+  isVariantComponent(
+    component: LibraryComponent,
+  ): component is LibraryVariantComponent;
 }
 
 /**
@@ -2562,24 +2594,49 @@ export interface LibraryComponent extends LibraryElement {
   mainInstance(): Shape;
 
   /**
-   * TODO
+   * @return true when this component is a VariantComponent
    */
-  variants: Variants | null;
+  isVariant(): boolean;
 
   /**
-   * TODO
+   * Creates a new Variant from this standard Component. It creates a VariantContainer, transform this Component into a VariantComponent, duplicates it, and creates a
+   * set of properties based on the component name and path.
+   * Similar to doing it with the contextual menu or the shortcut on the Penpot interface
+   */
+  transformInVariant(): void;
+}
+
+/**
+ * Represents a component element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to component elements.
+ */
+export interface LibraryVariantComponent extends LibraryComponent {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantComponent)
+   */
+  readonly variants: Variants | null;
+
+  /**
+   * A list of the variants props of this VariantComponent. Each property have a key and a value
    */
   readonly variantProps: { [property: string]: string };
 
   /**
-   * TODO
+   * If this VariantComponent has an invalid name, that does't follow the structure [property]=[value], [property]=[value]
+   * this field stores that invalid name
    */
-  variantErrors: VariantError[];
+  variantError: string;
 
   /**
-   * TODO
+   * Creates a duplicate of the current VariantComponent on its Variant
    */
-  setVariantProperty(property: string): void;
+  addVariant(): void;
+
+  /**
+   * Sets the value of the variant property on the indicated position
+   */
+
+  setVariantProperty(pos: number, value: string): void;
 }
 
 /**
@@ -3665,14 +3722,25 @@ export interface ShapeBase extends PluginData {
   swapComponent(component: LibraryComponent): void;
 
   /**
-   * TODO
+   * Switch a VariantComponent copy to the nearest one that has the specified property value
+   * @param pos The position of the poroperty to update
+   * @param value The new value of the property
    */
-  isVariantCopy(): boolean;
+  switchVariant(pos: number, value: string): void;
 
   /**
-   * TODO
+   * Combine several standard Components into a VariantComponent. Similar to doing it with the contextual menu
+   * on the Penpot interface.
+   * The current shape must be a component main instance.
+   * @param ids A list of ids of the main instances of the components to combine with this one.
    */
-  switchVariant(property: string, value: string): void;
+  combineAsVariants(ids: string[]): void;
+
+  /**
+   * @return Returns true when the current shape is the head of a components tree nested structure,
+   * and that component is a VariantComponent
+   */
+  isVariantHead(): boolean;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -3745,7 +3813,11 @@ export interface ShapeBase extends PluginData {
   /**
    * TODO
    */
-  applyTokenName(tokenProperty: TokenProperty, tokenType: TokenType, name: string): void;
+  applyTokenName(
+    tokenProperty: TokenProperty,
+    tokenType: TokenType,
+    name: string,
+  ): void;
 
   /**
    * Creates a clone of the shape.
@@ -4701,52 +4773,56 @@ export interface User {
 /**
  * TODO
  */
-export interface VariantError {
-  /**
-   * TODO
-   */
-  message: string;
-}
-
-/**
- * TODO
- */
 export interface Variants {
   /**
-   * TODO
+   * The unique identifier of the variant element. It is the id of the VariantContainer, and all the VariantComponents
+   * that belong to this variant have an attribute variantId which this is as value.
    */
   readonly id: string;
+
   /**
-   * TODO
+   * The unique identifier of the library to which the variant belongs.
    */
   readonly libraryId: string;
 
   /**
-   * TODO
+   * A list with the names of the properties of the Variant
    */
   properties: string[];
 
   /**
-   * TODO
-   */
-  errors: VariantError[];
-
-  /**
-   * TODO
+   * A list of all the values of a property along all the variantComponents of this Variant
+   * @param property The name of the property
    */
   currentValues(property: string): string[];
+
   /**
-   * TODO
+   * Remove a property of the Variant
+   * @param pos The position of the property to remove
    */
-  deleteProperty(property: string): void;
+  removeProperty(pos: number): void;
+
   /**
-   * TODO
+   * Rename a property of the Variant
+   * @param pos The position of the property to rename
+   * @param name The new name of the property
    */
-  findComponents(props: {[property: string]: string}): void;
+  renameProperty(pos: number, name: string): void;
+
   /**
-   * TODO
+   * List all the VariantComponents on this Variant.
+   */
+  variantComponents(): LibraryComponent[];
+
+  /**
+   * Creates a duplicate of the main VariantComponent of this Variant
    */
   addVariant(): void;
+
+  /**
+   * Adds a new property to this Variant
+   */
+  addProperty(): void;
 }
 
 /**
