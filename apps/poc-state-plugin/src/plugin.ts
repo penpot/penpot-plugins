@@ -1,3 +1,5 @@
+import { Variants } from '@penpot/plugin-types';
+
 const GRID = [5, 5];
 
 penpot.ui.open('Plugin name', '', {
@@ -54,6 +56,34 @@ penpot.ui.onMessage<{ content: string; data: unknown }>(async (message) => {
     resizeModal();
   } else if (message.content === 'save-localstorage') {
     saveLocalStorage();
+  } else if (message.content === 'transform-in-variant') {
+    transformInVariant();
+  } else if (message.content === 'combine-selected-as-variants') {
+    combineSelectedAsVariants();
+  } else if (message.content === 'add-variant') {
+    addVariant();
+  } else if (message.content === 'add-property') {
+    addProperty();
+  } else if (message.content === 'remove-property') {
+    removeProperty(message.data as number);
+  } else if (message.content === 'rename-property') {
+    const { pos, name } = message.data as {
+      pos: number;
+      name: string;
+    };
+    renameProperty(pos, name);
+  } else if (message.content === 'set-variant-property') {
+    const { pos, value } = message.data as {
+      pos: number;
+      value: string;
+    };
+    setVariantProperty(pos, value);
+  } else if (message.content === 'switch-variant') {
+    const { pos, value } = message.data as {
+      pos: number;
+      value: string;
+    };
+    switchVariant(pos, value);
   }
 });
 
@@ -91,12 +121,15 @@ penpot.on('selectionchange', () => {
   selection.forEach((shape) => {
     console.log(`== ${shape.name} ==`);
     console.log(`Tokens: ${JSON.stringify(shape.tokens)}`);
-    console.log(`Variant props: ${JSON.stringify(shape.component()?.variantProps)}`);
+    const component = shape.component();
+    if (component && penpot.utils.types.isVariantComponent(component)) {
+      console.log(`Variant props: ${JSON.stringify(component.variantProps)}`);
+    }
   });
-  
+
   penpot.ui.sendMessage({ type: 'selection', content: { selection, counter } });
 
-  console.log()
+  console.log();
 });
 
 penpot.on('themechange', (theme) => {
@@ -150,7 +183,7 @@ function createRect() {
     },
     {
       shapeId: shape.id,
-    }
+    },
   );
 }
 
@@ -196,7 +229,7 @@ Phasellus fringilla tortor elit, ac dictum tellus posuere sodales. Ut eget imper
       penpot
         .uploadMediaUrl(
           'placeholder',
-          `https://picsum.photos/${width}/${height}`
+          `https://picsum.photos/${width}/${height}`,
         )
         .then((data) => {
           shape.fills = [{ fillOpacity: 1, fillImage: data }];
@@ -295,8 +328,8 @@ function createColors() {
     a.name.toLowerCase() > b.name.toLowerCase()
       ? 1
       : a.name.toLowerCase() < b.name.toLowerCase()
-      ? -1
-      : 0
+        ? -1
+        : 0,
   );
 
   if (colors.length === 0) {
@@ -512,7 +545,7 @@ async function exportSelected() {
   const selection = await penpot.selection[0];
 
   if (selection) {
-    let data = await selection.export({type: 'png', skipChildren: true});
+    let data = await selection.export({ type: 'png', skipChildren: true });
     penpot.ui.sendMessage({
       type: 'start-download',
       name: 'export.png',
@@ -530,4 +563,69 @@ async function saveLocalStorage() {
   let newvalue = oldvalue ? parseInt(oldvalue, 10) + 1 : 1;
   console.log(newvalue);
   penpot.localStorage.setItem('test', newvalue);
+}
+
+function getVariantsFromSelection(): Variants | null {
+  const shape = penpot.selection?.[0];
+  if (!shape) return null;
+
+  if (penpot.utils.types.isVariantContainer(shape)) {
+    return shape.variants;
+  } else {
+    const component = shape.component();
+    if (component && penpot.utils.types.isVariantComponent(component)) {
+      return component.variants;
+    }
+  }
+  return null;
+}
+
+function transformInVariant() {
+  const component = penpot.selection?.[0].component();
+
+  if (component && !component.isVariant()) {
+    component.transformInVariant();
+  }
+}
+
+function combineSelectedAsVariants() {
+  if (penpot.selection) {
+    const ids: string[] = penpot.selection.map((item) => item.id);
+    penpot.selection[0]?.combineAsVariants(ids);
+  }
+}
+
+function addVariant() {
+  const shape = penpot.selection?.[0];
+  if (penpot.utils.types.isVariantContainer(shape)) {
+    shape.variants?.addVariant();
+  }
+}
+
+function addProperty() {
+  getVariantsFromSelection()?.addProperty();
+}
+
+function removeProperty(pos: number) {
+  getVariantsFromSelection()?.removeProperty(pos);
+}
+
+function renameProperty(pos: number, name: string) {
+  getVariantsFromSelection()?.renameProperty(pos, name);
+}
+
+function setVariantProperty(pos: number, value: string) {
+  const component = penpot.selection && penpot.selection[0].component();
+
+  if (component && penpot.utils.types.isVariantComponent(component)) {
+    component.setVariantProperty(pos, value);
+  }
+}
+
+function switchVariant(pos: number, value: string) {
+  const shape = penpot.selection && penpot.selection[0];
+
+  if (shape?.isVariantHead()) {
+    shape.switchVariant(pos, value);
+  }
 }
