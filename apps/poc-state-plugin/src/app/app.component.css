@@ -6,17 +6,20 @@ html {
   tab-size: 4;
   scroll-behavior: smooth;
 }
+
 body {
   font-family: inherit;
   line-height: inherit;
   margin: 0;
 }
+
 h1,
 h2,
 p,
 pre {
   margin: 0;
 }
+
 *,
 ::before,
 ::after {
@@ -25,19 +28,23 @@ pre {
   border-style: solid;
   border-color: currentColor;
 }
+
 h1,
 h2 {
   font-size: inherit;
   font-weight: inherit;
 }
+
 a {
   color: inherit;
   text-decoration: inherit;
 }
+
 pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
 }
+
 svg {
   display: block;
   vertical-align: middle;
@@ -84,4 +91,9 @@ h1 {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.variant-info {
+  width: 100%;
+  height: 5rem;
 }
