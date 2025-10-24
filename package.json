@@ -20,6 +20,8 @@
     "build:plugins": "npx nx run-many -t build --parallel -p tag:type:plugin --exclude=poc-state-plugin",
     "build:styles-example": "npx nx run example-styles:build",
     "lint": "nx run-many --all --target=lint --parallel",
+    "format": "npx nx format:write",
+    "format:check": "npx nx format:check",
     "lint:affected": "npx nx affected --target=lint",
     "test": "nx run-many -t test --parallel -p plugins-runtime lorem-ipsum-plugin colors-to-tokens-plugin",
     "test:e2e": "npx nx test e2e",
