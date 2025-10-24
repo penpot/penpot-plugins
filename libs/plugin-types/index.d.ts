@@ -326,6 +326,22 @@ export interface Board extends ShapeBase {
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * @return Returns true when the current board is a VariantContainer
+   */
+  isVariantContainer(): boolean;
+}
+
+/**
+ * Represents a VariantContainer in Penpot
+ * This interface extends `Board` and includes properties and methods specific to VariantContainer.
+ */
+export interface VariantContainer extends Board {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantContainer)
+   */
+  readonly variants: Variants | null;
 }
 
 /**
@@ -623,13 +639,13 @@ export interface CommonLayout {
    * - 'stretch': Content is stretched to fill the container.
    */
   alignContent?:
-    | 'start'
-    | 'end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'stretch';
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly'
+  | 'stretch';
   /**
    * The `justifyItems` property specifies the default justification for items inside the container.
    * It can be one of the following values:
@@ -651,13 +667,13 @@ export interface CommonLayout {
    * - 'stretch': Content is stretched to fill the container.
    */
   justifyContent?:
-    | 'start'
-    | 'center'
-    | 'end'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'stretch';
+  | 'start'
+  | 'center'
+  | 'end'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly'
+  | 'stretch';
 
   /**
    * The `rowGap` property specifies the gap between rows in the layout.
@@ -1349,6 +1365,22 @@ export interface ContextTypesUtils {
    * @return Returns true if the shape is a SvgRaw, otherwise false.
    */
   isSVG(shape: Shape): shape is SvgRaw;
+
+  /**
+   * Checks if the given shape is a variant container.
+   * @param shape - The shape to check.
+   * @return Returns true if the shape is a variant container, otherwise false.
+   */
+  isVariantContainer(shape: Shape): shape is VariantContainer;
+
+  /**
+   * Checks if the given component is a VariantComponent.
+   * @param component - The component to check.
+   * @return Returns true if the component is a VariantComponent, otherwise false.
+   */
+  isVariantComponent(
+    component: LibraryComponent,
+  ): component is LibraryVariantComponent;
 }
 
 /**
@@ -2437,12 +2469,12 @@ export interface Library extends PluginData {
    * console.log(penpot.library.local.colors);
    * ```
    */
-  colors: LibraryColor[];
+  readonly colors: LibraryColor[];
 
   /**
    * An array of typography elements in the library.
    */
-  typographies: LibraryTypography[];
+  readonly typographies: LibraryTypography[];
 
   /**
    * An array of component elements in the library.
@@ -2450,7 +2482,7 @@ export interface Library extends PluginData {
    * ```js
    * console.log(penpot.library.local.components);
    */
-  components: LibraryComponent[];
+  readonly components: LibraryComponent[];
 
   /**
    * Creates a new color element in the library.
@@ -2555,6 +2587,51 @@ export interface LibraryComponent extends LibraryElement {
    * @return Returns the reference to the main component shape.
    */
   mainInstance(): Shape;
+
+  /**
+   * @return true when this component is a VariantComponent
+   */
+  isVariant(): boolean;
+
+  /**
+   * Creates a new Variant from this standard Component. It creates a VariantContainer, transform this Component into a VariantComponent, duplicates it, and creates a
+   * set of properties based on the component name and path.
+   * Similar to doing it with the contextual menu or the shortcut on the Penpot interface
+   */
+  transformInVariant(): void;
+}
+
+/**
+ * Represents a component element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to component elements.
+ */
+export interface LibraryVariantComponent extends LibraryComponent {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantComponent)
+   */
+  readonly variants: Variants | null;
+
+  /**
+   * A list of the variants props of this VariantComponent. Each property have a key and a value
+   */
+  readonly variantProps: { [property: string]: string };
+
+  /**
+   * If this VariantComponent has an invalid name, that does't follow the structure [property]=[value], [property]=[value]
+   * this field stores that invalid name
+   */
+  variantError: string;
+
+  /**
+   * Creates a duplicate of the current VariantComponent on its Variant
+   */
+  addVariant(): void;
+
+  /**
+   * Sets the value of the variant property on the indicated position
+   */
+
+  setVariantProperty(pos: number, value: string): void;
 }
 
 /**
@@ -2848,14 +2925,14 @@ export interface OverlayAction {
    * Positioning of the overlay.
    */
   readonly position?:
-    | 'manual'
-    | 'center'
-    | 'top-left'
-    | 'top-right'
-    | 'top-center'
-    | 'bottom-left'
-    | 'bottom-right'
-    | 'bottom-center';
+  | 'manual'
+  | 'center'
+  | 'top-left'
+  | 'top-right'
+  | 'top-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'bottom-center';
 
   /**
    * For `position = 'manual'` the location of the overlay.
@@ -2927,15 +3004,15 @@ export interface Page extends PluginData {
     name?: string;
     nameLike?: string;
     type?:
-      | 'board'
-      | 'group'
-      | 'boolean'
-      | 'rectangle'
-      | 'path'
-      | 'text'
-      | 'ellipse'
-      | 'svg-raw'
-      | 'image';
+    | 'board'
+    | 'group'
+    | 'boolean'
+    | 'rectangle'
+    | 'path'
+    | 'text'
+    | 'ellipse'
+    | 'svg-raw'
+    | 'image';
   }): Shape[];
 
   /**
@@ -3053,26 +3130,26 @@ interface PathCommand {
    * ```
    */
   command:
-    | 'M'
-    | 'move-to'
-    | 'Z'
-    | 'close-path'
-    | 'L'
-    | 'line-to'
-    | 'H'
-    | 'line-to-horizontal'
-    | 'V'
-    | 'line-to-vertical'
-    | 'C'
-    | 'curve-to'
-    | 'S'
-    | 'smooth-curve-to'
-    | 'Q'
-    | 'quadratic-bezier-curve-to'
-    | 'T'
-    | 'smooth-quadratic-bezier-curve-to'
-    | 'A'
-    | 'elliptical-arc';
+  | 'M'
+  | 'move-to'
+  | 'Z'
+  | 'close-path'
+  | 'L'
+  | 'line-to'
+  | 'H'
+  | 'line-to-horizontal'
+  | 'V'
+  | 'line-to-vertical'
+  | 'C'
+  | 'curve-to'
+  | 'S'
+  | 'smooth-curve-to'
+  | 'Q'
+  | 'quadratic-bezier-curve-to'
+  | 'T'
+  | 'smooth-quadratic-bezier-curve-to'
+  | 'A'
+  | 'elliptical-arc';
 
   /**
    * Optional parameters associated with the path command.
@@ -3487,22 +3564,22 @@ export interface ShapeBase extends PluginData {
    * The blend mode applied to the shape.
    */
   blendMode:
-    | 'normal'
-    | 'darken'
-    | 'multiply'
-    | 'color-burn'
-    | 'lighten'
-    | 'screen'
-    | 'color-dodge'
-    | 'overlay'
-    | 'soft-light'
-    | 'hard-light'
-    | 'difference'
-    | 'exclusion'
-    | 'hue'
-    | 'saturation'
-    | 'color'
-    | 'luminosity';
+  | 'normal'
+  | 'darken'
+  | 'multiply'
+  | 'color-burn'
+  | 'lighten'
+  | 'screen'
+  | 'color-dodge'
+  | 'overlay'
+  | 'soft-light'
+  | 'hard-light'
+  | 'difference'
+  | 'exclusion'
+  | 'hue'
+  | 'saturation'
+  | 'color'
+  | 'luminosity';
 
   /**
    * The shadows applied to the shape.
@@ -3628,6 +3705,32 @@ export interface ShapeBase extends PluginData {
    * shape as a "basic shape"
    */
   detach(): void;
+
+  /**
+   * TODO
+   */
+  swapComponent(component: LibraryComponent): void;
+
+  /**
+   * Switch a VariantComponent copy to the nearest one that has the specified property value
+   * @param pos The position of the poroperty to update
+   * @param value The new value of the property
+   */
+  switchVariant(pos: number, value: string): void;
+
+  /**
+   * Combine several standard Components into a VariantComponent. Similar to doing it with the contextual menu
+   * on the Penpot interface.
+   * The current shape must be a component main instance.
+   * @param ids A list of ids of the main instances of the components to combine with this one.
+   */
+  combineAsVariants(ids: string[]): void;
+
+  /**
+   * @return Returns true when the current shape is the head of a components tree nested structure,
+   * and that component is a VariantComponent
+   */
+  isVariantHead(): boolean;
 
   /**
    * Resizes the shape to the specified width and height.
@@ -3983,12 +4086,12 @@ export interface TextRange {
    * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
    */
   textTransform:
-    | 'uppercase'
-    | 'capitalize'
-    | 'lowercase'
-    | 'none'
-    | 'mixed'
-    | null;
+  | 'uppercase'
+  | 'capitalize'
+  | 'lowercase'
+  | 'none'
+  | 'mixed'
+  | null;
 
   /**
    * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
@@ -4137,6 +4240,61 @@ export interface User {
    * ```
    */
   readonly sessionId?: string;
+}
+
+/**
+ * TODO
+ */
+export interface Variants {
+  /**
+   * The unique identifier of the variant element. It is the id of the VariantContainer, and all the VariantComponents
+   * that belong to this variant have an attribute variantId which this is as value.
+   */
+  readonly id: string;
+
+  /**
+   * The unique identifier of the library to which the variant belongs.
+   */
+  readonly libraryId: string;
+
+  /**
+   * A list with the names of the properties of the Variant
+   */
+  properties: string[];
+
+  /**
+   * A list of all the values of a property along all the variantComponents of this Variant
+   * @param property The name of the property
+   */
+  currentValues(property: string): string[];
+
+  /**
+   * Remove a property of the Variant
+   * @param pos The position of the property to remove
+   */
+  removeProperty(pos: number): void;
+
+  /**
+   * Rename a property of the Variant
+   * @param pos The position of the property to rename
+   * @param name The new name of the property
+   */
+  renameProperty(pos: number, name: string): void;
+
+  /**
+   * List all the VariantComponents on this Variant.
+   */
+  variantComponents(): LibraryComponent[];
+
+  /**
+   * Creates a duplicate of the main VariantComponent of this Variant
+   */
+  addVariant(): void;
+
+  /**
+   * Adds a new property to this Variant
+   */
+  addProperty(): void;
 }
 
 /**
