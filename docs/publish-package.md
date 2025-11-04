@@ -72,7 +72,9 @@ npm run release -- --help
 
 ## Important Reminders
 
-Ensure to update the [penpot-plugin-starter-template](https://github.com/penpot/penpot-plugin-starter-template) with every release to provide developers with the latest configuration and features.
+- Ensure to update the [penpot](https://github.com/penpot/penpot/blob/develop/frontend/package.json) and [penpot-plugin-starter-template](https://github.com/penpot/penpot-plugin-starter-template) with every release to provide developers with the latest configuration and features.
+
+- Update the API documentations following [this documentation](api-docs.md).
 
 ## Relevant Files and Scripts
 
