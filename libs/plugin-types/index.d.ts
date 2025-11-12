@@ -2273,6 +2273,11 @@ export type ImageData = {
    * Defaults to false if omitted.
    */
   keepAspectRatio?: boolean;
+
+  /**
+   * Returns the imaged data as a byte array.
+   */
+  data(): Promise<Uint8Array>;
 };
 
 /**
