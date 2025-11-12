@@ -649,13 +649,13 @@ export interface CommonLayout {
    * - 'stretch': Content is stretched to fill the container.
    */
   alignContent?:
-  | 'start'
-  | 'end'
-  | 'center'
-  | 'space-between'
-  | 'space-around'
-  | 'space-evenly'
-  | 'stretch';
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
   /**
    * The `justifyItems` property specifies the default justification for items inside the container.
    * It can be one of the following values:
@@ -677,13 +677,13 @@ export interface CommonLayout {
    * - 'stretch': Content is stretched to fill the container.
    */
   justifyContent?:
-  | 'start'
-  | 'center'
-  | 'end'
-  | 'space-between'
-  | 'space-around'
-  | 'space-evenly'
-  | 'stretch';
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+    | 'stretch';
 
   /**
    * The `rowGap` property specifies the gap between rows in the layout.
@@ -2940,14 +2940,14 @@ export interface OverlayAction {
    * Positioning of the overlay.
    */
   readonly position?:
-  | 'manual'
-  | 'center'
-  | 'top-left'
-  | 'top-right'
-  | 'top-center'
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'bottom-center';
+    | 'manual'
+    | 'center'
+    | 'top-left'
+    | 'top-right'
+    | 'top-center'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'bottom-center';
 
   /**
    * For `position = 'manual'` the location of the overlay.
@@ -3019,15 +3019,15 @@ export interface Page extends PluginData {
     name?: string;
     nameLike?: string;
     type?:
-    | 'board'
-    | 'group'
-    | 'boolean'
-    | 'rectangle'
-    | 'path'
-    | 'text'
-    | 'ellipse'
-    | 'svg-raw'
-    | 'image';
+      | 'board'
+      | 'group'
+      | 'boolean'
+      | 'rectangle'
+      | 'path'
+      | 'text'
+      | 'ellipse'
+      | 'svg-raw'
+      | 'image';
   }): Shape[];
 
   /**
@@ -3145,26 +3145,26 @@ interface PathCommand {
    * ```
    */
   command:
-  | 'M'
-  | 'move-to'
-  | 'Z'
-  | 'close-path'
-  | 'L'
-  | 'line-to'
-  | 'H'
-  | 'line-to-horizontal'
-  | 'V'
-  | 'line-to-vertical'
-  | 'C'
-  | 'curve-to'
-  | 'S'
-  | 'smooth-curve-to'
-  | 'Q'
-  | 'quadratic-bezier-curve-to'
-  | 'T'
-  | 'smooth-quadratic-bezier-curve-to'
-  | 'A'
-  | 'elliptical-arc';
+    | 'M'
+    | 'move-to'
+    | 'Z'
+    | 'close-path'
+    | 'L'
+    | 'line-to'
+    | 'H'
+    | 'line-to-horizontal'
+    | 'V'
+    | 'line-to-vertical'
+    | 'C'
+    | 'curve-to'
+    | 'S'
+    | 'smooth-curve-to'
+    | 'Q'
+    | 'quadratic-bezier-curve-to'
+    | 'T'
+    | 'smooth-quadratic-bezier-curve-to'
+    | 'A'
+    | 'elliptical-arc';
 
   /**
    * Optional parameters associated with the path command.
@@ -3584,22 +3584,22 @@ export interface ShapeBase extends PluginData {
    * The blend mode applied to the shape.
    */
   blendMode:
-  | 'normal'
-  | 'darken'
-  | 'multiply'
-  | 'color-burn'
-  | 'lighten'
-  | 'screen'
-  | 'color-dodge'
-  | 'overlay'
-  | 'soft-light'
-  | 'hard-light'
-  | 'difference'
-  | 'exclusion'
-  | 'hue'
-  | 'saturation'
-  | 'color'
-  | 'luminosity';
+    | 'normal'
+    | 'darken'
+    | 'multiply'
+    | 'color-burn'
+    | 'lighten'
+    | 'screen'
+    | 'color-dodge'
+    | 'overlay'
+    | 'soft-light'
+    | 'hard-light'
+    | 'difference'
+    | 'exclusion'
+    | 'hue'
+    | 'saturation'
+    | 'color'
+    | 'luminosity';
 
   /**
    * The shadows applied to the shape.
@@ -4136,12 +4136,12 @@ export interface TextRange {
    * The text transform applied to the text range. It can be a specific text transform or 'mixed' if multiple text transforms are used.
    */
   textTransform:
-  | 'uppercase'
-  | 'capitalize'
-  | 'lowercase'
-  | 'none'
-  | 'mixed'
-  | null;
+    | 'uppercase'
+    | 'capitalize'
+    | 'lowercase'
+    | 'none'
+    | 'mixed'
+    | null;
 
   /**
    * The text decoration applied to the text range. It can be a specific text decoration or 'mixed' if multiple text decorations are used.
