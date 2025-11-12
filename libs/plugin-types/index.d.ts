@@ -257,8 +257,17 @@ export interface Board extends ShapeBase {
   // Container Properties
   /**
    * The children shapes contained within the board.
+   * When writing into this property, you can only reorder the shapes, not
+   * changing the structure. If the new shapes don't match the current shapes
+   * it will give a validation error.
+   *
+   * @example
+   * ```js
+   * board.children = board.children.reverse();
+   * ```
    */
-  readonly children: Shape[];
+  children: Shape[];
+
   /**
    * Appends a child shape to the board.
    * @param child The child shape to append.
@@ -269,6 +278,7 @@ export interface Board extends ShapeBase {
    * ```
    */
   appendChild(child: Shape): void;
+
   /**
    * Inserts a child shape at the specified index within the board.
    * @param index The index at which to insert the child shape.
@@ -3476,6 +3486,11 @@ export interface ShapeBase extends PluginData {
   readonly parent: Shape | null;
 
   /**
+   * Returns the index of the current shape in the parent
+   */
+  readonly parentIndex: number;
+
+  /**
    * The x-coordinate of the shape's position.
    */
   x: number;
@@ -3657,6 +3672,16 @@ export interface ShapeBase extends PluginData {
   readonly layoutCell?: LayoutChildProperties;
 
   /**
+   * Changes the index inside the parent of the current shape.
+   * This method will shift the indexes of the shapes around that position to
+   * match the index.
+   * If the index is greater than the number of elements it will positioned last.
+   *
+   * @param index the new index for the shape to be in
+   */
+  setParentIndex(index: number): void;
+
+  /**
    * @return Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
@@ -3760,6 +3785,26 @@ export interface ShapeBase extends PluginData {
    * ```
    */
   rotate(angle: number, center?: { x: number; y: number } | null): void;
+
+  /**
+   * Moves the current shape to the front of its siblings
+   */
+  bringToFront(): void;
+
+  /**
+   * Moves the current shape one position forward in its list of siblings
+   */
+  bringForward(): void;
+
+  /**
+   * Moves the current shape to the back of its siblings
+   */
+  sendToBack(): void;
+
+  /**
+   * Moves the current shape one position backwards in its list of siblings
+   */
+  sendBackward(): void;
 
   /**
    * Generates an export from the current shape.
