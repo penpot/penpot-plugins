@@ -317,9 +317,9 @@ export function createApi(
       return plugin.context.createPage();
     },
 
-    openPage(page: Page): void {
+    openPage(page: Page, newWindow?: boolean): void {
       checkPermission('content:read');
-      plugin.context.openPage(page);
+      plugin.context.openPage(page, newWindow ?? true);
     },
 
     alignHorizontal(
