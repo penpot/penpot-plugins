@@ -65,7 +65,7 @@ function createGroupCell(
   numCols: number,
   row: number,
   col: number,
-  message: TablePluginEvent
+  message: TablePluginEvent,
 ) {
   const bg = penpot.createRectangle();
   bg.x = 0;
@@ -145,7 +145,7 @@ function createFlexCell(
   numCols: number,
   row: number,
   col: number,
-  message: TablePluginEvent
+  message: TablePluginEvent,
 ) {
   const board = penpot.createBoard();
 

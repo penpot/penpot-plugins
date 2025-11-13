@@ -59,8 +59,8 @@ export default [
         hardenIntrinsics: 'readonly',
         Compartment: 'readonly',
         harden: 'readonly',
-      }
-    }
+      },
+    },
   },
   ...compat
     .config({
@@ -79,7 +79,7 @@ export default [
         'no-multiple-empty-lines': [2, { max: 1 }],
         quotes: ['error', 'single', { avoidEscape: true }],
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['error']
+        '@typescript-eslint/no-unused-vars': ['error'],
       },
     })),
   ...compat
@@ -108,12 +108,12 @@ export default [
       },
       languageOptions: {
         globals: {
-          ...globals.jest
-        }
+          ...globals.jest,
+        },
       },
     })),
   {
     files: ['**/*.js', '**/*.jsx'],
     rules: {},
-  }
+  },
 ];

@@ -12,13 +12,13 @@ import { FormsModule } from '@angular/forms';
 import { Shape } from '@penpot/plugin-types';
 
 @Component({
-    imports: [RouterModule, CommonModule, FormsModule],
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css',
-    host: {
-        '[attr.data-theme]': 'theme()',
-    }
+  imports: [RouterModule, CommonModule, FormsModule],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
+  host: {
+    '[attr.data-theme]': 'theme()',
+  },
 })
 export class AppComponent {
   @ViewChild('searchElement') public searchElement!: ElementRef;
@@ -41,7 +41,7 @@ export class AppComponent {
   initialTheme$ = this.route.queryParamMap.pipe(
     map((params) => params.get('theme')),
     filter((theme) => !!theme),
-    take(1)
+    take(1),
   );
 
   theme = toSignal(
@@ -51,15 +51,16 @@ export class AppComponent {
         filter((event) => event.data.type === 'theme'),
         map((event) => {
           return (event.data as ThemePluginEvent).content;
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   previewList = toSignal(
     this.messages$.pipe(
       filter(
-        (event) => event.data.type === 'init' || event.data.type === 'selection'
+        (event) =>
+          event.data.type === 'init' || event.data.type === 'selection',
       ),
       map((event) => {
         if (event.data.type === 'init') {
@@ -69,11 +70,11 @@ export class AppComponent {
         }
 
         return [];
-      })
+      }),
     ),
     {
       initialValue: [],
-    }
+    },
   );
 
   public updateText() {
@@ -111,7 +112,7 @@ export class AppComponent {
     if (this.textToReplace.search) {
       return text.replace(
         this.textToReplace.search,
-        `<span class="highlight">${this.textToReplace.search}</span>`
+        `<span class="highlight">${this.textToReplace.search}</span>`,
       );
     } else {
       return text;

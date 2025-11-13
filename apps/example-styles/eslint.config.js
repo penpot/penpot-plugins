@@ -16,9 +16,9 @@ export default [
     rules: {},
     languageOptions: {
       globals: {
-        ...globals.browser
-      }
-    }
+        ...globals.browser,
+      },
+    },
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

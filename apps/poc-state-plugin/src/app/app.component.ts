@@ -3,9 +3,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import type { Shape } from '@penpot/plugin-types';
 
 @Component({
-    selector: 'app-root',
-    imports: [ReactiveFormsModule],
-    template: `
+  selector: 'app-root',
+  imports: [ReactiveFormsModule],
+  template: `
     <div class="wrapper">
       <h1>Test area!</h1>
 
@@ -218,7 +218,7 @@ import type { Shape } from '@penpot/plugin-types';
       </p>
     </div>
   `,
-    styleUrl: './app.component.css',
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   #pageId: null | string = null;
@@ -241,7 +241,7 @@ export class AppComponent {
       } else if (event.data.type === 'page') {
         this.#refreshPage(
           event.data.content.page.id,
-          event.data.content.page.name
+          event.data.content.page.name,
         );
       } else if (event.data.type === 'selection') {
         this.#refreshSelection(event.data.content.selection);

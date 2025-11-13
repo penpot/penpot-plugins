@@ -21,7 +21,8 @@
         ],
         "styles": [
           "libs/plugins-styles/src/lib/styles.css",
-          "apps/poc-state-plugin/src/styles.css"],
+          "apps/poc-state-plugin/src/styles.css"
+        ],
         "scripts": [],
         "optimization": {
           "scripts": true,

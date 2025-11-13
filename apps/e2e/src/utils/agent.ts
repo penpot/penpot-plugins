@@ -93,11 +93,15 @@ export async function Agent() {
   return {
     async runCode(
       code: string,
-      options: { screenshot?: string; autoFinish?: boolean, avoidSavedStatus?: boolean, } = {
+      options: {
+        screenshot?: string;
+        autoFinish?: boolean;
+        avoidSavedStatus?: boolean;
+      } = {
         screenshot: '',
         autoFinish: true,
-        avoidSavedStatus: false
-      }
+        avoidSavedStatus: false,
+      },
     ) {
       const autoFinish = options.autoFinish ?? true;
 
@@ -114,14 +118,14 @@ export async function Agent() {
           permissions: ['content:read', 'content:write'],
         });
       }, code);
-      
+
       if (!options.avoidSavedStatus) {
         console.log('Waiting for save status...');
         await page.waitForSelector(
           '.main_ui_workspace_right_header__saved-status',
           {
             timeout: 10000,
-          }
+          },
         );
         console.log('Save status found.');
       }
@@ -136,7 +140,7 @@ export async function Agent() {
       return new Promise((resolve) => {
         page.once('console', async (msg) => {
           const args = (await Promise.all(
-            msg.args().map((arg) => arg.jsonValue())
+            msg.args().map((arg) => arg.jsonValue()),
           )) as Record<string, unknown>[];
 
           const result = Object.values(args[1]) as Shape[];

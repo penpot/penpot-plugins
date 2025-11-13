@@ -10,8 +10,8 @@ function createPalette() {
     a.name.toLowerCase() > b.name.toLowerCase()
       ? 1
       : a.name.toLowerCase() < b.name.toLowerCase()
-      ? -1
-      : 0
+        ? -1
+        : 0,
   );
 
   const cols = 4;

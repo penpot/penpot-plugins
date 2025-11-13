@@ -32,9 +32,10 @@ export function transformToToken(colors: LibraryColor[]) {
               opacity: currentOpacity,
               color: data.color,
             });
-            
+
       const names: string[] = data.name.replace(/[#{}$]/g, '').split(' ');
-      const key: string = data.path.replace(' \\/ ', '/').replace(/ /g, '') || 'global';
+      const key: string =
+        data.path.replace(' \\/ ', '/').replace(/ /g, '') || 'global';
 
       if (!result[key]) {
         result[key] = {};

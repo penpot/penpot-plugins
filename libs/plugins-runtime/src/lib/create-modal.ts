@@ -71,16 +71,16 @@ export function resizeModal(
   height = Math.max(height, minPluginHeight);
 
   let deltax = 0;
-  if ((curX + width) > maxWidth) {
+  if (curX + width > maxWidth) {
     deltax = maxWidth - (curX + width);
   }
 
   let deltay = 0;
-  if ((curY + height) > maxHeight) {
+  if (curY + height > maxHeight) {
     deltay = maxHeight - (curY + height);
   }
 
-  let {x, y} = parseTranslate(modal.wrapper);
+  let { x, y } = parseTranslate(modal.wrapper);
   x = x + deltax;
   y = y + deltay;
 

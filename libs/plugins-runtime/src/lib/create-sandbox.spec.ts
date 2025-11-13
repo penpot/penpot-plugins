@@ -71,7 +71,7 @@ describe('createSandbox', () => {
 
     const timeoutId = sandbox.compartment.globalThis['setTimeout'](
       handler,
-      1000
+      1000,
     );
 
     expect(timeoutId).toBeDefined();
@@ -130,7 +130,7 @@ describe('createSandbox', () => {
         url: 'https://example.com/api',
         text: expect.any(Function),
         json: expect.any(Function),
-      })
+      }),
     );
 
     fetchSpy.mockRestore();
@@ -140,13 +140,13 @@ describe('createSandbox', () => {
     const sandbox = createSandbox(mockPlugin);
 
     expect(
-      Object.keys(sandbox.compartment.globalThis).filter((it) => !!it).length
+      Object.keys(sandbox.compartment.globalThis).filter((it) => !!it).length,
     ).toBeGreaterThan(0);
 
     sandbox.cleanGlobalThis();
 
     expect(
-      Object.keys(sandbox.compartment.globalThis).filter((it) => !!it).length
+      Object.keys(sandbox.compartment.globalThis).filter((it) => !!it).length,
     ).toBe(0);
   });
 

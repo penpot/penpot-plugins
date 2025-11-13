@@ -12,13 +12,13 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
 
 @Component({
-    imports: [RouterModule, CommonModule, ReactiveFormsModule],
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css',
-    host: {
-        '[attr.data-theme]': 'theme()',
-    }
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
+  host: {
+    '[attr.data-theme]': 'theme()',
+  },
 })
 export class AppComponent {
   private readonly fb = inject(FormBuilder);
@@ -43,7 +43,7 @@ export class AppComponent {
   initialTheme$ = this.route.queryParamMap.pipe(
     map((params) => params.get('theme')),
     filter((theme) => !!theme),
-    take(1)
+    take(1),
   );
 
   theme = toSignal(
@@ -53,9 +53,9 @@ export class AppComponent {
         filter((event) => event.data.type === 'theme'),
         map((event) => {
           return event.data.content;
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   constructor() {
@@ -134,14 +134,14 @@ export class AppComponent {
         filter(
           (event) =>
             event.data.type === 'tableconfig' &&
-            event.data.content.type === 'retrieve'
+            event.data.content.type === 'retrieve',
         ),
         take(1),
         map((event) => {
           const data = (event.data as TableConfigEvent).content.options;
 
           return data;
-        })
+        }),
       )
       .subscribe((data) => {
         if (data) {
