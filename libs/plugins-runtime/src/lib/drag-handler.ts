@@ -1,6 +1,10 @@
 import { parseTranslate } from './parse-translate';
 
-export const dragHandler = (el: HTMLElement, target: HTMLElement = el, move?: () => void) => {
+export const dragHandler = (
+  el: HTMLElement,
+  target: HTMLElement = el,
+  move?: () => void,
+) => {
   let initialTranslate = { x: 0, y: 0 };
   let initialClientPosition = { x: 0, y: 0 };
 

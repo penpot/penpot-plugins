@@ -12,7 +12,7 @@ export async function createPluginManager(
   context: Context,
   manifest: Manifest,
   onCloseCallback: () => void,
-  onReloadModal: (code: string) => void
+  onReloadModal: (code: string) => void,
 ) {
   let code = await loadManifestCode(manifest);
 
@@ -23,7 +23,7 @@ export async function createPluginManager(
   const timeouts = new Set<ReturnType<typeof setTimeout>>();
 
   const allowDownloads = !!manifest.permissions.find(
-    (s) => s === 'allow:downloads'
+    (s) => s === 'allow:downloads',
   );
 
   const themeChangeId = context.addListener('themechange', (theme: Theme) => {
@@ -114,7 +114,7 @@ export async function createPluginManager(
 
         callback(...params);
       },
-      props
+      props,
     );
 
     listeners.push(id);

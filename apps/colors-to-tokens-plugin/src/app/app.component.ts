@@ -157,16 +157,16 @@ export class AppComponent {
     const extraData: TokenFileExtraData = {
       $themes: [],
       $metadata: {
-          activeThemes: [],
-          tokenSetOrder: [],
-          activeSets: []
-      }
-    }
+        activeThemes: [],
+        tokenSetOrder: [],
+        activeSets: [],
+      },
+    };
 
     const tokensStructure = {
       ...fileTokens.tokens,
-      ...extraData
-    }
+      ...extraData,
+    };
 
     const blob = new Blob([JSON.stringify(tokensStructure)], {
       type: 'text/json',

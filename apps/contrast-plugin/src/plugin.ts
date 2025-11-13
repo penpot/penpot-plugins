@@ -40,7 +40,7 @@ function initEvents() {
         const shapes = penpot.selection;
         sendMessage({ type: 'selection', content: shapes });
       },
-      { shapeId: shape.id }
+      { shapeId: shape.id },
     );
   });
 }

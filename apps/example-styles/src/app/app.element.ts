@@ -14,7 +14,7 @@ export class AppElement extends HTMLElement {
       code.classList.add('language-html');
       const removeLineIndentation = el.innerHTML.replaceAll(
         this.getIndentationSize(el.innerHTML),
-        ''
+        '',
       );
 
       code.textContent = removeLineIndentation;

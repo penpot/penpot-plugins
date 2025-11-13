@@ -3,8 +3,5 @@
   "description": "Table plugin to import or create tables",
   "code": "/assets/plugin.js",
   "icon": "/assets/icon.png",
-  "permissions": [
-    "content:read",
-    "content:write"
-  ]
+  "permissions": ["content:read", "content:write"]
 }

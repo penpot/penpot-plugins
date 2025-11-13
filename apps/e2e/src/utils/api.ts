@@ -18,7 +18,7 @@ export async function PenpotApi() {
         '~:email': process.env['E2E_LOGIN_EMAIL'],
         '~:password': process.env['E2E_LOGIN_PASSWORD'],
       }),
-    }
+    },
   );
 
   const loginData = await resultLoginRequest.json();
@@ -58,7 +58,7 @@ export async function PenpotApi() {
               ],
             },
           }),
-        }
+        },
       );
 
       return (await createFileRequest.json()) as FileRpc;
@@ -76,7 +76,7 @@ export async function PenpotApi() {
           body: JSON.stringify({
             '~:id': fileId,
           }),
-        }
+        },
       );
 
       return deleteFileRequest;

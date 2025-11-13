@@ -27,7 +27,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
       shape.name = shape.name.replace(
         // eslint-disable-next-line
         message.content.search,
-        message.content.replace
+        message.content.replace,
       );
     });
     updateReplaceTextPreview(message.content.search);
@@ -41,7 +41,7 @@ penpot.ui.onMessage<PluginMessageEvent>((message) => {
     const currentNames = message.content.map((shape) => shape.current);
     const shapes = getShapes();
     const shapesToUpdate = shapes?.filter((shape) =>
-      currentNames.includes(shape.name)
+      currentNames.includes(shape.name),
     );
     shapesToUpdate?.forEach((shape) => {
       const newText = message.content.find((it) => it.current === shape.name);

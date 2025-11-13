@@ -21,7 +21,7 @@ describe('dragHandler', () => {
 
     expect(addEventListenerMock).toHaveBeenCalledWith(
       'mousedown',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -69,11 +69,11 @@ describe('dragHandler', () => {
 
     expect(removeEventListenerMock).toHaveBeenCalledWith(
       'mousemove',
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(removeEventListenerMock).toHaveBeenCalledWith(
       'mouseup',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });

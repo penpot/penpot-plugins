@@ -11,9 +11,9 @@ export interface TokenFileExtraData {
 }
 
 export interface TokenFileMetada {
-  activeThemes: [],
-  tokenSetOrder: [],
-  activeSets: []
+  activeThemes: [];
+  tokenSetOrder: [];
+  activeSets: [];
 }
 
 export type TokenStructure = {

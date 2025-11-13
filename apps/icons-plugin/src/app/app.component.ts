@@ -9,37 +9,37 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
 import { PluginMessageEvent } from '../model';
 
 @Component({
-    selector: 'app-root',
-    imports: [
-        RouterModule,
-        SafeHtmlPipe,
-        IconButtonComponent,
-        IconSearchComponent,
-    ],
-    styleUrl: './app.component.css',
-    template: `<div class="icons-plugin">
+  selector: 'app-root',
+  imports: [
+    RouterModule,
+    SafeHtmlPipe,
+    IconButtonComponent,
+    IconSearchComponent,
+  ],
+  styleUrl: './app.component.css',
+  template: `<div class="icons-plugin">
     <div class="icons-search">
       <app-icon-search
         (searchIcons)="this.searchIcons($event)"
       ></app-icon-search>
     </div>
     @if (iconKeys().length === 0) {
-    <div class="no-icons-found">No icons found</div>
+      <div class="no-icons-found">No icons found</div>
     } @else {
-    <div class="icons-list">
-      @for (key of iconKeys(); track key) {
-      <app-icon-button
-        [class]="theme()"
-        [icon]="icons()[key]"
-        (insertIcon)="this.insertIcon(key)"
-      ></app-icon-button>
-      }
-    </div>
+      <div class="icons-list">
+        @for (key of iconKeys(); track key) {
+          <app-icon-button
+            [class]="theme()"
+            [icon]="icons()[key]"
+            (insertIcon)="this.insertIcon(key)"
+          ></app-icon-button>
+        }
+      </div>
     }
   </div>`,
-    host: {
-        '[attr.data-theme]': 'theme()',
-    }
+  host: {
+    '[attr.data-theme]': 'theme()',
+  },
 })
 export class AppComponent {
   public route = inject(ActivatedRoute);
@@ -47,13 +47,13 @@ export class AppComponent {
   public iconKeys = signal(Object.keys(icons) as FeatherIconNames[]);
   public messages$ = fromEvent<MessageEvent<PluginMessageEvent>>(
     window,
-    'message'
+    'message',
   );
 
   public initialTheme$ = this.route.queryParamMap.pipe(
     map((params) => params.get('theme')),
     filter((theme) => !!theme),
-    take(1)
+    take(1),
   );
 
   public theme = toSignal(
@@ -63,9 +63,9 @@ export class AppComponent {
         filter((event) => event.data.type === 'theme'),
         map((event) => {
           return event.data.content;
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   public insertIcon(key: FeatherIconNames): void {
@@ -97,7 +97,7 @@ export class AppComponent {
     const filtered = allKeys.filter(
       (key) =>
         this.icons()[key].tags.some((t) => t.match(search)) ||
-        this.icons()[key].name.match(search)
+        this.icons()[key].name.match(search),
     ) as FeatherIconNames[];
 
     this.iconKeys.set(filtered);

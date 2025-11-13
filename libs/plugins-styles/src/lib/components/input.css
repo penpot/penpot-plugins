@@ -114,7 +114,7 @@
   outline: none;
   padding-block: var(--spacing-8);
   padding-inline: var(--spacing-8);
-  
+
   &:invalid {
     border-color: var(--error-500);
   }

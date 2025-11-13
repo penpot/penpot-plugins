@@ -135,7 +135,7 @@ export function generateParagraphs(count: number, startWithLorem = true) {
   for (let i = 0; i < count; i++) {
     let paragraphLength = Math.floor(Math.random() * 5) + 3; // between 3 and 7 sentences per paragraph
     paragraphs.push(
-      generateSentences(paragraphLength, startWithLorem && i === 0)
+      generateSentences(paragraphLength, startWithLorem && i === 0),
     );
   }
   return paragraphs.join('\n\n');

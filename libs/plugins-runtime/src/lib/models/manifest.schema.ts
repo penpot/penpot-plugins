@@ -18,6 +18,6 @@ export const manifestSchema = z.object({
       'comment:write',
       'allow:downloads',
       'allow:localstorage',
-    ])
+    ]),
   ),
 });

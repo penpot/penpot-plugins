@@ -45,5 +45,5 @@ export default [
   })),
   {
     ignores: ['eslint.config.js', 'vite.config.{js,ts,mjs,mts}'],
-  }
+  },
 ];
