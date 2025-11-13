@@ -23,6 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch base branch
+        if: github.event_name == 'pull_request'
         run: |
           git fetch origin main:main
 
