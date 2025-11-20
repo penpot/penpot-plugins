@@ -57,6 +57,7 @@ A table listing the available plugins and their corresponding startup commands i
 | table-plugin            | Create or import table                                      | 4306 | npm run start:table-plugin            | http://localhost:4306/assets/manifest.json |
 | rename-layers-plugin    | Rename layers in bulk                                       | 4307 | npm run start:plugin:renamelayers     | http://localhost:4307/assets/manifest.json |
 | colors-to-tokens-plugin | Generate tokens JSON file                                   | 4308 | npm run start:plugin:colors-to-tokens | http://localhost:4308/assets/manifest.json |
+| poc-tokens-plugin       | Sandbox plugin to test tokens functionality                 | 4309 | npm run start:plugin:poc-tokens       | http://localhost:4309/assets/manifest.json |
 
 ## Web Apps
 
