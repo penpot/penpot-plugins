@@ -367,12 +367,25 @@ export interface Boolean extends ShapeBase {
   /**
    * Converts the boolean shape to its path data representation.
    * @return Returns the path data (d attribute) as a string.
+   * @deprecated Use the `d` attribute
    */
   toD(): string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   * @deprecated Use either `d` or `commands`.
+   */
+  content: string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   */
+  d: string;
+
   /**
    * The content of the boolean shape, defined as an array of path commands.
    */
-  content: Array<PathCommand>;
+  commands: Array<PathCommand>;
 
   /**
    * The fills applied to the shape.
@@ -3108,12 +3121,25 @@ export interface Path extends ShapeBase {
   /**
    * Converts the path shape to its path data representation.
    * @return Returns the path data (d attribute) as a string.
+   * @deprecated Use the `d` attribute
    */
   toD(): string;
+
   /**
-   * The content of the path shape, defined as an array of path commands.
+   * The content of the boolean shape, defined as the path string.
+   * @deprecated Use either `d` or `commands`.
    */
-  content: Array<PathCommand>;
+  content: string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   */
+  d: string;
+
+  /**
+   * The content of the boolean shape, defined as an array of path commands.
+   */
+  commands: Array<PathCommand>;
 
   /**
    * The fills applied to the shape.
