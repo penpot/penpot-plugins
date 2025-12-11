@@ -4992,7 +4992,7 @@ export interface TokenCatalog {
    * @param name The name of the theme (required)
    * @return Returns the created TokenTheme.
    */
-  addTheme(group: string, name: string): TokenTheme;
+  addTheme({group: string, name: string}): TokenTheme;
 
   /**
    * Creates a new TokenSet and adds it to the catalog.
@@ -5000,7 +5000,7 @@ export interface TokenCatalog {
    * a group path, separated by `/`.
    * @return Returns the created TokenSet.
    */
-  addSet(name: string): TokenSet;
+  addSet({name: string}): TokenSet;
 
   /**
    * Retrieves a theme.
@@ -5070,7 +5070,7 @@ export interface TokenSet {
    * a group path, separated by `.`.
    * @return Returns the created Token.
    */
-  addToken(type: TokenType, name: string, value: unknown): Token;
+  addToken({type: TokenType, name: string, value: unknown}): Token;
 
   /**
    * Adds to the catalog a new TokenSet equal to this one but with a new id.
