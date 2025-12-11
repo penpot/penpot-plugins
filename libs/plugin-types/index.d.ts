@@ -4354,7 +4354,7 @@ export interface TokenBorderRadius extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'border-radius';
+  readonly type: 'borderRadius';
 
   /**
    * The value as defined in the token itself.
@@ -4427,7 +4427,7 @@ export interface TokenFontFamily extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'font-family';
+  readonly type: 'fontFamily';
 
   /**
    * The value as defined in the token itself.
@@ -4454,7 +4454,7 @@ export interface TokenFontSize extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'font-size';
+  readonly type: 'fontSize';
 
   /**
    * The value as defined in the token itself.
@@ -4479,7 +4479,7 @@ export interface TokenFontWeight extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'font-weight';
+  readonly type: 'fontWeight';
 
   /**
    * The value as defined in the token itself.
@@ -4504,7 +4504,7 @@ export interface TokenFontLetterSpacing extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'letter-spacing';
+  readonly type: 'letterSpacing';
 
   /**
    * The value as defined in the token itself.
@@ -4529,7 +4529,7 @@ export interface TokenNumber extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'letter-number';
+  readonly type: 'letterNumber';
 
   /**
    * The value as defined in the token itself.
@@ -4654,7 +4654,7 @@ export interface TokenStrokeWidth extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'stroke-width';
+  readonly type: 'strokeWidth';
 
   /**
    * The value as defined in the token itself.
@@ -4679,7 +4679,7 @@ export interface TokenTextCase extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'text-case';
+  readonly type: 'textCase';
 
   /**
    * The value as defined in the token itself.
@@ -4704,7 +4704,7 @@ export interface TokenTextDecoration extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'text-decoration';
+  readonly type: 'textDecoration';
 
   /**
    * The value as defined in the token itself.
