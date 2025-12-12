@@ -2787,9 +2787,9 @@ export interface LibraryTypography extends LibraryElement {
   fontId: string;
 
   /**
-   * The font family of the typography element.
+   * The font families of the typography element.
    */
-  fontFamily: string;
+  fontFamilies: string;
 
   /**
    * The unique identifier of the font variant used in the typography element.
@@ -4366,9 +4366,112 @@ export interface TokenBorderRadius extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a positive number of undefined if no set is active.
+   * It's a positive number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
+}
+
+/*
+ * The value of a TokenShadow in its composite form.
+ */
+export interface TokenShadowValue {
+  /**
+   * The color as a string (e.g. "#FF5733").
+   */
+  color: string;
+
+  /**
+   * If the shadow is inset or drop.
+   */
+  inset: boolean;
+
+  /**
+   * The horizontal offset of the shadow in pixels.
+   */
+  offsetX: number;
+
+  /**
+   * The vertical offset of the shadow in pixels.
+   */
+  offsetY: number;
+
+  /**
+   * The spread distance of the shadow in pixels.
+   */
+  spread: number;
+
+  /**
+   * The amount of blur to apply to the shadow.
+   */
+  blur: number;
+}
+
+/*
+ * The value of a TokenShadow in its composite of strings form.
+ */
+export interface TokenShadowValueString {
+  /**
+   * The color as a string (e.g. "#FF5733"), or a reference
+   * to a color token.
+   */
+  color: string;
+
+  /**
+   * If the shadow is inset or drop, or a reference of a
+   * boolean token.
+   */
+  inset: string;
+
+  /**
+   * The horizontal offset of the shadow in pixels, or a reference
+   * to a number token.
+   */
+  offsetX: string;
+
+  /**
+   * The vertical offset of the shadow in pixels, or a reference
+   * to a number token.
+   */
+  offsetY: string;
+
+  /**
+   * The spread distance of the shadow in pixels, or a reference
+   * to a number token.
+   */
+  spread: string;
+
+  /**
+   * The amount of blur to apply to the shadow, or a reference
+   * to a number token.
+   */
+  blur: string;
+}
+
+/**
+ * Represents a token of type Shadow.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenShadow extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'shadow';
+
+  /**
+   * The value as defined in the token itself.
+   * It may be a string with a reference to other token, or else
+   * an array of TokenShadowValueString.
+   */
+  value: string | TokenShadowValueString[];
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's an array of TokenShadowValue, or undefined if no value has been found
+   * in active sets.
+   */
+  readonly resolvedValue: TokenShadowValue[] | undefined;
 }
 
 /**
@@ -4414,47 +4517,48 @@ export interface TokenDimension extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a positive number of undefined if no set is active.
+   * It's a positive number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
 
 /**
- * Represents a token of type FontFamily.
+ * Represents a token of type FontFamilies.
  * This interface extends `TokenBase` and specifies the data type of the value.
  */
-export interface TokenFontFamily extends TokenBase {
+export interface TokenFontFamilies extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'fontFamily';
+  readonly type: 'fontFamilies';
 
   /**
    * The value as defined in the token itself.
-   * It's a string with one or more font families, separated
-   * by commas, or a reference.
+   * It may be a string with a reference to other token, or else
+   * an array of strings with one or more font families (each family
+   * is an item in the array).
    */
-  value: string;
+  value: string | string[];
 
   /**
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a string with one or more font families, separated
-   * by commas, of undefined if no set is active.
+   * It's an array of strings with one or more font families,
+   * or undefined if no value has been found in active sets.
    */
-  readonly resolvedValue: string | undefined;
+  readonly resolvedValue: string[] | undefined;
 }
 
 /**
- * Represents a token of type FontSize.
+ * Represents a token of type FontSizes.
  * This interface extends `TokenBase` and specifies the data type of the value.
  */
-export interface TokenFontSize extends TokenBase {
+export interface TokenFontSizes extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'fontSize';
+  readonly type: 'fontSizes';
 
   /**
    * The value as defined in the token itself.
@@ -4466,20 +4570,20 @@ export interface TokenFontSize extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a positive number of undefined if no set is active.
+   * It's a positive number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
 
 /**
- * Represents a token of type FontWeight.
+ * Represents a token of type FontWeights.
  * This interface extends `TokenBase` and specifies the data type of the value.
  */
-export interface TokenFontWeight extends TokenBase {
+export interface TokenFontWeights extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'fontWeight';
+  readonly type: 'fontWeights';
 
   /**
    * The value as defined in the token itself.
@@ -4491,16 +4595,16 @@ export interface TokenFontWeight extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a weight string of undefined if no set is active.
+   * It's a weight string, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: string | undefined;
 }
 
 /**
- * Represents a token of type FontLetterSpacing.
+ * Represents a token of type LetterSpacing.
  * This interface extends `TokenBase` and specifies the data type of the value.
  */
-export interface TokenFontLetterSpacing extends TokenBase {
+export interface TokenLetterSpacing extends TokenBase {
   /**
    * The type of the token.
    */
@@ -4516,9 +4620,9 @@ export interface TokenFontLetterSpacing extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number of undefined if no set is active.
+   * It's a number, or undefined if no value has been found in active sets.
    */
-  readonly resolvedValue: string | undefined;
+  readonly resolvedValue: number | undefined;
 }
 
 /**
@@ -4529,7 +4633,7 @@ export interface TokenNumber extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'letterNumber';
+  readonly type: 'number';
 
   /**
    * The value as defined in the token itself.
@@ -4541,7 +4645,7 @@ export interface TokenNumber extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number of undefined if no set is active.
+   * It's a number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
@@ -4566,7 +4670,8 @@ export interface TokenOpacity extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number between 0 and 1 of undefined if no set is active.
+   * It's a number between 0 and 1, or undefined if no value has been found
+   * in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
@@ -4591,7 +4696,8 @@ export interface TokenRotation extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number in degrees of undefined if no set is active.
+   * It's a number in degrees, or undefined if no value has been found
+   * in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
@@ -4616,7 +4722,7 @@ export interface TokenSizing extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number of undefined if no set is active.
+   * It's a number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
@@ -4641,20 +4747,20 @@ export interface TokenSpacing extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a number of undefined if no set is active.
+   * It's a number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
 
 /**
- * Represents a token of type StrokeWidth.
+ * Represents a token of type BorderWidth.
  * This interface extends `TokenBase` and specifies the data type of the value.
  */
-export interface TokenStrokeWidth extends TokenBase {
+export interface TokenBorderWidth extends TokenBase {
   /**
    * The type of the token.
    */
-  readonly type: 'strokeWidth';
+  readonly type: 'borderWidth';
 
   /**
    * The value as defined in the token itself.
@@ -4666,7 +4772,7 @@ export interface TokenStrokeWidth extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a positive number of undefined if no set is active.
+   * It's a positive number, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: number | undefined;
 }
@@ -4691,7 +4797,7 @@ export interface TokenTextCase extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a case string of undefined if no set is active.
+   * It's a case string, or undefined if no value has been found in active sets.
    */
   readonly resolvedValue: string | undefined;
 }
@@ -4716,7 +4822,8 @@ export interface TokenTextDecoration extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a decoration string of undefined if no set is active.
+   * It's a decoration string, or undefined if no value has been found
+   * in active sets.
    */
   readonly resolvedValue: string | undefined;
 }
@@ -4726,14 +4833,15 @@ export interface TokenTextDecoration extends TokenBase {
  */
 export type Token =
   | TokenBorderRadius
+  | TokenShadow
   | TokenColor
   | TokenDimension
-  | TokenFontSize
+  | TokenFontSizes
   | TokenOpacity
   | TokenRotation
   | TokenSizing
   | TokenSpacing
-  | TokenStrokeWidth;
+  | TokenBorderWidth;
 
 /**
  * The collection of all tokens in a Penpot file's library.
@@ -4936,6 +5044,11 @@ export interface TokenTheme {
 type TokenBorderRadiusProps = 'r1' | 'r2' | 'r3' | 'r4';
 
 /**
+ * The properties that a Shadow token can be applied to.
+ */
+type TokenShadowProps = 'shadow';
+
+/**
  * The properties that a Color token can be applied to.
  */
 type TokenColorProps = 'fill' | 'stroke';
@@ -4952,14 +5065,14 @@ type TokenDimensionProps =
   | 'stroke-width';
 
 /**
- * The properties that a FontFamily token can be applied to.
+ * The properties that a FontFamilies token can be applied to.
  */
-type TokenFontFamilyProps = 'font-family';
+type TokenFontFamiliesProps = 'font-families';
 
 /**
- * The properties that a FontSize token can be applied to.
+ * The properties that a FontSizes token can be applied to.
  */
-type TokenFontSizeProps = 'font-size';
+type TokenFontSizesProps = 'font-size';
 
 /**
  * The properties that a FontWeight token can be applied to.
@@ -4969,7 +5082,7 @@ type TokenFontWeightProps = 'font-weight';
 /**
  * The properties that a LetterSpacing token can be applied to.
  */
-type TokenFontLetterSpacingProps = 'letter-spacing';
+type TokenLetterSpacingProps = 'letter-spacing';
 
 /**
  * The properties that a Number token can be applied to.
@@ -5016,9 +5129,9 @@ type TokenSpacingProps =
   | 'm4';
 
 /**
- * The properties that a StrokeWidth token can be applied to.
+ * The properties that a BorderWidth token can be applied to.
  */
-type TokenStrokeWidthProps = 'stroke-width';
+type TokenBorderWidthProps = 'stroke-width';
 
 /**
  * The properties that a TextCase token can be applied to.
@@ -5040,17 +5153,18 @@ type TokenTextDecorationProps = 'text-decoration';
 export type TokenProperty =
   | 'all'
   | TokenBorderRadiusProps
+  | TokenShadowProps
   | TokenColorProps
   | TokenDimensionProps
-  | TokenFontFamilyProps
-  | TokenFontSizeProps
+  | TokenFontFamiliesProps
+  | TokenFontSizesProps
   | TokenFontWeightProps
-  | TokenFontLetterSpacingProps
+  | TokenLetterSpacingProps
   | TokenNumberProps
   | TokenOpacityProps
   | TokenSizingProps
   | TokenSpacingProps
-  | TokenStrokeWidthProps
+  | TokenBorderWidthProps
   | TokenTextCaseProps
   | TokenTextDecorationProps;
 
@@ -5058,21 +5172,23 @@ export type TokenProperty =
  * The supported types of Design Tokens in Penpot.
  */
 export type TokenType =
-  | 'border-radius'
+  | 'borderRadius'
+  | 'shadow'
   | 'color'
   | 'dimension'
-  | 'font-family'
-  | 'font-size'
-  | 'font-weight'
-  | 'letter-spacing'
-  | 'letter-number'
+  | 'fontFamilies'
+  | 'fontSizes'
+  | 'fontWeights'
+  | 'letterSpacing'
+  | 'number'
   | 'opacity'
   | 'rotation'
   | 'sizing'
   | 'spacing'
-  | 'stroke-width'
-  | 'text-case'
-  | 'text-decoration';
+  | 'borderWidth'
+  | 'textCase'
+  | 'textDecoration'
+  | 'typography';
 
 /**
  * Represents a user in Penpot.

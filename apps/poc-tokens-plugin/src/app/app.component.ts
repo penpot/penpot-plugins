@@ -106,14 +106,14 @@ export class AppComponent {
         tokenValue = 25;
         break;
       case 'shadow':
-        tokenValue = {
-          offsetX: 6,
-          offsetY: 6,
-          blur: 4,
-          spread: 0,
-          color: '#000000',
-          inset: false,
-        };
+        tokenValue = [{
+          color: '#123456',
+          inset: 'false',
+          offsetX: '6',
+          offsetY: '6',
+          spread: '0',
+          blur: '4',
+        }];
         break;
       case 'color':
         tokenValue = '#fabada';
@@ -126,6 +126,9 @@ export class AppComponent {
         break;
       case 'fontSizes':
         tokenValue = 24;
+        break;
+      case 'fontWeights':
+        tokenValue = 'bold';
         break;
       case 'letterSpacing':
         tokenValue = 0.5;
@@ -153,9 +156,6 @@ export class AppComponent {
         break;
       case 'textDecoration':
         tokenValue = 'underline';
-        break;
-      case 'fontWeights':
-        tokenValue = 'bold';
         break;
       case 'typography':
         tokenValue = {
