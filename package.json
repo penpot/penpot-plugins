@@ -20,6 +20,8 @@
     "build:plugins": "npx nx run-many -t build --parallel -p tag:type:plugin --exclude=poc-state-plugin",
     "build:styles-example": "npx nx run example-styles:build",
     "lint": "nx run-many --all --target=lint --parallel",
+    "format": "npx nx format:write --libs-and-apps",
+    "format:check": "npx nx format:check --libs-and-apps",
     "lint:affected": "npx nx affected --target=lint",
     "test": "nx run-many -t test --parallel -p plugins-runtime lorem-ipsum-plugin colors-to-tokens-plugin",
     "test:e2e": "npx nx test e2e",
@@ -82,6 +84,7 @@
     "vite": "^5.0.0",
     "vite-plugin-checker": "^0.6.4",
     "vite-plugin-dts": "~2.3.0",
+    "vite-plugin-static-copy": "^3.1.0",
     "vitest": "1.6.0"
   },
   "workspaces": [
@@ -100,7 +103,7 @@
     "feather-icons": "^4.29.2",
     "puppeteer": "^22.11.0",
     "rxjs": "~7.8.0",
-    "ses": "^1.7.0",
+    "ses": "^1.13.1",
     "tslib": "^2.3.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4",

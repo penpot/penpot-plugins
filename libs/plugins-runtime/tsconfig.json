@@ -5,6 +5,7 @@
     "lib": ["ESNext", "DOM"],
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "alwaysStrict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,

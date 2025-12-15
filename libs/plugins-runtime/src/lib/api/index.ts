@@ -22,7 +22,10 @@ import type {
   Color,
   ColorShapeInfo,
   HistoryContext,
-  LocalStorage
+  LocalStorage,
+  VariantContainer,
+  LibraryComponent,
+  LibraryVariantComponent,
 } from '@penpot/plugin-types';
 
 import { Permissions } from '../models/manifest.model.js';
@@ -111,6 +114,14 @@ export function createApi(
         },
         isSVG(shape: Shape): shape is SvgRaw {
           return shape.type === 'svg-raw';
+        },
+        isVariantContainer(shape: Shape): shape is VariantContainer {
+          return shape.type === 'board' && shape.isVariantContainer();
+        },
+        isVariantComponent(
+          component: LibraryComponent,
+        ): component is LibraryVariantComponent {
+          return component.isVariant();
         },
       },
     },
@@ -306,9 +317,9 @@ export function createApi(
       return plugin.context.createPage();
     },
 
-    openPage(page: Page): void {
+    openPage(page: Page, newWindow?: boolean): void {
       checkPermission('content:read');
-      plugin.context.openPage(page);
+      plugin.context.openPage(page, newWindow ?? true);
     },
 
     alignHorizontal(

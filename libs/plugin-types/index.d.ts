@@ -257,8 +257,17 @@ export interface Board extends ShapeBase {
   // Container Properties
   /**
    * The children shapes contained within the board.
+   * When writing into this property, you can only reorder the shapes, not
+   * changing the structure. If the new shapes don't match the current shapes
+   * it will give a validation error.
+   *
+   * @example
+   * ```js
+   * board.children = board.children.reverse();
+   * ```
    */
-  readonly children: Shape[];
+  children: Shape[];
+
   /**
    * Appends a child shape to the board.
    * @param child The child shape to append.
@@ -269,6 +278,7 @@ export interface Board extends ShapeBase {
    * ```
    */
   appendChild(child: Shape): void;
+
   /**
    * Inserts a child shape at the specified index within the board.
    * @param index The index at which to insert the child shape.
@@ -326,6 +336,22 @@ export interface Board extends ShapeBase {
    * Removes the `guide` from the current page.
    */
   removeRulerGuide(guide: RulerGuide): void;
+
+  /**
+   * @return Returns true when the current board is a VariantContainer
+   */
+  isVariantContainer(): boolean;
+}
+
+/**
+ * Represents a VariantContainer in Penpot
+ * This interface extends `Board` and includes properties and methods specific to VariantContainer.
+ */
+export interface VariantContainer extends Board {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantContainer)
+   */
+  readonly variants: Variants | null;
 }
 
 /**
@@ -341,12 +367,25 @@ export interface Boolean extends ShapeBase {
   /**
    * Converts the boolean shape to its path data representation.
    * @return Returns the path data (d attribute) as a string.
+   * @deprecated Use the `d` attribute
    */
   toD(): string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   * @deprecated Use either `d` or `commands`.
+   */
+  content: string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   */
+  d: string;
+
   /**
    * The content of the boolean shape, defined as an array of path commands.
    */
-  content: Array<PathCommand>;
+  commands: Array<PathCommand>;
 
   /**
    * The fills applied to the shape.
@@ -1205,13 +1244,14 @@ export interface Context {
   /**
    * Changes the current open page to given page. Requires `content:read` permission.
    * @param page the page to open
+   * @param newWindow if true opens the page in a new window
    *
    * @example
    * ```js
    * context.openPage(page);
    * ```
    */
-  openPage(page: Page): void;
+  openPage(page: Page, newWindow?: boolean): void;
 
   /**
    * Aligning will move all the selected layers to a position relative to one
@@ -1349,6 +1389,22 @@ export interface ContextTypesUtils {
    * @return Returns true if the shape is a SvgRaw, otherwise false.
    */
   isSVG(shape: Shape): shape is SvgRaw;
+
+  /**
+   * Checks if the given shape is a variant container.
+   * @param shape - The shape to check.
+   * @return Returns true if the shape is a variant container, otherwise false.
+   */
+  isVariantContainer(shape: Shape): shape is VariantContainer;
+
+  /**
+   * Checks if the given component is a VariantComponent.
+   * @param component - The component to check.
+   * @return Returns true if the component is a VariantComponent, otherwise false.
+   */
+  isVariantComponent(
+    component: LibraryComponent,
+  ): component is LibraryVariantComponent;
 }
 
 /**
@@ -2241,6 +2297,11 @@ export type ImageData = {
    * Defaults to false if omitted.
    */
   keepAspectRatio?: boolean;
+
+  /**
+   * Returns the imaged data as a byte array.
+   */
+  data(): Promise<Uint8Array>;
 };
 
 /**
@@ -2437,12 +2498,12 @@ export interface Library extends PluginData {
    * console.log(penpot.library.local.colors);
    * ```
    */
-  colors: LibraryColor[];
+  readonly colors: LibraryColor[];
 
   /**
    * An array of typography elements in the library.
    */
-  typographies: LibraryTypography[];
+  readonly typographies: LibraryTypography[];
 
   /**
    * An array of component elements in the library.
@@ -2450,7 +2511,7 @@ export interface Library extends PluginData {
    * ```js
    * console.log(penpot.library.local.components);
    */
-  components: LibraryComponent[];
+  readonly components: LibraryComponent[];
 
   /**
    * Creates a new color element in the library.
@@ -2555,6 +2616,51 @@ export interface LibraryComponent extends LibraryElement {
    * @return Returns the reference to the main component shape.
    */
   mainInstance(): Shape;
+
+  /**
+   * @return true when this component is a VariantComponent
+   */
+  isVariant(): boolean;
+
+  /**
+   * Creates a new Variant from this standard Component. It creates a VariantContainer, transform this Component into a VariantComponent, duplicates it, and creates a
+   * set of properties based on the component name and path.
+   * Similar to doing it with the contextual menu or the shortcut on the Penpot interface
+   */
+  transformInVariant(): void;
+}
+
+/**
+ * Represents a component element from a library in Penpot.
+ * This interface extends `LibraryElement` and includes properties specific to component elements.
+ */
+export interface LibraryVariantComponent extends LibraryComponent {
+  /**
+   * Access to the Variant interface, for attributes and actions over the full Variant (not only this VariantComponent)
+   */
+  readonly variants: Variants | null;
+
+  /**
+   * A list of the variants props of this VariantComponent. Each property have a key and a value
+   */
+  readonly variantProps: { [property: string]: string };
+
+  /**
+   * If this VariantComponent has an invalid name, that does't follow the structure [property]=[value], [property]=[value]
+   * this field stores that invalid name
+   */
+  variantError: string;
+
+  /**
+   * Creates a duplicate of the current VariantComponent on its Variant
+   */
+  addVariant(): void;
+
+  /**
+   * Sets the value of the variant property on the indicated position
+   */
+
+  setVariantProperty(pos: number, value: string): void;
 }
 
 /**
@@ -3015,12 +3121,25 @@ export interface Path extends ShapeBase {
   /**
    * Converts the path shape to its path data representation.
    * @return Returns the path data (d attribute) as a string.
+   * @deprecated Use the `d` attribute
    */
   toD(): string;
+
   /**
-   * The content of the path shape, defined as an array of path commands.
+   * The content of the boolean shape, defined as the path string.
+   * @deprecated Use either `d` or `commands`.
    */
-  content: Array<PathCommand>;
+  content: string;
+
+  /**
+   * The content of the boolean shape, defined as the path string.
+   */
+  d: string;
+
+  /**
+   * The content of the boolean shape, defined as an array of path commands.
+   */
+  commands: Array<PathCommand>;
 
   /**
    * The fills applied to the shape.
@@ -3394,6 +3513,11 @@ export interface ShapeBase extends PluginData {
   readonly parent: Shape | null;
 
   /**
+   * Returns the index of the current shape in the parent
+   */
+  readonly parentIndex: number;
+
+  /**
    * The x-coordinate of the shape's position.
    */
   x: number;
@@ -3575,6 +3699,16 @@ export interface ShapeBase extends PluginData {
   readonly layoutCell?: LayoutChildProperties;
 
   /**
+   * Changes the index inside the parent of the current shape.
+   * This method will shift the indexes of the shapes around that position to
+   * match the index.
+   * If the index is greater than the number of elements it will positioned last.
+   *
+   * @param index the new index for the shape to be in
+   */
+  setParentIndex(index: number): void;
+
+  /**
    * @return Returns true if the current shape is inside a component instance
    */
   isComponentInstance(): boolean;
@@ -3630,6 +3764,32 @@ export interface ShapeBase extends PluginData {
   detach(): void;
 
   /**
+   * TODO
+   */
+  swapComponent(component: LibraryComponent): void;
+
+  /**
+   * Switch a VariantComponent copy to the nearest one that has the specified property value
+   * @param pos The position of the poroperty to update
+   * @param value The new value of the property
+   */
+  switchVariant(pos: number, value: string): void;
+
+  /**
+   * Combine several standard Components into a VariantComponent. Similar to doing it with the contextual menu
+   * on the Penpot interface.
+   * The current shape must be a component main instance.
+   * @param ids A list of ids of the main instances of the components to combine with this one.
+   */
+  combineAsVariants(ids: string[]): void;
+
+  /**
+   * @return Returns true when the current shape is the head of a components tree nested structure,
+   * and that component is a VariantComponent
+   */
+  isVariantHead(): boolean;
+
+  /**
    * Resizes the shape to the specified width and height.
    * @param width The new width of the shape.
    * @param height The new height of the shape.
@@ -3652,6 +3812,26 @@ export interface ShapeBase extends PluginData {
    * ```
    */
   rotate(angle: number, center?: { x: number; y: number } | null): void;
+
+  /**
+   * Moves the current shape to the front of its siblings
+   */
+  bringToFront(): void;
+
+  /**
+   * Moves the current shape one position forward in its list of siblings
+   */
+  bringForward(): void;
+
+  /**
+   * Moves the current shape to the back of its siblings
+   */
+  sendToBack(): void;
+
+  /**
+   * Moves the current shape one position backwards in its list of siblings
+   */
+  sendBackward(): void;
 
   /**
    * Generates an export from the current shape.
@@ -4137,6 +4317,61 @@ export interface User {
    * ```
    */
   readonly sessionId?: string;
+}
+
+/**
+ * TODO
+ */
+export interface Variants {
+  /**
+   * The unique identifier of the variant element. It is the id of the VariantContainer, and all the VariantComponents
+   * that belong to this variant have an attribute variantId which this is as value.
+   */
+  readonly id: string;
+
+  /**
+   * The unique identifier of the library to which the variant belongs.
+   */
+  readonly libraryId: string;
+
+  /**
+   * A list with the names of the properties of the Variant
+   */
+  properties: string[];
+
+  /**
+   * A list of all the values of a property along all the variantComponents of this Variant
+   * @param property The name of the property
+   */
+  currentValues(property: string): string[];
+
+  /**
+   * Remove a property of the Variant
+   * @param pos The position of the property to remove
+   */
+  removeProperty(pos: number): void;
+
+  /**
+   * Rename a property of the Variant
+   * @param pos The position of the property to rename
+   * @param name The new name of the property
+   */
+  renameProperty(pos: number, name: string): void;
+
+  /**
+   * List all the VariantComponents on this Variant.
+   */
+  variantComponents(): LibraryComponent[];
+
+  /**
+   * Creates a duplicate of the main VariantComponent of this Variant
+   */
+  addVariant(): void;
+
+  /**
+   * Adds a new property to this Variant
+   */
+  addProperty(): void;
 }
 
 /**

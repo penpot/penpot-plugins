@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This guide details the process of publishing `plugin-types` and `plugins-styles` packages, which are essential for plugin development. Below is a walkthrough for publishing these packages and managing releases.
+This guide details the process of publishing `plugin-types`, `plugins-styles` and `plugins-runtime` packages, which are essential for plugin development. Below is a walkthrough for publishing these packages and managing releases.
 
 ## Publishing Libraries
 
@@ -13,6 +13,7 @@ Publishing packages enables the distribution of types and styles libraries. Curr
 To generate a preview of the release to check if everything is as expected, run the following command:
 
 ```shell
+git checkout main
 npm run release
 ```
 
@@ -27,7 +28,7 @@ npm run release -- --dry-run false
 This command will:
 
 - Update the `CHANGELOG.md`
-- Update libraries `package.json` file version
+- Update the library's `package.json` version
 - Generate a commit
 - Create a new git tag
 - Publish to NPM with the `latest` tag
@@ -36,10 +37,18 @@ Ensure everything is correct before proceeding with the git push. Once verified,
 
 ```shell
 git push
-git push origin v0.0.0
+git push origin vX.X.X
 ```
 
-Replace v0.0.0 with the new version number.
+Replace `vX.X.X` with the new version number.
+
+> 📘 To update the documentation site, you must also update the `stable` branch:
+
+```shell
+git checkout stable
+git merge main
+git push origin stable
+```
 
 For detailed information, refer to the [Nx Release Documentation](https://nx.dev/recipes/nx-release/get-started-with-nx-release).
 
@@ -63,7 +72,9 @@ npm run release -- --help
 
 ## Important Reminders
 
-Ensure to update the [penpot-plugin-starter-template](https://github.com/penpot/penpot-plugin-starter-template) with every release to provide developers with the latest configuration and features.
+- Ensure to update the [penpot](https://github.com/penpot/penpot/blob/develop/frontend/package.json) and [penpot-plugin-starter-template](https://github.com/penpot/penpot-plugin-starter-template) with every release to provide developers with the latest configuration and features.
+
+- Update the API documentations following [this documentation](api-docs.md).
 
 ## Relevant Files and Scripts
 

@@ -4,5 +4,5 @@
     "types": []
   },
   "files": ["src/plugin.ts"],
-  "include": ["../../libs/plugin-types/index.d.ts"],
+  "include": ["../../libs/plugin-types/index.d.ts"]
 }

@@ -1,7 +1,7 @@
 description: Suggest an idea for this project.
-labels: ["needs triage", "enhancement"]
-name: "Plugin feature request"
-title: "feature: "
+labels: ['needs triage', 'enhancement']
+name: 'Plugin feature request'
+title: 'feature: '
 body:
   - type: markdown
     attributes:

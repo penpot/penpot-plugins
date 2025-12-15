@@ -18,14 +18,12 @@ repairIntrinsics({
   errorTaming: 'unsafe',
   consoleTaming: 'unsafe',
   errorTrapping: 'none',
-  unhandledRejectionTrapping: 'none'
+  unhandledRejectionTrapping: 'none',
 });
 
 const globalThisAny$ = globalThis as any;
 
-globalThisAny$.initPluginsRuntime = (
-  contextBuilder: (id: string) => Context
-) => {
+export const initPluginsRuntime = (contextBuilder: (id: string) => Context) => {
   try {
     console.log('%c[PLUGINS] Initialize runtime', 'color: #008d7c');
     setContextBuilder(contextBuilder);

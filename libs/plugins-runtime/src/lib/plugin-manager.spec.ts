@@ -43,7 +43,7 @@ describe('createPluginManager', () => {
         'comment:read',
         'comment:write',
         'allow:downloads',
-        'allow:localstorage'
+        'allow:localstorage',
       ],
     };
 
@@ -56,7 +56,7 @@ describe('createPluginManager', () => {
     };
 
     vi.mocked(openUIApi).mockReturnValue(
-      mockModal as unknown as PluginModalElement
+      mockModal as unknown as PluginModalElement,
     );
 
     mockContext = {
@@ -69,7 +69,7 @@ describe('createPluginManager', () => {
     onReloadModal = vi.fn();
 
     vi.mocked(loadManifestCode).mockResolvedValue(
-      'console.log("Plugin loaded");'
+      'console.log("Plugin loaded");',
     );
     vi.mocked(getValidUrl).mockReturnValue('https://example.com/plugin');
   });
@@ -83,17 +83,17 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     expect(loadManifestCode).toHaveBeenCalledWith(manifest);
     expect(mockContext.addListener).toHaveBeenCalledWith(
       'themechange',
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(mockContext.addListener).toHaveBeenCalledWith(
       'finish',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -102,7 +102,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.openModal('Test Modal', '/test-url', {
@@ -116,17 +116,17 @@ describe('createPluginManager', () => {
       'https://example.com/plugin',
       'light',
       { width: 400, height: 300 },
-      true
+      true,
     );
     expect(mockModal.setTheme).toHaveBeenCalledWith('light');
     expect(mockModal.addEventListener).toHaveBeenCalledWith(
       'close',
       expect.any(Function),
-      { once: true }
+      { once: true },
     );
     expect(mockModal.addEventListener).toHaveBeenCalledWith(
       'load',
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -137,7 +137,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.openModal('Test Modal', '/test-url');
@@ -151,7 +151,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.openModal('Test Modal', '/test-url');
@@ -174,7 +174,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.openModal('Test Modal', '/test-url');
@@ -184,7 +184,7 @@ describe('createPluginManager', () => {
     expect(mockContext.removeListener).toHaveBeenCalled();
     expect(mockModal.removeEventListener).toHaveBeenCalledWith(
       'close',
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(mockModal.remove).toHaveBeenCalled();
     expect(onCloseCallback).toHaveBeenCalled();
@@ -195,7 +195,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.timeouts.add(setTimeout(() => {}, 1000));
@@ -213,7 +213,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     await pluginManager.openModal('Test Modal', '/test-url');
@@ -230,7 +230,7 @@ describe('createPluginManager', () => {
       await loadCallback[1]();
 
       expect(onReloadModal).toHaveBeenCalledWith(
-        'console.log("Plugin loaded");'
+        'console.log("Plugin loaded");',
       );
     }
   });
@@ -240,7 +240,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     const callback = vi.fn();
@@ -256,7 +256,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     const callback = vi.fn();
@@ -265,7 +265,7 @@ describe('createPluginManager', () => {
     expect(mockContext.addListener).toHaveBeenCalledWith(
       'themechange',
       expect.any(Function),
-      undefined
+      undefined,
     );
 
     pluginManager.destroyListener(listenerId);
@@ -278,7 +278,7 @@ describe('createPluginManager', () => {
       mockContext,
       manifest,
       onCloseCallback,
-      onReloadModal
+      onReloadModal,
     );
 
     pluginManager.close();

@@ -3,9 +3,5 @@
   "description": "Create a board with all the colors in the local library",
   "code": "/plugin.js",
   "icon": "/assets/icon.png",
-  "permissions": [
-    "content:read",
-    "content:write",
-    "library:read"
-  ]
+  "permissions": ["content:read", "content:write", "library:read"]
 }

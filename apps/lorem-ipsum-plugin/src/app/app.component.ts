@@ -10,9 +10,9 @@ import type {
 import { filter, fromEvent, map, merge, take } from 'rxjs';
 
 @Component({
-    imports: [ReactiveFormsModule],
-    selector: 'app-root',
-    template: `
+  imports: [ReactiveFormsModule],
+  selector: 'app-root',
+  template: `
     <form [formGroup]="form" class="sections-wrapper" (ngSubmit)="generate()">
       <section class="regular-generate">
         <p class="body-s">
@@ -61,10 +61,10 @@ import { filter, fromEvent, map, merge, take } from 'rxjs';
       </section>
     </form>
   `,
-    styleUrl: './app.component.css',
-    host: {
-        '[attr.data-theme]': 'theme()',
-    }
+  styleUrl: './app.component.css',
+  host: {
+    '[attr.data-theme]': 'theme()',
+  },
 })
 export class AppComponent {
   route = inject(ActivatedRoute);
@@ -73,7 +73,7 @@ export class AppComponent {
   initialTheme$ = this.route.queryParamMap.pipe(
     map((params) => params.get('theme')),
     filter((theme) => !!theme),
-    take(1)
+    take(1),
   );
 
   theme = toSignal(
@@ -83,9 +83,9 @@ export class AppComponent {
         filter((event) => event.data.type === 'theme'),
         map((event) => {
           return event.data.content;
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   form = new FormGroup({

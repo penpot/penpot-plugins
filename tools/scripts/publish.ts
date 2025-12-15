@@ -62,11 +62,11 @@ const determineArgs = async () => {
   });
 
   execSync(
-    'npx nx run-many -t build -p plugins-styles plugin-types --parallel',
+    'npx nx run-many -t build -p plugins-runtime plugins-styles plugin-types --parallel',
     {
       cwd: process.cwd(),
       stdio: 'inherit',
-    }
+    },
   );
 
   await releaseChangelog({

@@ -23,10 +23,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin main:main
 
       - name: Lint
         id: npm-lint
         run: npm run lint
+
+      - name: Format Check
+        id: npm-format-check
+        run: npm run format:check
 
       - name: Test
         id: npm-test

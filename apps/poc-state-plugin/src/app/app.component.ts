@@ -3,9 +3,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import type { Shape } from '@penpot/plugin-types';
 
 @Component({
-    selector: 'app-root',
-    imports: [ReactiveFormsModule],
-    template: `
+  selector: 'app-root',
+  imports: [ReactiveFormsModule],
+  template: `
     <div class="wrapper">
       <h1>Test area!</h1>
 
@@ -135,6 +135,75 @@ import type { Shape } from '@penpot/plugin-types';
 
         <input type="file" class="file-upload" (change)="uploadImage($event)" />
       </div>
+      <hr />
+      <div>
+        <h1>Variants</h1>
+        <div class="actions-wrap">
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="transformInVariant()"
+          >
+            Transform in variant
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="combineSelectedAsVariants()"
+          >
+            Combine selected as variants
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="addVariant()"
+          >
+            Add Variant
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="addProperty()"
+          >
+            Add Property
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="removeProperty()"
+          >
+            Remove Property
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="renameProperty()"
+          >
+            Rename Property
+          </button>
+
+          <button
+            type="button"
+            data-appearance="secondary"
+            (click)="setVariantProperty()"
+          >
+            Set variant property
+          </button>
+        </div>
+
+        <button
+          type="button"
+          data-appearance="secondary"
+          (click)="switchVariant()"
+        >
+          Switch
+        </button>
+      </div>
 
       <p>
         <button
@@ -149,7 +218,7 @@ import type { Shape } from '@penpot/plugin-types';
       </p>
     </div>
   `,
-    styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   #pageId: null | string = null;
@@ -172,7 +241,7 @@ export class AppComponent {
       } else if (event.data.type === 'page') {
         this.#refreshPage(
           event.data.content.page.id,
-          event.data.content.page.name
+          event.data.content.page.name,
         );
       } else if (event.data.type === 'selection') {
         this.#refreshSelection(event.data.content.selection);
@@ -338,5 +407,79 @@ export class AppComponent {
     // Remove temporary
     URL.revokeObjectURL(a.href);
     a.remove();
+  }
+
+  transformInVariant() {
+    this.#sendMessage({ content: 'transform-in-variant' });
+  }
+
+  combineSelectedAsVariants() {
+    this.#sendMessage({ content: 'combine-selected-as-variants' });
+  }
+
+  addVariant() {
+    this.#sendMessage({ content: 'add-variant' });
+  }
+
+  addProperty() {
+    this.#sendMessage({ content: 'add-property' });
+  }
+
+  removeProperty() {
+    let input = prompt('Property position?');
+    if (input !== null) {
+      const pos = parseInt(input, 10);
+      if (!isNaN(pos)) {
+        this.#sendMessage({ content: 'remove-property', data: pos });
+      }
+    }
+  }
+
+  renameProperty() {
+    let input = prompt('Property position?');
+    if (input !== null) {
+      const pos = parseInt(input, 10);
+      if (!isNaN(pos)) {
+        let name = prompt('New name?');
+        if (name !== null) {
+          this.#sendMessage({
+            content: 'rename-property',
+            data: { pos, name },
+          });
+        }
+      }
+    }
+  }
+
+  setVariantProperty() {
+    let input = prompt('Property position?');
+    if (input !== null) {
+      const pos = parseInt(input, 10);
+      if (!isNaN(pos)) {
+        let value = prompt('New value?');
+        if (value !== null) {
+          this.#sendMessage({
+            content: 'set-variant-property',
+            data: { pos, value },
+          });
+        }
+      }
+    }
+  }
+
+  switchVariant() {
+    let input = prompt('Property position?');
+    if (input !== null) {
+      const pos = parseInt(input, 10);
+      if (!isNaN(pos)) {
+        let value = prompt('New value?');
+        if (value !== null) {
+          this.#sendMessage({
+            content: 'switch-variant',
+            data: { pos, value },
+          });
+        }
+      }
+    }
   }
 }

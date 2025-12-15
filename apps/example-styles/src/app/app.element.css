@@ -108,3 +108,16 @@ section {
     min-inline-size: 200px;
   }
 }
+
+/* SWITCH */
+.switch-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+  }
+}

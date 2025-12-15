@@ -3,7 +3,7 @@ import type { createPluginManager } from './plugin-manager';
 import { createApi } from './api';
 import { ses } from './ses.js';
 export function createSandbox(
-  plugin: Awaited<ReturnType<typeof createPluginManager>>
+  plugin: Awaited<ReturnType<typeof createPluginManager>>,
 ) {
   ses.hardenIntrinsics();
 
@@ -63,7 +63,7 @@ export function createSandbox(
         plugin.timeouts.add(timeoutId);
 
         return ses.safeReturn(timeoutId);
-      }
+      },
     ) as typeof setTimeout,
     clearTimeout: ses.harden((id: ReturnType<typeof setTimeout>) => {
       clearTimeout(id);
@@ -118,8 +118,8 @@ export function createSandbox(
     // Window properties
     console: ses.harden(window.console),
     devicePixelRatio: ses.harden(window.devicePixelRatio),
-    atob: ses.harden(window.atob),
-    btoa: ses.harden(window.btoa),
+    atob: ses.harden(window.atob.bind(null)),
+    btoa: ses.harden(window.btoa.bind(null)),
     structuredClone: ses.harden(window.structuredClone),
   };
 

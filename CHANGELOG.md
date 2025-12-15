@@ -1,3 +1,27 @@
+## 1.3.2 (2025-07-04)
+
+### 🩹 Fixes
+
+- plugins-runtime public package.json ([70fd69f](https://github.com/penpot/penpot-plugins/commit/70fd69f))
+
+### ❤️ Thank You
+
+- Juanfran @juanfran
+
+## 1.3.1 (2025-07-04)
+
+### 🚀 Features
+
+- plugins-runtime as npm library ([41c56b1](https://github.com/penpot/penpot-plugins/commit/41c56b1))
+
+### 🩹 Fixes
+
+- package-lock.json ([16b29f8](https://github.com/penpot/penpot-plugins/commit/16b29f8))
+
+### ❤️ Thank You
+
+- Juanfran @juanfran
+
 ## 1.3.0 (2025-06-25)
 
 ### 🚀 Features
@@ -53,7 +77,6 @@
 
 ## 1.1.0 (2024-12-12)
 
-
 ### 🚀 Features
 
 - updated doc links ([cb49dfb](https://github.com/penpot/penpot-plugins/commit/cb49dfb))
@@ -64,14 +87,13 @@
 - styles rename layers ([40e08f8](https://github.com/penpot/penpot-plugins/commit/40e08f8))
 - **rename-layers:** i#8951 disable buttons when empty ([#8951](https://github.com/penpot/penpot-plugins/issues/8951))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - alonso.torres
 - María Valderrama @mavalroot
 - Marina López @cocotime
 
 # 1.0.0 (2024-10-25)
-
 
 ### 🚀 Features
 
@@ -83,7 +105,7 @@
 - search in icons plugin ([b4664a2](https://github.com/penpot/penpot-plugins/commit/b4664a2))
 - **table-plugin:** i#8965 empty cell values when importing csv files ([#8965](https://github.com/penpot/penpot-plugins/issues/8965))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - alonso.torres
 - Juanfran @juanfran
@@ -91,7 +113,6 @@
 - Marina López @cocotime
 
 ## 0.12.0 (2024-10-04)
-
 
 ### 🚀 Features
 
@@ -110,7 +131,7 @@
 - **poc-state-plugin:** add new functions to the plugin to test comments and rulers ([6adee11](https://github.com/penpot/penpot-plugins/commit/6adee11))
 - **rename-layers:** final review - undo group ([2909bcc](https://github.com/penpot/penpot-plugins/commit/2909bcc))
 - **runtime:** refactor plugin state ([16595c2](https://github.com/penpot/penpot-plugins/commit/16595c2))
-- **runtime:** remove deprecated  method ([ccc5f78](https://github.com/penpot/penpot-plugins/commit/ccc5f78))
+- **runtime:** remove deprecated method ([ccc5f78](https://github.com/penpot/penpot-plugins/commit/ccc5f78))
 - **table-plugin:** enhancement save config ([07af57d](https://github.com/penpot/penpot-plugins/commit/07af57d))
 
 ### 🩹 Fixes
@@ -123,14 +144,13 @@
 - **runtime:** ses errorTrapping interferes with penpot error handler ([8c0e36d](https://github.com/penpot/penpot-plugins/commit/8c0e36d))
 - **runtime:** prevent override Penpot objects ([120e9e5](https://github.com/penpot/penpot-plugins/commit/120e9e5))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - alonso.torres
 - Juanfran @juanfran
 - María Valderrama @mavalroot
 
 ## 0.10.0 (2024-07-31)
-
 
 ### 🚀 Features
 
@@ -167,7 +187,7 @@
 - **plugins-runtime:** fix problem with types in test ([17db173](https://github.com/penpot/penpot-plugins/commit/17db173))
 - **styles:** input, button & select worksans font family ([1b9d3b2](https://github.com/penpot/penpot-plugins/commit/1b9d3b2))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - alonso.torres
 - Juanfran @juanfran

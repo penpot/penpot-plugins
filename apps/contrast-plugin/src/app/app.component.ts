@@ -16,105 +16,106 @@ import { CommonModule } from '@angular/common';
 import { Shape } from '@penpot/plugin-types';
 
 @Component({
-    imports: [CommonModule],
-    selector: 'app-root',
-    template: `
+  imports: [CommonModule],
+  selector: 'app-root',
+  template: `
     <div class="wrapper body-s">
       @if (selection().length === 0) {
-      <p class="empty-preview">
-        Select two filled shapes to calculate the color contrast between them.
-      </p>
+        <p class="empty-preview">
+          Select two filled shapes to calculate the color contrast between them.
+        </p>
       } @else if (selection().length === 1) {
-      <p class="empty-preview">
-        Select <span class="bold">one more</span> filled shape to calculate the
-        color contrast between the selected colors.
-      </p>
+        <p class="empty-preview">
+          Select <span class="bold">one more</span> filled shape to calculate
+          the color contrast between the selected colors.
+        </p>
       } @else if (selection().length >= 2) {
-      <div class="contrast-preview">
-        <p>Selected colors:</p>
-        <div class="color-box"></div>
-        <ul class="select-colors">
-          <li>
-            {{ color1() }}
-          </li>
-          <li>{{ color2() }}</li>
-        </ul>
-      </div>
-      <p class="contrast-ratio">
-        Contrast ratio: <span>{{ result() }} : 1</span>
-      </p>
-      <div class="contrast-results">
-        <div class="contrast-result">
-          <p class="title">Normal text:</p>
-          <ul class="list">
-            <li
-              class="tag"
-              [ngClass]="
-                result() >= contrastStandards.AA.normal ? 'good' : 'fail'
-              "
-            >
-              AA
+        <div class="contrast-preview">
+          <p>Selected colors:</p>
+          <div class="color-box"></div>
+          <ul class="select-colors">
+            <li>
+              {{ color1() }}
             </li>
-            <li
-              class="tag"
-              [ngClass]="
-                result() >= contrastStandards.AAA.normal ? 'good' : 'fail'
-              "
-            >
-              AAA
-            </li>
+            <li>{{ color2() }}</li>
           </ul>
         </div>
-        <div class="contrast-result">
-          <p class="title">
-            Large text
-            <span class="body-xs">(starting from 19px bold or 24px):</span>
-          </p>
-          <ul class="list">
-            <li
-              class="tag"
-              [ngClass]="
-                result() >= contrastStandards.AA.large ? 'good' : 'fail'
-              "
-            >
-              AA
-            </li>
-            <li
-              class="tag"
-              [ngClass]="
-                result() >= contrastStandards.AAA.large ? 'good' : 'fail'
-              "
-            >
-              AAA
-            </li>
-          </ul>
+        <p class="contrast-ratio">
+          Contrast ratio: <span>{{ result() }} : 1</span>
+        </p>
+        <div class="contrast-results">
+          <div class="contrast-result">
+            <p class="title">Normal text:</p>
+            <ul class="list">
+              <li
+                class="tag"
+                [ngClass]="
+                  result() >= contrastStandards.AA.normal ? 'good' : 'fail'
+                "
+              >
+                AA
+              </li>
+              <li
+                class="tag"
+                [ngClass]="
+                  result() >= contrastStandards.AAA.normal ? 'good' : 'fail'
+                "
+              >
+                AAA
+              </li>
+            </ul>
+          </div>
+          <div class="contrast-result">
+            <p class="title">
+              Large text
+              <span class="body-xs">(starting from 19px bold or 24px):</span>
+            </p>
+            <ul class="list">
+              <li
+                class="tag"
+                [ngClass]="
+                  result() >= contrastStandards.AA.large ? 'good' : 'fail'
+                "
+              >
+                AA
+              </li>
+              <li
+                class="tag"
+                [ngClass]="
+                  result() >= contrastStandards.AAA.large ? 'good' : 'fail'
+                "
+              >
+                AAA
+              </li>
+            </ul>
+          </div>
+          <div class="contrast-result">
+            <p class="title">
+              Graphics
+              <span class="body-xs">(such as form input borders):</span>
+            </p>
+            <ul class="list">
+              <li
+                class="tag"
+                [ngClass]="
+                  result() >= contrastStandards.graphics ? 'good' : 'fail'
+                "
+              >
+                AA
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="contrast-result">
-          <p class="title">
-            Graphics <span class="body-xs">(such as form input borders):</span>
-          </p>
-          <ul class="list">
-            <li
-              class="tag"
-              [ngClass]="
-                result() >= contrastStandards.graphics ? 'good' : 'fail'
-              "
-            >
-              AA
-            </li>
-          </ul>
-        </div>
-      </div>
       }
     </div>
   `,
-    styleUrl: './app.component.css',
-    host: {
-        '[attr.data-theme]': 'theme()',
-        '[style.--color1]': 'color1()',
-        '[style.--color2]': 'color2()',
-    },
-    changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './app.component.css',
+  host: {
+    '[attr.data-theme]': 'theme()',
+    '[style.--color1]': 'color1()',
+    '[style.--color2]': 'color2()',
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   #route = inject(ActivatedRoute);
@@ -123,13 +124,14 @@ export class AppComponent {
   #initialTheme$ = this.#route.queryParamMap.pipe(
     map((params) => params.get('theme')),
     filter((theme) => !!theme),
-    take(1)
+    take(1),
   );
 
   selection = toSignal(
     this.#messages$.pipe(
       filter(
-        (event) => event.data.type === 'init' || event.data.type === 'selection'
+        (event) =>
+          event.data.type === 'init' || event.data.type === 'selection',
       ),
       map((event) => {
         if (event.data.type === 'init') {
@@ -144,11 +146,11 @@ export class AppComponent {
         return shapes
           .map((shape) => this.#getShapeColor(shape))
           .filter((color): color is string => !!color);
-      })
+      }),
     ),
     {
       initialValue: [],
-    }
+    },
   );
 
   theme = toSignal(
@@ -159,9 +161,9 @@ export class AppComponent {
         filter((data): data is ThemePluginEvent => data.type === 'theme'),
         map((data) => {
           return data.content;
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   color1 = computed(() => {

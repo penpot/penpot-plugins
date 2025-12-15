@@ -3,10 +3,10 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { FeatherIcon } from 'feather-icons';
 
 @Component({
-    selector: 'app-icon-button',
-    imports: [SafeHtmlPipe],
-    styleUrl: './icon-button.component.css',
-    template: `<button
+  selector: 'app-icon-button',
+  imports: [SafeHtmlPipe],
+  styleUrl: './icon-button.component.css',
+  template: `<button
     class="icon-button"
     [attr.aria-label]="'Insert icon: ' + icon().name"
     [title]="icon().name"
@@ -25,7 +25,7 @@ import { FeatherIcon } from 'feather-icons';
       stroke-linejoin="round"
       [innerHtml]="icon().contents | safeHtml"
     ></svg>
-  </button>`
+  </button>`,
 })
 export class IconButtonComponent {
   public icon = input.required<FeatherIcon>();

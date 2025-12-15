@@ -6,7 +6,7 @@ import { createSandbox } from './create-sandbox.js';
 export async function createPlugin(
   context: Context,
   manifest: Manifest,
-  onCloseCallback: () => void
+  onCloseCallback: () => void,
 ) {
   const evaluateSandbox = async () => {
     try {
@@ -27,7 +27,7 @@ export async function createPlugin(
     },
     function onReloadModal() {
       evaluateSandbox();
-    }
+    },
   );
 
   const sandbox = createSandbox(plugin);
