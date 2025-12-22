@@ -4595,7 +4595,8 @@ export interface TokenFontWeights extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a weight string, or undefined if no value has been found in active sets.
+   * It's a weight string ("bold", "strong", etc.), or undefined if no value has
+   * been found in active sets.
    */
   readonly resolvedValue: string | undefined;
 }
@@ -4797,7 +4798,8 @@ export interface TokenTextCase extends TokenBase {
    * The value calculated by finding all tokens with the same name in active sets
    * and resolving the references.
    *
-   * It's a case string, or undefined if no value has been found in active sets.
+   * It's a case string ("none", "uppercase", "lowercase", "capitalize"), or
+   * undefined if no value has been found in active sets.
    */
   readonly resolvedValue: string | undefined;
 }
@@ -4828,6 +4830,118 @@ export interface TokenTextDecoration extends TokenBase {
   readonly resolvedValue: string | undefined;
 }
 
+/*
+ * The value of a TokenTypography in its composite form.
+ */
+export interface TokenTypographyValue {
+  /**
+   * The letter spacing, as a number.
+   */
+  letterSpacing: number;
+
+  /**
+   * The list of font families.
+   */
+  fontFamilies: string[];
+
+  /**
+   * The font size, as a positive number.
+   */
+  fontSizes: number;
+
+  /**
+   * The font weight, as a weight string ("bold", "strong", etc.).
+   */
+  fontWeights: string;
+
+  /**
+   * The line height, as a number.
+   */
+  lineHeight: number;
+
+  /**
+   * The text case as a string ("none", "uppercase", "lowercase" "capitalize").
+   */
+  textCase: string;
+
+  /**
+   * The text decoration as a string ("none", "underline", "strike-through").
+   */
+  textDecoration: string;
+}
+
+/*
+ * The value of a TokenTypography in its composite of strings form.
+ */
+export interface TokenTypographyValueString {
+  /**
+   * The letter spacing, as a number, or a reference to a TokenLetterSpacing.
+   */
+  letterSpacing: string;
+
+  /**
+   * The list of font families, or a reference to a TokenFontFamilies.
+   */
+  fontFamilies: string | string[];
+
+  /**
+   * The font size, as a positive number, or a reference to a TokenFontSizes.
+   */
+  fontSizes: string;
+
+  /**
+   * The font weight, as a weight string ("bold", "strong", etc.), or a
+   * reference to a TokenFontWeights.
+   */
+  fontWeight: string;
+
+  /**
+   * The line height, as a number. Note that there not exists an individual
+   * token type line height, only part of a Typography token. If you need to
+   * put here a reference, use a NumberToken.
+   */
+  lineHeight: string;
+
+  /**
+   * The text case as a string ("none", "uppercase", "lowercase" "capitalize"),
+   * or a reference to a TokenTextCase.
+   */
+  textCase: string;
+
+  /**
+   * The text decoration as a string ("none", "underline", "strike-through"),
+   * or a reference to a TokenTextDecoration.
+   */
+  textDecoration: string;
+}
+
+/**
+ * Represents a token of type Typography.
+ * This interface extends `TokenBase` and specifies the data type of the value.
+ */
+export interface TokenTypography extends TokenBase {
+  /**
+   * The type of the token.
+   */
+  readonly type: 'typography';
+
+  /**
+   * The value as defined in the token itself.
+   * It may be a string with a reference to other token, or a
+   * TokenTypographyValueString.
+   */
+  value: string | TokenTypographyValueString;
+
+  /**
+   * The value calculated by finding all tokens with the same name in active sets
+   * and resolving the references.
+   *
+   * It's a TokenTypographyValue, or undefined if no value has been found
+   * in active sets.
+   */
+  readonly resolvedValue: TokenTypographyValue[] | undefined;
+}
+
 /**
  * The supported Design Tokens in Penpot.
  */
@@ -4836,12 +4950,19 @@ export type Token =
   | TokenShadow
   | TokenColor
   | TokenDimension
+  | TokenFontFamilies
   | TokenFontSizes
+  | TokenFontWeights
+  | TokenLetterSpacing
+  | TokenNumber
   | TokenOpacity
   | TokenRotation
   | TokenSizing
   | TokenSpacing
-  | TokenBorderWidth;
+  | TokenBorderWidth
+  | TokenTextCase
+  | TokenTextDecoration
+  | TokenTypography;
 
 /**
  * The collection of all tokens in a Penpot file's library.
@@ -5144,6 +5265,11 @@ type TokenTextCaseProps = 'text-case';
 type TokenTextDecorationProps = 'text-decoration';
 
 /**
+ * The properties that a Typography token can be applied to.
+ */
+type TokenTypographyProps = 'typography';
+
+/**
  * All the properties that a token can be applied to.
  * Not always correspond to Shape properties. For example,
  * `fill` property applies to `fillColor` of the first fill
@@ -5166,7 +5292,8 @@ export type TokenProperty =
   | TokenSpacingProps
   | TokenBorderWidthProps
   | TokenTextCaseProps
-  | TokenTextDecorationProps;
+  | TokenTextDecorationProps
+  | TokenTypographyProps;
 
 /**
  * The supported types of Design Tokens in Penpot.

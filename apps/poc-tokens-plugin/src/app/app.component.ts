@@ -106,14 +106,16 @@ export class AppComponent {
         tokenValue = 25;
         break;
       case 'shadow':
-        tokenValue = [{
-          color: '#123456',
-          inset: 'false',
-          offsetX: '6',
-          offsetY: '6',
-          spread: '0',
-          blur: '4',
-        }];
+        tokenValue = [
+          {
+            color: '#123456',
+            inset: 'false',
+            offsetX: '6',
+            offsetY: '6',
+            spread: '0',
+            blur: '4',
+          },
+        ];
         break;
       case 'color':
         tokenValue = '#fabada';
@@ -159,12 +161,13 @@ export class AppComponent {
         break;
       case 'typography':
         tokenValue = {
-          fontFamilies: 'Acme',
-          fontSizes: 36,
-          letterSpacing: 0.8,
-          textCase: 'none',
+          fontFamilies: ['Acme', 'Arial', 'Sans Serif'],
+          fontSizes: '36',
+          letterSpacing: '0.8',
+          textCase: 'uppercase',
           textDecoration: 'none',
-          fontWeights: 600,
+          fontWeights: '600',
+          lineHeight: '1.5',
         };
         break;
     }
