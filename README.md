@@ -1,5 +1,10 @@
 # Penpot Plugins
 
+**IMPORTANT:** This repository is archived. Its contents and
+development have been fully integrated into the main Penpot project:
+https://github.com/penpot/penpot
+
+
 ## What can you find here?
 
 We've been working in an MVP to allow users to develop their own plugins and use the existing ones.
